@@ -9,6 +9,12 @@ router.use(requireAuth);
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
+function formatTokenLimit(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(0) + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+  return String(n);
+}
+
 const MODELS = {
   'sonnet': 'claude-sonnet-4-20250514',
   'opus': 'claude-opus-4-20250514',
@@ -23,26 +29,50 @@ router.post('/send', async (req, res) => {
     return res.status(400).json({ error: 'projectId und message sind erforderlich' });
   }
 
-  // Check token limits before calling Claude
-  const { data: profile } = await supabaseAdmin
+  // Check token limits before calling Claude — strictly per user
+  let { data: profile } = await supabaseAdmin
     .from('profiles')
     .select('plan, tokens_used, tokens_limit')
     .eq('id', req.userId)
     .single();
 
-  if (profile && profile.tokens_used >= profile.tokens_limit) {
+  // If no profile exists, create one now (safety net for users registered before fix)
+  if (!profile) {
+    const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(req.userId);
+    const { data: newProfile, error: createErr } = await supabaseAdmin
+      .from('profiles')
+      .upsert({
+        id: req.userId,
+        name: authUser?.user?.user_metadata?.name || '',
+        email: authUser?.user?.email || '',
+        plan: 'free',
+        tokens_used: 0,
+        tokens_limit: 500000
+      }, { onConflict: 'id' })
+      .select('plan, tokens_used, tokens_limit')
+      .single();
+
+    if (createErr || !newProfile) {
+      console.error('Failed to create profile for user:', req.userId, createErr);
+      return res.status(500).json({ error: 'Benutzerprofil konnte nicht geladen werden.' });
+    }
+    profile = newProfile;
+  }
+
+  // Strict token check — no profile bypass possible
+  if (profile.tokens_used >= profile.tokens_limit) {
     return res.status(429).json({
-      error: `Token-Limit erreicht (${(profile.tokens_limit / 1000000).toFixed(0)}M). Upgrade deinen Plan für mehr Tokens.`,
+      error: `Token-Limit erreicht (${formatTokenLimit(profile.tokens_limit)}). Upgrade deinen Plan für mehr Tokens.`,
       tokens_used: profile.tokens_used,
       tokens_limit: profile.tokens_limit
     });
   }
 
   // Restrict Opus to pro/business plans
-  const userPlan = profile?.plan || 'free';
+  const userPlan = profile.plan || 'free';
   let modelId = MODELS[model] || MODELS['sonnet'];
   if (model === 'opus' && userPlan === 'free') {
-    modelId = MODELS['sonnet']; // Downgrade to Sonnet for free users
+    modelId = MODELS['sonnet'];
   }
 
   try {
@@ -152,22 +182,33 @@ router.post('/send', async (req, res) => {
         });
       }
 
-      // 10. Update token usage
-      supabaseAdmin
-        .from('profiles')
-        .select('tokens_used')
-        .eq('id', req.userId)
-        .single()
-        .then(({ data: profile }) => {
-          if (profile) {
-            supabaseAdmin
+      // 10. Update token usage atomically per user
+      const totalTokens = inputTokens + outputTokens;
+      try {
+        // Try atomic increment via RPC first (no race condition)
+        const { error: rpcErr } = await supabaseAdmin.rpc('increment_tokens', {
+          user_id: req.userId,
+          amount: totalTokens
+        });
+
+        // Fallback: manual update if RPC function not yet deployed
+        if (rpcErr) {
+          const { data: freshProfile } = await supabaseAdmin
+            .from('profiles')
+            .select('tokens_used')
+            .eq('id', req.userId)
+            .single();
+
+          if (freshProfile) {
+            await supabaseAdmin
               .from('profiles')
-              .update({ tokens_used: (profile.tokens_used || 0) + inputTokens + outputTokens })
-              .eq('id', req.userId)
-              .then(() => {});
+              .update({ tokens_used: (freshProfile.tokens_used || 0) + totalTokens })
+              .eq('id', req.userId);
           }
-        })
-        .catch(() => {});
+        }
+      } catch (tokenErr) {
+        console.error('Token update error for user:', req.userId, tokenErr);
+      }
 
       // 11. Send final event with files + preview
       res.write(`data: ${JSON.stringify({

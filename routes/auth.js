@@ -91,12 +91,28 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'E-Mail oder Passwort ist falsch' });
     }
 
-    // Get profile
-    const { data: profile } = await supabaseAdmin
+    // Get profile — create if missing (safety net for pre-fix users)
+    let { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('*')
       .eq('id', data.user.id)
       .single();
+
+    if (!profile) {
+      const { data: created } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: data.user.id,
+          name: data.user.user_metadata?.name || '',
+          email: data.user.email,
+          plan: 'free',
+          tokens_used: 0,
+          tokens_limit: 500000
+        }, { onConflict: 'id' })
+        .select()
+        .single();
+      profile = created;
+    }
 
     res.json({
       success: true,
@@ -164,11 +180,28 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ error: 'Ungültiges Token' });
     }
 
-    const { data: profile } = await supabaseAdmin
+    let { data: profile } = await supabaseAdmin
       .from('profiles')
       .select('*')
       .eq('id', user.id)
       .single();
+
+    // Create profile if missing (safety net)
+    if (!profile) {
+      const { data: created } = await supabaseAdmin
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          name: user.user_metadata?.name || '',
+          email: user.email,
+          plan: 'free',
+          tokens_used: 0,
+          tokens_limit: 500000
+        }, { onConflict: 'id' })
+        .select()
+        .single();
+      profile = created;
+    }
 
     res.json({
       id: user.id,
