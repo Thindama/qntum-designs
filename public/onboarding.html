@@ -724,7 +724,7 @@ async function createProject() {
 
     if (!res.ok) {
       var errData = await res.json().catch(function() { return {}; });
-      throw new Error(errData.message || 'Projekt konnte nicht erstellt werden.');
+      throw new Error(errData.error || errData.message || 'Projekt konnte nicht erstellt werden.');
     }
 
     var data = await res.json();

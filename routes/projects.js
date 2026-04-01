@@ -53,6 +53,26 @@ router.post('/', async (req, res) => {
   const { name, description } = req.body;
 
   try {
+    // Ensure profile exists (FK constraint: projects.user_id → profiles.id)
+    const { data: profile } = await supabaseAdmin
+      .from('profiles')
+      .select('id')
+      .eq('id', req.userId)
+      .maybeSingle();
+
+    if (!profile) {
+      // Profile missing (e.g. trigger failed during registration) — create it now
+      const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(req.userId);
+      await supabaseAdmin.from('profiles').upsert({
+        id: req.userId,
+        name: user?.user_metadata?.name || '',
+        email: user?.email || '',
+        plan: 'free',
+        tokens_used: 0,
+        tokens_limit: 500000
+      }, { onConflict: 'id' });
+    }
+
     const { data, error } = await supabaseAdmin
       .from('projects')
       .insert({
