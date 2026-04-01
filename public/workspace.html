@@ -1183,11 +1183,11 @@ input, textarea { font-family: inherit; }
 
     <div class="topbar-right">
       <div class="token-bar">
-        <div class="token-bar-track"><div class="token-bar-fill"></div></div>
-        <span class="token-bar-label">3.2M / 8M</span>
+        <div class="token-bar-track"><div class="token-bar-fill" id="tokenBarFill"></div></div>
+        <span class="token-bar-label" id="tokenBarLabel">— / —</span>
       </div>
-      <span class="plan-badge">Pro</span>
-      <a href="dashboard.html" class="topbar-avatar" style="text-decoration:none;color:inherit;" title="Dashboard">EK</a>
+      <span class="plan-badge" id="planBadge">...</span>
+      <a href="dashboard.html" class="topbar-avatar" id="topbarAvatar" style="text-decoration:none;color:inherit;" title="Dashboard">?</a>
       <button class="btn-publish">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
         Publish
@@ -1409,6 +1409,8 @@ input, textarea { font-family: inherit; }
   let currentHtml = '';
   let currentFiles = {};
   let sessionTokens = 0;
+  let userTokensUsed = 0;
+  let userTokensLimit = 500000;
   let isSending = false;
 
   const chatMessages = document.getElementById('chatMessages');
@@ -1479,9 +1481,22 @@ input, textarea { font-family: inherit; }
     previewIframe.srcdoc = html;
   }
 
+  function fmtTokens(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0','') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+    return String(n);
+  }
+
+  function updateTokenBar() {
+    const pct = userTokensLimit > 0 ? Math.min(100, Math.round((userTokensUsed / userTokensLimit) * 100)) : 0;
+    document.getElementById('tokenBarFill').style.width = pct + '%';
+    document.getElementById('tokenBarLabel').textContent = fmtTokens(userTokensUsed) + ' / ' + fmtTokens(userTokensLimit);
+  }
+
   function updateStatus() {
     statusLeft.textContent = `Zuletzt gespeichert: gerade eben`;
     statusCenter.textContent = `Tokens: ${sessionTokens.toLocaleString('de-DE')} in dieser Sitzung`;
+    updateTokenBar();
   }
 
   // ═══════════════════════════════════════
@@ -1714,9 +1729,10 @@ input, textarea { font-family: inherit; }
               contentEl.innerHTML = `<span class="msg-success">✅ ${data.text || 'Projekt wurde aktualisiert!'}</span>${filesLabel ? `<br><span style="font-size:11px;color:var(--ws-text-3);font-family:var(--ws-mono);">${filesLabel}</span>` : ''}`;
             }
 
-            // Update token counter
+            // Update token counters (session + total)
             if (data.usage) {
               sessionTokens += data.usage.total;
+              userTokensUsed += data.usage.total;
               updateStatus();
             }
           }
@@ -2000,8 +2016,30 @@ input, textarea { font-family: inherit; }
   };
 
   // ═══════════════════════════════════════
-  // INIT
+  // INIT — load user profile + project
   // ═══════════════════════════════════════
+  (async function loadUserProfile() {
+    try {
+      const res = await fetch('/api/auth/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) { localStorage.removeItem('qntum_token'); window.location.href = '/auth.html'; return; }
+      const profile = await res.json();
+
+      userTokensUsed = profile.tokens_used || 0;
+      userTokensLimit = profile.tokens_limit || 500000;
+      const plan = (profile.plan || 'free').charAt(0).toUpperCase() + (profile.plan || 'free').slice(1);
+      const initials = (profile.name || '?').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+
+      document.getElementById('planBadge').textContent = plan;
+      document.getElementById('topbarAvatar').textContent = initials;
+      document.getElementById('topbarAvatar').title = profile.name || 'Dashboard';
+      updateTokenBar();
+    } catch (e) {
+      console.error('Profile load error:', e);
+    }
+  })();
+
   loadProject();
 
 })();
