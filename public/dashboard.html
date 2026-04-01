@@ -1252,7 +1252,7 @@ input { font-family: inherit; }
         <li><a href="#projects" data-scroll="projects">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
           Projekte
-          <span class="nav-badge">5</span>
+          <span class="nav-badge" id="navProjectCount">0</span>
         </a></li>
         <li><a href="#templates" data-scroll="templates">
           <span class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>
@@ -1287,13 +1287,13 @@ input { font-family: inherit; }
 
     <div class="sidebar-plan">
       <div class="plan-label">Aktueller Plan</div>
-      <div class="plan-name">Pro</div>
+      <div class="plan-name" id="sidebarPlan">Free</div>
       <div class="plan-tokens-label">Token-Verbrauch</div>
       <div class="plan-tokens-bar">
-        <div class="plan-tokens-fill"></div>
+        <div class="plan-tokens-fill" id="sidebarTokensFill"></div>
       </div>
-      <div class="plan-tokens-info">3.2M / 8M Tokens</div>
-      <a href="checkout.html?plan=business" class="plan-upgrade" style="text-decoration:none;">Upgrade auf Business</a>
+      <div class="plan-tokens-info" id="sidebarTokensInfo">0 / 500K Tokens</div>
+      <a href="checkout.html?plan=pro" class="plan-upgrade" id="sidebarUpgradeLink" style="text-decoration:none;">Upgrade auf Pro</a>
     </div>
 
     <div class="sidebar-user">
@@ -1336,8 +1336,8 @@ input { font-family: inherit; }
       <div class="welcome animate-in delay-1">
         <div class="welcome-row">
           <div>
-            <h1>Willkommen zurück, <span>Ekta</span></h1>
-            <p class="welcome-sub">Du hast 5 aktive Projekte und 4.8M Tokens verbleibend.</p>
+            <h1>Willkommen zurück, <span id="welcomeName">...</span></h1>
+            <p class="welcome-sub" id="welcomeSub">Lade deine Daten...</p>
           </div>
           <button class="btn-new-project">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1349,36 +1349,36 @@ input { font-family: inherit; }
       <!-- Stats -->
       <div class="stats-grid animate-in delay-2">
         <div class="stat-card">
-          <span class="stat-change up">+2 diese Woche</span>
+          <span class="stat-change" id="statProjectsChange"></span>
           <div class="stat-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
-          <div class="stat-value">5</div>
+          <div class="stat-value" id="statProjects">0</div>
           <div class="stat-label">Aktive Projekte</div>
         </div>
         <div class="stat-card">
-          <span class="stat-change up">Live</span>
+          <span class="stat-change" id="statLiveChange"></span>
           <div class="stat-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
           </div>
-          <div class="stat-value">3</div>
+          <div class="stat-value" id="statLive">0</div>
           <div class="stat-label">Veröffentlicht</div>
         </div>
         <div class="stat-card">
-          <span class="stat-change neutral">40% verbraucht</span>
+          <span class="stat-change neutral" id="statTokensChange">0% verbraucht</span>
           <div class="stat-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-          <div class="stat-value">3.2M</div>
+          <div class="stat-value" id="statTokens">0</div>
           <div class="stat-label">Tokens verwendet</div>
         </div>
         <div class="stat-card">
-          <span class="stat-change up">23 Besucher heute</span>
+          <span class="stat-change" id="statVersionsChange"></span>
           <div class="stat-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </div>
-          <div class="stat-value">847</div>
-          <div class="stat-label">Website-Besucher (gesamt)</div>
+          <div class="stat-value" id="statVersions">0</div>
+          <div class="stat-label">Versionen gesamt</div>
         </div>
       </div>
 
@@ -1394,8 +1394,8 @@ input { font-family: inherit; }
         </div>
       </div>
 
-      <div class="projects-grid">
-        <!-- New Project Card -->
+      <div class="projects-grid" id="projectsGrid">
+        <!-- New Project Card (always visible) -->
         <div class="project-card-new animate-in delay-4" style="cursor:pointer;">
           <div class="new-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#33FFB3" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -1403,256 +1403,7 @@ input { font-family: inherit; }
           <div class="new-label">Neues Projekt erstellen</div>
           <div class="new-sub">KI-gestütztes Design starten</div>
         </div>
-
-        <!-- Project 1: NexAgent AI -->
-        <div class="project-card animate-in delay-5" onclick="window.location.href='workspace.html'">
-          <div class="card-hover-overlay"></div>
-          <div class="card-preview">
-            <div class="mini-site mini-nexagent">
-              <div class="mn-nav">
-                <div class="mn-logo">NexAgent AI</div>
-                <div class="mn-btn">Demo buchen</div>
-              </div>
-              <div class="mn-hero">
-                <h3>KI-Agenten für Ihr Unternehmen</h3>
-                <p>Automatisieren Sie Kommunikation mit intelligenten Chatbots und Calling Agents.</p>
-              </div>
-              <div class="mn-cards">
-                <div class="mn-card">
-                  <div class="mn-card-icon">💬</div>
-                  <div class="mn-card-title">Chatbot</div>
-                </div>
-                <div class="mn-card">
-                  <div class="mn-card-icon">📞</div>
-                  <div class="mn-card-title">Calling</div>
-                </div>
-                <div class="mn-card">
-                  <div class="mn-card-icon">📅</div>
-                  <div class="mn-card-title">Buchung</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-title">KI-Agentur Pro</div>
-            <div class="card-desc">NexAgent AI — Website für KI-Chatbot & Calling Agent Dienstleistungen</div>
-            <div class="card-meta">
-              <div class="card-meta-left">
-                <span class="card-status live">Live</span>
-                <span class="card-date">Vor 2 Stunden bearbeitet</span>
-              </div>
-              <div class="card-dots-wrap">
-                <button class="card-dots" onclick="event.stopPropagation(); toggleDotsMenu(this);">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-                </button>
-                <div class="card-dots-menu">
-                  <a href="workspace.html" onclick="event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Bearbeiten</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Link kopiert!');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Link kopieren</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Projekt dupliziert');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Duplizieren</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 2: Coaching -->
-        <div class="project-card animate-in delay-6" onclick="window.location.href='workspace.html'" style="cursor:pointer;">
-          <div class="card-hover-overlay"></div>
-          <div class="card-preview">
-            <div class="mini-site mini-coaching">
-              <div class="mc-nav">
-                <div class="mc-logo">Soulflow</div>
-              </div>
-              <div class="mc-hero">
-                <h3>Entfalte dein volles Potenzial</h3>
-                <p>Business & Life Coaching für Unternehmer und Führungskräfte</p>
-                <div class="mc-btn">Erstgespräch buchen</div>
-              </div>
-              <div class="mc-features">
-                <div class="mc-feat">
-                  <div class="mc-feat-num">250+</div>
-                  <div class="mc-feat-label">Klienten</div>
-                </div>
-                <div class="mc-feat">
-                  <div class="mc-feat-num">4.9</div>
-                  <div class="mc-feat-label">Bewertung</div>
-                </div>
-                <div class="mc-feat">
-                  <div class="mc-feat-num">12J</div>
-                  <div class="mc-feat-label">Erfahrung</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-title">Soulflow Coaching</div>
-            <div class="card-desc">Business & Life Coaching Plattform mit Buchungssystem</div>
-            <div class="card-meta">
-              <div class="card-meta-left">
-                <span class="card-status live">Live</span>
-                <span class="card-date">Gestern</span>
-              </div>
-              <div class="card-dots-wrap">
-                <button class="card-dots" onclick="event.stopPropagation(); toggleDotsMenu(this);">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-                </button>
-                <div class="card-dots-menu">
-                  <a href="workspace.html" onclick="event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Bearbeiten</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Link kopiert!');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Link kopieren</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Projekt dupliziert');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Duplizieren</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 3: E-Commerce -->
-        <div class="project-card animate-in delay-7" onclick="window.location.href='workspace.html'" style="cursor:pointer;">
-          <div class="card-hover-overlay"></div>
-          <div class="card-preview">
-            <div class="mini-site mini-shop">
-              <div class="ms-nav">
-                <div class="ms-logo">VERDE</div>
-                <div class="ms-icons">🔍 👤 🛒</div>
-              </div>
-              <div class="ms-grid">
-                <div class="ms-product">
-                  <div class="ms-product-img" style="background:#F0FDF4;">🌿</div>
-                  <div class="ms-product-info">
-                    <div class="ms-product-name">Monstera Deliciosa</div>
-                    <div class="ms-product-price">€34,99</div>
-                  </div>
-                </div>
-                <div class="ms-product">
-                  <div class="ms-product-img" style="background:#FEF3C7;">🪴</div>
-                  <div class="ms-product-info">
-                    <div class="ms-product-name">Fiddle Leaf Fig</div>
-                    <div class="ms-product-price">€49,99</div>
-                  </div>
-                </div>
-                <div class="ms-product">
-                  <div class="ms-product-img" style="background:#FCE7F3;">🌸</div>
-                  <div class="ms-product-info">
-                    <div class="ms-product-name">Orchidee Weiß</div>
-                    <div class="ms-product-price">€27,99</div>
-                  </div>
-                </div>
-                <div class="ms-product">
-                  <div class="ms-product-img" style="background:#E0F2FE;">🌵</div>
-                  <div class="ms-product-info">
-                    <div class="ms-product-name">Sukkulenten Set</div>
-                    <div class="ms-product-price">€19,99</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-title">VERDE Plant Shop</div>
-            <div class="card-desc">Online-Shop für Zimmerpflanzen mit Warenkorb & Checkout</div>
-            <div class="card-meta">
-              <div class="card-meta-left">
-                <span class="card-status live">Live</span>
-                <span class="card-date">Vor 3 Tagen</span>
-              </div>
-              <div class="card-dots-wrap">
-                <button class="card-dots" onclick="event.stopPropagation(); toggleDotsMenu(this);">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-                </button>
-                <div class="card-dots-menu">
-                  <a href="workspace.html" onclick="event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Bearbeiten</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Link kopiert!');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Link kopieren</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Projekt dupliziert');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Duplizieren</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 4: Restaurant -->
-        <div class="project-card animate-in delay-7" onclick="window.location.href='workspace.html'" style="cursor:pointer;">
-          <div class="card-hover-overlay"></div>
-          <div class="card-preview">
-            <div class="mini-site mini-resto">
-              <div class="mr-logo">SAKURA</div>
-              <div class="mr-sub">Japanese Fine Dining</div>
-              <div class="mr-hero-img">🍣</div>
-              <div class="mr-title">Authentische japanische Küche</div>
-              <div class="mr-text">Erleben Sie die Kunst des Omakase in Stuttgart</div>
-              <div class="mr-btn">Tisch reservieren</div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-title">Sakura Restaurant</div>
-            <div class="card-desc">Japanese Fine Dining — Speisekarte & Online-Reservierung</div>
-            <div class="card-meta">
-              <div class="card-meta-left">
-                <span class="card-status draft">Entwurf</span>
-                <span class="card-date">Vor 5 Tagen</span>
-              </div>
-              <div class="card-dots-wrap">
-                <button class="card-dots" onclick="event.stopPropagation(); toggleDotsMenu(this);">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-                </button>
-                <div class="card-dots-menu">
-                  <a href="workspace.html" onclick="event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Bearbeiten</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Link kopiert!');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Link kopieren</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Projekt dupliziert');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Duplizieren</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Project 5: Fitness -->
-        <div class="project-card animate-in delay-8" onclick="window.location.href='workspace.html'" style="cursor:pointer;">
-          <div class="card-hover-overlay"></div>
-          <div class="card-preview">
-            <div class="mini-site mini-fitness">
-              <div class="mf-nav">
-                <div class="mf-logo">IRONPULSE</div>
-              </div>
-              <div class="mf-hero">
-                <h3>PUSH YOUR LIMITS</h3>
-                <p>Personal Training & Fitness Coaching in München</p>
-              </div>
-              <div class="mf-stats">
-                <div>
-                  <div class="mf-stat-num">500+</div>
-                  <div class="mf-stat-label">Mitglieder</div>
-                </div>
-                <div>
-                  <div class="mf-stat-num">15</div>
-                  <div class="mf-stat-label">Trainer</div>
-                </div>
-                <div>
-                  <div class="mf-stat-num">98%</div>
-                  <div class="mf-stat-label">Zufrieden</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="card-title">IronPulse Fitness</div>
-            <div class="card-desc">Fitness Studio Website mit Kursplan & Mitgliedschaft</div>
-            <div class="card-meta">
-              <div class="card-meta-left">
-                <span class="card-status progress">In Arbeit</span>
-                <span class="card-date">Heute</span>
-              </div>
-              <div class="card-dots-wrap">
-                <button class="card-dots" onclick="event.stopPropagation(); toggleDotsMenu(this);">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-                </button>
-                <div class="card-dots-menu">
-                  <a href="workspace.html" onclick="event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Bearbeiten</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Link kopiert!');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg> Link kopieren</a>
-                  <a href="#" onclick="event.stopPropagation(); showToast('Projekt dupliziert');"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Duplizieren</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <!-- Dynamic project cards are injected here by JS -->
       </div>
 
       <!-- Bottom Grid: Activity + Templates -->
@@ -1660,49 +1411,8 @@ input { font-family: inherit; }
         <!-- Activity -->
         <div class="activity-panel">
           <h3>Letzte Aktivitäten</h3>
-          <ul class="activity-list">
-            <li class="activity-item">
-              <div class="act-icon publish">🚀</div>
-              <div class="act-content">
-                <div class="act-text"><strong>KI-Agentur Pro</strong> wurde veröffentlicht</div>
-                <div class="act-time">Vor 2 Stunden</div>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="act-icon edit">✏️</div>
-              <div class="act-content">
-                <div class="act-text"><strong>KI-Agentur Pro</strong> — Hero-Section & Demo-Buchung aktualisiert</div>
-                <div class="act-time">Vor 3 Stunden</div>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="act-icon version">📋</div>
-              <div class="act-content">
-                <div class="act-text"><strong>Soulflow Coaching</strong> — Version 4 gespeichert</div>
-                <div class="act-time">Gestern, 18:30</div>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="act-icon create">🆕</div>
-              <div class="act-content">
-                <div class="act-text"><strong>IronPulse Fitness</strong> — Neues Projekt erstellt</div>
-                <div class="act-time">Gestern, 14:15</div>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="act-icon publish">🚀</div>
-              <div class="act-content">
-                <div class="act-text"><strong>VERDE Plant Shop</strong> wurde veröffentlicht</div>
-                <div class="act-time">Vor 3 Tagen</div>
-              </div>
-            </li>
-            <li class="activity-item">
-              <div class="act-icon edit">✏️</div>
-              <div class="act-content">
-                <div class="act-text"><strong>Sakura Restaurant</strong> — Speisekarte hinzugefügt</div>
-                <div class="act-time">Vor 5 Tagen</div>
-              </div>
-            </li>
+          <ul class="activity-list" id="activityList">
+            <li class="activity-item"><div class="act-content"><div class="act-text" style="color:var(--db-text-3);">Lade Aktivitäten...</div></div></li>
           </ul>
         </div>
 
@@ -1764,21 +1474,178 @@ input { font-family: inherit; }
 const token = localStorage.getItem('qntum_token');
 if (!token) { window.location.href = 'auth.html'; }
 
-// ═══ Load User Info ═══
-(async function loadUser() {
+// ═══ Helpers ═══
+function formatTokens(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0','') + 'M';
+  if (n >= 1000) return (n / 1000).toFixed(0) + 'K';
+  return String(n);
+}
+
+function timeAgo(dateStr) {
+  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diff < 60) return 'Gerade eben';
+  if (diff < 3600) return 'Vor ' + Math.floor(diff / 60) + ' Min';
+  if (diff < 86400) return 'Vor ' + Math.floor(diff / 3600) + ' Std';
+  if (diff < 172800) return 'Gestern';
+  return 'Vor ' + Math.floor(diff / 86400) + ' Tagen';
+}
+
+function escapeHtml(str) { const d = document.createElement('div'); d.textContent = str; return d.innerHTML; }
+
+const PREVIEW_COLORS = ['#6C3AED','#00E68A','#00D4FF','#F59E0B','#EF4444','#EC4899','#8B5CF6','#10B981'];
+
+function showToast(message) {
+  let toast = document.querySelector('.toast');
+  if (!toast) { toast = document.createElement('div'); toast.className = 'toast'; document.body.appendChild(toast); }
+  toast.textContent = message;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+// ═══ Load All Dashboard Data (user-specific) ═══
+(async function loadDashboard() {
   try {
-    const user = JSON.parse(localStorage.getItem('qntum_user') || '{}');
-    if (user.name) {
-      const h1 = document.querySelector('.welcome h1 span');
-      if (h1) h1.textContent = user.name.split(' ')[0];
-      const nameEl = document.querySelector('.user-name');
-      if (nameEl) nameEl.textContent = user.name;
-      const emailEl = document.querySelector('.user-email');
-      if (emailEl) emailEl.textContent = user.email;
-      const avatarEl = document.querySelector('.user-avatar');
-      if (avatarEl) avatarEl.textContent = user.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const headers = { 'Authorization': 'Bearer ' + token };
+    const [profileRes, projectsRes] = await Promise.all([
+      fetch('/api/auth/me', { headers }),
+      fetch('/api/projects', { headers })
+    ]);
+
+    if (profileRes.status === 401 || projectsRes.status === 401) {
+      localStorage.removeItem('qntum_token');
+      window.location.href = 'auth.html';
+      return;
     }
-  } catch(e) {}
+
+    const profile = await profileRes.json();
+    const projects = await projectsRes.json();
+
+    // ── User Info ──
+    const firstName = (profile.name || '').split(' ')[0] || 'User';
+    document.getElementById('welcomeName').textContent = firstName;
+    document.querySelector('.user-name').textContent = profile.name || '';
+    document.querySelector('.user-email').textContent = profile.email || '';
+    document.querySelector('.user-avatar').textContent = (profile.name || 'U').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    localStorage.setItem('qntum_user', JSON.stringify(profile));
+
+    // ── Stats ──
+    const totalProjects = projects.length;
+    const liveProjects = projects.filter(p => p.status === 'live').length;
+    const tokensUsed = profile.tokens_used || 0;
+    const tokensLimit = profile.tokens_limit || 500000;
+    const tokensPercent = tokensLimit > 0 ? Math.round((tokensUsed / tokensLimit) * 100) : 0;
+    const totalVersions = projects.reduce((sum, p) => sum + (p.version_count || 0), 0);
+    const plan = (profile.plan || 'free').charAt(0).toUpperCase() + (profile.plan || 'free').slice(1);
+
+    // ── Welcome ──
+    document.getElementById('welcomeSub').textContent =
+      `Du hast ${totalProjects} Projekt${totalProjects !== 1 ? 'e' : ''} und ${formatTokens(Math.max(0, tokensLimit - tokensUsed))} Tokens verbleibend.`;
+
+    // ── Stat Cards ──
+    document.getElementById('statProjects').textContent = totalProjects;
+    document.getElementById('statProjectsChange').textContent = totalProjects + ' gesamt';
+    document.getElementById('statProjectsChange').className = 'stat-change up';
+
+    document.getElementById('statLive').textContent = liveProjects;
+    document.getElementById('statLiveChange').textContent = liveProjects > 0 ? 'Live' : 'Keine';
+    document.getElementById('statLiveChange').className = 'stat-change ' + (liveProjects > 0 ? 'up' : 'neutral');
+
+    document.getElementById('statTokens').textContent = formatTokens(tokensUsed);
+    document.getElementById('statTokensChange').textContent = tokensPercent + '% verbraucht';
+    document.getElementById('statTokensChange').className = 'stat-change ' + (tokensPercent > 80 ? 'down' : 'neutral');
+
+    document.getElementById('statVersions').textContent = totalVersions;
+    document.getElementById('statVersionsChange').textContent = totalVersions + ' Snapshots';
+    document.getElementById('statVersionsChange').className = 'stat-change neutral';
+
+    // ── Sidebar ──
+    document.getElementById('sidebarPlan').textContent = plan;
+    document.getElementById('sidebarTokensInfo').textContent = formatTokens(tokensUsed) + ' / ' + formatTokens(tokensLimit) + ' Tokens';
+    document.getElementById('navProjectCount').textContent = totalProjects;
+    setTimeout(() => { document.getElementById('sidebarTokensFill').style.width = Math.min(tokensPercent, 100) + '%'; }, 300);
+
+    const upgradeLink = document.getElementById('sidebarUpgradeLink');
+    if (profile.plan === 'business') { upgradeLink.textContent = 'Business Plan aktiv'; upgradeLink.style.pointerEvents = 'none'; upgradeLink.style.opacity = '0.5'; }
+    else if (profile.plan === 'pro') { upgradeLink.textContent = 'Upgrade auf Business'; upgradeLink.href = 'checkout.html?plan=business'; }
+    else { upgradeLink.textContent = 'Upgrade auf Pro'; upgradeLink.href = 'checkout.html?plan=pro'; }
+
+    // ── Project Cards ──
+    const grid = document.getElementById('projectsGrid');
+    projects.forEach((project, i) => {
+      const color = project.thumbnail_color || PREVIEW_COLORS[i % PREVIEW_COLORS.length];
+      const statusClass = project.status === 'live' ? 'live' : 'draft';
+      const statusLabel = project.status === 'live' ? 'Live' : 'Entwurf';
+      const fileCount = project.file_count || 0;
+      const desc = project.description || (fileCount > 0 ? fileCount + ' Dateien' : 'Noch keine Dateien');
+
+      const card = document.createElement('div');
+      card.className = 'project-card animate-in delay-' + Math.min(5 + i, 9);
+      card.style.cursor = 'pointer';
+      card.setAttribute('data-status', project.status);
+      card.onclick = () => { window.location.href = 'workspace.html?project=' + project.id; };
+
+      card.innerHTML = `
+        <div class="card-hover-overlay"></div>
+        <div class="card-preview" style="background:${color}22;display:flex;align-items:center;justify-content:center;">
+          <div style="text-align:center;padding:16px;">
+            <div style="font-size:24px;font-weight:800;color:${color};font-family:var(--db-font-head);letter-spacing:-0.5px;">${escapeHtml(project.name.substring(0, 24))}</div>
+            <div style="margin-top:6px;font-size:10px;color:var(--db-text-3);">${project.has_preview ? 'Vorschau verfügbar' : 'Keine Vorschau'}</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${escapeHtml(project.name)}</div>
+          <div class="card-desc">${escapeHtml(desc)}</div>
+          <div class="card-meta">
+            <div class="card-meta-left">
+              <span class="card-status ${statusClass}">${statusLabel}</span>
+              <span class="card-date">${timeAgo(project.updated_at || project.created_at)}</span>
+            </div>
+            <div class="card-dots-wrap">
+              <button class="card-dots" onclick="event.stopPropagation(); toggleDotsMenu(this);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+              </button>
+              <div class="card-dots-menu">
+                <a href="workspace.html?project=${project.id}" onclick="event.stopPropagation();"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Bearbeiten</a>
+                <a href="#" onclick="event.stopPropagation(); deleteProject('${project.id}', this);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg> Löschen</a>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    // ── Activity Feed ──
+    const actList = document.getElementById('activityList');
+    const sorted = [...projects].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+    const activities = [];
+    sorted.slice(0, 6).forEach(p => {
+      if (p.status === 'live' && p.message_count > 0) {
+        activities.push({ icon: '🚀', cls: 'publish', text: `<strong>${escapeHtml(p.name)}</strong> — veröffentlicht`, time: p.updated_at });
+      } else if (p.message_count > 0) {
+        activities.push({ icon: '✏️', cls: 'edit', text: `<strong>${escapeHtml(p.name)}</strong> — ${p.message_count} Nachrichten, ${p.version_count || 0} Versionen`, time: p.updated_at });
+      } else {
+        activities.push({ icon: '🆕', cls: 'create', text: `<strong>${escapeHtml(p.name)}</strong> — erstellt`, time: p.created_at });
+      }
+    });
+
+    if (activities.length === 0) {
+      actList.innerHTML = '<li class="activity-item"><div class="act-content"><div class="act-text" style="color:var(--db-text-3);">Noch keine Aktivitäten. Erstelle dein erstes Projekt!</div></div></li>';
+    } else {
+      actList.innerHTML = activities.map(a => `
+        <li class="activity-item">
+          <div class="act-icon ${a.cls}">${a.icon}</div>
+          <div class="act-content">
+            <div class="act-text">${a.text}</div>
+            <div class="act-time">${timeAgo(a.time)}</div>
+          </div>
+        </li>`).join('');
+    }
+
+    animateCounters();
+  } catch (e) {
+    console.error('Dashboard load error:', e);
+    document.getElementById('welcomeSub').textContent = 'Daten konnten nicht geladen werden.';
+  }
 })();
 
 // ═══ Create New Project ═══
@@ -1792,20 +1659,30 @@ async function createNewProject() {
     if (res.status === 401) { localStorage.removeItem('qntum_token'); window.location.href = 'auth.html'; return; }
     const project = await res.json();
     window.location.href = 'workspace.html?project=' + project.id;
-  } catch(e) {
+  } catch (e) {
     showToast('Projekt konnte nicht erstellt werden');
   }
 }
 
-// Update "Neues Projekt" button
-document.querySelector('.btn-new-project')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  createNewProject();
-});
-document.querySelector('.project-card-new')?.addEventListener('click', (e) => {
-  e.preventDefault();
-  createNewProject();
-});
+// ═══ Delete Project ═══
+async function deleteProject(id, el) {
+  if (!confirm('Projekt wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
+  try {
+    const res = await fetch('/api/projects/' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (res.ok) {
+      const card = el.closest('.project-card');
+      if (card) { card.style.transition = 'opacity 0.3s, transform 0.3s'; card.style.opacity = '0'; card.style.transform = 'scale(0.95)'; setTimeout(() => card.remove(), 300); }
+      showToast('Projekt gelöscht');
+    } else { showToast('Löschen fehlgeschlagen'); }
+  } catch (e) { showToast('Löschen fehlgeschlagen'); }
+}
+
+// ═══ Button Bindings ═══
+document.querySelector('.btn-new-project')?.addEventListener('click', (e) => { e.preventDefault(); createNewProject(); });
+document.querySelector('.project-card-new')?.addEventListener('click', (e) => { e.preventDefault(); createNewProject(); });
 
 // ═══ Logout ═══
 document.querySelector('.user-settings')?.addEventListener('click', (e) => {
@@ -1816,53 +1693,27 @@ document.querySelector('.user-settings')?.addEventListener('click', (e) => {
   window.location.href = 'auth.html';
 });
 
-// ═══ Toast Notification ═══
-function showToast(message) {
-  let toast = document.querySelector('.toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'toast';
-    document.body.appendChild(toast);
-  }
-  toast.textContent = message;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2400);
-}
-
 // ═══ Card Dots Menu ═══
 function toggleDotsMenu(btn) {
   const menu = btn.nextElementSibling;
   const wasOpen = menu.classList.contains('open');
-  // Close all menus first
   document.querySelectorAll('.card-dots-menu').forEach(m => m.classList.remove('open'));
   if (!wasOpen) menu.classList.add('open');
 }
-// Close menus on outside click
-document.addEventListener('click', () => {
-  document.querySelectorAll('.card-dots-menu').forEach(m => m.classList.remove('open'));
-});
+document.addEventListener('click', () => { document.querySelectorAll('.card-dots-menu').forEach(m => m.classList.remove('open')); });
 
 // ═══ Sidebar Navigation ═══
 document.querySelectorAll('.sidebar-nav a').forEach(link => {
   link.addEventListener('click', (e) => {
-    // Coming soon items
-    if (link.dataset.comingSoon) {
-      e.preventDefault();
-      showToast('Kommt bald — wir arbeiten daran!');
-      return;
-    }
-    // Scroll targets (Projekte, Templates)
+    if (link.dataset.comingSoon) { e.preventDefault(); showToast('Kommt bald — wir arbeiten daran!'); return; }
     if (link.dataset.scroll) {
       e.preventDefault();
       const target = document.getElementById(link.dataset.scroll);
       if (target) {
         const main = document.querySelector('.main');
-        const targetTop = target.getBoundingClientRect().top + main.scrollTop - 80;
-        main.scrollTo({ top: targetTop, behavior: 'smooth' });
+        main.scrollTo({ top: target.getBoundingClientRect().top + main.scrollTop - 80, behavior: 'smooth' });
       }
     }
-    // Links with real href (not # and not scroll) — let them navigate
-    // Update active state
     document.querySelectorAll('.sidebar-nav a').forEach(l => l.classList.remove('active'));
     link.classList.add('active');
   });
@@ -1873,29 +1724,21 @@ document.querySelectorAll('.section-actions button').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.section-actions button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     const filter = btn.textContent.trim();
     document.querySelectorAll('.project-card').forEach(card => {
-      const status = card.querySelector('.card-status');
+      const status = card.getAttribute('data-status');
       if (!status) return;
-      if (filter === 'Alle') {
-        card.style.display = '';
-      } else if (filter === 'Live') {
-        card.style.display = status.classList.contains('live') ? '' : 'none';
-      } else if (filter === 'Entwürfe') {
-        card.style.display = (status.classList.contains('draft') || status.classList.contains('progress')) ? '' : 'none';
-      }
+      if (filter === 'Alle') card.style.display = '';
+      else if (filter === 'Live') card.style.display = status === 'live' ? '' : 'none';
+      else if (filter === 'Entwürfe') card.style.display = status !== 'live' ? '' : 'none';
     });
     document.querySelector('.project-card-new').style.display = '';
   });
 });
 
-// ═══ Search Focus Shortcut ═══
+// ═══ Keyboard Shortcuts ═══
 document.addEventListener('keydown', (e) => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-    e.preventDefault();
-    document.querySelector('.topbar-search input').focus();
-  }
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); document.querySelector('.topbar-search input').focus(); }
 });
 
 // ═══ Topbar Buttons ═══
@@ -1905,11 +1748,6 @@ document.querySelectorAll('.tb-btn').forEach((btn, i) => {
     if (i === 1) showToast('Einstellungen — kommt bald!');
   });
 });
-
-// ═══ Token Bar Animation ═══
-setTimeout(() => {
-  document.querySelector('.plan-tokens-fill').style.width = '40%';
-}, 300);
 
 // ═══ Stat Counter Animation ═══
 function animateCounters() {
@@ -1928,18 +1766,14 @@ function animateCounters() {
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = target * eased;
 
-      if (target % 1 !== 0) {
-        el.textContent = current.toFixed(1) + suffix;
-      } else {
-        el.textContent = Math.round(current) + suffix;
-      }
+      if (target % 1 !== 0) el.textContent = current.toFixed(1) + suffix;
+      else el.textContent = Math.round(current) + suffix;
 
       if (progress < 1) requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
   });
 }
-setTimeout(animateCounters, 400);
 </script>
 
 </body>
