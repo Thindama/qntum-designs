@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qntum Designs — Checkout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #00E68A;
+  --primary-l: #33FFB3;
+  --primary-d: #00B368;
+  --accent: #00D4FF;
+  --accent-d: #00B8DB;
+  --bg: #06060F;
+  --bg-1: #0A0A1A;
+  --bg-2: #0F0F24;
+  --bg-3: #13132B;
+  --border: rgba(255,255,255,0.06);
+  --border-l: rgba(255,255,255,0.1);
+  --border-ll: rgba(255,255,255,0.18);
+  --text: #EEEEF4;
+  --text-2: #9494B8;
+  --text-3: #5A5A7A;
+  --glass: rgba(255,255,255,0.04);
+  --glass-s: rgba(255,255,255,0.08);
+  --green: #10B981;
+  --red: #EF4444;
+  --font-h: 'Syne', sans-serif;
+  --font: 'Manrope', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 20px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { height: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--primary); color: #fff; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--primary-d); border-radius: 3px; }
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+a { text-decoration: none; color: inherit; }
+input, select { font-family: inherit; }
+
+/* ═══ LAYOUT ═══ */
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ═══ AMBIENT ═══ */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  animation: orbFloat 18s ease-in-out infinite;
+}
+.orb-1 { width: 350px; height: 350px; background: rgba(0,230,138,0.08); top: -5%; right: 10%; }
+.orb-2 { width: 250px; height: 250px; background: rgba(0,212,255,0.05); bottom: 10%; left: 5%; animation-delay: -7s; }
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0,0); }
+  50% { transform: translate(20px, -15px); }
+}
+
+/* ═══ TOP BAR ═══ */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.topbar-logo .mark {
+  width: 34px; height: 34px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-h);
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+}
+.topbar-logo .name {
+  font-family: var(--font-h);
+  font-weight: 700;
+  font-size: 18px;
+}
+.topbar-logo .name span { color: var(--accent); }
+
+.topbar-secure {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.topbar-secure svg { color: var(--green); }
+
+.topbar-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-3);
+  transition: var(--transition);
+}
+.topbar-back:hover { color: var(--text-2); }
+
+/* ═══ MAIN GRID ═══ */
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 48px;
+  padding-bottom: 60px;
+}
+
+/* ═══ LEFT: PLAN SELECTION ═══ */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: var(--font-h);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+
+.section-sub {
+  font-size: 14px;
+  color: var(--text-2);
+  margin-bottom: 28px;
+}
+
+/* Billing Toggle */
+.billing-toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.billing-toggle .bt-label {
+  font-size: 13px;
+  color: var(--text-3);
+  font-weight: 500;
+  transition: var(--transition);
+}
+.billing-toggle .bt-label.active { color: var(--text); }
+
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  background: var(--bg-3);
+  border: 1px solid var(--border-l);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  transition: var(--transition);
+}
+.toggle-track.yearly {
+  background: rgba(0,230,138,0.2);
+  border-color: var(--primary);
+}
+.toggle-thumb {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: var(--transition);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.toggle-track.yearly .toggle-thumb {
+  left: 22px;
+}
+.billing-toggle .bt-save {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(0,212,255,0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* Plan Cards */
+.plan-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.plan-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.plan-card:hover {
+  border-color: var(--border-ll);
+  background: var(--bg-3);
+}
+.plan-card.selected {
+  border-color: var(--primary);
+  background: rgba(0,230,138,0.06);
+  box-shadow: 0 0 0 1px var(--primary);
+}
+.plan-card.recommended {
+  position: relative;
+}
+.plan-card .rec-badge {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--primary);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.plan-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-ll);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+.plan-card.selected .plan-radio {
+  border-color: var(--primary);
+}
+.plan-radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+  transform: scale(0);
+  transition: var(--transition);
+}
+.plan-card.selected .plan-radio-dot {
+  transform: scale(1);
+}
+
+.plan-info { min-width: 0; }
+.plan-name-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.plan-name {
+  font-family: var(--font-h);
+  font-size: 16px;
+  font-weight: 700;
+}
+.plan-model {
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--primary-l);
+  background: rgba(0,230,138,0.1);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+.plan-details {
+  font-size: 12.5px;
+  color: var(--text-3);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.plan-details span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.plan-price-col {
+  text-align: right;
+  flex-shrink: 0;
+}
+.plan-price {
+  font-family: var(--font-h);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.plan-price .period {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-3);
+  font-family: var(--font);
+}
+.plan-price-yearly {
+  font-size: 11px;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+
+/* Skills included */
+.plan-skills-preview {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.skill-pill {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: rgba(0,230,138,0.08);
+  color: var(--primary-l);
+  border: 1px solid rgba(0,230,138,0.12);
+}
+.skill-pill.locked {
+  background: var(--glass);
+  color: var(--text-3);
+  border-color: var(--border);
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* ═══ PAYMENT FORM ═══ */
+.payment-section {
+  margin-top: 8px;
+}
+
+.payment-methods {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.pm-btn {
+  flex: 1;
+  padding: 12px;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  transition: var(--transition);
+}
+.pm-btn:hover {
+  border-color: var(--border-ll);
+}
+.pm-btn.active {
+  border-color: var(--primary);
+  background: rgba(0,230,138,0.06);
+  color: var(--text);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-row.full { grid-template-columns: 1fr; }
+
+.form-group {
+  margin-bottom: 16px;
+}
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-l);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: var(--transition);
+}
+.form-input::placeholder { color: var(--text-3); }
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,230,138,0.1);
+}
+
+/* Card input styled */
+.card-input-wrap {
+  position: relative;
+}
+.card-input-wrap .card-brands {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 6px;
+  pointer-events: none;
+}
+.card-brand {
+  width: 28px;
+  height: 18px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  opacity: 0.4;
+}
+.card-brand.visa { background: #1A1F71; color: #fff; }
+.card-brand.mc { background: linear-gradient(135deg, #EB001B 50%, #F79E1B 50%); }
+.card-brand.amex { background: #006FCF; color: #fff; }
+
+/* ═══ RIGHT: ORDER SUMMARY ═══ */
+.summary-panel {
+  position: sticky;
+  top: 32px;
+}
+
+.summary-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border-l);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-bottom: 16px;
+}
+.summary-card h3 {
+  font-family: var(--font-h);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.summary-plan {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+.summary-plan-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-l));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.summary-plan-info { flex: 1; }
+.summary-plan-name {
+  font-family: var(--font-h);
+  font-size: 16px;
+  font-weight: 700;
+}
+.summary-plan-model {
+  font-size: 12px;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+
+.summary-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.summary-line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13.5px;
+}
+.summary-line .sl-label { color: var(--text-2); }
+.summary-line .sl-value { font-weight: 600; font-family: var(--mono); font-size: 13px; }
+.summary-line.discount .sl-value { color: var(--accent); }
+
+.summary-divider {
+  height: 1px;
+  background: var(--border-l);
+  margin: 4px 0 14px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 24px;
+}
+.summary-total .st-label {
+  font-size: 14px;
+  font-weight: 600;
+}
+.summary-total .st-value {
+  font-family: var(--font-h);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.summary-total .st-value .period {
+  font-size: 13px;
+  color: var(--text-3);
+  font-family: var(--font);
+  font-weight: 500;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-l));
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,230,138,0.3);
+}
+.btn-pay:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,230,138,0.45);
+}
+.btn-pay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.btn-pay:hover::after {
+  transform: translateX(100%);
+}
+.btn-pay .btn-text { transition: var(--transition); }
+.btn-pay.loading .btn-text { opacity: 0; }
+.btn-pay .btn-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgba(255,255,255,0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  opacity: 0;
+  transition: var(--transition);
+  animation: spin 0.7s linear infinite;
+}
+.btn-pay.loading .btn-spinner { opacity: 1; }
+.btn-pay.loading { pointer-events: none; }
+@keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+/* Trust badges */
+.trust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 18px;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--text-3);
+}
+.trust-item svg { color: var(--text-3); }
+
+/* Guarantee card */
+.guarantee-card {
+  background: rgba(0,212,255,0.04);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.guarantee-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(0,212,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 18px;
+}
+.guarantee-text h4 {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: var(--accent);
+}
+.guarantee-text p {
+  font-size: 12px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* ═══ SUCCESS OVERLAY ═══ */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6,6,15,0.92);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.success-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.success-content {
+  text-align: center;
+  max-width: 420px;
+  padding: 20px;
+  transform: translateY(20px);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.success-overlay.show .success-content {
+  transform: translateY(0);
+}
+.success-check {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-d), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  box-shadow: 0 0 40px rgba(0,212,255,0.3);
+}
+.success-content h2 {
+  font-family: var(--font-h);
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.03em;
+}
+.success-content p {
+  font-size: 15px;
+  color: var(--text-2);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.success-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-l));
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  transition: var(--transition);
+  box-shadow: 0 4px 20px rgba(0,230,138,0.3);
+}
+.success-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,230,138,0.45);
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .summary-panel { position: static; }
+}
+@media (max-width: 600px) {
+  .page { padding: 0 16px; }
+  .form-row { grid-template-columns: 1fr; }
+  .payment-methods { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="ambient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+
+<div class="page">
+
+  <!-- TOP BAR -->
+  <div class="topbar animate-in">
+    <a href="index.html" class="topbar-logo">
+      <div class="mark">Q</div>
+      <div class="name">Qntum<span>.</span></div>
+    </a>
+    <div class="topbar-secure">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Sichere Zahlung via Stripe
+    </div>
+    <a href="index.html#pricing" class="topbar-back">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Zurück zur Übersicht
+    </a>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="checkout-grid">
+
+    <!-- ═══ LEFT COLUMN ═══ -->
+    <div>
+      <!-- Plan Selection -->
+      <div class="animate-in delay-1">
+        <div class="section-label">Schritt 1</div>
+        <h2 class="section-title">Wähle deinen Plan</h2>
+        <p class="section-sub">Alle Pläne beinhalten KI-Website-Erstellung, Hosting und SSL.</p>
+      </div>
+
+      <!-- Billing Toggle -->
+      <div class="billing-toggle animate-in delay-2">
+        <span class="bt-label active" id="bt-monthly">Monatlich</span>
+        <div class="toggle-track" id="billingToggle" onclick="toggleBilling()">
+          <div class="toggle-thumb"></div>
+        </div>
+        <span class="bt-label" id="bt-yearly">Jährlich</span>
+        <span class="bt-save">Spare 20%</span>
+      </div>
+
+      <!-- Plan Cards -->
+      <div class="plan-cards animate-in delay-2">
+
+        <div class="plan-card" data-plan="starter" onclick="selectPlan(this)">
+          <div class="plan-radio"><div class="plan-radio-dot"></div></div>
+          <div class="plan-info">
+            <div class="plan-name-row">
+              <span class="plan-name">Starter</span>
+              <span class="plan-model">Sonnet 4.6</span>
+            </div>
+            <div class="plan-details">
+              <span>5 Projekte</span>
+              <span>2M Tokens/Mo</span>
+              <span>Custom Domain</span>
+              <span>HTML/CSS Export</span>
+            </div>
+            <div class="plan-skills-preview">
+              <span class="skill-pill">Frontend Design</span>
+              <span class="skill-pill">UI Styling</span>
+              <span class="skill-pill locked">UI/UX Pro</span>
+            </div>
+          </div>
+          <div class="plan-price-col">
+            <div class="plan-price" data-monthly="29" data-yearly="23">29€ <span class="period">/ Mo</span></div>
+          </div>
+        </div>
+
+        <div class="plan-card recommended selected" data-plan="pro" onclick="selectPlan(this)">
+          <span class="rec-badge">Empfohlen</span>
+          <div class="plan-radio"><div class="plan-radio-dot"></div></div>
+          <div class="plan-info">
+            <div class="plan-name-row">
+              <span class="plan-name">Pro</span>
+              <span class="plan-model">Sonnet 4.6 + Opus 4.6</span>
+            </div>
+            <div class="plan-details">
+              <span>25 Projekte</span>
+              <span>8M Tokens/Mo</span>
+              <span>Custom Domain + SSL</span>
+              <span>Code-Export</span>
+              <span>Priority</span>
+            </div>
+            <div class="plan-skills-preview">
+              <span class="skill-pill">UI/UX Pro Max</span>
+              <span class="skill-pill">Frontend Design</span>
+              <span class="skill-pill">Design System</span>
+              <span class="skill-pill">Brand Identity</span>
+            </div>
+          </div>
+          <div class="plan-price-col">
+            <div class="plan-price" data-monthly="79" data-yearly="63">79€ <span class="period">/ Mo</span></div>
+          </div>
+        </div>
+
+        <div class="plan-card" data-plan="business" onclick="selectPlan(this)">
+          <div class="plan-radio"><div class="plan-radio-dot"></div></div>
+          <div class="plan-info">
+            <div class="plan-name-row">
+              <span class="plan-name">Business</span>
+              <span class="plan-model">Opus 4.6</span>
+            </div>
+            <div class="plan-details">
+              <span>Unbegrenzt</span>
+              <span>25M Tokens/Mo</span>
+              <span>Team (10 Mitglieder)</span>
+              <span>White-Label</span>
+              <span>API</span>
+            </div>
+            <div class="plan-skills-preview">
+              <span class="skill-pill">Alle Skills</span>
+              <span class="skill-pill">CIP Programm</span>
+              <span class="skill-pill">Presentations</span>
+              <span class="skill-pill">Banner Design</span>
+            </div>
+          </div>
+          <div class="plan-price-col">
+            <div class="plan-price" data-monthly="199" data-yearly="159">199€ <span class="period">/ Mo</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Payment -->
+      <div class="payment-section animate-in delay-3">
+        <div class="section-label">Schritt 2</div>
+        <h2 class="section-title" style="font-size:20px; margin-bottom:20px;">Zahlungsmethode</h2>
+
+        <div class="payment-methods">
+          <button class="pm-btn active" onclick="selectPayment(this, 'card')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+            Kreditkarte
+          </button>
+          <button class="pm-btn" onclick="selectPayment(this, 'sepa')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 21h18"/><path d="M3 10h18"/><path d="M5 6l7-3 7 3"/><path d="M4 10v11"/><path d="M20 10v11"/><path d="M8 14v3"/><path d="M12 14v3"/><path d="M16 14v3"/></svg>
+            SEPA Lastschrift
+          </button>
+          <button class="pm-btn" onclick="selectPayment(this, 'paypal')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 21h-2a1 1 0 01-1-1.1l2.1-12.8a2 2 0 012-1.7h8a5.6 5.6 0 014 1.5 4.3 4.3 0 01.8 4.5 6 6 0 01-5.8 4.6h-2.7l-.8 5z"/></svg>
+            PayPal
+          </button>
+        </div>
+
+        <!-- Card Form -->
+        <div id="card-form">
+          <div class="form-row full">
+            <div class="form-group">
+              <label class="form-label">Karteninhaber</label>
+              <input type="text" class="form-input" placeholder="Name auf der Karte" value="Ekta Singh">
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <div class="form-group">
+              <label class="form-label">Kartennummer</label>
+              <div class="card-input-wrap">
+                <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCard(this)">
+                <div class="card-brands">
+                  <div class="card-brand visa">VISA</div>
+                  <div class="card-brand mc"></div>
+                  <div class="card-brand amex">AMEX</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ablaufdatum</label>
+              <input type="text" class="form-input" placeholder="MM / JJ" maxlength="7" oninput="formatExpiry(this)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">CVC</label>
+              <input type="text" class="form-input" placeholder="123" maxlength="4">
+            </div>
+          </div>
+        </div>
+
+        <!-- SEPA Form (hidden) -->
+        <div id="sepa-form" style="display:none;">
+          <div class="form-row full">
+            <div class="form-group">
+              <label class="form-label">Kontoinhaber</label>
+              <input type="text" class="form-input" placeholder="Name des Kontoinhabers" value="Ekta Singh">
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group">
+              <label class="form-label">IBAN</label>
+              <input type="text" class="form-input" placeholder="DE89 3704 0044 0532 0130 00" maxlength="27">
+            </div>
+          </div>
+        </div>
+
+        <!-- PayPal (hidden) -->
+        <div id="paypal-form" style="display:none;">
+          <div style="text-align:center; padding:24px 0; color: var(--text-3); font-size:14px;">
+            Du wirst nach dem Klick auf "Jetzt bezahlen" zu PayPal weitergeleitet.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ RIGHT COLUMN: SUMMARY ═══ -->
+    <div class="summary-panel animate-in delay-4">
+      <div class="summary-card">
+        <h3>Bestellübersicht</h3>
+
+        <div class="summary-plan">
+          <div class="summary-plan-icon" id="sum-icon">⚡</div>
+          <div class="summary-plan-info">
+            <div class="summary-plan-name" id="sum-plan-name">Pro</div>
+            <div class="summary-plan-model" id="sum-plan-model">Sonnet 4.6 + Opus 4.6</div>
+          </div>
+        </div>
+
+        <div class="summary-lines">
+          <div class="summary-line">
+            <span class="sl-label" id="sum-line-plan">Pro Plan (monatlich)</span>
+            <span class="sl-value" id="sum-line-price">79,00 €</span>
+          </div>
+          <div class="summary-line" id="sum-discount-row" style="display:none;">
+            <span class="sl-label">Jahresrabatt (20%)</span>
+            <span class="sl-value discount" id="sum-discount">−15,80 €</span>
+          </div>
+          <div class="summary-line">
+            <span class="sl-label">MwSt. (19%)</span>
+            <span class="sl-value" id="sum-tax">15,01 €</span>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-total">
+          <span class="st-label">Gesamt</span>
+          <span class="st-value" id="sum-total">94,01€ <span class="period">/ Mo</span></span>
+        </div>
+
+        <button class="btn-pay" onclick="handlePay()">
+          <span class="btn-text">Jetzt bezahlen</span>
+          <span class="btn-spinner"></span>
+        </button>
+
+        <div class="trust-row">
+          <div class="trust-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            SSL-verschlüsselt
+          </div>
+          <div class="trust-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Stripe-gesichert
+          </div>
+          <div class="trust-item">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            DSGVO-konform
+          </div>
+        </div>
+      </div>
+
+      <div class="guarantee-card">
+        <div class="guarantee-icon">🛡️</div>
+        <div class="guarantee-text">
+          <h4>14-Tage Geld-zurück-Garantie</h4>
+          <p>Nicht zufrieden? Volle Erstattung innerhalb der ersten 14 Tage, ohne Angabe von Gründen. Jederzeit kündbar.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-content">
+    <div class="success-check">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0A0A1A" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Zahlung erfolgreich!</h2>
+    <p>Dein <strong id="success-plan">Pro</strong>-Plan ist jetzt aktiv. Du hast Zugriff auf alle enthaltenen Features und Skills.</p>
+    <button class="success-btn" onclick="window.location.href='onboarding.html'">
+      Jetzt loslegen
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+// ═══ STATE ═══
+let currentPlan = 'pro';
+let isYearly = false;
+
+const plans = {
+  starter: { name: 'Starter', model: 'Sonnet 4.6', icon: '🚀', monthly: 29 },
+  pro: { name: 'Pro', model: 'Sonnet 4.6 + Opus 4.6', icon: '⚡', monthly: 79 },
+  business: { name: 'Business', model: 'Opus 4.6', icon: '🏢', monthly: 199 }
+};
+
+// ═══ PLAN SELECTION ═══
+function selectPlan(card) {
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  currentPlan = card.dataset.plan;
+  updateSummary();
+}
+
+// ═══ BILLING TOGGLE ═══
+function toggleBilling() {
+  isYearly = !isYearly;
+  const track = document.getElementById('billingToggle');
+  track.classList.toggle('yearly', isYearly);
+  document.getElementById('bt-monthly').classList.toggle('active', !isYearly);
+  document.getElementById('bt-yearly').classList.toggle('active', isYearly);
+
+  // Update visible prices
+  document.querySelectorAll('.plan-price').forEach(el => {
+    const m = parseInt(el.dataset.monthly);
+    const y = parseInt(el.dataset.yearly);
+    const price = isYearly ? y : m;
+    el.innerHTML = price + '€ <span class="period">/ Mo</span>';
+  });
+
+  updateSummary();
+}
+
+// ═══ UPDATE SUMMARY ═══
+function updateSummary() {
+  const plan = plans[currentPlan];
+  const basePrice = isYearly ? Math.round(plan.monthly * 0.8) : plan.monthly;
+  const tax = +(basePrice * 0.19).toFixed(2);
+  const total = +(basePrice + tax).toFixed(2);
+  const billingLabel = isYearly ? 'jährlich' : 'monatlich';
+
+  document.getElementById('sum-icon').textContent = plan.icon;
+  document.getElementById('sum-plan-name').textContent = plan.name;
+  document.getElementById('sum-plan-model').textContent = plan.model;
+  document.getElementById('sum-line-plan').textContent = `${plan.name} Plan (${billingLabel})`;
+  document.getElementById('sum-line-price').textContent = `${basePrice},00 €`;
+
+  const discountRow = document.getElementById('sum-discount-row');
+  if (isYearly) {
+    const discount = plan.monthly - basePrice;
+    discountRow.style.display = '';
+    document.getElementById('sum-discount').textContent = `−${discount},00 €`;
+  } else {
+    discountRow.style.display = 'none';
+  }
+
+  document.getElementById('sum-tax').textContent = tax.toFixed(2).replace('.', ',') + ' €';
+  document.getElementById('sum-total').innerHTML = total.toFixed(2).replace('.', ',') + '€ <span class="period">/ Mo</span>';
+
+  // Pay button text
+  document.querySelector('.btn-pay .btn-text').textContent = `Jetzt ${total.toFixed(2).replace('.', ',')}€ bezahlen`;
+}
+
+// ═══ PAYMENT METHOD ═══
+function selectPayment(btn, method) {
+  document.querySelectorAll('.pm-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('card-form').style.display = method === 'card' ? '' : 'none';
+  document.getElementById('sepa-form').style.display = method === 'sepa' ? '' : 'none';
+  document.getElementById('paypal-form').style.display = method === 'paypal' ? '' : 'none';
+}
+
+// ═══ CARD FORMATTING ═══
+function formatCard(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+}
+function formatExpiry(input) {
+  let v = input.value.replace(/\D/g, '').substring(0, 4);
+  if (v.length > 2) v = v.substring(0, 2) + ' / ' + v.substring(2);
+  input.value = v;
+}
+
+// ═══ PAY ═══
+function handlePay() {
+  const btn = document.querySelector('.btn-pay');
+  btn.classList.add('loading');
+
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    document.getElementById('success-plan').textContent = plans[currentPlan].name;
+    document.getElementById('successOverlay').classList.add('show');
+  }, 2200);
+}
+
+// ═══ INIT ═══
+updateSummary();
+
+// URL param for preselect
+const params = new URLSearchParams(window.location.search);
+const planParam = params.get('plan');
+if (planParam && plans[planParam]) {
+  const card = document.querySelector(`.plan-card[data-plan="${planParam}"]`);
+  if (card) selectPlan(card);
+}
+</script>
+
+</body>
+</html>

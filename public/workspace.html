@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qntum Workspace — KI-Agentur Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════
+   WORKSPACE — VARIABLES & RESET
+   ═══════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ws-bg: #08080F;
+  --ws-bg-1: #0C0C18;
+  --ws-bg-2: #101024;
+  --ws-bg-3: #16162E;
+  --ws-border: rgba(255,255,255,0.06);
+  --ws-border-l: rgba(255,255,255,0.1);
+  --ws-primary: #00E68A;
+  --ws-primary-l: #33FFB3;
+  --ws-accent: #00D4FF;
+  --ws-accent-d: #00B8DB;
+  --ws-red: #EF4444;
+  --ws-orange: #F59E0B;
+  --ws-text: #E2E2F0;
+  --ws-text-2: #8888A8;
+  --ws-text-3: #555570;
+  --ws-font: 'Manrope', sans-serif;
+  --ws-mono: 'JetBrains Mono', monospace;
+  --ws-radius: 8px;
+  --ws-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--ws-font);
+  background: var(--ws-bg);
+  color: var(--ws-text);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--ws-primary); color: #fff; }
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+input, textarea { font-family: inherit; }
+
+/* ═══════════════════════════════════════
+   LAYOUT GRID
+   ═══════════════════════════════════════ */
+.workspace {
+  display: grid;
+  grid-template-rows: 52px 1fr 28px;
+  grid-template-columns: 48px 1fr;
+  grid-template-areas:
+    "sidebar topbar"
+    "sidebar main"
+    "sidebar statusbar";
+  height: 100vh;
+}
+.workspace.sidebar-open {
+  grid-template-columns: 220px 1fr;
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR
+   ═══════════════════════════════════════ */
+.sidebar {
+  grid-area: sidebar;
+  background: var(--ws-bg);
+  border-right: 1px solid var(--ws-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 0;
+  gap: 2px;
+  z-index: 10;
+  overflow: hidden;
+  transition: width var(--ws-transition);
+}
+.sidebar-open .sidebar {
+  align-items: flex-start;
+  padding: 10px 8px;
+}
+
+.sidebar-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--ws-text-3);
+  transition: all var(--ws-transition);
+  position: relative;
+  flex-shrink: 0;
+}
+.sidebar-btn:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
+.sidebar-btn.active { color: var(--ws-primary-l); background: rgba(0,230,138,0.1); }
+.sidebar-btn svg { width: 18px; height: 18px; }
+
+.sidebar-open .sidebar-btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0 10px;
+  gap: 10px;
+}
+.sidebar-btn-label {
+  display: none;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.sidebar-open .sidebar-btn-label { display: block; }
+
+.sidebar-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--ws-border);
+  margin: 6px 0;
+}
+.sidebar-open .sidebar-divider { width: 100%; }
+
+.sidebar-bottom { margin-top: auto; }
+
+/* File tree panel (inside expanded sidebar) */
+.file-tree {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  padding: 4px 0;
+  gap: 1px;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+.sidebar-open .file-tree.active { display: flex; }
+.file-tree-header {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ws-text-3);
+  padding: 8px 10px 6px;
+}
+.file-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--ws-text-2);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.file-tree-item:hover { background: rgba(255,255,255,0.04); color: var(--ws-text); }
+.file-tree-item.active { background: rgba(0,230,138,0.08); color: var(--ws-primary-l); }
+.file-tree-icon {
+  width: 14px; height: 14px; flex-shrink: 0; opacity: 0.6;
+}
+.file-tree-item.active .file-tree-icon { opacity: 1; }
+.file-tree-name { font-family: var(--ws-mono); font-size: 11.5px; }
+.file-tree-empty {
+  padding: 16px 10px;
+  font-size: 11px;
+  color: var(--ws-text-3);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════
+   TOP BAR
+   ═══════════════════════════════════════ */
+.topbar {
+  grid-area: topbar;
+  background: var(--ws-bg);
+  border-bottom: 1px solid var(--ws-border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  z-index: 10;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.topbar-logo svg { width: 22px; height: 22px; }
+.topbar-logo span { color: var(--ws-primary-l); }
+
+.topbar-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--ws-border);
+  flex-shrink: 0;
+}
+
+.topbar-project {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ws-text);
+  cursor: text;
+  flex-shrink: 0;
+}
+.topbar-project svg { width: 14px; height: 14px; color: var(--ws-text-3); }
+
+.topbar-center {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+}
+.topbar-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--ws-text-3);
+  transition: all var(--ws-transition);
+}
+.topbar-icon-btn:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
+.topbar-icon-btn.active { color: var(--ws-primary-l); background: rgba(0,230,138,0.1); }
+.topbar-icon-btn svg { width: 16px; height: 16px; }
+.topbar-center .topbar-sep { margin: 0 4px; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.token-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.token-bar-label {
+  font-size: 11px;
+  color: var(--ws-text-3);
+  font-family: var(--ws-mono);
+  font-weight: 500;
+}
+.token-bar-track {
+  width: 80px;
+  height: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.token-bar-fill {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, var(--ws-primary), var(--ws-accent));
+  border-radius: 2px;
+}
+
+.plan-badge {
+  padding: 3px 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ws-accent);
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 100px;
+}
+
+.topbar-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--ws-primary), var(--ws-primary-l));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.btn-publish {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  background: var(--ws-accent);
+  color: var(--ws-bg);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 8px;
+  transition: all var(--ws-transition);
+}
+.btn-publish:hover {
+  background: var(--ws-accent-d);
+  box-shadow: 0 4px 16px rgba(0,212,255,0.25);
+}
+.btn-publish svg { width: 14px; height: 14px; }
+
+/* ═══════════════════════════════════════
+   MAIN AREA
+   ═══════════════════════════════════════ */
+.main {
+  grid-area: main;
+  display: flex;
+  overflow: hidden;
+  background: var(--ws-bg-1);
+}
+
+/* ═══════════════════════════════════════
+   CHAT PANEL
+   ═══════════════════════════════════════ */
+.chat-panel {
+  width: 38%;
+  min-width: 320px;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  background: var(--ws-bg);
+  border-right: 1px solid var(--ws-border);
+}
+
+.chat-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ws-border);
+  flex-shrink: 0;
+}
+.chat-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chat-header-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.chat-header-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--ws-accent);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.model-select {
+  padding: 4px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ws-border);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-text-2);
+  cursor: pointer;
+  font-family: var(--ws-mono);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 24px;
+}
+.model-select option { background: var(--ws-bg-2); }
+
+.chat-skills {
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  border-bottom: 1px solid var(--ws-border);
+  flex-shrink: 0;
+}
+.skill-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-3);
+  transition: all var(--ws-transition);
+  cursor: pointer;
+}
+.skill-pill:hover { border-color: var(--ws-border-l); color: var(--ws-text-2); }
+.skill-pill.active {
+  background: rgba(0,230,138,0.1);
+  border-color: rgba(0,230,138,0.3);
+  color: var(--ws-primary-l);
+}
+.skill-pill svg { width: 10px; height: 10px; }
+.skill-pill .lock-icon { opacity: 0.4; }
+
+/* Chat Messages */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.msg {
+  display: flex;
+  gap: 10px;
+  animation: msgIn 0.3s ease forwards;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.msg-avatar.user {
+  background: linear-gradient(135deg, #2563EB, #3B82F6);
+  color: #fff;
+}
+.msg-avatar.ai {
+  background: linear-gradient(135deg, var(--ws-primary), var(--ws-primary-l));
+  color: #fff;
+}
+
+.msg-body { flex: 1; min-width: 0; }
+.msg-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.msg-name {
+  font-size: 12px;
+  font-weight: 700;
+}
+.msg-time {
+  font-size: 10px;
+  color: var(--ws-text-3);
+  font-family: var(--ws-mono);
+}
+.msg-content {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--ws-text-2);
+}
+.msg-content strong { color: var(--ws-text); font-weight: 600; }
+.msg-content .msg-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ws-accent);
+  font-weight: 600;
+}
+
+.msg-gen-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  background: rgba(0,230,138,0.06);
+  border: 1px solid rgba(0,230,138,0.12);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--ws-primary-l);
+  font-weight: 500;
+}
+.gen-spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(0,230,138,0.2);
+  border-top-color: var(--ws-primary-l);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Chat Input */
+.chat-input-area {
+  padding: 12px 16px;
+  border-top: 1px solid var(--ws-border);
+  flex-shrink: 0;
+}
+.chat-input-box {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+  transition: border-color var(--ws-transition);
+}
+.chat-input-box:focus-within {
+  border-color: rgba(0,230,138,0.4);
+}
+.chat-input-box textarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--ws-text);
+  font-size: 12.5px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  max-height: 100px;
+  min-height: 20px;
+}
+.chat-input-box textarea::placeholder { color: var(--ws-text-3); }
+
+.chat-input-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--ws-text-3);
+  transition: all var(--ws-transition);
+  flex-shrink: 0;
+}
+.chat-input-btn:hover { color: var(--ws-text-2); background: rgba(255,255,255,0.06); }
+.chat-input-btn.send-btn {
+  background: var(--ws-primary);
+  color: #fff;
+}
+.chat-input-btn.send-btn:hover { background: var(--ws-primary-l); }
+.chat-input-btn svg { width: 14px; height: 14px; }
+
+.chat-input-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--ws-text-3);
+}
+
+/* ═══════════════════════════════════════
+   PREVIEW PANEL
+   ═══════════════════════════════════════ */
+.preview-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--ws-bg-1);
+  overflow: hidden;
+  transition: flex 0.4s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+  min-width: 0;
+}
+
+/* Preview collapsed state */
+.main.preview-collapsed .preview-panel {
+  flex: 0;
+  min-width: 0;
+  max-width: 0;
+  opacity: 0;
+  pointer-events: none;
+  border: none;
+}
+.main.preview-collapsed .chat-panel {
+  width: 100%;
+  max-width: 100%;
+  border-right: none;
+}
+
+/* Preview toggle button */
+.preview-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  border: 1px solid var(--ws-border-l);
+  background: var(--ws-bg-2);
+  color: var(--ws-text-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.25s;
+}
+.preview-toggle:hover {
+  background: var(--ws-bg-3);
+  color: var(--ws-primary-l);
+  border-color: rgba(0,230,138,0.3);
+}
+.preview-toggle svg { width: 14px; height: 14px; }
+
+/* Open preview button (shown when collapsed) */
+.preview-open-btn {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--ws-border-l);
+  background: var(--ws-bg-2);
+  color: var(--ws-text-2);
+  font-family: var(--ws-font);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  z-index: 20;
+  transition: all 0.25s;
+}
+.preview-open-btn:hover {
+  background: rgba(0,230,138,0.1);
+  color: var(--ws-primary-l);
+  border-color: rgba(0,230,138,0.3);
+}
+.preview-open-btn svg { width: 14px; height: 14px; }
+.main.preview-collapsed .preview-open-btn { display: flex; }
+.main.preview-collapsed .preview-toggle { display: none; }
+
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
+  border-bottom: 1px solid var(--ws-border);
+  background: var(--ws-bg);
+  flex-shrink: 0;
+}
+.preview-url {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 8px;
+  font-size: 11.5px;
+  color: var(--ws-text-3);
+  font-family: var(--ws-mono);
+}
+.preview-url .url-lock { color: var(--ws-accent); flex-shrink: 0; }
+.preview-url .url-lock svg { width: 11px; height: 11px; }
+
+.preview-devices {
+  display: flex;
+  gap: 2px;
+}
+.device-btn {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: var(--ws-text-3);
+  transition: all var(--ws-transition);
+}
+.device-btn:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
+.device-btn.active { color: var(--ws-primary-l); background: rgba(0,230,138,0.1); }
+.device-btn svg { width: 16px; height: 16px; }
+
+.preview-actions {
+  display: flex;
+  gap: 6px;
+}
+.preview-action-btn {
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-text-3);
+  border: 1px solid var(--ws-border);
+  border-radius: 6px;
+  transition: all var(--ws-transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.preview-action-btn:hover {
+  color: var(--ws-text-2);
+  border-color: var(--ws-border-l);
+  background: rgba(255,255,255,0.03);
+}
+.preview-action-btn svg { width: 12px; height: 12px; }
+
+/* Preview Viewport */
+.preview-viewport {
+  flex: 1;
+  padding: 16px;
+  overflow: auto;
+  display: flex;
+  justify-content: center;
+}
+.preview-frame {
+  width: 100%;
+  max-width: 100%;
+  background: #0B1120;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.preview-frame.tablet { max-width: 768px; }
+.preview-frame.mobile { max-width: 375px; }
+
+/* ═══════════════════════════════════════
+   STATUS BAR
+   ═══════════════════════════════════════ */
+.statusbar {
+  grid-area: statusbar;
+  background: var(--ws-bg);
+  border-top: 1px solid var(--ws-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  font-size: 11px;
+  color: var(--ws-text-3);
+}
+.statusbar-center { font-family: var(--ws-mono); font-size: 10px; }
+.statusbar-right a {
+  color: var(--ws-primary-l);
+  text-decoration: none;
+  font-weight: 500;
+}
+.statusbar-right a:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════
+   PREVIEW IFRAME
+   ═══════════════════════════════════════ */
+#previewIframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #0B1120;
+  border-radius: 12px;
+}
+.preview-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--ws-text-3);
+  gap: 16px;
+  text-align: center;
+  padding: 40px;
+}
+.preview-empty svg { opacity: 0.3; }
+.preview-empty p { font-size: 13px; max-width: 280px; line-height: 1.6; }
+
+/* REMOVED: All pv-* mock website styles replaced by iframe */
+
+/* ═══════════════════════════════════════
+   CODE VIEWER MODAL
+   ═══════════════════════════════════════ */
+.code-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+.code-viewer-overlay.open { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.code-viewer {
+  width: 90vw;
+  max-width: 960px;
+  height: 80vh;
+  background: var(--ws-bg);
+  border: 1px solid var(--ws-border-l);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  animation: modalIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+@keyframes modalIn { from { opacity: 0; transform: scale(0.95) translateY(12px); } to { opacity: 1; transform: none; } }
+
+.code-viewer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ws-border);
+  flex-shrink: 0;
+}
+.code-viewer-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+.code-viewer-close {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ws-text-3);
+  transition: all 0.15s;
+}
+.code-viewer-close:hover { background: rgba(255,255,255,0.06); color: var(--ws-text); }
+.code-viewer-close svg { width: 16px; height: 16px; }
+
+.code-viewer-tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--ws-border);
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.code-viewer-tab {
+  padding: 8px 16px;
+  font-size: 11.5px;
+  font-weight: 600;
+  font-family: var(--ws-mono);
+  color: var(--ws-text-3);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.code-viewer-tab:hover { color: var(--ws-text-2); }
+.code-viewer-tab.active {
+  color: var(--ws-primary-l);
+  border-bottom-color: var(--ws-primary);
+}
+
+.code-viewer-content {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+.code-viewer-content pre {
+  margin: 0;
+  padding: 16px;
+  font-family: var(--ws-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ws-text-2);
+  white-space: pre-wrap;
+  word-break: break-all;
+  tab-size: 2;
+}
+
+/* ═══════════════════════════════════════
+   PUBLISH MODAL
+   ═══════════════════════════════════════ */
+.publish-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.publish-overlay.open { display: flex; }
+
+.publish-modal {
+  width: 90vw;
+  max-width: 520px;
+  background: var(--ws-bg);
+  border: 1px solid var(--ws-border-l);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  animation: modalIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+
+.publish-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+}
+.publish-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.publish-header h2 svg { width: 20px; height: 20px; color: var(--ws-primary); }
+.publish-close {
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ws-text-3); transition: all 0.15s;
+}
+.publish-close:hover { background: rgba(255,255,255,0.06); color: var(--ws-text); }
+.publish-close svg { width: 16px; height: 16px; }
+
+.publish-body { padding: 0 24px 24px; }
+
+.publish-field { margin-bottom: 20px; }
+.publish-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ws-text-2);
+  margin-bottom: 6px;
+}
+.publish-hint {
+  font-size: 11px;
+  color: var(--ws-text-3);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+.publish-slug-row {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.publish-slug-row:focus-within { border-color: rgba(0,230,138,0.4); }
+.publish-slug-prefix {
+  padding: 10px 12px;
+  font-size: 12px;
+  font-family: var(--ws-mono);
+  color: var(--ws-text-3);
+  background: rgba(255,255,255,0.02);
+  border-right: 1px solid var(--ws-border);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.publish-slug-row input {
+  flex: 1;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  color: var(--ws-primary-l);
+  font-size: 13px;
+  font-family: var(--ws-mono);
+  font-weight: 600;
+  outline: none;
+}
+.publish-slug-row input::placeholder { color: var(--ws-text-3); font-weight: 400; }
+
+.publish-domain-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  color: var(--ws-text);
+  font-size: 13px;
+  font-family: var(--ws-mono);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.publish-domain-input:focus { border-color: rgba(0,230,138,0.4); }
+.publish-domain-input::placeholder { color: var(--ws-text-3); }
+
+.publish-dns-info {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(0,212,255,0.04);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--ws-text-2);
+  font-family: var(--ws-mono);
+  line-height: 1.8;
+  display: none;
+}
+.publish-dns-info.visible { display: block; }
+.publish-dns-info strong { color: var(--ws-accent); }
+
+.publish-error {
+  padding: 10px 14px;
+  background: rgba(239,68,68,0.08);
+  border: 1px solid rgba(239,68,68,0.15);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #EF4444;
+  margin-bottom: 16px;
+  display: none;
+}
+.publish-error.visible { display: block; }
+
+.publish-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.publish-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.2s;
+}
+.publish-btn-primary {
+  background: var(--ws-primary);
+  color: #000;
+}
+.publish-btn-primary:hover { background: var(--ws-primary-l); box-shadow: 0 4px 20px rgba(0,230,138,0.3); }
+.publish-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.publish-btn-secondary {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-2);
+}
+.publish-btn-secondary:hover { border-color: var(--ws-border-l); color: var(--ws-text); }
+
+.publish-success {
+  text-align: center;
+  padding: 16px 0;
+  display: none;
+}
+.publish-success.visible { display: block; }
+.publish-success-icon {
+  width: 48px; height: 48px;
+  background: rgba(0,230,138,0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+}
+.publish-success-icon svg { width: 24px; height: 24px; color: var(--ws-primary); }
+.publish-success h3 { font-size: 15px; margin-bottom: 8px; }
+.publish-success-url {
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(0,230,138,0.08);
+  border: 1px solid rgba(0,230,138,0.2);
+  border-radius: 8px;
+  font-family: var(--ws-mono);
+  font-size: 13px;
+  color: var(--ws-primary-l);
+  font-weight: 600;
+  margin: 8px 0 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.publish-success-url:hover { background: rgba(0,230,138,0.12); }
+
+</style>
+</head>
+
+<body>
+
+<div class="workspace" id="workspace">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-btn" id="sidebarToggle" title="Menü">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span class="sidebar-btn-label">Menü</span>
+    </button>
+    <div class="sidebar-divider"></div>
+    <button class="sidebar-btn active" id="btnDateien" title="Dateien">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
+      <span class="sidebar-btn-label">Dateien</span>
+    </button>
+    <button class="sidebar-btn" title="Layers">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.84Z"/><path d="m2 12 8.58 3.91a2 2 0 0 0 1.66 0L20.83 12"/><path d="m2 17 8.58 3.91a2 2 0 0 0 1.66 0L20.83 17"/></svg>
+      <span class="sidebar-btn-label">Sektionen</span>
+    </button>
+    <button class="sidebar-btn" title="Assets">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+      <span class="sidebar-btn-label">Assets</span>
+    </button>
+    <button class="sidebar-btn" title="Versionen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="sidebar-btn-label">Versionen</span>
+    </button>
+    <!-- File tree (visible when sidebar expanded + Dateien active) -->
+    <div class="file-tree active" id="fileTree">
+      <div class="file-tree-header">Projektdateien</div>
+      <div id="fileTreeItems">
+        <div class="file-tree-empty">Noch keine Dateien generiert</div>
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="sidebar-divider"></div>
+      <a href="dashboard.html" class="sidebar-btn" title="Dashboard" style="text-decoration:none;color:inherit;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span class="sidebar-btn-label">Dashboard</span>
+      </a>
+      <button class="sidebar-btn" title="Einstellungen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        <span class="sidebar-btn-label">Einstellungen</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══ TOP BAR ═══ -->
+  <header class="topbar">
+    <a href="dashboard.html" class="topbar-logo" style="text-decoration:none;color:inherit;" title="Zurück zum Dashboard">
+      <svg viewBox="0 0 44 44" width="22" height="22" fill="none">
+        <circle cx="20" cy="20" r="10.5" stroke="#fff" stroke-width="2.2"/>
+        <line x1="27" y1="27" x2="33" y2="33" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        <ellipse cx="22" cy="22" rx="19" ry="7" stroke="#00D4FF" stroke-width="1" transform="rotate(-28 22 22)" opacity="0.6"/>
+        <circle cx="38.5" cy="12.5" r="2" fill="#00D4FF"/>
+      </svg>
+      Qntum
+    </a>
+    <div class="topbar-sep"></div>
+    <div class="topbar-project">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
+      <span id="projectNameLabel">KI-Agentur Pro</span>
+    </div>
+
+    <div class="topbar-center">
+      <button class="topbar-icon-btn" title="Rückgängig">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+      </button>
+      <button class="topbar-icon-btn" title="Wiederholen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
+      </button>
+      <div class="topbar-sep"></div>
+      <button class="topbar-icon-btn active" title="Desktop" data-device="desktop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+      </button>
+      <button class="topbar-icon-btn" title="Tablet" data-device="tablet">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+      </button>
+      <button class="topbar-icon-btn" title="Mobile" data-device="mobile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="12" height="20" x="6" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="topbar-right">
+      <div class="token-bar">
+        <div class="token-bar-track"><div class="token-bar-fill"></div></div>
+        <span class="token-bar-label">3.2M / 8M</span>
+      </div>
+      <span class="plan-badge">Pro</span>
+      <a href="dashboard.html" class="topbar-avatar" style="text-decoration:none;color:inherit;" title="Dashboard">EK</a>
+      <button class="btn-publish">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
+        Publish
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="main" id="mainArea">
+
+    <!-- CHAT PANEL -->
+    <section class="chat-panel" style="position:relative;">
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="chat-header-dot"></div>
+          <span class="chat-header-title">Qntum Chat</span>
+        </div>
+        <!-- Open preview button (visible when collapsed) -->
+        <button class="preview-open-btn" id="previewOpenBtn" title="Vorschau öffnen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+          Vorschau
+        </button>
+        <select class="model-select">
+          <option value="sonnet">Sonnet 4</option>
+          <option value="opus" selected>Opus 4</option>
+        </select>
+      </div>
+
+      <div class="chat-skills">
+        <button class="skill-pill active" data-skill="ui-ux">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          UI/UX Pro
+        </button>
+        <button class="skill-pill" data-skill="brand">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          Brand Identity
+        </button>
+        <button class="skill-pill" data-skill="design-system">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          Design System
+        </button>
+        <button class="skill-pill" data-skill="frontend">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          Frontend Design
+        </button>
+        <button class="skill-pill" data-skill="locked">
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          Banner
+        </button>
+        <button class="skill-pill" data-skill="locked">
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          Slides
+        </button>
+      </div>
+
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages loaded dynamically -->
+      </div>
+
+      <div class="chat-input-area">
+        <div class="chat-input-box">
+          <input type="file" id="fileUploadInput" style="display:none;" accept=".html,.css,.js,.json,.txt,.md,.sql,.env,.csv,.xml,.svg,.ts,.jsx,.tsx,.py">
+          <button class="chat-input-btn" id="attachBtn" title="Datei anhängen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <textarea rows="1" placeholder="Beschreibe eine Änderung…"></textarea>
+          <button class="chat-input-btn send-btn" title="Senden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+          </button>
+        </div>
+        <div class="chat-input-hint">
+          <span>Enter ↵ senden · Shift+Enter Zeilenumbruch</span>
+          <span style="font-family:var(--ws-mono);">Opus 4.6</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- PREVIEW PANEL -->
+    <section class="preview-panel">
+      <div class="preview-toolbar">
+        <div class="preview-url">
+          <span class="url-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          ki-agentur-pro.qntum.design
+        </div>
+        <div class="preview-devices">
+          <button class="device-btn active" data-device="desktop" title="Desktop">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+          </button>
+          <button class="device-btn" data-device="tablet" title="Tablet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+          </button>
+          <button class="device-btn" data-device="mobile" title="Mobile">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="12" height="20" x="6" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="preview-actions">
+          <button class="preview-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Code
+          </button>
+          <button class="preview-action-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Export
+          </button>
+          <button class="preview-action-btn" id="previewCloseBtn" title="Vorschau schließen" style="margin-left:4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-viewport">
+        <div class="preview-frame" id="previewFrameWrap">
+          <!-- Empty state (shown when no website generated yet) -->
+          <div class="preview-empty" id="previewEmpty">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="m9 8 6 4-6 4z"/></svg>
+            <p>Beschreibe deine Website im Chat und Qntum generiert sie hier in Echtzeit.</p>
+          </div>
+          <!-- Iframe for rendered website -->
+          <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin" style="display:none;"></iframe>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══ CODE VIEWER MODAL ═══ -->
+  <div class="code-viewer-overlay" id="codeViewerOverlay">
+    <div class="code-viewer">
+      <div class="code-viewer-header">
+        <span class="code-viewer-title">Projektdateien</span>
+        <button class="code-viewer-close" id="codeViewerClose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="code-viewer-tabs" id="codeViewerTabs"></div>
+      <div class="code-viewer-content" id="codeViewerContent"><pre></pre></div>
+    </div>
+  </div>
+
+  <!-- ═══ PUBLISH MODAL ═══ -->
+  <div class="publish-overlay" id="publishOverlay">
+    <div class="publish-modal">
+      <div class="publish-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
+          Website veröffentlichen
+        </h2>
+        <button class="publish-close" id="publishClose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="publish-body">
+        <!-- Form -->
+        <div id="publishForm">
+          <div class="publish-field">
+            <label class="publish-label">Qntum-URL (Pflicht)</label>
+            <div class="publish-slug-row">
+              <span class="publish-slug-prefix" id="publishPrefix">deine-app.railway.app/live/</span>
+              <input type="text" id="publishSlug" placeholder="mein-projekt" autocomplete="off" spellcheck="false">
+            </div>
+            <div class="publish-hint">Nur Kleinbuchstaben, Zahlen und Bindestriche. Min. 3 Zeichen.</div>
+          </div>
+          <div class="publish-field">
+            <label class="publish-label">Eigene Domain (optional)</label>
+            <input type="text" class="publish-domain-input" id="publishDomain" placeholder="www.meine-domain.de">
+            <div class="publish-hint">Du kannst deine eigene Domain verbinden. Richte danach einen CNAME-Eintrag ein.</div>
+            <div class="publish-dns-info" id="publishDns">
+              <strong>DNS-Einrichtung:</strong><br>
+              Typ: <strong>CNAME</strong><br>
+              Name: <strong id="dnsName">www</strong><br>
+              Ziel: <strong id="dnsTarget">deine-app.railway.app</strong><br><br>
+              Setze diesen Eintrag bei deinem Domain-Provider (z.B. Namecheap, Cloudflare, IONOS).
+            </div>
+          </div>
+          <div class="publish-error" id="publishError"></div>
+          <div class="publish-actions">
+            <button class="publish-btn publish-btn-secondary" id="publishCancel">Abbrechen</button>
+            <button class="publish-btn publish-btn-primary" id="publishSubmit">Veröffentlichen</button>
+          </div>
+        </div>
+        <!-- Success -->
+        <div class="publish-success" id="publishSuccess">
+          <div class="publish-success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <h3>Website ist live!</h3>
+          <a class="publish-success-url" id="publishLiveUrl" href="#" target="_blank"></a>
+          <div class="publish-hint" id="publishDomainHint" style="display:none;">Deine Custom Domain wird aktiv, sobald du den DNS-Eintrag gesetzt hast.</div>
+          <div class="publish-actions" style="margin-top:16px;">
+            <button class="publish-btn publish-btn-secondary" id="publishDone">Schließen</button>
+            <button class="publish-btn publish-btn-primary" id="publishOpen" onclick="window.open(document.getElementById('publishLiveUrl').href,'_blank')">Im Browser öffnen</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STATUS BAR ═══ -->
+  <footer class="statusbar">
+    <span>Zuletzt gespeichert: vor 2 Min</span>
+    <span class="statusbar-center">Tokens: 45.200 in dieser Sitzung</span>
+    <span class="statusbar-right"><a href="#" onclick="event.preventDefault(); document.querySelector('.ws-toast') ? null : null; let t=document.querySelector('.ws-toast'); if(!t){t=document.createElement('div');t.className='ws-toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(0);background:rgba(10,20,15,0.95);border:1px solid rgba(0,230,138,0.2);color:#e0e0e0;padding:12px 24px;border-radius:10px;font-size:0.85rem;backdrop-filter:blur(12px);z-index:9999;opacity:1;transition:all 0.35s;box-shadow:0 8px 24px rgba(0,0,0,0.5);';document.body.appendChild(t);} t.textContent='Versionshistorie — 5 Versionen gespeichert'; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(60px)';},2400);">v3 — 5 Versionen</a></span>
+  </footer>
+
+</div>
+
+
+<script>
+(function() {
+  'use strict';
+
+  // ═══════════════════════════════════════
+  // AUTH + STATE
+  // ═══════════════════════════════════════
+  const token = localStorage.getItem('qntum_token');
+  if (!token) { window.location.href = '/auth.html'; return; }
+
+  const projectId = new URLSearchParams(window.location.search).get('project');
+  let currentHtml = '';
+  let currentFiles = {};
+  let sessionTokens = 0;
+  let isSending = false;
+
+  const chatMessages = document.getElementById('chatMessages');
+  const textarea = document.querySelector('.chat-input-box textarea');
+  const sendBtn = document.querySelector('.send-btn');
+  const previewIframe = document.getElementById('previewIframe');
+  const previewEmpty = document.getElementById('previewEmpty');
+  const previewFrameWrap = document.getElementById('previewFrameWrap');
+  const statusLeft = document.querySelector('.statusbar span');
+  const statusCenter = document.querySelector('.statusbar-center');
+
+  // ═══════════════════════════════════════
+  // HELPERS
+  // ═══════════════════════════════════════
+  function timeNow() {
+    return `${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2,'0')}`;
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function showToast(msg) {
+    let toast = document.querySelector('.ws-toast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.className = 'ws-toast';
+      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(10,20,15,0.95);border:1px solid rgba(0,230,138,0.2);color:#e0e0e0;padding:12px 24px;border-radius:10px;font-size:0.85rem;font-family:var(--ws-font);backdrop-filter:blur(12px);z-index:9999;opacity:0;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,0.5);';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(60px)'; }, 2800);
+  }
+
+  function appendMessage(role, content) {
+    const isUser = role === 'user';
+    const html = `<div class="msg">
+      <div class="msg-avatar ${isUser ? 'user' : 'ai'}">${isUser ? 'EK' : 'Q'}</div>
+      <div class="msg-body">
+        <div class="msg-header"><span class="msg-name">${isUser ? 'Du' : 'Qntum'}</span><span class="msg-time">${timeNow()}</span></div>
+        <div class="msg-content">${isUser ? escapeHtml(content) : content}</div>
+      </div>
+    </div>`;
+    chatMessages.insertAdjacentHTML('beforeend', html);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return chatMessages.lastElementChild;
+  }
+
+  function appendLoading() {
+    const html = `<div class="msg msg-loading">
+      <div class="msg-avatar ai">Q</div>
+      <div class="msg-body">
+        <div class="msg-gen-indicator"><div class="gen-spinner"></div> Projekt wird generiert…</div>
+      </div>
+    </div>`;
+    chatMessages.insertAdjacentHTML('beforeend', html);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return chatMessages.lastElementChild;
+  }
+
+  function updatePreview(html) {
+    if (!html) return;
+    currentHtml = html;
+    previewEmpty.style.display = 'none';
+    previewIframe.style.display = 'block';
+    previewIframe.srcdoc = html;
+  }
+
+  function updateStatus() {
+    statusLeft.textContent = `Zuletzt gespeichert: gerade eben`;
+    statusCenter.textContent = `Tokens: ${sessionTokens.toLocaleString('de-DE')} in dieser Sitzung`;
+  }
+
+  // ═══════════════════════════════════════
+  // FILE TREE + CODE VIEWER
+  // ═══════════════════════════════════════
+  const fileTreeItems = document.getElementById('fileTreeItems');
+  const fileTree = document.getElementById('fileTree');
+
+  function getFileIcon(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const colors = { html: '#E44D26', css: '#A86DDB', js: '#F7DF1E', json: '#F7DF1E', sql: '#00B4D8', env: '#888', sh: '#4EAA25', bash: '#4EAA25' };
+    const color = colors[ext] || '#888';
+    return `<svg class="file-tree-icon" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>`;
+  }
+
+  function updateFileTree(files) {
+    currentFiles = files;
+    const names = Object.keys(files);
+    if (!names.length) {
+      fileTreeItems.innerHTML = '<div class="file-tree-empty">Noch keine Dateien generiert</div>';
+      return;
+    }
+    fileTreeItems.innerHTML = names.map((name, i) =>
+      `<div class="file-tree-item${i === 0 ? ' active' : ''}" data-filename="${escapeHtml(name)}" onclick="window.__showFileCode('${escapeHtml(name)}')">${getFileIcon(name)}<span class="file-tree-name">${escapeHtml(name)}</span></div>`
+    ).join('');
+  }
+
+  // Code viewer modal
+  const codeOverlay = document.getElementById('codeViewerOverlay');
+  const codeTabs = document.getElementById('codeViewerTabs');
+  const codeContent = document.getElementById('codeViewerContent');
+
+  function openCodeViewer(activeFile) {
+    const names = Object.keys(currentFiles);
+    if (!names.length) { showToast('Noch keine Dateien generiert'); return; }
+    const target = activeFile || names[0];
+
+    codeTabs.innerHTML = names.map(name =>
+      `<button class="code-viewer-tab${name === target ? ' active' : ''}" data-file="${escapeHtml(name)}">${escapeHtml(name)}</button>`
+    ).join('');
+
+    codeContent.querySelector('pre').textContent = currentFiles[target] || '';
+    codeOverlay.classList.add('open');
+
+    codeTabs.querySelectorAll('.code-viewer-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        codeTabs.querySelectorAll('.code-viewer-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        codeContent.querySelector('pre').textContent = currentFiles[tab.dataset.file] || '';
+      });
+    });
+  }
+
+  document.getElementById('codeViewerClose').addEventListener('click', () => codeOverlay.classList.remove('open'));
+  codeOverlay.addEventListener('click', (e) => { if (e.target === codeOverlay) codeOverlay.classList.remove('open'); });
+
+  // Expose for file tree onclick
+  window.__showFileCode = function(filename) {
+    // Highlight in tree
+    fileTreeItems.querySelectorAll('.file-tree-item').forEach(el => el.classList.toggle('active', el.dataset.filename === filename));
+    openCodeViewer(filename);
+  };
+
+  // ═══════════════════════════════════════
+  // LOAD PROJECT
+  // ═══════════════════════════════════════
+  async function loadProject() {
+    if (!projectId) {
+      appendMessage('assistant', 'Willkommen! Beschreibe die Website, die du erstellen möchtest, und ich generiere sie für dich.');
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/projects/${projectId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!res.ok) {
+        if (res.status === 401) { localStorage.removeItem('qntum_token'); window.location.href = '/auth.html'; return; }
+        throw new Error('Projekt nicht gefunden');
+      }
+
+      const project = await res.json();
+
+      // Update UI
+      document.getElementById('projectNameLabel').textContent = project.name;
+      document.querySelector('.preview-url').innerHTML = `<span class="url-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> ${project.name.toLowerCase().replace(/\s+/g,'-')}.qntum.design`;
+
+      // Load project files into tree
+      if (project.project_files && Object.keys(project.project_files).length) {
+        updateFileTree(project.project_files);
+      }
+
+      // Load messages (strip all code blocks, not just HTML)
+      if (project.messages?.length) {
+        project.messages.forEach(m => appendMessage(m.role, m.content.replace(/```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?[\s\S]*?```/g, '<em>[Code generiert]</em>')));
+      } else {
+        appendMessage('assistant', `Projekt "${project.name}" geladen. Was möchtest du ändern oder erstellen?`);
+      }
+
+      // Load preview
+      if (project.current_html) {
+        updatePreview(project.current_html);
+      }
+    } catch (err) {
+      appendMessage('assistant', 'Willkommen! Beschreibe die Website, die du erstellen möchtest.');
+    }
+  }
+
+  // ═══════════════════════════════════════
+  // SEND MESSAGE (REAL API + SSE STREAMING)
+  // ═══════════════════════════════════════
+  async function sendMessage() {
+    const text = textarea.value.trim();
+    if (!text || isSending) return;
+    isSending = true;
+
+    // Create project if none exists
+    let activeProjectId = projectId;
+    if (!activeProjectId) {
+      try {
+        const res = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: text.substring(0, 50) })
+        });
+        const proj = await res.json();
+        activeProjectId = proj.id;
+        // Update URL without reload
+        history.replaceState(null, '', `workspace.html?project=${activeProjectId}`);
+      } catch (err) {
+        showToast('Projekt konnte nicht erstellt werden');
+        isSending = false;
+        return;
+      }
+    }
+
+    // Append uploaded file content to message if pending
+    let finalMessage = text;
+    if (pendingUpload) {
+      finalMessage += `\n\nAngehängte Datei "${pendingUpload.name}":\n\`\`\`\n${pendingUpload.content}\n\`\`\``;
+      pendingUpload = null;
+      attachBtn.style.color = '';
+    }
+
+    // Show user message
+    appendMessage('user', text);
+    textarea.value = '';
+    textarea.style.height = 'auto';
+
+    // Show loading
+    const loadingEl = appendLoading();
+
+    try {
+      const model = document.querySelector('.model-select').value;
+
+      const response = await fetch('/api/chat/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ projectId: activeProjectId, message: finalMessage, model, skills: getActiveSkills() })
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        if (response.status === 429) {
+          loadingEl.remove();
+          appendMessage('assistant', `⚠️ ${err.error} <br><button onclick="window.__openUpgrade()" style="margin-top:8px;padding:6px 16px;background:var(--ws-primary);color:#000;border:none;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;">Plan upgraden</button>`);
+          isSending = false;
+          return;
+        }
+        throw new Error(err.error || 'Anfrage fehlgeschlagen');
+      }
+
+      // Read SSE stream
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let fullText = '';
+      let aiMsgEl = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop(); // Keep incomplete line
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = JSON.parse(line.slice(6));
+
+          if (data.type === 'text') {
+            fullText += data.content;
+            // Create or update AI message bubble
+            if (!aiMsgEl) {
+              loadingEl.remove();
+              aiMsgEl = appendMessage('assistant', '');
+            }
+            const contentEl = aiMsgEl.querySelector('.msg-content');
+            // Show text without code blocks (all types)
+            const displayText = fullText.replace(/```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?[\s\S]*?```/g, '').trim();
+            contentEl.innerHTML = displayText || '<em>Generiere Projekt…</em>';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+
+          if (data.type === 'done') {
+            // Update file tree with all project files
+            if (data.files && Object.keys(data.files).length) {
+              updateFileTree(data.files);
+              // Expand sidebar to show files
+              if (!workspace.classList.contains('sidebar-open')) {
+                workspace.classList.add('sidebar-open');
+              }
+            }
+
+            // Update preview with generated HTML
+            if (data.html) {
+              updatePreview(data.html);
+            }
+
+            // Update message with summary
+            if (aiMsgEl) {
+              const contentEl = aiMsgEl.querySelector('.msg-content');
+              const fileCount = data.fileList?.length || 0;
+              const filesLabel = fileCount ? ` — ${fileCount} Datei${fileCount > 1 ? 'en' : ''}: ${data.fileList.join(', ')}` : '';
+              contentEl.innerHTML = `<span class="msg-success">✅ ${data.text || 'Projekt wurde aktualisiert!'}</span>${filesLabel ? `<br><span style="font-size:11px;color:var(--ws-text-3);font-family:var(--ws-mono);">${filesLabel}</span>` : ''}`;
+            }
+
+            // Update token counter
+            if (data.usage) {
+              sessionTokens += data.usage.total;
+              updateStatus();
+            }
+          }
+
+          if (data.type === 'error') {
+            loadingEl?.remove();
+            showToast(data.error);
+          }
+        }
+      }
+    } catch (err) {
+      loadingEl?.remove();
+      appendMessage('assistant', `Fehler: ${err.message}. Bitte versuche es erneut.`);
+    }
+
+    isSending = false;
+  }
+
+  // ═══════════════════════════════════════
+  // UI EVENT HANDLERS
+  // ═══════════════════════════════════════
+
+  /* Sidebar Toggle */
+  const workspace = document.getElementById('workspace');
+  document.getElementById('sidebarToggle').addEventListener('click', () => {
+    workspace.classList.toggle('sidebar-open');
+  });
+
+  /* Device Toggle */
+  document.querySelectorAll('[data-device]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const device = btn.dataset.device;
+      document.querySelectorAll('[data-device]').forEach(b => b.classList.toggle('active', b.dataset.device === device));
+      previewFrameWrap.classList.remove('tablet', 'mobile');
+      if (device !== 'desktop') previewFrameWrap.classList.add(device);
+    });
+  });
+
+  /* Skill pills */
+  function getActiveSkills() {
+    return [...document.querySelectorAll('.skill-pill.active[data-skill]')]
+      .map(p => p.dataset.skill)
+      .filter(s => s !== 'locked');
+  }
+  document.querySelectorAll('.skill-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      if (pill.dataset.skill === 'locked') { showToast('Upgrade auf Pro für diesen Skill'); return; }
+      pill.classList.toggle('active');
+    });
+  });
+
+  /* Chat input */
+  textarea.addEventListener('input', () => {
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  textarea.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  });
+
+  /* Sidebar buttons */
+  document.querySelectorAll('.sidebar-btn:not(#sidebarToggle)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.sidebar-btn:not(#sidebarToggle)').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Toggle file tree visibility based on which button is active
+      if (btn.id === 'btnDateien') {
+        fileTree.classList.add('active');
+      } else {
+        fileTree.classList.remove('active');
+      }
+    });
+  });
+
+  /* ═══ PUBLISH MODAL ═══ */
+  const publishOverlay = document.getElementById('publishOverlay');
+  const publishSlug = document.getElementById('publishSlug');
+  const publishDomain = document.getElementById('publishDomain');
+  const publishError = document.getElementById('publishError');
+  const publishForm = document.getElementById('publishForm');
+  const publishSuccess = document.getElementById('publishSuccess');
+  const publishDns = document.getElementById('publishDns');
+  const publishPrefix = document.getElementById('publishPrefix');
+
+  // Set prefix to current host
+  publishPrefix.textContent = location.host + '/live/';
+
+  function openPublishModal() {
+    if (!projectId && !new URLSearchParams(location.search).get('project')) {
+      showToast('Erstelle zuerst eine Website per Chat');
+      return;
+    }
+    publishForm.style.display = 'block';
+    publishSuccess.classList.remove('visible');
+    publishError.classList.remove('visible');
+    publishDns.classList.remove('visible');
+    // Auto-generate slug from project name
+    const name = document.getElementById('projectNameLabel').textContent || '';
+    if (!publishSlug.value) {
+      publishSlug.value = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 50) || '';
+    }
+    publishOverlay.classList.add('open');
+  }
+
+  function closePublishModal() {
+    publishOverlay.classList.remove('open');
+  }
+
+  // Slug validation on input
+  publishSlug.addEventListener('input', () => {
+    publishSlug.value = publishSlug.value.toLowerCase().replace(/[^a-z0-9-]/g, '').substring(0, 50);
+  });
+
+  // Show DNS info when domain is entered
+  publishDomain.addEventListener('input', () => {
+    const domain = publishDomain.value.trim();
+    if (domain.length > 3) {
+      const host = domain.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+      const parts = host.split('.');
+      document.getElementById('dnsName').textContent = parts.length > 2 ? parts[0] : '@';
+      document.getElementById('dnsTarget').textContent = location.host;
+      publishDns.classList.add('visible');
+    } else {
+      publishDns.classList.remove('visible');
+    }
+  });
+
+  // Submit publish
+  document.getElementById('publishSubmit').addEventListener('click', async () => {
+    const slug = publishSlug.value.trim();
+    const domain = publishDomain.value.trim() || null;
+
+    if (!slug || slug.length < 3) {
+      publishError.textContent = 'Slug muss mindestens 3 Zeichen lang sein.';
+      publishError.classList.add('visible');
+      return;
+    }
+
+    const btn = document.getElementById('publishSubmit');
+    btn.disabled = true;
+    btn.textContent = 'Wird veröffentlicht…';
+    publishError.classList.remove('visible');
+
+    try {
+      const pid = projectId || new URLSearchParams(location.search).get('project');
+      const res = await fetch(`/api/projects/${pid}/publish`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug, custom_domain: domain })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        publishError.textContent = data.error || 'Veröffentlichung fehlgeschlagen';
+        publishError.classList.add('visible');
+        btn.disabled = false;
+        btn.textContent = 'Veröffentlichen';
+        return;
+      }
+
+      // Show success
+      publishForm.style.display = 'none';
+      const liveUrl = data.liveUrl;
+      document.getElementById('publishLiveUrl').href = liveUrl;
+      document.getElementById('publishLiveUrl').textContent = liveUrl;
+      if (data.customDomain) {
+        document.getElementById('publishDomainHint').style.display = 'block';
+        document.getElementById('publishDomainHint').innerHTML =
+          `Custom Domain: <strong>${data.customDomain}</strong> — wird aktiv sobald du den CNAME-Eintrag gesetzt hast.`;
+      }
+      publishSuccess.classList.add('visible');
+      showToast('Website ist live!');
+    } catch (e) {
+      publishError.textContent = 'Netzwerkfehler — bitte versuche es erneut.';
+      publishError.classList.add('visible');
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Veröffentlichen';
+  });
+
+  // Modal controls
+  document.querySelector('.btn-publish').addEventListener('click', openPublishModal);
+  document.getElementById('publishClose').addEventListener('click', closePublishModal);
+  document.getElementById('publishCancel').addEventListener('click', closePublishModal);
+  document.getElementById('publishDone').addEventListener('click', closePublishModal);
+  publishOverlay.addEventListener('click', (e) => { if (e.target === publishOverlay) closePublishModal(); });
+
+  /* Code view — open code viewer modal with all files */
+  document.querySelectorAll('.preview-action-btn')[0]?.addEventListener('click', () => {
+    if (!Object.keys(currentFiles).length && !currentHtml) { showToast('Noch keine Website generiert'); return; }
+    // If only legacy HTML mode (no multi-file), wrap it
+    if (!Object.keys(currentFiles).length && currentHtml) {
+      currentFiles = { 'index.html': currentHtml };
+      updateFileTree(currentFiles);
+    }
+    openCodeViewer();
+  });
+
+  /* Export — download all files as individual downloads (or single HTML) */
+  document.querySelectorAll('.preview-action-btn')[1]?.addEventListener('click', () => {
+    const files = Object.keys(currentFiles).length ? currentFiles : (currentHtml ? { 'index.html': currentHtml } : null);
+    if (!files) { showToast('Noch keine Website generiert'); return; }
+    const names = Object.keys(files);
+    if (names.length === 1) {
+      // Single file — direct download
+      const blob = new Blob([files[names[0]]], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = names[0];
+      a.click();
+      showToast(`${names[0]} heruntergeladen`);
+    } else {
+      // Multiple files — download each
+      names.forEach(name => {
+        const blob = new Blob([files[name]], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = name;
+        a.click();
+      });
+      showToast(`${names.length} Dateien heruntergeladen`);
+    }
+  });
+
+  /* Preview panel toggle */
+  const mainArea = document.getElementById('mainArea');
+  document.getElementById('previewCloseBtn')?.addEventListener('click', () => mainArea.classList.add('preview-collapsed'));
+  document.getElementById('previewOpenBtn')?.addEventListener('click', () => mainArea.classList.remove('preview-collapsed'));
+
+  /* File upload */
+  let pendingUpload = null;
+  const fileUploadInput = document.getElementById('fileUploadInput');
+  const attachBtn = document.getElementById('attachBtn');
+
+  attachBtn.addEventListener('click', () => fileUploadInput.click());
+  fileUploadInput.addEventListener('change', async () => {
+    const file = fileUploadInput.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { showToast('Datei zu groß (max. 2MB)'); return; }
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/chat/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        pendingUpload = data.file;
+        textarea.value = (textarea.value ? textarea.value + '\n' : '') + `[Datei angehängt: ${data.file.name}]`;
+        attachBtn.style.color = 'var(--ws-primary-l)';
+        showToast(`${data.file.name} angehängt — wird mit der nächsten Nachricht gesendet`);
+      } else {
+        showToast(data.error || 'Upload fehlgeschlagen');
+      }
+    } catch (e) {
+      showToast('Upload fehlgeschlagen');
+    }
+    fileUploadInput.value = '';
+  });
+
+  /* Upgrade handler */
+  window.__openUpgrade = async function() {
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: 'pro', interval: 'monthly' })
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else showToast(data.error || 'Checkout nicht verfügbar');
+    } catch (e) { showToast('Stripe noch nicht konfiguriert'); }
+  };
+
+  // ═══════════════════════════════════════
+  // INIT
+  // ═══════════════════════════════════════
+  loadProject();
+
+})();
+</script>
+
+</body>
+</html>

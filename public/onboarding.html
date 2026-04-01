@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qntum Designs — Onboarding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #00E68A;
+  --primary-l: #33FFB3;
+  --primary-d: #00B368;
+  --accent: #00D4FF;
+  --accent-d: #00B8DB;
+  --bg: #08080F;
+  --bg-1: #0A0A1A;
+  --bg-2: #0F0F24;
+  --bg-3: #13132B;
+  --border: rgba(255,255,255,0.06);
+  --border-l: rgba(255,255,255,0.1);
+  --border-ll: rgba(255,255,255,0.18);
+  --text: #E2E2F0;
+  --text-2: #8888A8;
+  --text-3: #5A5A7A;
+  --glass: rgba(255,255,255,0.04);
+  --glass-s: rgba(255,255,255,0.08);
+  --red: #EF4444;
+  --font-h: 'Figtree', sans-serif;
+  --font: 'Manrope', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 20px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body { height: 100%; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+::selection { background: var(--primary); color: #fff; }
+
+/* ═══ GRAIN OVERLAY ═══ */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+a { text-decoration: none; color: inherit; }
+input { font-family: inherit; }
+
+/* ═══ AMBIENT BACKGROUND ═══ */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.ambient .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  animation: orbDrift 16s ease-in-out infinite;
+}
+.ambient .orb-1 {
+  width: 400px; height: 400px;
+  background: rgba(0,230,138,0.08);
+  top: -10%; left: -5%;
+}
+.ambient .orb-2 {
+  width: 300px; height: 300px;
+  background: rgba(0,212,255,0.05);
+  bottom: -5%; right: -5%;
+  animation-delay: -6s;
+}
+@keyframes orbDrift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.08); }
+}
+
+/* ═══ WRAPPER ═══ */
+.onboarding-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 560px;
+  padding: 0 24px;
+}
+
+/* ═══ LOGO ═══ */
+.logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.logo-mark {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-h);
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+}
+.logo-text {
+  font-family: var(--font-h);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+}
+.logo-text span { color: var(--accent); }
+
+/* ═══ STEP DOTS ═══ */
+.step-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 36px;
+}
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-l);
+  transition: var(--transition);
+}
+.step-dot.active {
+  background: var(--primary);
+  box-shadow: 0 0 10px rgba(0,230,138,0.4);
+}
+.step-dot.done {
+  background: var(--primary-d);
+}
+
+/* ═══ CARD ═══ */
+.card {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+}
+
+/* ═══ STEPS ═══ */
+.step {
+  display: none;
+}
+.step.active {
+  display: block;
+  animation: stepIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ STEP HEADER ═══ */
+.step-title {
+  font-family: var(--font-h);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+.step-title .highlight {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.step-sub {
+  font-size: 15px;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.65;
+  margin-bottom: 28px;
+}
+
+/* ═══ WELCOME AVATAR ═══ */
+.welcome-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(0,230,138,0.12), rgba(0,212,255,0.08));
+  border: 1px solid rgba(0,230,138,0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+}
+
+/* ═══ FORM ELEMENTS ═══ */
+.form-group {
+  margin-bottom: 24px;
+}
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
+}
+.form-input {
+  width: 100%;
+  padding: 14px 16px;
+  background: var(--bg-2);
+  border: 1px solid var(--border-l);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 15px;
+  transition: var(--transition);
+  outline: none;
+}
+.form-input::placeholder {
+  color: var(--text-3);
+}
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,230,138,0.1);
+}
+
+/* ═══ RADIO CARDS ═══ */
+.radio-group {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.radio-card {
+  position: relative;
+  background: var(--bg-2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.radio-card:hover {
+  border-color: var(--border-ll);
+  background: var(--bg-3);
+}
+.radio-card.selected {
+  border-color: var(--primary);
+  background: rgba(0,230,138,0.06);
+}
+.radio-card input[type="radio"] {
+  display: none;
+}
+.radio-indicator {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border-ll);
+  flex-shrink: 0;
+  transition: var(--transition);
+  position: relative;
+}
+.radio-card.selected .radio-indicator {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+.radio-card.selected .radio-indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px; height: 6px;
+  background: #fff;
+  border-radius: 50%;
+}
+.radio-label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ═══ SUMMARY ═══ */
+.summary-block {
+  background: var(--bg-2);
+  border: 1px solid var(--border-l);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 24px;
+}
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-label {
+  font-size: 13px;
+  color: var(--text-3);
+}
+.summary-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.summary-ai-note {
+  background: linear-gradient(135deg, rgba(0,230,138,0.06), rgba(0,212,255,0.04));
+  border: 1px solid rgba(0,230,138,0.12);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 4px;
+}
+.summary-ai-note .ai-badge {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary-l);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.summary-ai-note .ai-msg {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* ═══ NAVIGATION BUTTONS ═══ */
+.step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.btn-back:hover {
+  background: var(--glass-s);
+  color: var(--text);
+}
+
+.btn-next, .btn-workspace {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 700;
+  transition: var(--transition);
+}
+.btn-next {
+  background: linear-gradient(135deg, var(--primary), var(--primary-l));
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0,230,138,0.25);
+}
+.btn-next:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,230,138,0.4);
+}
+.btn-next:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.btn-workspace {
+  background: linear-gradient(135deg, var(--accent-d), var(--accent));
+  color: var(--bg);
+  box-shadow: 0 4px 20px rgba(0,212,255,0.25);
+}
+.btn-workspace:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(0,212,255,0.4);
+}
+.btn-workspace:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Spinner inside button */
+.btn-spinner {
+  display: none;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: var(--bg);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+.btn-workspace.loading .btn-spinner { display: inline-block; }
+.btn-workspace.loading .btn-label { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══ ERROR TOAST ═══ */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--red);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 600px) {
+  .card { padding: 28px 20px; }
+  .radio-group { grid-template-columns: 1fr; }
+  .step-title { font-size: 22px; }
+  .onboarding-wrapper { padding: 0 16px; }
+  .logo-row { margin-bottom: 24px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="ambient">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+
+<div class="onboarding-wrapper">
+
+  <!-- LOGO -->
+  <div class="logo-row">
+    <div class="logo-mark">Q</div>
+    <div class="logo-text">Qntum<span>.</span></div>
+  </div>
+
+  <!-- STEP DOTS -->
+  <div class="step-dots">
+    <div class="step-dot active" data-dot="1"></div>
+    <div class="step-dot" data-dot="2"></div>
+    <div class="step-dot" data-dot="3"></div>
+  </div>
+
+  <div class="card">
+
+    <!-- ═══ STEP 1: Willkommen ═══ -->
+    <div class="step active" data-step="1">
+      <div class="welcome-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h2 class="step-title">Willkommen bei <span class="highlight">Qntum</span>!</h2>
+      <p class="step-sub" id="welcomeText">
+        Erstelle beeindruckende Websites in Minuten — mit der Kraft von KI. Beschreibe einfach, was du brauchst, und Qntum baut es fuer dich.
+      </p>
+
+      <div class="step-nav">
+        <div></div>
+        <button class="btn-next" onclick="goStep(2)">
+          Weiter
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 2: Projekt erstellen ═══ -->
+    <div class="step" data-step="2">
+      <h2 class="step-title">Projekt erstellen</h2>
+      <p class="step-sub">Gib deinem ersten Projekt einen Namen und waehle den passenden Typ.</p>
+
+      <div class="form-group">
+        <label class="form-label" for="projectName">Projektname</label>
+        <input class="form-input" type="text" id="projectName" placeholder="z.B. Meine Portfolio-Website" maxlength="80" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Projekttyp</label>
+        <div class="radio-group" id="projectTypeGroup">
+          <label class="radio-card" data-value="landing-page" onclick="selectType(this)">
+            <input type="radio" name="projectType" value="landing-page">
+            <span class="radio-indicator"></span>
+            <span class="radio-label">Landing Page</span>
+          </label>
+          <label class="radio-card" data-value="portfolio" onclick="selectType(this)">
+            <input type="radio" name="projectType" value="portfolio">
+            <span class="radio-indicator"></span>
+            <span class="radio-label">Portfolio</span>
+          </label>
+          <label class="radio-card" data-value="online-shop" onclick="selectType(this)">
+            <input type="radio" name="projectType" value="online-shop">
+            <span class="radio-indicator"></span>
+            <span class="radio-label">Online-Shop</span>
+          </label>
+          <label class="radio-card" data-value="web-app" onclick="selectType(this)">
+            <input type="radio" name="projectType" value="web-app">
+            <span class="radio-indicator"></span>
+            <span class="radio-label">Web-App</span>
+          </label>
+          <label class="radio-card" data-value="blog" onclick="selectType(this)">
+            <input type="radio" name="projectType" value="blog">
+            <span class="radio-indicator"></span>
+            <span class="radio-label">Blog</span>
+          </label>
+          <label class="radio-card" data-value="anderes" onclick="selectType(this)">
+            <input type="radio" name="projectType" value="anderes">
+            <span class="radio-indicator"></span>
+            <span class="radio-label">Anderes</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(1)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Zurueck
+        </button>
+        <button class="btn-next" id="btnStep2Next" disabled onclick="goStep(3)">
+          Weiter
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 3: Los geht's ═══ -->
+    <div class="step" data-step="3">
+      <h2 class="step-title">Los geht's!</h2>
+      <p class="step-sub">Hier ist die Zusammenfassung deines Projekts. Alles bereit?</p>
+
+      <div class="summary-block">
+        <div class="summary-row">
+          <span class="summary-label">Projektname</span>
+          <span class="summary-value" id="sumName">--</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Projekttyp</span>
+          <span class="summary-value" id="sumType">--</span>
+        </div>
+      </div>
+
+      <div class="summary-ai-note">
+        <div class="ai-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          Qntum AI
+        </div>
+        <div class="ai-msg">
+          Dein Workspace wird vorbereitet. Sobald du startest, kannst du per Chat mit der KI dein Projekt gestalten, Seiten hinzufuegen und alles in Echtzeit anpassen.
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn-back" onclick="goStep(2)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Zurueck
+        </button>
+        <button class="btn-workspace" id="btnStart" onclick="createProject()">
+          <span class="btn-label">Zum Workspace</span>
+          <span class="btn-spinner"></span>
+          <svg class="btn-label" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ERROR TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ AUTH GUARD ═══
+(function() {
+  const token = localStorage.getItem('qntum_token');
+  if (!token) {
+    window.location.href = 'auth.html';
+    return;
+  }
+})();
+
+// ═══ STATE ═══
+let currentStep = 1;
+let selectedType = null;
+const userName = localStorage.getItem('qntum_user_name') || '';
+
+// ═══ PERSONALIZED WELCOME ═══
+(function() {
+  const el = document.getElementById('welcomeText');
+  if (userName) {
+    el.innerHTML = 'Hallo <strong>' + escapeHtml(userName) + '</strong>! Erstelle beeindruckende Websites in Minuten \u2014 mit der Kraft von KI. Beschreibe einfach, was du brauchst, und Qntum baut es f\u00fcr dich.';
+  } else {
+    el.textContent = 'Erstelle beeindruckende Websites in Minuten \u2014 mit der Kraft von KI. Beschreibe einfach, was du brauchst, und Qntum baut es f\u00fcr dich.';
+  }
+})();
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+// ═══ TYPE LABELS ═══
+const typeLabels = {
+  'landing-page': 'Landing Page',
+  'portfolio': 'Portfolio',
+  'online-shop': 'Online-Shop',
+  'web-app': 'Web-App',
+  'blog': 'Blog',
+  'anderes': 'Anderes'
+};
+
+// ═══ SELECT PROJECT TYPE ═══
+function selectType(card) {
+  document.querySelectorAll('#projectTypeGroup .radio-card').forEach(function(c) {
+    c.classList.remove('selected');
+  });
+  card.classList.add('selected');
+  card.querySelector('input[type="radio"]').checked = true;
+  selectedType = card.dataset.value;
+  validateStep2();
+}
+
+// ═══ VALIDATE STEP 2 ═══
+function validateStep2() {
+  var name = document.getElementById('projectName').value.trim();
+  var btn = document.getElementById('btnStep2Next');
+  btn.disabled = !(name.length > 0 && selectedType);
+}
+
+document.getElementById('projectName').addEventListener('input', validateStep2);
+
+// ═══ STEP NAVIGATION ═══
+function goStep(n) {
+  // Hide current step
+  document.querySelectorAll('.step').forEach(function(s) {
+    s.classList.remove('active');
+  });
+
+  // Show target step
+  document.querySelector('.step[data-step="' + n + '"]').classList.add('active');
+
+  // Update dots
+  document.querySelectorAll('.step-dot').forEach(function(dot) {
+    var dn = parseInt(dot.dataset.dot);
+    dot.classList.remove('active', 'done');
+    if (dn === n) dot.classList.add('active');
+    else if (dn < n) dot.classList.add('done');
+  });
+
+  currentStep = n;
+
+  // Populate summary on step 3
+  if (n === 3) {
+    document.getElementById('sumName').textContent = document.getElementById('projectName').value.trim();
+    document.getElementById('sumType').textContent = typeLabels[selectedType] || selectedType;
+  }
+}
+
+// ═══ CREATE PROJECT & REDIRECT ═══
+async function createProject() {
+  var btn = document.getElementById('btnStart');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  var projectName = document.getElementById('projectName').value.trim();
+  var projectType = selectedType;
+  var token = localStorage.getItem('qntum_token');
+
+  try {
+    var res = await fetch('/api/projects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        name: projectName,
+        type: projectType
+      })
+    });
+
+    if (!res.ok) {
+      var errData = await res.json().catch(function() { return {}; });
+      throw new Error(errData.message || 'Projekt konnte nicht erstellt werden.');
+    }
+
+    var data = await res.json();
+    var projectId = data.id || data.project_id || data.projectId;
+
+    if (projectId) {
+      window.location.href = 'workspace.html?project=' + encodeURIComponent(projectId);
+    } else {
+      window.location.href = 'workspace.html';
+    }
+
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showToast(err.message || 'Ein Fehler ist aufgetreten. Bitte versuche es erneut.');
+  }
+}
+
+// ═══ TOAST ═══
+function showToast(msg) {
+  var toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('visible');
+  setTimeout(function() {
+    toast.classList.remove('visible');
+  }, 4000);
+}
+</script>
+
+</body>
+</html>
