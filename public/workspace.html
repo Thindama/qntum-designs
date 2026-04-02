@@ -1094,6 +1094,408 @@ input, textarea { font-family: inherit; }
 }
 .publish-success-url:hover { background: rgba(0,230,138,0.12); }
 
+/* ═══════════════════════════════════════
+   TOOLBAR ACTIONS
+   ═══════════════════════════════════════ */
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+}
+.toolbar-action {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-text-3);
+  border-radius: 8px;
+  transition: all var(--ws-transition);
+  white-space: nowrap;
+}
+.toolbar-action:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
+.toolbar-action.disabled { opacity: 0.35; cursor: not-allowed; }
+.toolbar-action.disabled:hover { background: none; color: var(--ws-text-3); }
+.toolbar-action svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+/* ═══════════════════════════════════════
+   GENERATION OVERLAY
+   ═══════════════════════════════════════ */
+.gen-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8,8,15,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 50;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.gen-overlay.active { display: flex; }
+.gen-pulse {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.15), transparent 70%);
+  position: relative;
+  animation: genPulse 2s ease-in-out infinite;
+}
+.gen-pulse::before {
+  content: '';
+  position: absolute;
+  inset: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,229,255,0.3);
+  border-top-color: #00e5ff;
+  animation: spin 1s linear infinite;
+}
+.gen-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 25px;
+  border-radius: 50%;
+  background: rgba(0,229,255,0.08);
+}
+@keyframes genPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,229,255,0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px 10px rgba(0,229,255,0.1); }
+}
+.gen-status {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ws-text);
+  transition: opacity 0.25s ease;
+}
+.gen-progress {
+  width: 200px;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.gen-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00e5ff, var(--ws-primary));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+/* ═══════════════════════════════════════
+   MODAL OVERLAYS (Deploy, Agent, Domain, SEO, Form, WhatsApp)
+   ═══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  width: 90vw;
+  max-width: 520px;
+  background: var(--ws-bg);
+  border: 1px solid var(--ws-border-l);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  animation: modalIn 0.25s cubic-bezier(0.16,1,0.3,1);
+}
+.modal-box.wide { max-width: 720px; }
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+}
+.modal-header h2 {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-header h2 svg { width: 20px; height: 20px; color: var(--ws-primary); }
+.modal-close {
+  width: 28px; height: 28px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ws-text-3); transition: all 0.15s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.06); color: var(--ws-text); }
+.modal-close svg { width: 16px; height: 16px; }
+.modal-body { padding: 0 24px 24px; }
+.modal-field { margin-bottom: 16px; }
+.modal-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ws-text-2);
+  margin-bottom: 6px;
+}
+.modal-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  color: var(--ws-text);
+  font-size: 13px;
+  font-family: var(--ws-mono);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.modal-input:focus { border-color: rgba(0,230,138,0.4); }
+.modal-input::placeholder { color: var(--ws-text-3); }
+textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
+.modal-hint {
+  font-size: 11px;
+  color: var(--ws-text-3);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.modal-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.2s;
+}
+.modal-btn-primary {
+  background: var(--ws-primary);
+  color: #000;
+}
+.modal-btn-primary:hover { background: var(--ws-primary-l); box-shadow: 0 4px 20px rgba(0,230,138,0.3); }
+.modal-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.modal-btn-secondary {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-2);
+}
+.modal-btn-secondary:hover { border-color: var(--ws-border-l); color: var(--ws-text); }
+
+/* Deploy modal specifics */
+.deploy-slug-row {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.deploy-slug-row:focus-within { border-color: rgba(0,230,138,0.4); }
+.deploy-slug-prefix {
+  padding: 10px 12px;
+  font-size: 12px;
+  font-family: var(--ws-mono);
+  color: var(--ws-text-3);
+  background: rgba(255,255,255,0.02);
+  border-right: 1px solid var(--ws-border);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.deploy-slug-row input {
+  flex: 1;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  color: var(--ws-primary-l);
+  font-size: 13px;
+  font-family: var(--ws-mono);
+  font-weight: 600;
+  outline: none;
+}
+.deploy-slug-row input::placeholder { color: var(--ws-text-3); font-weight: 400; }
+
+.deploy-loading {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 0;
+  gap: 20px;
+}
+.deploy-loading.active { display: flex; }
+.deploy-loading .gen-pulse {
+  width: 60px;
+  height: 60px;
+}
+.deploy-loading-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ws-text-2);
+  transition: opacity 0.25s ease;
+}
+.deploy-success {
+  display: none;
+  text-align: center;
+  padding: 16px 0;
+}
+.deploy-success.visible { display: block; }
+.deploy-success-icon {
+  width: 48px; height: 48px;
+  background: rgba(0,230,138,0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+}
+.deploy-success-icon svg { width: 24px; height: 24px; color: var(--ws-primary); }
+.deploy-success h3 { font-size: 15px; margin-bottom: 8px; }
+.deploy-success-url {
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(0,230,138,0.08);
+  border: 1px solid rgba(0,230,138,0.2);
+  border-radius: 8px;
+  font-family: var(--ws-mono);
+  font-size: 13px;
+  color: var(--ws-primary-l);
+  font-weight: 600;
+  margin: 8px 0 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.deploy-success-url:hover { background: rgba(0,230,138,0.12); }
+.deploy-upgrade {
+  display: none;
+  text-align: center;
+  padding: 24px 0;
+}
+.deploy-upgrade.visible { display: block; }
+.deploy-upgrade p {
+  color: var(--ws-text-2);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+/* Agent modal grid */
+.agent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.agent-card {
+  padding: 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.agent-card:hover {
+  background: rgba(0,230,138,0.04);
+  border-color: rgba(0,230,138,0.2);
+}
+.agent-card-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+.agent-card-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ws-text);
+  margin-bottom: 4px;
+}
+.agent-card-desc {
+  font-size: 11px;
+  color: var(--ws-text-3);
+  line-height: 1.5;
+}
+
+/* Domain DNS info */
+.domain-dns-info {
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(0,212,255,0.04);
+  border: 1px solid rgba(0,212,255,0.1);
+  border-radius: 8px;
+  font-size: 11px;
+  color: var(--ws-text-2);
+  font-family: var(--ws-mono);
+  line-height: 1.8;
+}
+.domain-dns-info strong { color: var(--ws-accent); }
+
+/* WhatsApp widget preview */
+.wa-widget-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+}
+.wa-widget-mock {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+}
+.wa-widget-mock svg { width: 28px; height: 28px; color: #fff; }
+
+/* Toggle switch */
+.modal-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+.modal-toggle-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ws-text-2);
+}
+.toggle-switch {
+  width: 40px;
+  height: 22px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 11px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-switch.on { background: var(--ws-primary); }
+.toggle-switch::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.2s;
+}
+.toggle-switch.on::after { transform: translateX(18px); }
+
 </style>
 </head>
 
@@ -1188,6 +1590,36 @@ input, textarea { font-family: inherit; }
       </div>
       <span class="plan-badge" id="planBadge">...</span>
       <a href="dashboard.html" class="topbar-avatar" id="topbarAvatar" style="text-decoration:none;color:inherit;" title="Dashboard">?</a>
+      <div class="toolbar-actions">
+        <button class="toolbar-action" id="btnDeploy">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+          Deploy
+        </button>
+        <button class="toolbar-action" id="btnShare">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Teilen
+        </button>
+        <button class="toolbar-action" id="btnAgent">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16.01"/><line x1="16" y1="16" x2="16" y2="16.01"/></svg>
+          KI-Agent
+        </button>
+        <button class="toolbar-action" id="btnDomain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Domain
+        </button>
+        <button class="toolbar-action" id="btnSeo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          SEO
+        </button>
+        <button class="toolbar-action" id="btnForm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg>
+          Formular
+        </button>
+        <button class="toolbar-action" id="btnWhatsapp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          WhatsApp
+        </button>
+      </div>
       <button class="btn-publish">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
         Publish
@@ -1196,7 +1628,14 @@ input, textarea { font-family: inherit; }
   </header>
 
   <!-- ═══ MAIN ═══ -->
-  <main class="main" id="mainArea">
+  <main class="main" id="mainArea" style="position:relative;">
+
+    <!-- GENERATION OVERLAY -->
+    <div class="gen-overlay" id="genOverlay">
+      <div class="gen-pulse"></div>
+      <div class="gen-status" id="genStatus">Analysiere deinen Prompt...</div>
+      <div class="gen-progress"><div class="gen-progress-bar" id="genProgressBar"></div></div>
+    </div>
 
     <!-- CHAT PANEL -->
     <section class="chat-panel" style="position:relative;">
@@ -1380,6 +1819,242 @@ input, textarea { font-family: inherit; }
             <button class="publish-btn publish-btn-secondary" id="publishDone">Schließen</button>
             <button class="publish-btn publish-btn-primary" id="publishOpen" onclick="window.open(document.getElementById('publishLiveUrl').href,'_blank')">Im Browser öffnen</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DEPLOY MODAL ═══ -->
+  <div class="modal-overlay" id="deployOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
+          Website deployen
+        </h2>
+        <button class="modal-close" data-close="deployOverlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="deployForm">
+          <div class="modal-field">
+            <label class="modal-label">Subdomain</label>
+            <div class="deploy-slug-row">
+              <span class="deploy-slug-prefix" id="deployPrefix"></span>
+              <input type="text" id="deploySlug" placeholder="mein-projekt" autocomplete="off" spellcheck="false">
+              <span class="deploy-slug-prefix">.qntum.design</span>
+            </div>
+            <div class="modal-hint">Nur Kleinbuchstaben, Zahlen und Bindestriche. Min. 3 Zeichen.</div>
+          </div>
+          <div class="modal-actions">
+            <button class="modal-btn modal-btn-secondary" data-close="deployOverlay">Abbrechen</button>
+            <button class="modal-btn modal-btn-primary" id="deploySubmit">Deploy starten</button>
+          </div>
+        </div>
+        <div class="deploy-loading" id="deployLoading">
+          <div class="gen-pulse"></div>
+          <div class="deploy-loading-text" id="deployLoadingText">Website wird vorbereitet...</div>
+        </div>
+        <div class="deploy-success" id="deploySuccess">
+          <div class="deploy-success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <h3>Deploy erfolgreich!</h3>
+          <div class="deploy-success-url" id="deployLiveUrl"></div>
+          <div class="modal-actions" style="margin-top:16px;">
+            <button class="modal-btn modal-btn-secondary" data-close="deployOverlay">Schliessen</button>
+            <button class="modal-btn modal-btn-primary" id="deployCopyUrl">URL kopieren</button>
+          </div>
+        </div>
+        <div class="deploy-upgrade" id="deployUpgrade">
+          <div style="width:48px;height:48px;background:rgba(255,180,0,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFB400" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <p>Deploy ist nur fuer Pro- und Business-Nutzer verfuegbar. Upgrade deinen Plan, um deine Website live zu stellen.</p>
+          <div class="modal-actions">
+            <button class="modal-btn modal-btn-secondary" data-close="deployOverlay">Abbrechen</button>
+            <button class="modal-btn modal-btn-primary" onclick="window.__openUpgrade()">Plan upgraden</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ KI-AGENT MODAL ═══ -->
+  <div class="modal-overlay" id="agentOverlay">
+    <div class="modal-box wide">
+      <div class="modal-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16.01"/><line x1="16" y1="16" x2="16" y2="16.01"/></svg>
+          KI-Agenten
+        </h2>
+        <button class="modal-close" data-close="agentOverlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="agent-grid" id="agentGrid">
+          <div class="agent-card" data-agent="sales">
+            <div class="agent-card-icon" style="background:rgba(0,230,138,0.1);color:#00E68A;">&#128176;</div>
+            <div class="agent-card-name">Sales Agent</div>
+            <div class="agent-card-desc">Automatisiere deinen Vertrieb mit KI-gestuetzten Verkaufsgespraechen.</div>
+          </div>
+          <div class="agent-card" data-agent="support">
+            <div class="agent-card-icon" style="background:rgba(0,212,255,0.1);color:#00D4FF;">&#128172;</div>
+            <div class="agent-card-name">Support Agent</div>
+            <div class="agent-card-desc">24/7 Kundenservice mit intelligenten Antworten.</div>
+          </div>
+          <div class="agent-card" data-agent="lead">
+            <div class="agent-card-icon" style="background:rgba(167,139,250,0.1);color:#A78BFA;">&#127919;</div>
+            <div class="agent-card-name">Lead Agent</div>
+            <div class="agent-card-desc">Qualifiziere und sammle Leads automatisch.</div>
+          </div>
+          <div class="agent-card" data-agent="booking">
+            <div class="agent-card-icon" style="background:rgba(245,158,11,0.1);color:#F59E0B;">&#128197;</div>
+            <div class="agent-card-name">Booking Agent</div>
+            <div class="agent-card-desc">Termine und Buchungen automatisch verwalten.</div>
+          </div>
+          <div class="agent-card" data-agent="calling">
+            <div class="agent-card-icon" style="background:rgba(239,68,68,0.1);color:#EF4444;">&#128222;</div>
+            <div class="agent-card-name">Calling Agent</div>
+            <div class="agent-card-desc">KI-Telefonassistent fuer eingehende und ausgehende Anrufe.</div>
+          </div>
+          <div class="agent-card" data-agent="whatsapp">
+            <div class="agent-card-icon" style="background:rgba(37,211,102,0.1);color:#25D366;">&#128241;</div>
+            <div class="agent-card-name">WhatsApp Agent</div>
+            <div class="agent-card-desc">Automatisierte WhatsApp-Kommunikation mit Kunden.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DOMAIN MODAL ═══ -->
+  <div class="modal-overlay" id="domainOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Eigene Domain
+        </h2>
+        <button class="modal-close" data-close="domainOverlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">Custom Domain</label>
+          <input type="text" class="modal-input" id="domainInput" placeholder="www.meine-domain.de">
+          <div class="modal-hint">Verbinde deine eigene Domain mit dieser Website.</div>
+        </div>
+        <div class="domain-dns-info">
+          <strong>DNS-Einrichtung:</strong><br>
+          Typ: <strong>CNAME</strong><br>
+          Name: <strong>www</strong> (oder <strong>@</strong> fuer Root-Domain)<br>
+          Ziel: <strong>cname.qntum.design</strong><br><br>
+          Setze diesen Eintrag bei deinem Domain-Provider (z.B. Namecheap, Cloudflare, IONOS).
+        </div>
+        <div class="modal-actions" style="margin-top:16px;">
+          <button class="modal-btn modal-btn-secondary" data-close="domainOverlay">Abbrechen</button>
+          <button class="modal-btn modal-btn-primary" id="domainSave">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SEO MODAL ═══ -->
+  <div class="modal-overlay" id="seoOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          SEO-Einstellungen
+        </h2>
+        <button class="modal-close" data-close="seoOverlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">Seitentitel</label>
+          <input type="text" class="modal-input" id="seoTitle" placeholder="Mein Unternehmen — Startseite">
+          <div class="modal-hint">Erscheint im Browser-Tab und in Suchergebnissen (max. 60 Zeichen).</div>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Meta-Beschreibung</label>
+          <textarea class="modal-input" id="seoDescription" placeholder="Kurze Beschreibung deiner Website fuer Suchmaschinen..." rows="3"></textarea>
+          <div class="modal-hint">Wird in Google-Suchergebnissen angezeigt (max. 160 Zeichen).</div>
+        </div>
+        <div class="modal-field">
+          <label class="modal-label">Keywords</label>
+          <input type="text" class="modal-input" id="seoKeywords" placeholder="keyword1, keyword2, keyword3">
+          <div class="modal-hint">Kommagetrennte Suchbegriffe fuer deine Website.</div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn modal-btn-secondary" data-close="seoOverlay">Abbrechen</button>
+          <button class="modal-btn modal-btn-primary" id="seoSave">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FORMULAR MODAL ═══ -->
+  <div class="modal-overlay" id="formOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg>
+          Kontaktformular
+        </h2>
+        <button class="modal-close" data-close="formOverlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">E-Mail-Adresse fuer Formulareingaenge</label>
+          <input type="email" class="modal-input" id="formEmail" placeholder="kontakt@mein-unternehmen.de">
+          <div class="modal-hint">Formulareingaben werden an diese E-Mail-Adresse gesendet.</div>
+        </div>
+        <div class="modal-toggle-row">
+          <span class="modal-toggle-label">Kontaktformular aktivieren</span>
+          <div class="toggle-switch" id="formToggle"></div>
+        </div>
+        <div class="modal-actions" style="margin-top:8px;">
+          <button class="modal-btn modal-btn-secondary" data-close="formOverlay">Abbrechen</button>
+          <button class="modal-btn modal-btn-primary" id="formSave">Speichern</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ WHATSAPP MODAL ═══ -->
+  <div class="modal-overlay" id="whatsappOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          WhatsApp-Widget
+        </h2>
+        <button class="modal-close" data-close="whatsappOverlay">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-field">
+          <label class="modal-label">Telefonnummer mit Laendervorwahl</label>
+          <input type="tel" class="modal-input" id="waPhone" placeholder="+49 170 1234567">
+          <div class="modal-hint">Besucher koennen dich direkt ueber WhatsApp kontaktieren.</div>
+        </div>
+        <div class="wa-widget-preview">
+          <div class="wa-widget-mock">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+        </div>
+        <div class="modal-actions" style="margin-top:16px;">
+          <button class="modal-btn modal-btn-secondary" data-close="whatsappOverlay">Abbrechen</button>
+          <button class="modal-btn modal-btn-primary" id="waSave">Aktivieren</button>
         </div>
       </div>
     </div>
@@ -2079,6 +2754,268 @@ input, textarea { font-family: inherit; }
   };
 
   loadProject();
+
+  // ═══════════════════════════════════════
+  // GENERATION OVERLAY CONTROLLER
+  // ═══════════════════════════════════════
+  const genOverlay = document.getElementById('genOverlay');
+  const genStatus = document.getElementById('genStatus');
+  const genProgressBar = document.getElementById('genProgressBar');
+
+  const GEN_MESSAGES = [
+    'Analysiere deinen Prompt...',
+    'Erstelle Design-Struktur...',
+    'Generiere HTML & CSS...',
+    'Fuege Interaktionen hinzu...',
+    'Optimiere fuer alle Geraete...',
+    'Fast fertig...'
+  ];
+
+  let genMsgInterval = null;
+  let genMsgIndex = 0;
+  let genProgress = 0;
+
+  function showGenOverlay() {
+    genOverlay.classList.add('active');
+    genMsgIndex = 0;
+    genProgress = 0;
+    genProgressBar.style.width = '0%';
+    genStatus.textContent = GEN_MESSAGES[0];
+    genStatus.style.opacity = '1';
+
+    genMsgInterval = setInterval(() => {
+      genMsgIndex = (genMsgIndex + 1) % GEN_MESSAGES.length;
+      genStatus.style.opacity = '0';
+      setTimeout(() => {
+        genStatus.textContent = GEN_MESSAGES[genMsgIndex];
+        genStatus.style.opacity = '1';
+      }, 250);
+      genProgress = Math.min(90, genProgress + 15);
+      genProgressBar.style.width = genProgress + '%';
+    }, 2500);
+  }
+
+  function hideGenOverlay() {
+    if (genMsgInterval) clearInterval(genMsgInterval);
+    genMsgInterval = null;
+    genProgressBar.style.width = '100%';
+    setTimeout(() => {
+      genOverlay.classList.remove('active');
+    }, 500);
+  }
+
+  // Patch sendMessage to show/hide gen overlay
+  const origSendBtn = sendBtn;
+  const origTextarea = textarea;
+
+  // Wrap the send button click and enter key to hook into gen overlay
+  // We override by adding a capturing listener that shows the overlay
+  function hookGenOverlay() {
+    // Listen for the loading element appearing (signals send started)
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (node.classList && node.classList.contains('msg-loading')) {
+            showGenOverlay();
+          }
+        }
+        for (const node of mutation.removedNodes) {
+          if (node.classList && node.classList.contains('msg-loading')) {
+            hideGenOverlay();
+          }
+        }
+      }
+    });
+    observer.observe(chatMessages, { childList: true });
+  }
+  hookGenOverlay();
+
+  // ═══════════════════════════════════════
+  // MODAL HELPERS
+  // ═══════════════════════════════════════
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+  }
+
+  // Close buttons (all data-close attributes)
+  document.querySelectorAll('[data-close]').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.dataset.close));
+  });
+
+  // Click overlay background to close
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal(overlay.id);
+    });
+  });
+
+  // Toggle switch
+  document.querySelectorAll('.toggle-switch').forEach(el => {
+    el.addEventListener('click', () => el.classList.toggle('on'));
+  });
+
+  // ═══════════════════════════════════════
+  // TOOLBAR BUTTON HANDLERS
+  // ═══════════════════════════════════════
+
+  // Share — copy URL to clipboard
+  document.getElementById('btnShare').addEventListener('click', () => {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('Link kopiert!');
+    }).catch(() => {
+      showToast('Link konnte nicht kopiert werden');
+    });
+  });
+
+  // Deploy
+  document.getElementById('btnDeploy').addEventListener('click', () => {
+    // Reset state
+    document.getElementById('deployForm').style.display = 'block';
+    document.getElementById('deployLoading').classList.remove('active');
+    document.getElementById('deploySuccess').classList.remove('visible');
+    document.getElementById('deployUpgrade').classList.remove('visible');
+
+    if (userPlan === 'explorer') {
+      document.getElementById('deployForm').style.display = 'none';
+      document.getElementById('deployUpgrade').classList.add('visible');
+    } else {
+      // Auto-fill slug
+      const name = document.getElementById('projectNameLabel').textContent || '';
+      const slug = document.getElementById('deploySlug');
+      if (!slug.value) {
+        slug.value = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 50) || '';
+      }
+    }
+    openModal('deployOverlay');
+  });
+
+  // Deploy slug validation
+  document.getElementById('deploySlug').addEventListener('input', function() {
+    this.value = this.value.toLowerCase().replace(/[^a-z0-9-]/g, '').substring(0, 50);
+  });
+
+  // Deploy submit
+  document.getElementById('deploySubmit').addEventListener('click', async () => {
+    const slug = document.getElementById('deploySlug').value.trim();
+    if (!slug || slug.length < 3) {
+      showToast('Subdomain muss mindestens 3 Zeichen lang sein');
+      return;
+    }
+
+    // Show loading
+    document.getElementById('deployForm').style.display = 'none';
+    const loadingEl = document.getElementById('deployLoading');
+    const loadingText = document.getElementById('deployLoadingText');
+    loadingEl.classList.add('active');
+
+    const deployMessages = [
+      'Website wird vorbereitet...',
+      'Dateien werden hochgeladen...',
+      'Domain wird konfiguriert...',
+      'Fast fertig...'
+    ];
+    let dmIdx = 0;
+    const dmInterval = setInterval(() => {
+      dmIdx = (dmIdx + 1) % deployMessages.length;
+      loadingText.style.opacity = '0';
+      setTimeout(() => {
+        loadingText.textContent = deployMessages[dmIdx];
+        loadingText.style.opacity = '1';
+      }, 250);
+    }, 2500);
+
+    try {
+      const pid = projectId || new URLSearchParams(location.search).get('project');
+      const res = await fetch('/api/deploy', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subdomain: slug, html: currentHtml, projectId: pid })
+      });
+
+      clearInterval(dmInterval);
+      loadingEl.classList.remove('active');
+
+      if (res.ok) {
+        const data = await res.json();
+        const liveUrl = data.url || `https://${slug}.qntum.design`;
+        document.getElementById('deployLiveUrl').textContent = liveUrl;
+        document.getElementById('deploySuccess').classList.add('visible');
+        showToast('Website deployed!');
+      } else {
+        const err = await res.json();
+        document.getElementById('deployForm').style.display = 'block';
+        showToast(err.error || 'Deploy fehlgeschlagen');
+      }
+    } catch (e) {
+      clearInterval(dmInterval);
+      loadingEl.classList.remove('active');
+      document.getElementById('deployForm').style.display = 'block';
+      showToast('Netzwerkfehler — bitte versuche es erneut');
+    }
+  });
+
+  // Deploy copy URL
+  document.getElementById('deployCopyUrl').addEventListener('click', () => {
+    const url = document.getElementById('deployLiveUrl').textContent;
+    navigator.clipboard.writeText(url).then(() => showToast('URL kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen'));
+  });
+
+  // Agent modal
+  document.getElementById('btnAgent').addEventListener('click', () => openModal('agentOverlay'));
+
+  // Agent card clicks
+  document.querySelectorAll('.agent-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const agentType = card.dataset.agent;
+      const headline = document.getElementById('projectNameLabel').textContent || '';
+      const branche = '';
+      const url = `https://qntum-ai.onrender.com?agent_type=${encodeURIComponent(agentType)}&branche=${encodeURIComponent(branche)}&headline=${encodeURIComponent(headline)}`;
+      window.open(url, '_blank');
+    });
+  });
+
+  // Domain modal
+  document.getElementById('btnDomain').addEventListener('click', () => openModal('domainOverlay'));
+  document.getElementById('domainSave').addEventListener('click', () => {
+    const domain = document.getElementById('domainInput').value.trim();
+    if (!domain) { showToast('Bitte Domain eingeben'); return; }
+    showToast('Domain gespeichert: ' + domain);
+    closeModal('domainOverlay');
+  });
+
+  // SEO modal
+  document.getElementById('btnSeo').addEventListener('click', () => openModal('seoOverlay'));
+  document.getElementById('seoSave').addEventListener('click', () => {
+    const title = document.getElementById('seoTitle').value.trim();
+    const desc = document.getElementById('seoDescription').value.trim();
+    const keywords = document.getElementById('seoKeywords').value.trim();
+    if (!title && !desc && !keywords) { showToast('Bitte mindestens ein Feld ausfuellen'); return; }
+    showToast('SEO-Einstellungen gespeichert');
+    closeModal('seoOverlay');
+  });
+
+  // Formular modal
+  document.getElementById('btnForm').addEventListener('click', () => openModal('formOverlay'));
+  document.getElementById('formSave').addEventListener('click', () => {
+    const email = document.getElementById('formEmail').value.trim();
+    if (!email) { showToast('Bitte E-Mail-Adresse eingeben'); return; }
+    const enabled = document.getElementById('formToggle').classList.contains('on');
+    showToast(enabled ? 'Kontaktformular aktiviert' : 'Kontaktformular-Einstellungen gespeichert');
+    closeModal('formOverlay');
+  });
+
+  // WhatsApp modal
+  document.getElementById('btnWhatsapp').addEventListener('click', () => openModal('whatsappOverlay'));
+  document.getElementById('waSave').addEventListener('click', () => {
+    const phone = document.getElementById('waPhone').value.trim();
+    if (!phone) { showToast('Bitte Telefonnummer eingeben'); return; }
+    showToast('WhatsApp-Widget aktiviert');
+    closeModal('whatsappOverlay');
+  });
 
 })();
 </script>
