@@ -16,8 +16,8 @@ function formatTokenLimit(n) {
 }
 
 const MODELS = {
-  'sonnet': 'claude-sonnet-4-20250514',
-  'opus': 'claude-opus-4-20250514',
+  'sonnet': 'claude-sonnet-4-5-20250514',
+  'opus': 'claude-sonnet-4-5-20250514',
   'haiku': 'claude-haiku-4-5-20251001',
 };
 
@@ -131,7 +131,7 @@ router.post('/send', async (req, res) => {
 
     const stream = await anthropic.messages.stream({
       model: modelId,
-      max_tokens: 16000,
+      max_tokens: 12000,
       system: getSystemPrompt(currentFiles, skills),
       messages: claudeMessages
     });

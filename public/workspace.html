@@ -1727,6 +1727,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   width: 0%;
   transition: width 0.5s ease;
 }
+.chat-gen-timer {
+  font-size: 11px;
+  font-family: var(--ws-mono);
+  color: var(--ws-text-3);
+  margin-top: 4px;
+}
 
 /* Flow question label */
 .flow-question {
@@ -1888,6 +1894,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         <div class="chat-gen-pulse"></div>
         <div class="chat-gen-status" id="chatGenStatus">Analysiere deine Angaben...</div>
         <div class="chat-gen-progress"><div class="chat-gen-progress-bar" id="chatGenProgressBar"></div></div>
+        <div class="chat-gen-timer" id="chatGenTimer">0:00</div>
       </div>
       <div class="chat-header">
         <div class="chat-header-left">
@@ -2954,16 +2961,21 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     'Fast fertig...'
   ];
   let chatGenInterval = null;
+  let chatGenTimerInterval = null;
   let chatGenMsgIdx = 0;
   let chatGenProgress = 0;
+  let chatGenStartTime = 0;
+  const chatGenTimer = document.getElementById('chatGenTimer');
 
   function showChatGenOverlay() {
     chatGenOverlay.classList.add('active');
     chatGenMsgIdx = 0;
     chatGenProgress = 0;
+    chatGenStartTime = Date.now();
     chatGenProgressBar.style.width = '0%';
     chatGenStatus.textContent = CHAT_GEN_MESSAGES[0];
     chatGenStatus.style.opacity = '1';
+    chatGenTimer.textContent = '0:00';
 
     chatGenInterval = setInterval(() => {
       chatGenMsgIdx = (chatGenMsgIdx + 1) % CHAT_GEN_MESSAGES.length;
@@ -2972,13 +2984,21 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         chatGenStatus.textContent = CHAT_GEN_MESSAGES[chatGenMsgIdx];
         chatGenStatus.style.opacity = '1';
       }, 250);
-      chatGenProgress = Math.min(90, chatGenProgress + 12);
+      chatGenProgress = Math.min(90, chatGenProgress + 8);
       chatGenProgressBar.style.width = chatGenProgress + '%';
     }, 2500);
+
+    chatGenTimerInterval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - chatGenStartTime) / 1000);
+      const mins = Math.floor(elapsed / 60);
+      const secs = String(elapsed % 60).padStart(2, '0');
+      chatGenTimer.textContent = `${mins}:${secs}`;
+    }, 1000);
   }
 
   function hideChatGenOverlay() {
     if (chatGenInterval) clearInterval(chatGenInterval);
+    if (chatGenTimerInterval) clearInterval(chatGenTimerInterval);
     chatGenProgressBar.style.width = '100%';
     setTimeout(() => {
       chatGenOverlay.classList.remove('active');
@@ -3192,12 +3212,15 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         throw new Error(err.error || 'Anfrage fehlgeschlagen');
       }
 
-      // Read SSE stream
+      // Show loading overlay instead of streaming text into chat
+      loadingEl.remove();
+      showChatGenOverlay();
+
+      // Read SSE stream — ONLY render to preview, NEVER to chat
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
       let fullText = '';
-      let aiMsgEl = null;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -3205,7 +3228,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
-        buffer = lines.pop(); // Keep incomplete line
+        buffer = lines.pop();
 
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
@@ -3213,42 +3236,31 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
           if (data.type === 'text') {
             fullText += data.content;
-            // Create or update AI message bubble
-            if (!aiMsgEl) {
-              loadingEl.remove();
-              aiMsgEl = appendMessage('assistant', '');
+            // Live render partial HTML to preview (NOT to chat)
+            if (fullText.includes('</head>') && fullText.includes('<body')) {
+              try { updatePreview(fullText); } catch(e) {}
             }
-            const contentEl = aiMsgEl.querySelector('.msg-content');
-            // Show text without code blocks (all types)
-            const displayText = fullText.replace(/```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?[\s\S]*?```/g, '').trim();
-            contentEl.innerHTML = displayText || '<em>Generiere Projekt…</em>';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
           }
 
           if (data.type === 'done') {
-            // Update file tree with all project files
+            hideChatGenOverlay();
+
             if (data.files && Object.keys(data.files).length) {
               updateFileTree(data.files);
-              // Expand sidebar to show files
               if (!workspace.classList.contains('sidebar-open')) {
                 workspace.classList.add('sidebar-open');
               }
             }
 
-            // Update preview with generated HTML
             if (data.html) {
               updatePreview(data.html);
             }
 
-            // Update message with summary
-            if (aiMsgEl) {
-              const contentEl = aiMsgEl.querySelector('.msg-content');
-              const fileCount = data.fileList?.length || 0;
-              const filesLabel = fileCount ? ` — ${fileCount} Datei${fileCount > 1 ? 'en' : ''}: ${data.fileList.join(', ')}` : '';
-              contentEl.innerHTML = `<span class="msg-success">✅ ${data.text || 'Projekt wurde aktualisiert!'}</span>${filesLabel ? `<br><span style="font-size:11px;color:var(--ws-text-3);font-family:var(--ws-mono);">${filesLabel}</span>` : ''}`;
-            }
+            // Show ONLY a clean 1-2 sentence summary in chat
+            const rawText = (data.text || 'Änderungen wurden übernommen.').replace(/[*_`#]/g, '').replace(/```[\s\S]*?```/g, '').trim();
+            const summary = rawText.split(/[.\n]/).filter(s => s.trim()).slice(0, 2).join('. ').trim();
+            appendFlowMessage(`✅ ${summary || 'Änderungen wurden übernommen.'}`);
 
-            // Update token counters (session + total)
             if (data.usage) {
               sessionTokens += data.usage.total;
               userTokensUsed += data.usage.total;
@@ -3257,14 +3269,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
           }
 
           if (data.type === 'error') {
-            loadingEl?.remove();
+            hideChatGenOverlay();
             showToast(data.error);
           }
         }
       }
     } catch (err) {
-      loadingEl?.remove();
-      appendMessage('assistant', `Fehler: ${err.message}. Bitte versuche es erneut.`);
+      hideChatGenOverlay();
+      appendFlowMessage(`Fehler: ${err.message}. Bitte versuche es erneut.`);
     }
 
     isSending = false;
