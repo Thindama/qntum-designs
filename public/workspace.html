@@ -748,7 +748,33 @@ input, textarea { font-family: inherit; }
   overflow-x: hidden;
   box-shadow: 0 8px 40px rgba(0,0,0,0.4);
   transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
+.preview-gen-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8,8,8,0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 10;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+}
+.preview-gen-overlay.active { display: flex; }
+.preview-gen-overlay.fade-out { opacity: 0; }
+.pgo-mark { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,229,255,0.18); font-weight: 600; position: absolute; top: 32px; }
+.pgo-fact-container { max-width: 520px; text-align: center; padding: 0 40px; min-height: 120px; display: flex; align-items: center; justify-content: center; }
+.pgo-fact { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.82); font-weight: 400; letter-spacing: 0.01em; opacity: 0; transform: translateY(12px); animation: pgoFactIn 8s ease forwards; }
+@keyframes pgoFactIn { 0%{opacity:0;transform:translateY(12px)} 6%{opacity:1;transform:translateY(0)} 90%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-8px)} }
+.pgo-bottom { position: absolute; bottom: 48px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.pgo-pulse { width: 200px; height: 2px; background: rgba(0,229,255,0.1); border-radius: 1px; overflow: hidden; position: relative; }
+.pgo-pulse::after { content: ''; position: absolute; left: -40%; width: 40%; height: 100%; background: linear-gradient(90deg,transparent,#00e5ff,transparent); animation: pulseLine 2s ease-in-out infinite; }
+.pgo-label { font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 500; letter-spacing: 0.04em; }
 .preview-frame.tablet { max-width: 768px; }
 .preview-frame.mobile { max-width: 375px; }
 
@@ -2004,6 +2030,15 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
           </div>
           <!-- Iframe for rendered website -->
           <iframe id="previewIframe" sandbox="allow-scripts allow-same-origin" style="display:none;"></iframe>
+          <!-- Fact overlay on top of iframe during generation -->
+          <div class="preview-gen-overlay" id="previewGenOverlay">
+            <div class="pgo-mark">QNTUM</div>
+            <div class="pgo-fact-container"><p class="pgo-fact" id="pgoFact"></p></div>
+            <div class="pgo-bottom">
+              <div class="pgo-pulse"></div>
+              <div class="pgo-label">Deine Website wird generiert</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -2469,42 +2504,42 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     'Deine Website ist gerade im Entstehen. Dein KI-gestütztes Business beginnt jetzt.'
   ];
 
+  let pgoFactInterval = null;
+  const previewGenOverlay = document.getElementById('previewGenOverlay');
+  const pgoFactEl = document.getElementById('pgoFact');
+
   function showPreviewLoader() {
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
-    // Shuffle facts for each load
+
+    // Shuffle facts
     const shuffled = [...LOADING_FACTS];
     for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; }
-    const factsJson = JSON.stringify(shuffled);
-    const loaderHtml = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>'
-      + '*{margin:0;padding:0;box-sizing:border-box}'
-      + 'body{background:#080808;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}'
-      + '.fact-container{max-width:520px;text-align:center;padding:0 40px;position:relative;min-height:120px;display:flex;align-items:center;justify-content:center}'
-      + '.fact{font-size:17px;line-height:1.7;color:rgba(255,255,255,0.82);font-weight:400;letter-spacing:0.01em;opacity:0;transform:translateY(12px);animation:factIn 8s ease forwards}'
-      + '@keyframes factIn{0%{opacity:0;transform:translateY(12px)}6%{opacity:1;transform:translateY(0)}90%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}'
-      + '.bottom{position:fixed;bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px}'
-      + '.pulse-line{width:200px;height:2px;background:rgba(0,229,255,0.1);border-radius:1px;overflow:hidden;position:relative}'
-      + '.pulse-line::after{content:\'\';position:absolute;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,#00e5ff,transparent);animation:pulseLine 2s ease-in-out infinite}'
-      + '@keyframes pulseLine{0%{left:-40%}100%{left:100%}}'
-      + '.gen-label{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500;letter-spacing:0.04em}'
-      + '.qntm-mark{position:fixed;top:32px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,229,255,0.18);font-weight:600}'
-      + '</style></head><body>'
-      + '<div class="qntm-mark">QNTUM</div>'
-      + '<div class="fact-container"><p class="fact" id="factText"></p></div>'
-      + '<div class="bottom">'
-      + '<div class="pulse-line"></div>'
-      + '<div class="gen-label">Deine Website wird generiert</div>'
-      + '</div>'
-      + '<script>'
-      + 'var facts=' + factsJson + ';'
-      + 'var idx=0;'
-      + 'var el=document.getElementById("factText");'
-      + 'function showFact(){el.style.animation="none";el.offsetHeight;el.textContent=facts[idx];el.style.animation="factIn 6s ease forwards";idx=(idx+1)%facts.length}'
-      + 'showFact();'
-      + 'setInterval(showFact,8000);'
-      + '<\/script></body></html>';
-    previewIframe.srcdoc = loaderHtml;
+
+    // Show overlay on top of iframe
+    let idx = 0;
+    previewGenOverlay.classList.remove('fade-out');
+    previewGenOverlay.classList.add('active');
+
+    function showFact() {
+      pgoFactEl.style.animation = 'none';
+      pgoFactEl.offsetHeight;
+      pgoFactEl.textContent = shuffled[idx];
+      pgoFactEl.style.animation = 'pgoFactIn 8s ease forwards';
+      idx = (idx + 1) % shuffled.length;
+    }
+    showFact();
+    if (pgoFactInterval) clearInterval(pgoFactInterval);
+    pgoFactInterval = setInterval(showFact, 8000);
+  }
+
+  function hidePreviewLoader() {
+    if (pgoFactInterval) { clearInterval(pgoFactInterval); pgoFactInterval = null; }
+    previewGenOverlay.classList.add('fade-out');
+    setTimeout(() => {
+      previewGenOverlay.classList.remove('active', 'fade-out');
+    }, 600);
   }
 
   function updatePreview(html) {
@@ -2513,13 +2548,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     console.log('[Qntum] updatePreview: htmlContent.length =', html.length, '| has </html>:', html.includes('</html>'));
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
-    // Smooth fade transition
-    previewIframe.style.transition = 'opacity 0.4s ease';
-    previewIframe.style.opacity = '0';
-    setTimeout(() => {
-      previewIframe.srcdoc = html;
-      previewIframe.style.opacity = '1';
-    }, 350);
+    previewIframe.style.opacity = '1';
+    previewIframe.srcdoc = html;
   }
 
   function fmtTokens(n) {
@@ -3217,6 +3247,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'done') {
               hideChatGenOverlay();
+              hidePreviewLoader();
 
               // Priority 1: Use server-extracted HTML
               let htmlToRender = data.html;
@@ -3260,6 +3291,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'error') {
               hideChatGenOverlay();
+              hidePreviewLoader();
               showErrorWithRetry(data.error);
             }
           } catch (parseErr) {
@@ -3269,6 +3301,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       }
     } catch (err) {
       hideChatGenOverlay();
+      hidePreviewLoader();
       console.error('Generation fetch error:', err);
       showErrorWithRetry('Verbindungsfehler. Bitte prüfe deine Internetverbindung.');
     }
@@ -3411,6 +3444,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'done') {
               hideChatGenOverlay();
+              hidePreviewLoader();
 
               // Extract HTML: server > client-side > files
               let htmlToRender = data.html;
@@ -3444,6 +3478,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'error') {
               hideChatGenOverlay();
+              hidePreviewLoader();
               appendFlowMessage(`<div style="color:#ff6b6b;">⚠️ ${data.error}</div>`);
             }
           } catch (parseErr) {
@@ -3453,6 +3488,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       }
     } catch (err) {
       hideChatGenOverlay();
+      hidePreviewLoader();
       console.error('sendMessage error:', err);
       appendFlowMessage(`<div style="color:#ff6b6b;">⚠️ Fehler: ${err.message || 'Verbindungsfehler'}. Bitte versuche es erneut.</div>`);
     }
