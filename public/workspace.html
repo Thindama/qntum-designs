@@ -1402,8 +1402,9 @@ input, textarea { font-family: inherit; }
   // ═══════════════════════════════════════
   // AUTH + STATE
   // ═══════════════════════════════════════
+  const isDemo = new URLSearchParams(window.location.search).has('demo');
   const token = localStorage.getItem('qntum_token');
-  if (!token) { window.location.href = '/auth.html'; return; }
+  if (!token && !isDemo) { window.location.href = '/auth.html'; return; }
 
   const projectId = new URLSearchParams(window.location.search).get('project');
   let currentHtml = '';
@@ -1417,6 +1418,12 @@ input, textarea { font-family: inherit; }
   const chatMessages = document.getElementById('chatMessages');
   const textarea = document.querySelector('.chat-input-box textarea');
   const sendBtn = document.querySelector('.send-btn');
+
+  // Demo mode: read-only, no API calls
+  if (isDemo) {
+    if (textarea) { textarea.placeholder = 'Demo-Modus — nur Vorschau'; textarea.disabled = true; }
+    if (sendBtn) sendBtn.disabled = true;
+  }
   const previewIframe = document.getElementById('previewIframe');
   const previewEmpty = document.getElementById('previewEmpty');
   const previewFrameWrap = document.getElementById('previewFrameWrap');

@@ -327,29 +327,9 @@ p { color: var(--text-secondary); }
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 60px;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 48px;
   align-items: center;
-}
-
-/* Hero dual mockups */
-.hero-mockups {
-  display: grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap: 16px;
-  align-items: start;
-}
-.mockup-label {
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 8px;
-  padding-left: 4px;
-}
-.hero-mockup-secondary {
-  animation-delay: 0.6s !important;
 }
 
 .hero-content { max-width: 540px; }
@@ -465,8 +445,8 @@ p { color: var(--text-secondary); }
 
 .mockup-workspace {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  min-height: 340px;
+  grid-template-columns: 0.85fr 1.15fr;
+  min-height: 420px;
 }
 .mockup-chat {
   padding: 20px;
@@ -662,34 +642,8 @@ p { color: var(--text-secondary); }
 .mini-cc-stats div { text-align: center; }
 .mini-cc-stats div strong { font-size: 0.4rem; color: #00B4D8; display: block; font-weight: 800; }
 .mini-cc-stats div span { font-size: 0.25rem; color: rgba(255,255,255,0.25); }
-
-/* UI/UX Skill Preview */
-.uiux-preview {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius);
-  padding: 14px;
-  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.4), 0 0 60px -20px var(--glow-m);
-  animation: fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
-  opacity: 0;
-}
-.uiux-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-.uiux-title { font-size: 0.7rem; font-weight: 700; color: var(--text); font-family: var(--font-heading); }
-.uiux-badge { font-size: 0.5rem; padding: 2px 8px; background: rgba(0,212,255,0.12); color: var(--accent); border-radius: 20px; font-weight: 600; }
-.uiux-section { margin-bottom: 10px; }
-.uiux-label { font-size: 0.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px; }
-.uiux-palette { display: flex; gap: 4px; }
-.uiux-palette div { width: 100%; height: 22px; border-radius: 4px; border: 1px solid var(--border); }
-.uiux-type-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
-.uiux-type-sample { color: var(--text); font-family: var(--font-heading); }
-.uiux-type-meta { font-size: 0.35rem; color: var(--text-muted); }
-.uiux-components { display: flex; gap: 4px; }
-.uiux-comp-btn { font-size: 0.4rem; padding: 3px 10px; border-radius: 4px; font-weight: 600; }
-.uiux-comp-btn.primary { background: var(--primary); color: #fff; }
-.uiux-comp-btn.secondary { background: var(--accent); color: var(--bg-deep); }
-.uiux-comp-btn.ghost { border: 1px solid var(--border-light); color: var(--text-secondary); }
-.uiux-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
-.uiux-grid div { height: 18px; background: var(--glass); border: 1px solid var(--border); border-radius: 2px; }
+.mini-cc-cta { padding: 5px 10px; text-align: center; }
+.mini-cc-cta span { font-size: 0.32rem; padding: 3px 12px; background: #00B4D8; color: #fff; border-radius: 3px; font-weight: 600; }
 
 .mockup-shimmer {
   position: absolute;
@@ -1012,89 +966,9 @@ p { color: var(--text-secondary); }
   border-radius: 4px;
 }
 
-/* SaaS */
-.showcase-card[data-category="saas"] .showcase-gradient { background: #0F172A; }
-.showcase-card[data-category="saas"] .sc-logo { background: #3B82F6; }
-.showcase-card[data-category="saas"] .sc-links span { background: rgba(255,255,255,0.2); }
-.showcase-card[data-category="saas"] .sc-h { width: 70%; background: #fff; }
-.showcase-card[data-category="saas"] .sc-p { width: 50%; background: rgba(255,255,255,0.3); }
-.showcase-card[data-category="saas"] .sc-btn-mock { width: 36%; background: #3B82F6; }
-.showcase-card[data-category="saas"] .sc-cards-mock span { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.2); }
-
-/* Portfolio */
-.showcase-card[data-category="portfolio"] .showcase-gradient { background: #FAFAF9; }
-.showcase-card[data-category="portfolio"] .sc-logo { background: #1C1917; }
-.showcase-card[data-category="portfolio"] .sc-links span { background: rgba(0,0,0,0.15); }
-.showcase-card[data-category="portfolio"] .sc-h { width: 50%; background: #1C1917; }
-.showcase-card[data-category="portfolio"] .sc-p { width: 40%; background: rgba(0,0,0,0.15); }
-.showcase-card[data-category="portfolio"] .sc-btn-mock { width: 28%; background: #1C1917; }
-.showcase-card[data-category="portfolio"] .sc-cards-mock span { background: #F5F5F4; border: 1px solid #E7E5E4; }
-
-/* Restaurant */
-.showcase-card[data-category="restaurant"] .showcase-gradient { background: linear-gradient(135deg, #1A0F07, #3D2415); }
-.showcase-card[data-category="restaurant"] .sc-logo { background: #D4A574; }
-.showcase-card[data-category="restaurant"] .sc-links span { background: rgba(212,165,116,0.3); }
-.showcase-card[data-category="restaurant"] .sc-h { width: 60%; background: #D4A574; }
-.showcase-card[data-category="restaurant"] .sc-p { width: 45%; background: rgba(255,255,255,0.2); }
-.showcase-card[data-category="restaurant"] .sc-btn-mock { width: 32%; background: #D4A574; }
-.showcase-card[data-category="restaurant"] .sc-cards-mock span { background: rgba(212,165,116,0.1); border: 1px solid rgba(212,165,116,0.2); }
-
-/* E-Commerce */
-.showcase-card[data-category="ecommerce"] .showcase-gradient { background: #FFF7ED; }
-.showcase-card[data-category="ecommerce"] .sc-logo { background: #EA580C; }
-.showcase-card[data-category="ecommerce"] .sc-links span { background: rgba(0,0,0,0.12); }
-.showcase-card[data-category="ecommerce"] .sc-h { width: 55%; background: #1C1917; }
-.showcase-card[data-category="ecommerce"] .sc-p { width: 40%; background: rgba(0,0,0,0.12); }
-.showcase-card[data-category="ecommerce"] .sc-btn-mock { width: 30%; background: #EA580C; }
-.showcase-card[data-category="ecommerce"] .sc-cards-mock span { background: #FFF; border: 1px solid #FED7AA; }
-
-/* Agency */
-.showcase-card[data-category="agency"] .showcase-gradient { background: #09090B; }
-.showcase-card[data-category="agency"] .sc-logo { background: #E4E4E7; }
-.showcase-card[data-category="agency"] .sc-links span { background: rgba(255,255,255,0.15); }
-.showcase-card[data-category="agency"] .sc-h { width: 75%; background: #fff; }
-.showcase-card[data-category="agency"] .sc-p { width: 55%; background: rgba(255,255,255,0.2); }
-.showcase-card[data-category="agency"] .sc-btn-mock { width: 34%; background: #E4E4E7; }
-.showcase-card[data-category="agency"] .sc-cards-mock span { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
-
-/* Fitness */
-.showcase-card[data-category="fitness"] .showcase-gradient { background: linear-gradient(135deg, #052E16, #14532D); }
-.showcase-card[data-category="fitness"] .sc-logo { background: #4ADE80; }
-.showcase-card[data-category="fitness"] .sc-links span { background: rgba(74,222,128,0.25); }
-.showcase-card[data-category="fitness"] .sc-h { width: 65%; background: #fff; }
-.showcase-card[data-category="fitness"] .sc-p { width: 48%; background: rgba(255,255,255,0.2); }
-.showcase-card[data-category="fitness"] .sc-btn-mock { width: 30%; background: #4ADE80; }
-.showcase-card[data-category="fitness"] .sc-cards-mock span { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.15); }
-
-/* Medical */
-.showcase-card[data-category="medical"] .showcase-gradient { background: linear-gradient(180deg, #F0FDFA, #E6FFFA); }
-.showcase-card[data-category="medical"] .sc-logo { background: #0D9488; }
-.showcase-card[data-category="medical"] .sc-links span { background: rgba(13,148,136,0.2); }
-.showcase-card[data-category="medical"] .sc-cards-mock span { background: #fff; border: 1px solid #99F6E4; }
-
-/* Real Estate */
-.showcase-card[data-category="realestate"] .showcase-gradient { background: #F8FAFC; }
-.showcase-card[data-category="realestate"] .sc-logo { background: #1E40AF; }
-.showcase-card[data-category="realestate"] .sc-links span { background: rgba(30,64,175,0.15); }
-.showcase-card[data-category="realestate"] .sc-cards-mock span { background: #fff; border: 1px solid #CBD5E1; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-
-/* Startup */
-.showcase-card[data-category="startup"] .showcase-gradient { background: linear-gradient(135deg, #1E1B4B, #312E81); }
-.showcase-card[data-category="startup"] .sc-logo { background: #A78BFA; }
-.showcase-card[data-category="startup"] .sc-links span { background: rgba(167,139,250,0.25); }
-.showcase-card[data-category="startup"] .sc-cards-mock span { background: rgba(167,139,250,0.08); border: 1px solid rgba(167,139,250,0.15); }
-
-/* Coaching */
-.showcase-card[data-category="coaching"] .showcase-gradient { background: linear-gradient(180deg, #FFFBEB, #FEF3C7); }
-.showcase-card[data-category="coaching"] .sc-logo { background: #B45309; }
-.showcase-card[data-category="coaching"] .sc-links span { background: rgba(180,83,9,0.15); }
-.showcase-card[data-category="coaching"] .sc-cards-mock span { background: #fff; border: 1px solid #FDE68A; }
-
-/* Hochzeit */
-.showcase-card[data-category="hochzeit"] .showcase-gradient { background: linear-gradient(180deg, #FFF1F2, #FFE4E6); }
-.showcase-card[data-category="hochzeit"] .sc-logo { background: #BE185D; }
-.showcase-card[data-category="hochzeit"] .sc-links span { background: rgba(190,24,93,0.15); }
-.showcase-card[data-category="hochzeit"] .sc-cards-mock span { background: rgba(255,255,255,0.8); border: 1px solid #FECDD3; }
+/* Mini-site realistic previews */
+.sc-mini { width: 100%; height: 100%; border-radius: 6px; overflow: hidden; font-family: 'Manrope', sans-serif; display: flex; flex-direction: column; }
+.sc-mini * { margin: 0; padding: 0; box-sizing: border-box; }
 
 .showcase-hover-overlay {
   position: absolute;
@@ -1851,8 +1725,6 @@ p { color: var(--text-secondary); }
 
   .hero { padding: 120px 0 60px; min-height: auto; }
   .hero-inner { grid-template-columns: 1fr; }
-  .hero-mockups { grid-template-columns: 1fr; }
-  .hero-mockup-secondary { display: none; }
   .hero-ctas { flex-direction: column; }
   .hero-ctas .btn { width: 100%; }
 
@@ -1953,7 +1825,7 @@ p { color: var(--text-secondary); }
           Jetzt starten
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
-        <a href="workspace.html" class="btn btn-ghost">
+        <a href="workspace.html?demo" class="btn btn-ghost">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
           Demo ansehen
         </a>
@@ -1965,98 +1837,56 @@ p { color: var(--text-secondary); }
       </p>
     </div>
 
-    <div class="hero-mockups">
-      <!-- Mockup 1: Call Center Website -->
-      <div class="hero-mockup">
-        <div class="mockup-label">Website Preview</div>
-        <div class="mockup-browser">
-          <div class="mockup-topbar">
-            <div class="mockup-dots">
-              <span></span><span></span><span></span>
-            </div>
-            <div class="mockup-url">callflow-ai.qntum.design</div>
+    <div class="hero-mockup">
+      <div class="mockup-browser">
+        <div class="mockup-topbar">
+          <div class="mockup-dots">
+            <span></span><span></span><span></span>
           </div>
-          <div class="mockup-workspace">
-            <div class="mockup-chat">
-              <div class="mockup-chat-label">Qntum Chat</div>
-              <div class="chat-msg user">Erstelle eine Website für meine KI-Calling-Agentur. Dunkel, modern, professionell.</div>
-              <div class="chat-msg ai">Perfekt — ich erstelle eine Landing Page mit Hero, Services, Statistiken und Kontaktformular.</div>
-              <div class="chat-msg user">Ja, und zeig unsere 3 Produkte: Chatbot, Calling Agent, Buchungs-Agent.</div>
-              <div class="chat-msg ai">Deine Seite wird generiert — inklusive Service-Karten, Stats und CTA…</div>
-              <div class="chat-input-mock">
-                <span>Nachricht eingeben…</span>
-                <div class="typing-cursor"></div>
-              </div>
+          <div class="mockup-url">callflow-ai.qntum.design</div>
+        </div>
+        <div class="mockup-workspace">
+          <div class="mockup-chat">
+            <div class="mockup-chat-label">Qntum Chat</div>
+            <div class="chat-msg user">Erstelle eine Website für meine KI-Calling-Agentur. Dunkel, modern, professionell.</div>
+            <div class="chat-msg ai">Perfekt — ich erstelle eine Landing Page mit Hero, Services, Statistiken und Kontaktformular.</div>
+            <div class="chat-msg user">Zeig unsere 3 Produkte: Chatbot, Calling Agent, Buchungs-Agent. Plus Statistiken wie 10.000+ Anrufe/Tag.</div>
+            <div class="chat-msg ai">Deine Seite ist fertig! Hero, 3 Service-Karten, Stats-Bar und Kontakt-CTA sind live.</div>
+            <div class="chat-input-mock">
+              <span>Nachricht eingeben…</span>
+              <div class="typing-cursor"></div>
             </div>
-            <div class="mockup-preview">
-              <div class="mockup-shimmer active"></div>
-              <div class="mockup-preview-inner">
-                <div class="mini-site mini-callcenter">
-                  <div class="mini-cc-nav">
-                    <span class="mini-cc-logo">CallFlow AI</span>
-                    <div class="mini-cc-nav-links"><span>Services</span><span>Pricing</span><span>Demo</span></div>
-                  </div>
-                  <div class="mini-cc-hero">
-                    <div class="mini-cc-hero-text">
-                      <div class="mini-cc-badge">KI-Telefonie</div>
-                      <h6>Intelligente Anrufe.<br>Automatisiert.</h6>
-                      <p>KI-Agenten für Kundenservice, Vertrieb und Terminbuchung.</p>
-                      <div class="mini-cc-btns"><span class="mini-cc-btn-primary">Demo buchen</span><span class="mini-cc-btn-ghost">Mehr erfahren</span></div>
-                    </div>
-                  </div>
-                  <div class="mini-cc-services">
-                    <div class="mini-cc-card"><span class="mini-cc-icon">💬</span><span class="mini-cc-card-title">Chatbot</span><span class="mini-cc-card-desc">24/7 Support</span></div>
-                    <div class="mini-cc-card"><span class="mini-cc-icon">📞</span><span class="mini-cc-card-title">Calling Agent</span><span class="mini-cc-card-desc">Outbound Calls</span></div>
-                    <div class="mini-cc-card"><span class="mini-cc-icon">📅</span><span class="mini-cc-card-title">Buchungs-Agent</span><span class="mini-cc-card-desc">Terminplanung</span></div>
-                  </div>
-                  <div class="mini-cc-stats">
-                    <div><strong>500+</strong><span>Kunden</span></div>
-                    <div><strong>2M+</strong><span>Anrufe</span></div>
-                    <div><strong>99.7%</strong><span>Uptime</span></div>
+          </div>
+          <div class="mockup-preview">
+            <div class="mockup-shimmer active"></div>
+            <div class="mockup-preview-inner">
+              <div class="mini-site mini-callcenter">
+                <div class="mini-cc-nav">
+                  <span class="mini-cc-logo">CallFlow AI</span>
+                  <div class="mini-cc-nav-links"><span>Services</span><span>Pricing</span><span>Kontakt</span></div>
+                </div>
+                <div class="mini-cc-hero">
+                  <div class="mini-cc-hero-text">
+                    <div class="mini-cc-badge">KI-Telefonie</div>
+                    <h6>Intelligente Anrufe.<br>Automatisiert.</h6>
+                    <p>Wir entwickeln KI-Calling-Agents für Unternehmen — Kundenservice, Vertrieb und Terminbuchung auf Autopilot.</p>
+                    <div class="mini-cc-btns"><span class="mini-cc-btn-primary">Demo buchen</span><span class="mini-cc-btn-ghost">Mehr erfahren</span></div>
                   </div>
                 </div>
+                <div class="mini-cc-services">
+                  <div class="mini-cc-card"><span class="mini-cc-icon">💬</span><span class="mini-cc-card-title">Chatbot Agent</span><span class="mini-cc-card-desc">24/7 Support</span></div>
+                  <div class="mini-cc-card"><span class="mini-cc-icon">📞</span><span class="mini-cc-card-title">Calling Agent</span><span class="mini-cc-card-desc">Outbound & Inbound</span></div>
+                  <div class="mini-cc-card"><span class="mini-cc-icon">📅</span><span class="mini-cc-card-title">Buchungs-Agent</span><span class="mini-cc-card-desc">Terminplanung</span></div>
+                </div>
+                <div class="mini-cc-stats">
+                  <div><strong>10K+</strong><span>Anrufe/Tag</span></div>
+                  <div><strong>500+</strong><span>Kunden</span></div>
+                  <div><strong>99.7%</strong><span>Uptime</span></div>
+                </div>
+                <div class="mini-cc-cta">
+                  <span>Jetzt kostenlos testen →</span>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mockup 2: UI/UX Skill Preview -->
-      <div class="hero-mockup hero-mockup-secondary">
-        <div class="mockup-label">UI/UX Skill</div>
-        <div class="uiux-preview">
-          <div class="uiux-header">
-            <span class="uiux-title">Design System</span>
-            <span class="uiux-badge">UI/UX Pro</span>
-          </div>
-          <div class="uiux-section">
-            <span class="uiux-label">Farbpalette</span>
-            <div class="uiux-palette">
-              <div style="background:#0B1120"></div>
-              <div style="background:#1E3A5F"></div>
-              <div style="background:#00B4D8"></div>
-              <div style="background:#00E68A"></div>
-              <div style="background:#F8F9FA"></div>
-            </div>
-          </div>
-          <div class="uiux-section">
-            <span class="uiux-label">Typografie</span>
-            <div class="uiux-type-row"><span class="uiux-type-sample" style="font-size:0.75rem;font-weight:800;">Heading H1</span><span class="uiux-type-meta">Syne · 48px · 800</span></div>
-            <div class="uiux-type-row"><span class="uiux-type-sample" style="font-size:0.55rem;font-weight:600;">Heading H2</span><span class="uiux-type-meta">Syne · 32px · 700</span></div>
-            <div class="uiux-type-row"><span class="uiux-type-sample" style="font-size:0.45rem;">Body Text</span><span class="uiux-type-meta">Manrope · 16px · 400</span></div>
-          </div>
-          <div class="uiux-section">
-            <span class="uiux-label">Komponenten</span>
-            <div class="uiux-components">
-              <span class="uiux-comp-btn primary">Primary</span>
-              <span class="uiux-comp-btn secondary">Secondary</span>
-              <span class="uiux-comp-btn ghost">Ghost</span>
-            </div>
-          </div>
-          <div class="uiux-section">
-            <span class="uiux-label">Layout Grid</span>
-            <div class="uiux-grid">
-              <div></div><div></div><div></div><div></div><div></div><div></div>
             </div>
           </div>
         </div>
@@ -2215,429 +2045,182 @@ p { color: var(--text-secondary); }
       <button class="filter-btn" data-filter="hochzeit">Hochzeit</button>
     </div>
 
-    <div class="showcase-grid">
+<div class="showcase-grid">
+
+      <!-- SaaS Dashboard -->
       <div class="showcase-card reveal" data-category="saas">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <!-- SaaS Dashboard with sidebar + chart -->
-            <div style="display:flex;align-items:center;padding:7px 10px;background:rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.06);">
-              <div style="width:16px;height:16px;border-radius:4px;background:#3B82F6;margin-right:8px;"></div>
-              <div style="width:44px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;"></div>
-              <div style="flex:1;"></div>
-              <div style="width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,0.08);"></div>
-            </div>
+          <div class="sc-mini" style="background:#0F172A;">
+            <div style="display:flex;align-items:center;padding:6px 10px;background:rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.06);"><span style="font-size:0.5rem;font-weight:700;color:#3B82F6;">FlowMetrics</span><span style="flex:1;"></span><span style="font-size:0.3rem;color:rgba(255,255,255,0.25);">Dashboard</span></div>
             <div style="display:flex;flex:1;">
-              <div style="width:42px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.05);padding:10px 6px;display:flex;flex-direction:column;gap:7px;align-items:center;">
-                <div style="width:14px;height:14px;border-radius:4px;background:rgba(59,130,246,0.25);"></div>
-                <div style="width:14px;height:14px;border-radius:4px;background:rgba(255,255,255,0.06);"></div>
-                <div style="width:14px;height:14px;border-radius:4px;background:rgba(255,255,255,0.06);"></div>
-                <div style="width:14px;height:14px;border-radius:4px;background:rgba(255,255,255,0.06);"></div>
-                <div style="width:14px;height:14px;border-radius:4px;background:rgba(255,255,255,0.06);margin-top:auto;"></div>
-              </div>
-              <div style="flex:1;padding:10px;">
-                <div style="display:flex;gap:6px;margin-bottom:8px;">
-                  <div style="flex:1;height:34px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.12);border-radius:6px;padding:6px 8px;">
-                    <div style="width:40%;height:3px;background:rgba(59,130,246,0.4);border-radius:2px;margin-bottom:4px;"></div>
-                    <div style="width:65%;height:6px;background:rgba(255,255,255,0.12);border-radius:3px;"></div>
-                  </div>
-                  <div style="flex:1;height:34px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.12);border-radius:6px;padding:6px 8px;">
-                    <div style="width:40%;height:3px;background:rgba(16,185,129,0.4);border-radius:2px;margin-bottom:4px;"></div>
-                    <div style="width:55%;height:6px;background:rgba(255,255,255,0.12);border-radius:3px;"></div>
-                  </div>
-                  <div style="flex:1;height:34px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.12);border-radius:6px;padding:6px 8px;">
-                    <div style="width:40%;height:3px;background:rgba(245,158,11,0.4);border-radius:2px;margin-bottom:4px;"></div>
-                    <div style="width:50%;height:6px;background:rgba(255,255,255,0.12);border-radius:3px;"></div>
-                  </div>
+              <div style="width:36px;background:rgba(255,255,255,0.02);border-right:1px solid rgba(255,255,255,0.05);padding:8px 5px;display:flex;flex-direction:column;gap:6px;align-items:center;"><div style="width:12px;height:12px;border-radius:3px;background:rgba(59,130,246,0.3);"></div><div style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.05);"></div><div style="width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.05);"></div></div>
+              <div style="flex:1;padding:8px;">
+                <div style="display:flex;gap:5px;margin-bottom:6px;">
+                  <div style="flex:1;padding:6px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.12);border-radius:5px;"><div style="font-size:0.55rem;font-weight:800;color:#fff;">12.4K</div><div style="font-size:0.28rem;color:rgba(255,255,255,0.3);">Active Users</div><div style="font-size:0.25rem;color:#4ade80;margin-top:2px;">+12.3%</div></div>
+                  <div style="flex:1;padding:6px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.12);border-radius:5px;"><div style="font-size:0.55rem;font-weight:800;color:#fff;">$84K</div><div style="font-size:0.28rem;color:rgba(255,255,255,0.3);">MRR</div><div style="font-size:0.25rem;color:#3B82F6;margin-top:2px;">+8.1%</div></div>
+                  <div style="flex:1;padding:6px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.12);border-radius:5px;"><div style="font-size:0.55rem;font-weight:800;color:#fff;">2.4%</div><div style="font-size:0.28rem;color:rgba(255,255,255,0.3);">Churn</div><div style="font-size:0.25rem;color:#fbbf24;margin-top:2px;">-0.3%</div></div>
                 </div>
-                <div style="height:72px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;margin-bottom:8px;position:relative;overflow:hidden;">
-                  <svg style="position:absolute;bottom:0;left:0;width:100%;height:80%;" preserveAspectRatio="none" viewBox="0 0 200 60"><defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(59,130,246,0.3)"/><stop offset="100%" stop-color="rgba(59,130,246,0)"/></linearGradient></defs><path d="M0 50 Q30 20 60 35 Q90 50 120 25 Q150 5 180 15 L200 10 V60 H0Z" fill="url(#cg)"/><path d="M0 50 Q30 20 60 35 Q90 50 120 25 Q150 5 180 15 L200 10" fill="none" stroke="rgba(59,130,246,0.6)" stroke-width="1.5"/></svg>
-                </div>
-                <div style="display:flex;flex-direction:column;gap:3px;">
-                  <div style="height:12px;background:rgba(255,255,255,0.04);border-radius:3px;display:flex;align-items:center;padding:0 6px;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:rgba(59,130,246,0.3);"></div><div style="width:45%;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;"></div></div>
-                  <div style="height:12px;background:rgba(255,255,255,0.03);border-radius:3px;display:flex;align-items:center;padding:0 6px;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:rgba(16,185,129,0.3);"></div><div style="width:55%;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;"></div></div>
-                  <div style="height:12px;background:rgba(255,255,255,0.04);border-radius:3px;display:flex;align-items:center;padding:0 6px;gap:6px;"><div style="width:6px;height:6px;border-radius:50%;background:rgba(245,158,11,0.3);"></div><div style="width:35%;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;"></div></div>
+                <div style="height:65px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:5px;position:relative;overflow:hidden;"><svg style="position:absolute;bottom:0;left:0;width:100%;height:80%;" preserveAspectRatio="none" viewBox="0 0 200 60"><defs><linearGradient id="cg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(59,130,246,0.3)"/><stop offset="100%" stop-color="rgba(59,130,246,0)"/></linearGradient></defs><path d="M0 50 Q30 20 60 35 Q90 50 120 25 Q150 5 180 15 L200 10 V60 H0Z" fill="url(#cg2)"/><path d="M0 50 Q30 20 60 35 Q90 50 120 25 Q150 5 180 15 L200 10" fill="none" stroke="rgba(59,130,246,0.6)" stroke-width="1.5"/></svg></div>
+                <div style="display:flex;flex-direction:column;gap:2px;margin-top:5px;">
+                  <div style="height:11px;background:rgba(255,255,255,0.03);border-radius:3px;display:flex;align-items:center;padding:0 6px;gap:5px;"><div style="width:5px;height:5px;border-radius:50%;background:rgba(59,130,246,0.4);"></div><span style="font-size:0.25rem;color:rgba(255,255,255,0.35);">enterprise-v2</span><span style="flex:1;"></span><span style="font-size:0.25rem;color:#4ade80;">success</span></div>
+                  <div style="height:11px;background:rgba(255,255,255,0.02);border-radius:3px;display:flex;align-items:center;padding:0 6px;gap:5px;"><div style="width:5px;height:5px;border-radius:50%;background:rgba(245,158,11,0.4);"></div><span style="font-size:0.25rem;color:rgba(255,255,255,0.35);">api-gateway</span><span style="flex:1;"></span><span style="font-size:0.25rem;color:#fbbf24;">pending</span></div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Erstelle ein SaaS-Dashboard für ein Analytics-Tool mit dunklem Theme, Sidebar und Echtzeit-Charts</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Erstelle ein SaaS-Dashboard mit dunklem Theme, Echtzeit-Charts und KPI-Karten</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">FlowMetrics Analytics</span>
-          <span class="showcase-card-cat">SaaS</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">FlowMetrics Analytics</span><span class="showcase-card-cat">SaaS</span></div>
       </div>
 
+      <!-- Portfolio -->
       <div class="showcase-card reveal reveal-delay-1" data-category="portfolio">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock"><div class="sc-logo"></div><div class="sc-links"><span></span><span></span><span></span></div></div>
-            <div class="sc-hero-mock"><div class="sc-h" style="width:50%"></div><div class="sc-p" style="width:40%"></div><div class="sc-btn-mock" style="width:28%"></div></div>
-            <div class="sc-cards-mock"><span></span><span></span><span></span></div>
+          <div class="sc-mini" style="background:#FAFAF9;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid #e7e5e4;"><span style="font-size:0.5rem;font-weight:300;color:#1a1a1a;letter-spacing:0.12em;text-transform:uppercase;">Marie Lehmann</span><div style="display:flex;gap:6px;"><span style="font-size:0.28rem;color:#78716c;">Projekte</span><span style="font-size:0.28rem;color:#78716c;">Portrait</span><span style="font-size:0.28rem;color:#78716c;">Info</span></div></div>
+            <div style="text-align:center;padding:14px 10px 6px;"><div style="font-size:0.7rem;font-weight:300;color:#1a1a1a;letter-spacing:0.05em;">Fotografie &amp; Visual Art</div><div style="font-size:0.32rem;color:#a8a29e;margin-top:3px;">Momente festhalten. Geschichten erzählen.</div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:6px 8px;flex:1;"><div style="background:linear-gradient(135deg,#d6d3d1,#a8a29e);border-radius:2px;"></div><div style="background:linear-gradient(135deg,#292524,#44403c);border-radius:2px;"></div><div style="background:linear-gradient(135deg,#e7e5e4,#d6d3d1);border-radius:2px;"></div><div style="background:linear-gradient(135deg,#44403c,#1c1917);border-radius:2px;"></div><div style="background:linear-gradient(135deg,#d6d3d1,#78716c);border-radius:2px;"></div><div style="background:linear-gradient(135deg,#a8a29e,#e7e5e4);border-radius:2px;"></div></div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Minimalistisches Portfolio für eine Fotografin, viel Weißraum, elegante Typografie</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Minimalistisches Portfolio für eine Fotografin, viel Weißraum, elegante Typografie</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Marie Lehmann Fotografie</span>
-          <span class="showcase-card-cat">Portfolio</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Marie Lehmann Fotografie</span><span class="showcase-card-cat">Portfolio</span></div>
       </div>
 
+      <!-- Restaurant -->
       <div class="showcase-card reveal reveal-delay-2" data-category="restaurant">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock"><div class="sc-logo"></div><div class="sc-links"><span></span><span></span><span></span></div></div>
-            <div class="sc-hero-mock"><div class="sc-h" style="width:60%"></div><div class="sc-p" style="width:45%"></div><div class="sc-btn-mock" style="width:32%"></div></div>
-            <div class="sc-cards-mock"><span></span><span></span><span></span></div>
+          <div class="sc-mini" style="background:#1a1412;position:relative;">
+            <div style="position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(251,191,36,0.06),transparent);"></div>
+            <div style="display:flex;justify-content:space-between;padding:7px 10px;position:relative;z-index:1;"><span style="font-size:0.35rem;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;">Trattoria Milano</span><span style="font-size:0.3rem;padding:2px 6px;border:1px solid #fbbf24;color:#fbbf24;border-radius:2px;">Reservieren</span></div>
+            <div style="text-align:center;padding:12px 10px;position:relative;z-index:1;"><div style="font-size:0.8rem;font-weight:300;color:#fbbf24;font-style:italic;letter-spacing:0.04em;">Trattoria Milano</div><div style="font-size:0.32rem;color:rgba(255,255,255,0.25);margin-top:3px;letter-spacing:0.08em;text-transform:uppercase;">Authentische italienische Küche seit 1987</div><div style="width:24px;height:1px;background:#fbbf24;margin:6px auto 0;opacity:0.5;"></div></div>
+            <div style="display:flex;gap:4px;padding:6px 8px;flex:1;"><div style="flex:1;border-radius:3px;background:linear-gradient(135deg,#44403c,#292524);"></div><div style="flex:1;border-radius:3px;background:linear-gradient(135deg,#78350f,#451a03);"></div><div style="flex:1;border-radius:3px;background:linear-gradient(135deg,#292524,#1c1917);"></div></div>
+            <div style="display:flex;justify-content:center;gap:12px;padding:5px 8px;"><span style="font-size:0.25rem;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.06em;">Pasta</span><span style="font-size:0.25rem;color:rgba(255,255,255,0.1);">·</span><span style="font-size:0.25rem;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.06em;">Vino</span><span style="font-size:0.25rem;color:rgba(255,255,255,0.1);">·</span><span style="font-size:0.25rem;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.06em;">Dolci</span></div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Elegante Website für ein italienisches Restaurant mit Speisekarte und Reservierungsfunktion</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Elegante Website für ein italienisches Restaurant mit Speisekarte und Reservierung</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Trattoria Milano</span>
-          <span class="showcase-card-cat">Restaurant</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Trattoria Milano</span><span class="showcase-card-cat">Restaurant</span></div>
       </div>
 
+      <!-- E-Commerce -->
       <div class="showcase-card reveal reveal-delay-1" data-category="ecommerce">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <!-- E-Commerce with nav + product grid -->
-            <div style="display:flex;align-items:center;padding:7px 10px;border-bottom:1px solid #FED7AA;">
-              <div style="width:28px;height:5px;background:#EA580C;border-radius:2px;"></div>
-              <div style="flex:1;"></div>
-              <div style="display:flex;align-items:center;gap:8px;">
-                <div style="width:60px;height:14px;background:rgba(0,0,0,0.04);border:1px solid rgba(0,0,0,0.08);border-radius:7px;"></div>
-                <div style="width:14px;height:14px;border-radius:4px;border:1.5px solid #EA580C;position:relative;"><div style="position:absolute;top:2px;left:3px;width:4px;height:4px;background:#EA580C;border-radius:50%;"></div></div>
-              </div>
-            </div>
-            <!-- Banner -->
-            <div style="margin:8px 10px;padding:12px;background:linear-gradient(135deg,#FED7AA,#FDBA74);border-radius:8px;display:flex;align-items:center;justify-content:space-between;">
-              <div><div style="width:60px;height:6px;background:#9A3412;border-radius:3px;margin-bottom:4px;"></div><div style="width:40px;height:3px;background:rgba(154,52,18,0.3);border-radius:2px;"></div></div>
-              <div style="width:28px;height:14px;background:#EA580C;border-radius:7px;"></div>
-            </div>
-            <!-- Product grid -->
-            <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:4px 10px 10px;">
-              <div style="background:#fff;border-radius:6px;border:1px solid #FED7AA;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:45%;background:linear-gradient(135deg,#FFEDD5,#FED7AA);"></div>
-                <div style="padding:5px;flex:1;display:flex;flex-direction:column;">
-                  <div style="width:70%;height:3px;background:#1C1917;border-radius:2px;margin-bottom:3px;"></div>
-                  <div style="width:40%;height:3px;background:#EA580C;border-radius:2px;margin-top:auto;font-weight:bold;"></div>
-                </div>
-              </div>
-              <div style="background:#fff;border-radius:6px;border:1px solid #FED7AA;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:45%;background:linear-gradient(135deg,#FEF3C7,#FDE68A);"></div>
-                <div style="padding:5px;flex:1;display:flex;flex-direction:column;">
-                  <div style="width:65%;height:3px;background:#1C1917;border-radius:2px;margin-bottom:3px;"></div>
-                  <div style="width:35%;height:3px;background:#EA580C;border-radius:2px;margin-top:auto;"></div>
-                </div>
-              </div>
-              <div style="background:#fff;border-radius:6px;border:1px solid #FED7AA;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:45%;background:linear-gradient(135deg,#E0E7FF,#C7D2FE);"></div>
-                <div style="padding:5px;flex:1;display:flex;flex-direction:column;">
-                  <div style="width:60%;height:3px;background:#1C1917;border-radius:2px;margin-bottom:3px;"></div>
-                  <div style="width:45%;height:3px;background:#EA580C;border-radius:2px;margin-top:auto;"></div>
-                </div>
-              </div>
+          <div class="sc-mini" style="background:#fdfcf9;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-bottom:1px solid #f5f0e8;"><span style="font-size:0.5rem;color:#78350f;font-weight:600;">Tonwerk</span><span style="font-size:0.32rem;color:#a8a29e;">Shop · Über uns · ♡</span></div>
+            <div style="text-align:center;padding:5px 10px;"><span style="font-size:0.28rem;color:#a8a29e;text-transform:uppercase;letter-spacing:0.1em;">Neue Kollektion</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:4px 8px;flex:1;">
+              <div style="text-align:center;"><div style="aspect-ratio:1;border-radius:6px;background:linear-gradient(135deg,#fde68a,#fcd34d);margin-bottom:3px;"></div><div style="font-size:0.32rem;color:#44403c;font-weight:600;">Vase Nara</div><div style="font-size:0.28rem;color:#a8a29e;">€49</div></div>
+              <div style="text-align:center;"><div style="aspect-ratio:1;border-radius:6px;background:linear-gradient(135deg,#d6d3d1,#a8a29e);margin-bottom:3px;"></div><div style="font-size:0.32rem;color:#44403c;font-weight:600;">Schale Kinto</div><div style="font-size:0.28rem;color:#a8a29e;">€35</div></div>
+              <div style="text-align:center;"><div style="aspect-ratio:1;border-radius:6px;background:linear-gradient(135deg,#fbbf24,#f59e0b);margin-bottom:3px;"></div><div style="font-size:0.32rem;color:#44403c;font-weight:600;">Tasse Wabi</div><div style="font-size:0.28rem;color:#a8a29e;">€24</div></div>
             </div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Moderner Online-Shop für handgemachte Keramik mit warmen Farben, Produktkarten und Warenkorb</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Online-Shop für handgemachte Keramik mit warmen Farben und Produktkarten</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Tonwerk Keramik</span>
-          <span class="showcase-card-cat">E-Commerce</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Tonwerk Keramik</span><span class="showcase-card-cat">E-Commerce</span></div>
       </div>
 
+      <!-- Agency -->
       <div class="showcase-card reveal reveal-delay-2" data-category="agency">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <!-- Bold Agency with big typo -->
-            <div style="display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.08);">
-              <div style="font-family:'Syne',sans-serif;font-size:8px;font-weight:800;color:#E4E4E7;letter-spacing:0.05em;">NØRD</div>
-              <div style="flex:1;"></div>
-              <div style="display:flex;flex-direction:column;gap:2px;"><div style="width:14px;height:1.5px;background:#E4E4E7;"></div><div style="width:10px;height:1.5px;background:#E4E4E7;"></div></div>
-            </div>
-            <!-- Huge headline area -->
-            <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:14px 12px;">
-              <div style="width:90%;height:11px;background:#fff;border-radius:2px;margin-bottom:6px;"></div>
-              <div style="width:70%;height:11px;background:#fff;border-radius:2px;margin-bottom:6px;"></div>
-              <div style="width:50%;height:11px;background:rgba(255,255,255,0.3);border-radius:2px;margin-bottom:12px;"></div>
-              <div style="display:flex;align-items:center;gap:6px;">
-                <div style="width:50px;height:14px;background:#E4E4E7;border-radius:7px;"></div>
-                <div style="width:8px;height:8px;border:1.5px solid #E4E4E7;border-radius:50%;position:relative;"><div style="position:absolute;top:1px;left:2px;width:0;height:0;border-left:3px solid #E4E4E7;border-top:2px solid transparent;border-bottom:2px solid transparent;"></div></div>
-              </div>
-            </div>
-            <!-- Case study grid -->
-            <div style="display:flex;gap:4px;padding:0 12px 10px;">
-              <div style="flex:1;height:40px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:6px;display:flex;flex-direction:column;justify-content:flex-end;">
-                <div style="width:60%;height:3px;background:rgba(255,255,255,0.3);border-radius:2px;margin-bottom:2px;"></div>
-                <div style="width:40%;height:2px;background:rgba(255,255,255,0.12);border-radius:2px;"></div>
-              </div>
-              <div style="flex:1;height:40px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:6px;display:flex;flex-direction:column;justify-content:flex-end;">
-                <div style="width:55%;height:3px;background:rgba(255,255,255,0.3);border-radius:2px;margin-bottom:2px;"></div>
-                <div style="width:45%;height:2px;background:rgba(255,255,255,0.12);border-radius:2px;"></div>
-              </div>
-              <div style="flex:1;height:40px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:6px;display:flex;flex-direction:column;justify-content:flex-end;">
-                <div style="width:50%;height:3px;background:rgba(255,255,255,0.3);border-radius:2px;margin-bottom:2px;"></div>
-                <div style="width:35%;height:2px;background:rgba(255,255,255,0.12);border-radius:2px;"></div>
-              </div>
-            </div>
+          <div class="sc-mini" style="background:#000;position:relative;">
+            <div style="position:absolute;top:8px;right:10px;font-size:0.25rem;color:#555;text-transform:uppercase;letter-spacing:0.1em;writing-mode:vertical-rl;">Creative Studio 2026</div>
+            <div style="position:absolute;left:50%;top:10px;bottom:40px;width:1px;background:#1a1a1a;"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-bottom:1px solid #222;"><span style="font-size:0.55rem;font-weight:800;color:#fff;letter-spacing:0.04em;">NØRD</span><div style="display:flex;flex-direction:column;gap:2px;"><div style="width:12px;height:1.5px;background:#E4E4E7;"></div><div style="width:8px;height:1.5px;background:#E4E4E7;"></div></div></div>
+            <div style="flex:1;display:flex;align-items:center;padding:0 12px;"><div style="font-size:1.6rem;font-weight:900;color:#fff;letter-spacing:-0.06em;text-transform:uppercase;line-height:0.9;font-family:Syne,sans-serif;">WE<br>CREATE</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-top:1px solid #222;"><span style="font-size:0.28rem;color:#555;text-transform:uppercase;letter-spacing:0.1em;">Projekte</span><span style="font-size:0.28rem;color:#555;text-transform:uppercase;letter-spacing:0.1em;">Studio</span><span style="font-size:0.28rem;color:#555;text-transform:uppercase;letter-spacing:0.1em;">Kontakt</span><div style="width:6px;height:6px;border-radius:50%;background:#fff;"></div></div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Mutige Kreativagentur-Website mit riesiger Typografie, schwarz-weiß und Case-Study-Portfolio</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Mutige Kreativagentur-Website mit riesiger Typografie und minimalistischem Layout</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Nørd Kreativagentur</span>
-          <span class="showcase-card-cat">Agency</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Nørd Kreativagentur</span><span class="showcase-card-cat">Agency</span></div>
       </div>
 
-      <div class="showcase-card reveal reveal-delay-3" data-category="fitness">
+      <!-- Fitness -->
+      <div class="showcase-card reveal" data-category="fitness">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock"><div class="sc-logo"></div><div class="sc-links"><span></span><span></span><span></span></div></div>
-            <div class="sc-hero-mock"><div class="sc-h" style="width:65%"></div><div class="sc-p" style="width:48%"></div><div class="sc-btn-mock" style="width:30%"></div></div>
-            <div class="sc-cards-mock"><span></span><span></span><span></span></div>
+          <div class="sc-mini" style="background:#0a0a0a;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(74,222,128,0.12),transparent 70%);"></div>
+            <div style="display:flex;justify-content:space-between;padding:7px 10px;"><span style="font-size:0.5rem;font-weight:800;color:#fff;text-transform:uppercase;">APEX</span><span style="font-size:0.28rem;padding:2px 6px;background:#4ade80;color:#000;border-radius:2px;font-weight:700;">Join Now</span></div>
+            <div style="padding:8px 10px;position:relative;"><div style="font-size:0.7rem;font-weight:800;color:#fff;text-transform:uppercase;line-height:1.1;">Transform<br>Your Body</div><div style="font-size:0.3rem;color:rgba(255,255,255,0.3);margin-top:3px;">Premium Fitness · Personal Training</div></div>
+            <div style="display:flex;gap:4px;padding:4px 8px;"><div style="flex:1;padding:6px 4px;background:rgba(255,255,255,0.04);border:1px solid rgba(74,222,128,0.25);border-radius:4px;text-align:center;"><div style="font-size:0.5rem;">◎</div><div style="font-size:0.28rem;color:#4ade80;font-weight:600;">Kurse</div></div><div style="flex:1;padding:6px 4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:4px;text-align:center;"><div style="font-size:0.5rem;">◈</div><div style="font-size:0.28rem;color:rgba(255,255,255,0.4);font-weight:500;">Trainer</div></div><div style="flex:1;padding:6px 4px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:4px;text-align:center;"><div style="font-size:0.5rem;">◉</div><div style="font-size:0.28rem;color:rgba(255,255,255,0.4);font-weight:500;">Preise</div></div></div>
+            <div style="display:flex;justify-content:center;gap:16px;padding:6px 10px;"><div style="text-align:center;"><div style="font-size:0.42rem;color:#4ade80;font-weight:800;">500+</div><div style="font-size:0.22rem;color:rgba(255,255,255,0.25);text-transform:uppercase;">Members</div></div><div style="text-align:center;"><div style="font-size:0.42rem;color:#4ade80;font-weight:800;">25</div><div style="font-size:0.22rem;color:rgba(255,255,255,0.25);text-transform:uppercase;">Trainer</div></div><div style="text-align:center;"><div style="font-size:0.42rem;color:#4ade80;font-weight:800;">60+</div><div style="font-size:0.22rem;color:rgba(255,255,255,0.25);text-transform:uppercase;">Kurse</div></div></div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Energiegeladene Fitness-Studio-Website mit Kursplan, Trainer-Profilen und Mitgliedschaftspaketen</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Energiegeladene Fitness-Studio-Website mit Kursplan und Mitgliederbereich</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">APEX Fitness Club</span>
-          <span class="showcase-card-cat">Fitness</span>
-        </div>
-      </div>
-
-      <!-- Medical / Arztpraxis -->
-      <div class="showcase-card reveal" data-category="medical">
-        <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock">
-              <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:50%;background:#0D9488;"></div><div class="sc-logo" style="width:36px;"></div></div>
-              <div class="sc-links"><span></span><span></span><span></span></div>
-            </div>
-            <!-- Two-column: Info + Appointment form -->
-            <div style="flex:1;display:flex;padding:10px 12px;gap:10px;">
-              <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px;">
-                <div style="width:80%;height:8px;background:#134E4A;border-radius:4px;"></div>
-                <div style="width:55%;height:4px;background:rgba(13,148,136,0.25);border-radius:2px;"></div>
-                <div style="width:65%;height:4px;background:rgba(13,148,136,0.2);border-radius:2px;"></div>
-                <div style="width:38%;height:14px;background:#0D9488;border-radius:7px;margin-top:6px;"></div>
-              </div>
-              <div style="flex:0.75;background:rgba(255,255,255,0.7);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px;border:1px solid rgba(13,148,136,0.15);">
-                <div style="width:50%;height:3px;background:rgba(0,0,0,0.15);border-radius:2px;"></div>
-                <div style="width:100%;height:12px;background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.1);border-radius:4px;"></div>
-                <div style="width:100%;height:12px;background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.1);border-radius:4px;"></div>
-                <div style="display:flex;gap:4px;">
-                  <div style="flex:1;height:12px;background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.1);border-radius:4px;"></div>
-                  <div style="flex:1;height:12px;background:rgba(13,148,136,0.06);border:1px solid rgba(13,148,136,0.1);border-radius:4px;"></div>
-                </div>
-                <div style="width:45%;height:12px;background:#0D9488;border-radius:4px;margin-top:2px;"></div>
-              </div>
-            </div>
-            <div class="sc-cards-mock"><span></span><span></span><span></span></div>
-          </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Professionelle Zahnarztpraxis-Website mit Online-Terminbuchung, Leistungsübersicht und Teamvorstellung</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
-        </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Dr. Wellness Praxis</span>
-          <span class="showcase-card-cat">Arztpraxis</span>
-        </div>
-      </div>
-
-      <!-- Real Estate / Immobilien -->
-      <div class="showcase-card reveal reveal-delay-1" data-category="realestate">
-        <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock"><div class="sc-logo"></div><div class="sc-links"><span></span><span></span><span></span></div></div>
-            <!-- Search bar -->
-            <div style="padding:6px 12px;">
-              <div style="display:flex;align-items:center;background:#fff;border:1px solid #CBD5E1;border-radius:8px;padding:6px 10px;gap:6px;">
-                <div style="width:10px;height:10px;border:2px solid #1E40AF;border-radius:50%;"></div>
-                <div style="flex:1;height:4px;background:rgba(0,0,0,0.08);border-radius:2px;"></div>
-                <div style="width:32px;height:14px;background:#1E40AF;border-radius:4px;"></div>
-              </div>
-            </div>
-            <!-- Property cards -->
-            <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px 12px;">
-              <div style="background:#fff;border-radius:6px;border:1px solid #E2E8F0;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:50%;background:linear-gradient(135deg,#93C5FD,#60A5FA);"></div>
-                <div style="padding:5px;"><div style="width:70%;height:3px;background:#1E293B;border-radius:2px;margin-bottom:3px;"></div><div style="width:45%;height:3px;background:#1E40AF;border-radius:2px;"></div></div>
-              </div>
-              <div style="background:#fff;border-radius:6px;border:1px solid #E2E8F0;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:50%;background:linear-gradient(135deg,#A78BFA,#818CF8);"></div>
-                <div style="padding:5px;"><div style="width:60%;height:3px;background:#1E293B;border-radius:2px;margin-bottom:3px;"></div><div style="width:50%;height:3px;background:#1E40AF;border-radius:2px;"></div></div>
-              </div>
-              <div style="background:#fff;border-radius:6px;border:1px solid #E2E8F0;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="height:50%;background:linear-gradient(135deg,#6EE7B7,#34D399);"></div>
-                <div style="padding:5px;"><div style="width:65%;height:3px;background:#1E293B;border-radius:2px;margin-bottom:3px;"></div><div style="width:40%;height:3px;background:#1E40AF;border-radius:2px;"></div></div>
-              </div>
-            </div>
-            <!-- Map bar -->
-            <div style="padding:4px 12px 8px;">
-              <div style="height:20px;background:linear-gradient(90deg,#DBEAFE,#E0E7FF,#DBEAFE);border-radius:4px;border:1px solid #CBD5E1;position:relative;">
-                <div style="position:absolute;top:3px;left:20%;width:6px;height:6px;background:#EF4444;border-radius:50%;"></div>
-                <div style="position:absolute;top:6px;left:55%;width:6px;height:6px;background:#EF4444;border-radius:50%;"></div>
-                <div style="position:absolute;top:4px;left:75%;width:6px;height:6px;background:#EF4444;border-radius:50%;"></div>
-              </div>
-            </div>
-          </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Immobilien-Portal mit Suchfunktion, Kartenansicht und Exposé-Detailseiten für Kauf und Miete</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
-        </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Skyline Immobilien</span>
-          <span class="showcase-card-cat">Immobilien</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">APEX Fitness Club</span><span class="showcase-card-cat">Fitness</span></div>
       </div>
 
       <!-- Startup -->
-      <div class="showcase-card reveal reveal-delay-2" data-category="startup">
+      <div class="showcase-card reveal reveal-delay-1" data-category="startup">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock">
-              <div style="display:flex;align-items:center;gap:4px;"><div style="width:8px;height:8px;background:#A78BFA;transform:rotate(45deg);"></div><div class="sc-logo" style="width:30px;"></div></div>
-              <div style="display:flex;align-items:center;gap:6px;"><div class="sc-links"><span></span><span></span></div><div style="width:32px;height:12px;background:linear-gradient(135deg,#A78BFA,#F472B6);border-radius:6px;"></div></div>
-            </div>
-            <!-- Gradient hero with big text -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:16px;background:radial-gradient(ellipse at center,rgba(167,139,250,0.15),transparent 70%);">
-              <div style="width:80%;height:10px;background:#fff;border-radius:5px;"></div>
-              <div style="width:60%;height:5px;background:rgba(255,255,255,0.25);border-radius:3px;"></div>
-              <div style="display:flex;gap:8px;margin-top:6px;">
-                <div style="width:48px;height:16px;background:linear-gradient(135deg,#A78BFA,#F472B6);border-radius:8px;"></div>
-                <div style="width:48px;height:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;"></div>
-              </div>
-            </div>
-            <!-- Stats row -->
-            <div style="display:flex;gap:6px;padding:8px 12px;">
-              <div style="flex:1;text-align:center;padding:6px;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.1);border-radius:6px;">
-                <div style="width:40%;height:7px;background:#A78BFA;border-radius:3px;margin:0 auto 3px;"></div>
-                <div style="width:60%;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin:0 auto;"></div>
-              </div>
-              <div style="flex:1;text-align:center;padding:6px;background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.1);border-radius:6px;">
-                <div style="width:35%;height:7px;background:#F472B6;border-radius:3px;margin:0 auto 3px;"></div>
-                <div style="width:55%;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin:0 auto;"></div>
-              </div>
-              <div style="flex:1;text-align:center;padding:6px;background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.1);border-radius:6px;">
-                <div style="width:38%;height:7px;background:#38BDF8;border-radius:3px;margin:0 auto 3px;"></div>
-                <div style="width:50%;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin:0 auto;"></div>
-              </div>
+          <div class="sc-mini" style="background:#0a0118;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:50%;left:50%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,0.2),transparent 70%);"></div>
+            <div style="display:flex;justify-content:space-between;padding:7px 10px;position:relative;z-index:1;"><span style="font-size:0.48rem;font-weight:700;color:#fff;">NovaMind</span><span style="font-size:0.28rem;padding:2px 6px;background:rgba(139,92,246,0.25);color:#c4b5fd;border-radius:20px;">Get Started</span></div>
+            <div style="text-align:center;padding:14px 10px 6px;position:relative;z-index:1;"><div style="font-size:0.7rem;font-weight:800;color:#fff;letter-spacing:-0.02em;">The Future of Intelligence</div><div style="font-size:0.3rem;color:rgba(255,255,255,0.3);margin-top:3px;">AI-powered insights for modern teams.</div><div style="display:inline-block;margin-top:6px;font-size:0.28rem;padding:3px 10px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;border-radius:20px;font-weight:600;">Start Free Trial →</div></div>
+            <div style="display:flex;justify-content:center;gap:14px;padding:10px;position:relative;z-index:1;"><div style="text-align:center;"><div style="font-size:0.45rem;color:#c4b5fd;font-weight:800;">10M+</div><div style="font-size:0.22rem;color:rgba(255,255,255,0.2);text-transform:uppercase;">Users</div></div><div style="text-align:center;"><div style="font-size:0.45rem;color:#c4b5fd;font-weight:800;">99.9%</div><div style="font-size:0.22rem;color:rgba(255,255,255,0.2);text-transform:uppercase;">Uptime</div></div><div style="text-align:center;"><div style="font-size:0.45rem;color:#c4b5fd;font-weight:800;">150+</div><div style="font-size:0.22rem;color:rgba(255,255,255,0.2);text-transform:uppercase;">Countries</div></div></div>
+          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Futuristische Startup-Landing-Page mit Gradient-Design und Stats</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
+        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">NovaMind AI</span><span class="showcase-card-cat">Startup</span></div>
+      </div>
+
+      <!-- Immobilien -->
+      <div class="showcase-card reveal reveal-delay-2" data-category="realestate">
+        <div class="showcase-preview">
+          <div class="sc-mini" style="background:#f8fafc;">
+            <div style="display:flex;justify-content:space-between;padding:7px 10px;border-bottom:1px solid #e2e8f0;"><span style="font-size:0.48rem;font-weight:700;color:#1e293b;">Skyline</span><span style="font-size:0.3rem;color:#64748b;">Kaufen · Mieten · Bewerten</span></div>
+            <div style="margin:6px 8px;padding:5px 8px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;display:flex;gap:4px;align-items:center;"><div style="flex:1;height:7px;background:#f1f5f9;border-radius:2px;"></div><div style="width:18px;height:7px;background:#3b82f6;border-radius:2px;"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:2px 8px;flex:1;">
+              <div style="background:#fff;border:1px solid #e2e8f0;border-radius:5px;overflow:hidden;"><div style="height:34px;background:linear-gradient(135deg,#93c5fd,#60a5fa);position:relative;"><span style="position:absolute;top:3px;left:3px;font-size:0.22rem;background:rgba(0,0,0,0.55);color:#fff;padding:1px 4px;border-radius:2px;">Neu</span></div><div style="padding:4px 5px;"><div style="font-size:0.4rem;color:#1e293b;font-weight:700;">€420.000</div><div style="font-size:0.26rem;color:#64748b;">3 Zi · 85m² · München</div></div></div>
+              <div style="background:#fff;border:1px solid #e2e8f0;border-radius:5px;overflow:hidden;"><div style="height:34px;background:linear-gradient(135deg,#a5b4fc,#818cf8);position:relative;"><span style="position:absolute;top:3px;left:3px;font-size:0.22rem;background:rgba(0,0,0,0.55);color:#fff;padding:1px 4px;border-radius:2px;">Top</span></div><div style="padding:4px 5px;"><div style="font-size:0.4rem;color:#1e293b;font-weight:700;">€680.000</div><div style="font-size:0.26rem;color:#64748b;">4 Zi · 120m² · Hamburg</div></div></div>
             </div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Futuristische Startup-Landing-Page mit Gradient-Design, Animationen und Social-Proof-Statistiken</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Immobilien-Portal mit Suchfunktion, Listings und Kartenansicht</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">NovaMind AI</span>
-          <span class="showcase-card-cat">Startup</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Skyline Immobilien</span><span class="showcase-card-cat">Immobilien</span></div>
       </div>
 
       <!-- Coaching -->
-      <div class="showcase-card reveal reveal-delay-1" data-category="coaching">
+      <div class="showcase-card reveal" data-category="coaching">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock"><div class="sc-logo"></div><div class="sc-links"><span></span><span></span><span></span></div></div>
-            <!-- Hero with profile image + text -->
-            <div style="flex:1;display:flex;padding:10px 12px;gap:12px;align-items:center;">
-              <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#F59E0B,#D97706);flex-shrink:0;border:2px solid #FDE68A;"></div>
-              <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
-                <div style="width:75%;height:7px;background:#78350F;border-radius:3px;"></div>
-                <div style="width:90%;height:4px;background:rgba(180,83,9,0.2);border-radius:2px;"></div>
-                <div style="width:60%;height:4px;background:rgba(180,83,9,0.15);border-radius:2px;"></div>
-                <div style="display:flex;gap:6px;margin-top:4px;">
-                  <div style="width:40px;height:13px;background:#B45309;border-radius:6px;"></div>
-                  <div style="width:40px;height:13px;background:rgba(180,83,9,0.1);border:1px solid rgba(180,83,9,0.2);border-radius:6px;"></div>
-                </div>
-              </div>
-            </div>
-            <!-- Testimonial stripe -->
-            <div style="padding:0 12px 6px;">
-              <div style="background:rgba(255,255,255,0.6);border-radius:6px;padding:8px;border:1px solid #FDE68A;">
-                <div style="display:flex;gap:2px;margin-bottom:4px;">
-                  <div style="width:6px;height:6px;background:#F59E0B;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);"></div>
-                  <div style="width:6px;height:6px;background:#F59E0B;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);"></div>
-                  <div style="width:6px;height:6px;background:#F59E0B;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);"></div>
-                  <div style="width:6px;height:6px;background:#F59E0B;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);"></div>
-                  <div style="width:6px;height:6px;background:#F59E0B;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);"></div>
-                </div>
-                <div style="width:85%;height:3px;background:rgba(0,0,0,0.1);border-radius:2px;margin-bottom:2px;"></div>
-                <div style="width:65%;height:3px;background:rgba(0,0,0,0.07);border-radius:2px;"></div>
-              </div>
-            </div>
-            <div class="sc-cards-mock"><span></span><span></span><span></span></div>
+          <div class="sc-mini" style="background:#fffdf7;">
+            <div style="display:flex;justify-content:space-between;padding:7px 10px;border-bottom:1px solid #fef3c7;"><span style="font-size:0.48rem;font-weight:600;color:#78350f;">Julia Kraft</span><span style="font-size:0.3rem;color:#a8a29e;">Angebote · Blog</span></div>
+            <div style="display:flex;gap:8px;padding:8px 10px;align-items:center;"><div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);flex-shrink:0;"></div><div><div style="font-size:0.45rem;font-weight:700;color:#78350f;">Julia Kraft</div><div style="font-size:0.3rem;color:#a8a29e;">Life &amp; Business Coach</div></div></div>
+            <div style="display:flex;gap:4px;padding:2px 8px;"><div style="flex:1;padding:5px 3px;background:#fef3c7;border:1px solid #fde68a;border-radius:4px;text-align:center;"><div style="font-size:0.42rem;">◎</div><div style="font-size:0.25rem;color:#92400e;font-weight:500;">1:1 Coaching</div></div><div style="flex:1;padding:5px 3px;background:#fef3c7;border:1px solid #fde68a;border-radius:4px;text-align:center;"><div style="font-size:0.42rem;">◈</div><div style="font-size:0.25rem;color:#92400e;font-weight:500;">Workshop</div></div><div style="flex:1;padding:5px 3px;background:#fef3c7;border:1px solid #fde68a;border-radius:4px;text-align:center;"><div style="font-size:0.42rem;">◉</div><div style="font-size:0.25rem;color:#92400e;font-weight:500;">Online-Kurs</div></div></div>
+            <div style="padding:5px 10px;"><div style="font-size:0.25rem;color:#a8a29e;font-style:italic;text-align:center;">„Julia hat mir geholfen, mein Business auf das nächste Level zu bringen."</div></div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Persönliche Coaching-Website mit Buchungssystem, Über-mich-Sektion und Kundenbewertungen</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Coaching-Website mit Buchungssystem, Angeboten und Testimonials</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
+        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Julia Kraft Coaching</span><span class="showcase-card-cat">Coaching</span></div>
+      </div>
+
+      <!-- Arztpraxis -->
+      <div class="showcase-card reveal reveal-delay-1" data-category="medical">
+        <div class="showcase-preview">
+          <div class="sc-mini" style="background:#f7fdfb;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-bottom:1px solid #e6f5f0;"><span style="font-size:0.48rem;font-weight:700;color:#0d9488;">Dr. Wellness</span><span style="font-size:0.3rem;padding:2px 8px;background:#0d9488;color:#fff;border-radius:20px;">Termin buchen</span></div>
+            <div style="padding:8px 10px;"><div style="font-size:0.45rem;color:#134e4a;font-weight:700;">Ihre Gesundheit. Unser Anliegen.</div><div style="font-size:0.28rem;color:#5eead4;margin-top:1px;">Moderne Zahnmedizin</div></div>
+            <div style="display:flex;gap:4px;padding:0 8px 4px;"><div style="flex:1;padding:5px 3px;background:#e6f5f0;border-radius:4px;text-align:center;"><div style="font-size:0.42rem;">⚕</div><div style="font-size:0.25rem;color:#0d9488;font-weight:500;">Prophylaxe</div></div><div style="flex:1;padding:5px 3px;background:#e6f5f0;border-radius:4px;text-align:center;"><div style="font-size:0.42rem;">✦</div><div style="font-size:0.25rem;color:#0d9488;font-weight:500;">Ästhetik</div></div><div style="flex:1;padding:5px 3px;background:#e6f5f0;border-radius:4px;text-align:center;"><div style="font-size:0.42rem;">◎</div><div style="font-size:0.25rem;color:#0d9488;font-weight:500;">Implantate</div></div></div>
+            <div style="display:flex;flex-direction:column;gap:3px;padding:4px 8px;"><div style="height:11px;background:#e6f5f0;border-radius:3px;"></div><div style="height:11px;background:#e6f5f0;border-radius:3px;"></div><div style="width:50%;height:13px;background:#0d9488;border-radius:3px;"></div></div>
           </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Zahnarztpraxis-Website mit Online-Terminbuchung und Leistungsübersicht</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Julia Kraft Coaching</span>
-          <span class="showcase-card-cat">Coaching</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Dr. Wellness Praxis</span><span class="showcase-card-cat">Arztpraxis</span></div>
       </div>
 
       <!-- Hochzeit -->
       <div class="showcase-card reveal reveal-delay-2" data-category="hochzeit">
         <div class="showcase-preview">
-          <div class="showcase-gradient">
-            <div class="sc-nav-mock">
-              <div style="display:flex;align-items:center;gap:4px;"><div style="width:6px;height:6px;background:#BE185D;transform:rotate(45deg);border-radius:1px;"></div><div class="sc-logo" style="width:36px;"></div></div>
-              <div class="sc-links"><span></span><span></span><span></span></div>
-            </div>
-            <!-- Romantic hero -->
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;position:relative;">
-              <div style="position:absolute;inset:8px;border:1px solid rgba(190,24,93,0.12);border-radius:8px;pointer-events:none;"></div>
-              <div style="width:30px;height:1px;background:rgba(190,24,93,0.3);margin-bottom:2px;"></div>
-              <div style="width:55%;height:9px;background:#881337;border-radius:4px;"></div>
-              <div style="width:35%;height:4px;background:rgba(190,24,93,0.2);border-radius:2px;"></div>
-              <div style="font-size:6px;color:#9F1239;margin-top:2px;letter-spacing:0.15em;font-family:serif;opacity:0.6;">15. JUNI 2026</div>
-              <div style="width:34px;height:13px;background:#BE185D;border-radius:6px;margin-top:4px;"></div>
-            </div>
-            <!-- Photo gallery row -->
-            <div style="display:flex;gap:4px;padding:6px 12px 10px;">
-              <div style="flex:1;height:32px;background:linear-gradient(135deg,#FDA4AF,#FB7185);border-radius:4px;"></div>
-              <div style="flex:1;height:32px;background:linear-gradient(135deg,#FDE68A,#FCD34D);border-radius:4px;"></div>
-              <div style="flex:1;height:32px;background:linear-gradient(135deg,#C4B5FD,#A78BFA);border-radius:4px;"></div>
-              <div style="flex:1;height:32px;background:linear-gradient(135deg,#BAE6FD,#7DD3FC);border-radius:4px;"></div>
-            </div>
+          <div class="sc-mini" style="background:linear-gradient(180deg,#fdf2f8,#fce7f3,#fbcfe8);position:relative;overflow:hidden;">
+            <div style="position:absolute;top:10px;right:10px;width:40px;height:40px;border:1px solid rgba(157,23,77,0.1);border-radius:50%;"></div>
+            <div style="display:flex;justify-content:center;gap:8px;padding:7px 10px;position:relative;z-index:1;"><span style="font-size:0.25rem;color:#be185d;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;">Unsere Geschichte</span><span style="font-size:0.25rem;color:#be185d;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;">Location</span><span style="font-size:0.25rem;color:#be185d;text-transform:uppercase;letter-spacing:0.08em;opacity:0.5;">RSVP</span></div>
+            <div style="text-align:center;padding:16px 10px;position:relative;z-index:1;"><div style="width:20px;height:1px;background:#f9a8d4;margin:0 auto 4px;"></div><div style="font-size:0.85rem;font-weight:300;color:#9d174d;font-style:italic;">Anna &amp; Lukas</div><div style="font-size:0.35rem;color:#be185d;margin-top:3px;letter-spacing:0.08em;">12. September 2026</div><div style="display:inline-block;margin-top:6px;font-size:0.25rem;padding:2px 8px;border:1px solid #f9a8d4;color:#be185d;border-radius:20px;text-transform:uppercase;letter-spacing:0.08em;">Save the Date</div><div style="margin-top:6px;font-size:0.5rem;opacity:0.35;letter-spacing:4px;">♥ ♥ ♥</div></div>
           </div>
-          <div class="showcase-hover-overlay">
-            <div class="showcase-prompt">Romantische Hochzeitswebsite mit Countdown, Fotogalerie, Gästebuch und Anfahrtskarte</div>
-            <a href="workspace.html" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a>
-          </div>
+          <div class="showcase-hover-overlay"><div class="showcase-prompt">Romantische Hochzeitswebsite mit Countdown, Fotogalerie und Gästebuch</div><a href="workspace.html?demo" class="btn btn-ghost" style="padding:8px 20px;font-size:0.8rem;">Ansehen</a></div>
         </div>
-        <div class="showcase-card-info">
-          <span class="showcase-card-title">Anna & Lukas</span>
-          <span class="showcase-card-cat">Hochzeit</span>
-        </div>
+        <div class="showcase-card-info"><span class="showcase-card-title">Anna &amp; Lukas</span><span class="showcase-card-cat">Hochzeit</span></div>
       </div>
 
     </div>
+
   </div>
 </section>
 
@@ -2990,7 +2573,7 @@ p { color: var(--text-secondary); }
         </a>
       </div>
       <div class="reveal reveal-delay-3" style="margin-top:24px;">
-        <a href="workspace.html" class="btn-demo">
+        <a href="workspace.html?demo" class="btn-demo">
           <span>Live Demo ansehen</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
         </a>
@@ -3018,7 +2601,7 @@ p { color: var(--text-secondary); }
       <div class="footer-cta-row">
         <a href="auth.html" class="footer-cta-btn">Kostenlos starten</a>
         <span class="footer-cta-or">oder</span>
-        <a href="workspace.html" class="footer-cta-link">Live-Demo ansehen →</a>
+        <a href="workspace.html?demo" class="footer-cta-link">Live-Demo ansehen →</a>
       </div>
     </div>
   </div>
@@ -3063,7 +2646,7 @@ p { color: var(--text-secondary); }
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#showcase">Showcase</a>
-        <a href="workspace.html">Workspace</a>
+        <a href="workspace.html?demo">Workspace</a>
         <a href="dashboard.html">Dashboard</a>
       </div>
 
