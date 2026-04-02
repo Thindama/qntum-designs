@@ -90,8 +90,15 @@ router.get('/plans', (req, res) => {
 
 // POST /api/stripe/checkout — create Stripe Checkout session
 router.post('/checkout', requireAuth, async (req, res) => {
+  console.log('━━━ /api/stripe/checkout HIT ━━━');
+  console.log('  Body:', JSON.stringify(req.body));
+  console.log('  User:', req.userId);
+
   const s = getStripe();
-  if (!s) return res.status(503).json({ error: 'Zahlungen sind noch nicht konfiguriert.' });
+  if (!s) {
+    console.error('❌ Stripe nicht initialisiert — STRIPE_SECRET_KEY fehlt oder ungültig');
+    return res.status(503).json({ error: 'Zahlungen sind noch nicht konfiguriert.' });
+  }
 
   const { plan, interval } = req.body; // plan: 'starter'|'pro'|'business', interval: 'monthly'|'yearly'
   const planDef = PLANS[plan];
