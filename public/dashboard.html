@@ -1471,8 +1471,38 @@ input { font-family: inherit; }
 
 <script>
 // ═══ Auth Check ═══
-const token = localStorage.getItem('qntum_token');
+let token = localStorage.getItem('qntum_token');
 if (!token) { window.location.href = 'auth.html'; }
+
+// Token-Refresh: prüft JWT exp, refresht automatisch
+async function getValidToken() {
+  let t = localStorage.getItem('qntum_token');
+  if (!t) return null;
+  try {
+    const payload = JSON.parse(atob(t.split('.')[1]));
+    if (payload.exp && payload.exp > Math.floor(Date.now() / 1000) + 60) return t;
+  } catch (e) {}
+  const refresh = localStorage.getItem('qntum_refresh');
+  if (!refresh) return null;
+  try {
+    const res = await fetch('/api/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: refresh })
+    });
+    const data = await res.json();
+    if (data.success && data.session) {
+      localStorage.setItem('qntum_token', data.session.access_token);
+      localStorage.setItem('qntum_refresh', data.session.refresh_token);
+      token = data.session.access_token;
+      return data.session.access_token;
+    }
+  } catch (e) {}
+  localStorage.removeItem('qntum_token');
+  localStorage.removeItem('qntum_refresh');
+  window.location.href = 'auth.html';
+  return null;
+}
 
 // ═══ Helpers ═══
 function formatTokens(n) {
@@ -1791,6 +1821,9 @@ function animateCounters() {
 // ═══ Stripe Checkout ═══
 async function startCheckout(plan) {
   if (!plan) return;
+  const validToken = await getValidToken();
+  if (!validToken) return;
+
   const el = document.getElementById('sidebarUpgradeLink');
   const origText = el.textContent;
   el.textContent = 'Weiterleitung...';
@@ -1799,9 +1832,10 @@ async function startCheckout(plan) {
   try {
     const res = await fetch('/api/stripe/checkout', {
       method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': 'Bearer ' + validToken, 'Content-Type': 'application/json' },
       body: JSON.stringify({ plan, interval: 'monthly' })
     });
+    if (res.status === 401) { localStorage.removeItem('qntum_token'); window.location.href = 'auth.html'; return; }
     const data = await res.json();
     if (!res.ok) { showToast(data.error || 'Checkout fehlgeschlagen'); el.textContent = origText; el.style.pointerEvents = ''; return; }
     window.location.href = data.url;

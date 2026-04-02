@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Qntum Designs — Deine Website. Ein Gespräch entfernt.</title>
-<meta name="description" content="Erstelle professionelle Websites durch KI-gestützten Dialog. Design, Code, Content — alles automatisch. Powered by Claude AI.">
+<meta name="description" content="Erstelle professionelle Websites und Web-Apps durch KI-gestützten Dialog. Design, Frontend, Backend, Datenbank — alles automatisch. Powered by Qntum AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,10 +20,10 @@
   --accent-hover: #00cc7a;
   --accent-subtle: rgba(0,230,138,0.08);
   --accent-border: rgba(0,230,138,0.2);
-  --bg: #000000;
-  --bg-elevated: #0A0A0A;
-  --bg-surface: #111111;
-  --bg-hover: #1A1A1A;
+  --bg: #080808;
+  --bg-elevated: #0E0E0E;
+  --bg-surface: #141414;
+  --bg-hover: #1C1C1C;
   --border: #1E1E1E;
   --border-focus: #333333;
   --text: #F5F5F5;
@@ -244,15 +244,39 @@ p { color: var(--text-secondary); }
   color: var(--text-muted);
 }
 
-/* Hero Mockup */
-.hero-mockup {
-  max-width: 960px;
+/* Hero ambient glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(0,230,138,0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.hero-content { position: relative; z-index: 1; }
+.hero-mockup-wrap { position: relative; z-index: 1; }
+
+/* Hero Mockups — dual preview */
+.hero-mockups {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 20px;
+  max-width: 1000px;
   margin: 64px auto 0;
+  align-items: start;
+}
+.hero-mockup {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--bg-elevated);
+  transition: border-color var(--transition-slow);
 }
+.hero-mockup:hover { border-color: var(--border-focus); }
 .mockup-bar {
   display: flex;
   align-items: center;
@@ -279,6 +303,21 @@ p { color: var(--text-secondary); }
   padding: 4px 12px;
   border-radius: 6px;
   margin: 0 40px;
+}
+.mockup-label {
+  position: absolute;
+  top: -11px;
+  left: 16px;
+  padding: 2px 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  background: var(--bg);
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  z-index: 2;
 }
 .mockup-body {
   display: grid;
@@ -484,6 +523,108 @@ p { color: var(--text-secondary); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* UI/UX Skill Preview Mockup */
+.uiux-preview { padding: 20px; }
+.uiux-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.uiux-header-left h5 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.uiux-header-left span {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+.uiux-skill-active {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 3px 10px;
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+}
+.uiux-palette {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.uiux-swatch {
+  flex: 1;
+  height: 32px;
+  border-radius: 6px;
+}
+.uiux-typography {
+  margin-bottom: 16px;
+  padding: 14px;
+  background: var(--bg-surface);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.uiux-type-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.uiux-type-sample-lg {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+.uiux-type-sample-sm {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+.uiux-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.uiux-layout-item {
+  padding: 10px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: center;
+}
+.uiux-layout-item .lbl {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.uiux-layout-item .val {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.uiux-components {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.uiux-comp-btn {
+  flex: 1;
+  padding: 7px;
+  border-radius: 6px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-align: center;
+}
+.uiux-comp-primary { background: #3B82F6; color: #fff; }
+.uiux-comp-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); }
+.uiux-comp-accent { background: var(--accent); color: #000; }
+
 /* ═══════════════════════════════════════════════════
    STATS
    ═══════════════════════════════════════════════════ */
@@ -645,97 +786,195 @@ p { color: var(--text-secondary); }
 .showcase-prompt::after { content: '"'; }
 
 /* Showcase mini-site thumbnails */
-.mini-site { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; }
+.mini-site { width: 100%; height: 100%; border-radius: 4px; overflow: hidden; font-family: 'Inter', sans-serif; }
+.showcase-card { transition: border-color var(--transition), transform 0.3s ease; }
+.showcase-card:hover { transform: translateY(-4px); }
+.showcase-thumb { height: 200px; }
 
-.mini-saas { background: #0f172a; }
-.mini-saas-nav { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; }
-.mini-saas-nav span:first-child { font-size: 0.5rem; font-weight: 700; color: #818cf8; }
-.mini-saas-nav span:last-child { font-size: 0.45rem; color: rgba(255,255,255,0.3); }
-.mini-saas-body { padding: 8px 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.mini-saas-card { background: rgba(255,255,255,0.05); border-radius: 4px; padding: 8px; }
-.mini-saas-card .val { font-size: 0.7rem; font-weight: 800; color: #fff; }
-.mini-saas-card .lbl { font-size: 0.4rem; color: rgba(255,255,255,0.3); }
-.mini-saas-chart { grid-column: 1/-1; height: 50px; background: rgba(255,255,255,0.03); border-radius: 4px; position: relative; overflow: hidden; }
-.mini-saas-chart::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30px; background: linear-gradient(to right, #818cf8, #6366f1); opacity: 0.3; border-radius: 0 0 4px 4px; clip-path: polygon(0 80%, 15% 40%, 30% 60%, 50% 20%, 70% 45%, 85% 10%, 100% 35%, 100% 100%, 0 100%); }
+/* ── SaaS Dashboard ── */
+.mini-saas { background: #0c1222; display: flex; flex-direction: column; }
+.mini-saas-nav { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.mini-saas-nav span:first-child { font-size: 0.55rem; font-weight: 700; color: #818cf8; letter-spacing: -0.02em; }
+.mini-saas-nav span:last-child { font-size: 0.4rem; color: rgba(255,255,255,0.25); }
+.mini-saas-sidebar { position: absolute; left: 0; top: 0; bottom: 0; width: 28px; background: rgba(255,255,255,0.03); border-right: 1px solid rgba(255,255,255,0.06); }
+.mini-saas-sidebar div { width: 10px; height: 10px; margin: 8px auto 0; border-radius: 3px; background: rgba(255,255,255,0.06); }
+.mini-saas-sidebar div:first-child { background: rgba(129,140,248,0.25); }
+.mini-saas-body { padding: 6px 8px 6px 34px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; position: relative; }
+.mini-saas-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; padding: 7px 6px; }
+.mini-saas-card .val { font-size: 0.65rem; font-weight: 800; color: #fff; }
+.mini-saas-card .lbl { font-size: 0.35rem; color: rgba(255,255,255,0.3); margin-top: 1px; }
+.mini-saas-card .change { font-size: 0.32rem; color: #4ade80; margin-top: 2px; }
+.mini-saas-card:nth-child(2) .change { color: #818cf8; }
+.mini-saas-card:nth-child(3) .change { color: #fbbf24; }
+.mini-saas-chart { grid-column: 1/-1; height: 56px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; position: relative; overflow: hidden; }
+.mini-saas-chart::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: linear-gradient(to right, #818cf8, #6366f1, #818cf8); opacity: 0.15; clip-path: polygon(0 90%, 5% 60%, 12% 70%, 20% 40%, 30% 55%, 40% 25%, 50% 35%, 60% 15%, 70% 30%, 80% 20%, 90% 40%, 100% 25%, 100% 100%, 0 100%); }
+.mini-saas-chart::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40px; border-top: 1.5px solid #818cf8; clip-path: polygon(0 90%, 5% 60%, 12% 70%, 20% 40%, 30% 55%, 40% 25%, 50% 35%, 60% 15%, 70% 30%, 80% 20%, 90% 40%, 100% 25%); }
+.mini-saas-table { grid-column: 1/-1; display: flex; flex-direction: column; gap: 2px; }
+.mini-saas-row { display: flex; justify-content: space-between; padding: 3px 6px; background: rgba(255,255,255,0.02); border-radius: 2px; }
+.mini-saas-row span { font-size: 0.32rem; color: rgba(255,255,255,0.3); }
+.mini-saas-row span:first-child { color: rgba(255,255,255,0.5); }
 
-.mini-portfolio { background: #fafaf9; }
-.mini-portfolio-header { padding: 10px; text-align: center; }
-.mini-portfolio-header h6 { font-size: 0.55rem; color: #1a1a1a; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
-.mini-portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding: 0 6px 6px; }
-.mini-portfolio-grid div { aspect-ratio: 1; background: #e7e5e4; border-radius: 2px; }
-.mini-portfolio-grid div:nth-child(2) { background: #d6d3d1; }
-.mini-portfolio-grid div:nth-child(5) { background: #d6d3d1; }
+/* ── Portfolio ── */
+.mini-portfolio { background: #faf9f7; position: relative; }
+.mini-portfolio-header { padding: 12px 10px 6px; text-align: center; border-bottom: 1px solid #e7e5e4; }
+.mini-portfolio-header h6 { font-size: 0.6rem; color: #1a1a1a; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
+.mini-portfolio-header p { font-size: 0.35rem; color: #a8a29e; margin-top: 2px; letter-spacing: 0.05em; }
+.mini-portfolio-nav { display: flex; justify-content: center; gap: 8px; padding: 6px 0; }
+.mini-portfolio-nav span { font-size: 0.32rem; color: #78716c; text-transform: uppercase; letter-spacing: 0.08em; }
+.mini-portfolio-nav span:first-child { color: #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+.mini-portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding: 4px 8px 8px; }
+.mini-portfolio-grid div { aspect-ratio: 1; border-radius: 2px; position: relative; overflow: hidden; }
+.mini-portfolio-grid div:nth-child(1) { background: linear-gradient(135deg, #d6d3d1, #a8a29e); }
+.mini-portfolio-grid div:nth-child(2) { background: linear-gradient(135deg, #292524, #44403c); }
+.mini-portfolio-grid div:nth-child(3) { background: linear-gradient(135deg, #e7e5e4, #d6d3d1); }
+.mini-portfolio-grid div:nth-child(4) { background: linear-gradient(135deg, #44403c, #1c1917); }
+.mini-portfolio-grid div:nth-child(5) { background: linear-gradient(135deg, #d6d3d1, #78716c); }
+.mini-portfolio-grid div:nth-child(6) { background: linear-gradient(135deg, #a8a29e, #e7e5e4); }
 
-.mini-restaurant { background: #1c1917; }
-.mini-restaurant-hero { text-align: center; padding: 16px 10px 10px; }
-.mini-restaurant-hero h6 { font-size: 0.65rem; font-weight: 700; color: #fbbf24; font-style: italic; }
-.mini-restaurant-hero p { font-size: 0.4rem; color: rgba(255,255,255,0.3); margin-top: 3px; }
-.mini-restaurant-imgs { display: flex; gap: 4px; padding: 6px; }
-.mini-restaurant-imgs div { flex: 1; height: 36px; background: #292524; border-radius: 3px; }
+/* ── Restaurant ── */
+.mini-restaurant { background: #1a1412; position: relative; }
+.mini-restaurant::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%; background: linear-gradient(180deg, rgba(251,191,36,0.08), transparent); }
+.mini-restaurant-nav { display: flex; justify-content: space-between; padding: 8px 10px; position: relative; z-index: 1; }
+.mini-restaurant-nav span:first-child { font-size: 0.4rem; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; text-transform: uppercase; }
+.mini-restaurant-nav span:last-child { font-size: 0.35rem; padding: 2px 6px; border: 1px solid #fbbf24; color: #fbbf24; border-radius: 2px; }
+.mini-restaurant-hero { text-align: center; padding: 8px 10px 10px; position: relative; z-index: 1; }
+.mini-restaurant-hero h6 { font-size: 0.8rem; font-weight: 300; color: #fbbf24; font-style: italic; letter-spacing: 0.05em; }
+.mini-restaurant-hero p { font-size: 0.38rem; color: rgba(255,255,255,0.3); margin-top: 3px; letter-spacing: 0.08em; text-transform: uppercase; }
+.mini-restaurant-hero .mini-divider { width: 24px; height: 1px; background: #fbbf24; margin: 6px auto 0; opacity: 0.5; }
+.mini-restaurant-imgs { display: flex; gap: 4px; padding: 6px 8px; }
+.mini-restaurant-imgs div { flex: 1; height: 40px; border-radius: 3px; position: relative; overflow: hidden; }
+.mini-restaurant-imgs div:nth-child(1) { background: linear-gradient(135deg, #44403c, #292524); }
+.mini-restaurant-imgs div:nth-child(2) { background: linear-gradient(135deg, #78350f, #451a03); }
+.mini-restaurant-imgs div:nth-child(3) { background: linear-gradient(135deg, #292524, #1c1917); }
+.mini-restaurant-info { display: flex; justify-content: center; gap: 12px; padding: 4px 8px; }
+.mini-restaurant-info span { font-size: 0.3rem; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.06em; }
 
-.mini-ecommerce { background: #fffbeb; }
-.mini-ecommerce-nav { padding: 8px 10px; display: flex; justify-content: space-between; }
-.mini-ecommerce-nav span { font-size: 0.5rem; color: #92400e; font-weight: 600; }
-.mini-ecommerce-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px 8px; }
+/* ── E-Commerce ── */
+.mini-ecommerce { background: #fdfcf9; }
+.mini-ecommerce-nav { padding: 7px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f5f0e8; }
+.mini-ecommerce-nav span:first-child { font-size: 0.55rem; color: #78350f; font-weight: 600; letter-spacing: -0.02em; }
+.mini-ecommerce-nav span:last-child { font-size: 0.4rem; color: #a8a29e; }
+.mini-ecommerce-hero { padding: 6px 10px; text-align: center; }
+.mini-ecommerce-hero span { font-size: 0.32rem; color: #a8a29e; text-transform: uppercase; letter-spacing: 0.1em; }
+.mini-ecommerce-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; padding: 4px 8px; }
 .mini-ecommerce-item { text-align: center; }
-.mini-ecommerce-item div { aspect-ratio: 1; background: #fde68a; border-radius: 4px; margin-bottom: 3px; }
-.mini-ecommerce-item span { font-size: 0.4rem; color: #78350f; }
-.mini-ecommerce-item:nth-child(2) div { background: #fcd34d; }
-.mini-ecommerce-item:nth-child(3) div { background: #fbbf24; }
+.mini-ecommerce-item div { aspect-ratio: 1; border-radius: 6px; margin-bottom: 3px; position: relative; }
+.mini-ecommerce-item:nth-child(1) div { background: linear-gradient(135deg, #fde68a, #fcd34d); }
+.mini-ecommerce-item:nth-child(2) div { background: linear-gradient(135deg, #d6d3d1, #a8a29e); }
+.mini-ecommerce-item:nth-child(3) div { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
+.mini-ecommerce-item .name { font-size: 0.38rem; color: #44403c; font-weight: 600; display: block; }
+.mini-ecommerce-item .price { font-size: 0.35rem; color: #a8a29e; display: block; }
 
-.mini-agency { background: #000; position: relative; display: flex; align-items: center; justify-content: center; }
-.mini-agency h6 { font-size: 1.2rem; font-weight: 900; color: #fff; letter-spacing: -0.04em; text-transform: uppercase; line-height: 1; }
-.mini-agency-line { position: absolute; bottom: 12px; left: 10px; right: 10px; height: 1px; background: #333; }
+/* ── Agency ── */
+.mini-agency { background: #000; position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+.mini-agency-hero { flex: 1; display: flex; align-items: center; padding: 0 12px; }
+.mini-agency h6 { font-size: 1.4rem; font-weight: 900; color: #fff; letter-spacing: -0.06em; text-transform: uppercase; line-height: 0.95; }
+.mini-agency-nav { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-top: 1px solid #222; }
+.mini-agency-nav span { font-size: 0.32rem; color: #555; text-transform: uppercase; letter-spacing: 0.1em; }
+.mini-agency-nav .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; }
+.mini-agency-tag { position: absolute; top: 10px; right: 10px; font-size: 0.3rem; color: #555; text-transform: uppercase; letter-spacing: 0.1em; writing-mode: vertical-rl; }
+.mini-agency-line { position: absolute; left: 50%; top: 10px; bottom: 40px; width: 1px; background: #1a1a1a; }
 
-.mini-fitness { background: linear-gradient(135deg, #052e16, #064e3b); }
-.mini-fitness-hero { padding: 14px 10px; }
-.mini-fitness-hero h6 { font-size: 0.65rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; }
-.mini-fitness-hero p { font-size: 0.4rem; color: rgba(255,255,255,0.4); margin-top: 3px; }
-.mini-fitness-cards { display: flex; gap: 4px; padding: 0 8px; }
-.mini-fitness-cards div { flex: 1; padding: 8px 6px; background: rgba(255,255,255,0.08); border-radius: 4px; text-align: center; }
-.mini-fitness-cards div span { font-size: 0.4rem; color: #4ade80; font-weight: 600; display: block; }
+/* ── Fitness ── */
+.mini-fitness { background: #0a0a0a; position: relative; overflow: hidden; }
+.mini-fitness::before { content: ''; position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, rgba(74,222,128,0.15), transparent 70%); }
+.mini-fitness-nav { display: flex; justify-content: space-between; padding: 7px 10px; }
+.mini-fitness-nav span:first-child { font-size: 0.5rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.03em; }
+.mini-fitness-nav span:last-child { font-size: 0.32rem; padding: 2px 6px; background: #4ade80; color: #000; border-radius: 2px; font-weight: 700; }
+.mini-fitness-hero { padding: 8px 10px 6px; position: relative; }
+.mini-fitness-hero h6 { font-size: 0.7rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.1; }
+.mini-fitness-hero p { font-size: 0.35rem; color: rgba(255,255,255,0.3); margin-top: 3px; }
+.mini-fitness-cards { display: flex; gap: 4px; padding: 4px 8px; }
+.mini-fitness-cards div { flex: 1; padding: 8px 5px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; text-align: center; }
+.mini-fitness-cards div .icon { font-size: 0.65rem; display: block; margin-bottom: 2px; }
+.mini-fitness-cards div span { font-size: 0.35rem; color: rgba(255,255,255,0.5); font-weight: 500; display: block; }
+.mini-fitness-cards div:first-child { border-color: rgba(74,222,128,0.3); }
+.mini-fitness-cards div:first-child span { color: #4ade80; }
+.mini-fitness-stats { display: flex; justify-content: center; gap: 16px; padding: 6px 10px; }
+.mini-fitness-stats div { text-align: center; }
+.mini-fitness-stats div strong { font-size: 0.5rem; color: #4ade80; display: block; font-weight: 800; }
+.mini-fitness-stats div span { font-size: 0.28rem; color: rgba(255,255,255,0.25); text-transform: uppercase; }
 
-.mini-medical { background: #f0fdfa; }
-.mini-medical-nav { padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; }
+/* ── Medical ── */
+.mini-medical { background: #f7fdfb; }
+.mini-medical-nav { padding: 7px 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e6f5f0; }
 .mini-medical-nav span:first-child { font-size: 0.5rem; font-weight: 700; color: #0d9488; }
-.mini-medical-nav span:last-child { font-size: 0.4rem; padding: 2px 6px; background: #0d9488; color: #fff; border-radius: 3px; }
-.mini-medical-body { padding: 6px 10px; }
-.mini-medical-body h6 { font-size: 0.55rem; color: #134e4a; font-weight: 700; margin-bottom: 6px; }
-.mini-medical-form { display: flex; flex-direction: column; gap: 4px; }
-.mini-medical-form div { height: 14px; background: #ccfbf1; border-radius: 3px; }
+.mini-medical-nav span:last-child { font-size: 0.35rem; padding: 2px 8px; background: #0d9488; color: #fff; border-radius: 20px; font-weight: 500; }
+.mini-medical-body { padding: 8px 10px; }
+.mini-medical-body h6 { font-size: 0.5rem; color: #134e4a; font-weight: 700; margin-bottom: 2px; }
+.mini-medical-body > p { font-size: 0.32rem; color: #5eead4; margin-bottom: 6px; }
+.mini-medical-services { display: flex; gap: 4px; margin-bottom: 6px; }
+.mini-medical-services div { flex: 1; padding: 5px 4px; background: #e6f5f0; border-radius: 4px; text-align: center; }
+.mini-medical-services div .ico { font-size: 0.55rem; display: block; }
+.mini-medical-services div span { font-size: 0.3rem; color: #0d9488; font-weight: 500; display: block; margin-top: 1px; }
+.mini-medical-form { display: flex; flex-direction: column; gap: 3px; }
+.mini-medical-form div { height: 12px; background: #e6f5f0; border-radius: 3px; }
+.mini-medical-form div:last-child { width: 50%; height: 14px; background: #0d9488; border-radius: 3px; }
 
+/* ── Real Estate ── */
 .mini-realestate { background: #f8fafc; }
-.mini-realestate-search { margin: 8px; padding: 6px 8px; background: #fff; border: 1px solid #e2e8f0; border-radius: 4px; display: flex; gap: 4px; }
-.mini-realestate-search div { flex: 1; height: 10px; background: #f1f5f9; border-radius: 2px; }
-.mini-realestate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 0 8px; }
-.mini-realestate-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden; }
-.mini-realestate-card-img { height: 28px; background: #cbd5e1; }
-.mini-realestate-card-info { padding: 4px 6px; }
-.mini-realestate-card-info span { font-size: 0.4rem; color: #64748b; display: block; }
-.mini-realestate-card-info strong { font-size: 0.45rem; color: #1e293b; }
+.mini-realestate-nav { display: flex; justify-content: space-between; padding: 7px 10px; border-bottom: 1px solid #e2e8f0; }
+.mini-realestate-nav span:first-child { font-size: 0.5rem; font-weight: 700; color: #1e293b; }
+.mini-realestate-nav span:last-child { font-size: 0.35rem; color: #64748b; }
+.mini-realestate-search { margin: 6px 8px; padding: 5px 8px; background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; display: flex; gap: 4px; align-items: center; }
+.mini-realestate-search div { flex: 1; height: 8px; background: #f1f5f9; border-radius: 2px; }
+.mini-realestate-search .btn { width: 20px; height: 8px; background: #3b82f6; border-radius: 2px; flex-shrink: 0; }
+.mini-realestate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 2px 8px; }
+.mini-realestate-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 5px; overflow: hidden; }
+.mini-realestate-card-img { height: 32px; position: relative; }
+.mini-realestate-card:nth-child(1) .mini-realestate-card-img { background: linear-gradient(135deg, #93c5fd, #60a5fa); }
+.mini-realestate-card:nth-child(2) .mini-realestate-card-img { background: linear-gradient(135deg, #a5b4fc, #818cf8); }
+.mini-realestate-card-img .tag { position: absolute; top: 3px; left: 3px; font-size: 0.28rem; background: rgba(0,0,0,0.6); color: #fff; padding: 1px 4px; border-radius: 2px; }
+.mini-realestate-card-info { padding: 4px 5px; }
+.mini-realestate-card-info strong { font-size: 0.45rem; color: #1e293b; display: block; }
+.mini-realestate-card-info span { font-size: 0.32rem; color: #64748b; display: block; }
+.mini-realestate-card-info .details { display: flex; gap: 4px; margin-top: 2px; }
+.mini-realestate-card-info .details span { font-size: 0.28rem; color: #94a3b8; }
 
-.mini-startup { background: linear-gradient(135deg, #1e1b4b, #312e81); }
-.mini-startup-hero { text-align: center; padding: 16px 10px; }
-.mini-startup-hero h6 { font-size: 0.7rem; font-weight: 800; color: #fff; }
-.mini-startup-hero p { font-size: 0.4rem; color: rgba(255,255,255,0.4); margin-top: 3px; }
-.mini-startup-stats { display: flex; justify-content: center; gap: 12px; padding-top: 8px; }
+/* ── Startup ── */
+.mini-startup { background: #0a0118; position: relative; overflow: hidden; }
+.mini-startup::before { content: ''; position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(139,92,246,0.2), transparent 70%); }
+.mini-startup-nav { display: flex; justify-content: space-between; padding: 7px 10px; position: relative; z-index: 1; }
+.mini-startup-nav span:first-child { font-size: 0.5rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+.mini-startup-nav span:last-child { font-size: 0.32rem; padding: 2px 6px; background: rgba(139,92,246,0.3); color: #c4b5fd; border-radius: 20px; }
+.mini-startup-hero { text-align: center; padding: 10px 10px 6px; position: relative; z-index: 1; }
+.mini-startup-hero h6 { font-size: 0.75rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; }
+.mini-startup-hero p { font-size: 0.35rem; color: rgba(255,255,255,0.35); margin-top: 3px; max-width: 90%; margin-left: auto; margin-right: auto; }
+.mini-startup-hero .mini-cta { display: inline-block; margin-top: 6px; font-size: 0.32rem; padding: 3px 10px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border-radius: 20px; font-weight: 600; }
+.mini-startup-stats { display: flex; justify-content: center; gap: 14px; padding: 8px 10px 0; position: relative; z-index: 1; }
 .mini-startup-stats div { text-align: center; }
-.mini-startup-stats div strong { font-size: 0.55rem; color: #a78bfa; display: block; }
-.mini-startup-stats div span { font-size: 0.35rem; color: rgba(255,255,255,0.3); }
+.mini-startup-stats div strong { font-size: 0.5rem; color: #c4b5fd; display: block; font-weight: 800; }
+.mini-startup-stats div span { font-size: 0.28rem; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 0.05em; }
 
-.mini-coaching { background: #fffbeb; }
-.mini-coaching-hero { display: flex; gap: 8px; padding: 10px; align-items: center; }
-.mini-coaching-avatar { width: 36px; height: 36px; border-radius: 50%; background: #f59e0b; flex-shrink: 0; }
-.mini-coaching-text h6 { font-size: 0.55rem; font-weight: 700; color: #78350f; }
-.mini-coaching-text p { font-size: 0.4rem; color: #92400e; }
-.mini-coaching-cards { display: flex; gap: 4px; padding: 0 8px; }
-.mini-coaching-cards div { flex: 1; height: 32px; background: #fef3c7; border-radius: 4px; }
+/* ── Coaching ── */
+.mini-coaching { background: #fffdf7; }
+.mini-coaching-nav { display: flex; justify-content: space-between; padding: 7px 10px; border-bottom: 1px solid #fef3c7; }
+.mini-coaching-nav span:first-child { font-size: 0.5rem; font-weight: 600; color: #78350f; }
+.mini-coaching-nav span:last-child { font-size: 0.35rem; color: #a8a29e; }
+.mini-coaching-hero { display: flex; gap: 8px; padding: 8px 10px; align-items: center; }
+.mini-coaching-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b, #d97706); flex-shrink: 0; position: relative; }
+.mini-coaching-avatar::after { content: '✦'; position: absolute; bottom: -2px; right: -2px; font-size: 0.45rem; color: #f59e0b; }
+.mini-coaching-text h6 { font-size: 0.5rem; font-weight: 700; color: #78350f; }
+.mini-coaching-text p { font-size: 0.35rem; color: #a8a29e; }
+.mini-coaching-cards { display: flex; gap: 4px; padding: 2px 8px; }
+.mini-coaching-cards div { flex: 1; padding: 6px 4px; background: #fef3c7; border-radius: 4px; text-align: center; border: 1px solid #fde68a; }
+.mini-coaching-cards div .ico { font-size: 0.5rem; display: block; }
+.mini-coaching-cards div span { font-size: 0.3rem; color: #92400e; font-weight: 500; display: block; margin-top: 1px; }
+.mini-coaching-testimonial { padding: 4px 10px; }
+.mini-coaching-testimonial p { font-size: 0.28rem; color: #a8a29e; font-style: italic; text-align: center; }
 
-.mini-wedding { background: linear-gradient(135deg, #fdf2f8, #fce7f3); }
-.mini-wedding-content { text-align: center; padding: 20px 10px; }
-.mini-wedding-content h6 { font-size: 0.75rem; font-weight: 700; color: #9d174d; font-style: italic; }
-.mini-wedding-content p { font-size: 0.4rem; color: #be185d; margin-top: 4px; }
-.mini-wedding-hearts { margin-top: 8px; font-size: 0.7rem; opacity: 0.5; }
+/* ── Wedding ── */
+.mini-wedding { background: linear-gradient(180deg, #fdf2f8, #fce7f3, #fbcfe8); position: relative; overflow: hidden; }
+.mini-wedding::before { content: ''; position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border: 1px solid rgba(157,23,77,0.1); border-radius: 50%; }
+.mini-wedding::after { content: ''; position: absolute; bottom: 10px; left: 10px; width: 24px; height: 24px; border: 1px solid rgba(157,23,77,0.08); border-radius: 50%; }
+.mini-wedding-nav { display: flex; justify-content: center; gap: 8px; padding: 8px 10px; position: relative; z-index: 1; }
+.mini-wedding-nav span { font-size: 0.3rem; color: #be185d; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.5; }
+.mini-wedding-content { text-align: center; padding: 12px 10px; position: relative; z-index: 1; }
+.mini-wedding-content .mini-divider { width: 20px; height: 1px; background: #f9a8d4; margin: 4px auto; }
+.mini-wedding-content h6 { font-size: 0.85rem; font-weight: 300; color: #9d174d; font-style: italic; letter-spacing: 0.02em; }
+.mini-wedding-content p { font-size: 0.38rem; color: #be185d; margin-top: 3px; letter-spacing: 0.08em; }
+.mini-wedding-content .save-date { display: inline-block; margin-top: 6px; font-size: 0.3rem; padding: 2px 8px; border: 1px solid #f9a8d4; color: #be185d; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.08em; }
+.mini-wedding-hearts { margin-top: 6px; font-size: 0.55rem; opacity: 0.4; letter-spacing: 4px; }
 
 /* ═══════════════════════════════════════════════════
    TESTIMONIALS
@@ -940,7 +1179,7 @@ p { color: var(--text-secondary); }
 .final-cta {
   text-align: center;
   padding: 120px 0;
-  max-width: 560px;
+  max-width: 600px;
   margin: 0 auto;
 }
 .final-cta h2 { margin-bottom: 16px; }
@@ -953,8 +1192,39 @@ p { color: var(--text-secondary); }
   display: flex;
   gap: 8px;
   max-width: 480px;
-  margin: 0 auto 16px;
+  margin: 0 auto 24px;
 }
+/* Premium Demo CTA */
+.btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #000;
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-slow);
+  box-shadow: 0 0 0 0 rgba(0,230,138,0);
+}
+.btn-demo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+.btn-demo:hover {
+  box-shadow: 0 0 32px rgba(0,230,138,0.3), 0 4px 16px rgba(0,230,138,0.2);
+  transform: translateY(-2px);
+}
+.btn-demo:hover::before { transform: translateX(100%); }
+.btn-demo svg { transition: transform var(--transition); }
+.btn-demo:hover svg { transform: translateX(3px); }
 .final-input {
   flex: 1;
   padding: 12px 16px;
@@ -1085,7 +1355,8 @@ p { color: var(--text-secondary); }
 
   .hero { padding: 120px 0 60px; }
   .hero h1 { font-size: 2.2rem; }
-  .hero-mockup { display: none; }
+  .hero-mockups { grid-template-columns: 1fr; }
+  .hero-mockup:nth-child(2) { display: none; }
 
   .features-grid { grid-template-columns: 1fr; }
   .steps-grid { grid-template-columns: 1fr; }
@@ -1131,72 +1402,114 @@ p { color: var(--text-secondary); }
 <section class="hero">
   <div class="container">
     <div class="hero-content">
-      <div class="badge"><span class="badge-dot"></span> Powered by Claude AI</div>
+      <div class="badge"><span class="badge-dot"></span> Powered by Qntum AI</div>
       <h1>Deine Website.<br><span class="accent">Ein Gespräch entfernt.</span></h1>
-      <p class="hero-subtitle">Beschreibe deine Vision — unsere KI baut sie. Design, Code, Content. Alles automatisch.</p>
+      <p class="hero-subtitle">Beschreibe deine Vision — unsere KI baut sie. Frontend, Backend, Datenbank. Alles automatisch.</p>
       <div class="hero-ctas">
         <a href="auth.html" class="btn btn-primary btn-lg">Jetzt starten</a>
-        <a href="#showcase" class="btn btn-ghost btn-lg">Demo ansehen</a>
+        <a href="#demo-section" class="btn btn-ghost btn-lg">Live Demo</a>
       </div>
       <p class="hero-note">Keine Kreditkarte nötig · Kostenlos starten</p>
     </div>
 
-    <!-- Workspace Mockup -->
-    <div class="hero-mockup reveal">
-      <div class="mockup-bar">
-        <div class="mockup-dots"><span></span><span></span><span></span></div>
-        <div class="mockup-url">ki-agentur.qntum.design</div>
-      </div>
-      <div class="mockup-body">
-        <!-- Chat Panel -->
-        <div class="mock-chat">
-          <div class="mock-chat-header">Chat · Sonnet 4.6</div>
-          <div class="mock-chat-messages">
-            <div class="mock-msg mock-msg-user">Erstelle eine Website für meine KI-Agentur. Wir verkaufen Chatbots und Calling Agents.</div>
-            <div class="mock-msg mock-msg-ai">Ich schlage ein dunkles, tech-orientiertes Design vor mit blauen Akzenten. Welche Farben sprechen dich an?</div>
-            <div class="mock-msg mock-msg-user">Dunkel mit Blau und Cyan. Modern und vertrauenswürdig.</div>
-            <div class="mock-msg mock-msg-ai">Deine Website ist fertig. Hero-Section, 3 Service-Karten, Stats und Kontakt. Du kannst jetzt Änderungen per Chat vornehmen.</div>
-            <div class="mock-msg mock-msg-user">Mach die Hero-Überschrift größer und füge Pricing hinzu.</div>
+    <!-- Dual Mockups -->
+    <div class="hero-mockups reveal">
+      <!-- Mockup 1: Call Center Website -->
+      <div class="hero-mockup" style="position:relative;">
+        <span class="mockup-label">Website-Ergebnis</span>
+        <div class="mockup-bar">
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+          <div class="mockup-url">callflow-ai.qntum.design</div>
+        </div>
+        <div class="mockup-body">
+          <div class="mock-chat">
+            <div class="mock-chat-header">Chat</div>
+            <div class="mock-chat-messages">
+              <div class="mock-msg mock-msg-user">Erstelle eine moderne Call-Center Website. Dunkles Design, professionell.</div>
+              <div class="mock-msg mock-msg-ai">Ich baue eine Landing Page mit Hero, Service-Übersicht, Live-Dashboard-Preview und Kontaktformular. Welche Services bietet ihr an?</div>
+              <div class="mock-msg mock-msg-user">Inbound, Outbound, KI-Telefonassistenten und Terminvereinbarung.</div>
+              <div class="mock-msg mock-msg-ai">Fertig! 4 Service-Karten, ein animiertes Dashboard-Mockup und Call-to-Action. Du kannst jetzt Änderungen vornehmen.</div>
+            </div>
+            <div class="mock-chat-input">
+              <span>Beschreibe eine Änderung...</span>
+              <div class="mock-send-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+              </div>
+            </div>
           </div>
-          <div class="mock-chat-input">
-            <span>Beschreibe eine Änderung...</span>
-            <div class="mock-send-btn">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+          <div class="mock-preview">
+            <div class="mock-preview-nav">
+              <span class="mock-preview-logo">CallFlow AI</span>
+              <div class="mock-preview-links"><span>Services</span><span>Dashboard</span><span>Pricing</span></div>
+              <span class="mock-preview-btn">Demo starten</span>
+            </div>
+            <div class="mock-preview-hero">
+              <h4>Intelligente<br>Call-Center Lösung</h4>
+              <p>KI-gestützte Telefonie, Echtzeit-Analytics und automatisierte Gesprächsführung für Ihr Unternehmen.</p>
+            </div>
+            <div class="mock-preview-cards">
+              <div class="mock-preview-card">
+                <div class="mock-preview-card-icon">📞</div>
+                <h5>Inbound</h5>
+                <p>Automatische Anrufverteilung mit KI-Routing</p>
+              </div>
+              <div class="mock-preview-card">
+                <div class="mock-preview-card-icon">📡</div>
+                <h5>Outbound</h5>
+                <p>KI-gesteuerte Kampagnen und Lead-Generierung</p>
+              </div>
+              <div class="mock-preview-card">
+                <div class="mock-preview-card-icon">🤖</div>
+                <h5>KI-Assistent</h5>
+                <p>24/7 Telefonassistent mit natürlicher Sprache</p>
+              </div>
+            </div>
+            <div class="mock-preview-stats">
+              <span><strong>1.2M+</strong> Anrufe/Mo</span>
+              <span><strong>98.5%</strong> Erreichbarkeit</span>
+              <span><strong>340+</strong> Unternehmen</span>
             </div>
           </div>
         </div>
-        <!-- Preview Panel -->
-        <div class="mock-preview">
-          <div class="mock-preview-nav">
-            <span class="mock-preview-logo">NexAgent AI</span>
-            <div class="mock-preview-links"><span>Services</span><span>Pricing</span><span>Kontakt</span></div>
-            <span class="mock-preview-btn">Demo buchen</span>
-          </div>
-          <div class="mock-preview-hero">
-            <h4>KI-Agenten für<br>Ihr Unternehmen</h4>
-            <p>Automatisieren Sie Kundenkommunikation mit intelligenten Chatbots, Calling Agents und Buchungssystemen.</p>
-          </div>
-          <div class="mock-preview-cards">
-            <div class="mock-preview-card">
-              <div class="mock-preview-card-icon">💬</div>
-              <h5>Chatbot Agent</h5>
-              <p>24/7 Kundenservice mit KI-gestützten Antworten</p>
+      </div>
+
+      <!-- Mockup 2: UI/UX Skill Preview -->
+      <div class="hero-mockup" style="position:relative;">
+        <span class="mockup-label">UI/UX Skill aktiv</span>
+        <div class="mockup-bar">
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+          <div class="mockup-url">Design-System</div>
+        </div>
+        <div class="uiux-preview">
+          <div class="uiux-header">
+            <div class="uiux-header-left">
+              <h5>Design-System generiert</h5>
+              <span>Für: CallFlow AI</span>
             </div>
-            <div class="mock-preview-card">
-              <div class="mock-preview-card-icon">📞</div>
-              <h5>Calling Agent</h5>
-              <p>Automatisierte Anrufe und Lead-Qualifizierung</p>
-            </div>
-            <div class="mock-preview-card">
-              <div class="mock-preview-card-icon">📅</div>
-              <h5>Buchungs-Agent</h5>
-              <p>Termine automatisch planen und bestätigen</p>
-            </div>
+            <span class="uiux-skill-active">UI/UX Pro</span>
           </div>
-          <div class="mock-preview-stats">
-            <span><strong>500+</strong> Kunden</span>
-            <span><strong>2M+</strong> Gespräche</span>
-            <span><strong>99.7%</strong> Uptime</span>
+          <div class="uiux-palette">
+            <div class="uiux-swatch" style="background:#0B1120;"></div>
+            <div class="uiux-swatch" style="background:#1E3A5F;"></div>
+            <div class="uiux-swatch" style="background:#3B82F6;"></div>
+            <div class="uiux-swatch" style="background:#60A5FA;"></div>
+            <div class="uiux-swatch" style="background:#F8FAFC;"></div>
+          </div>
+          <div class="uiux-typography">
+            <div class="uiux-type-label">Typografie</div>
+            <div class="uiux-type-sample-lg">Inter · 800</div>
+            <div class="uiux-type-sample-sm">Body: Inter Regular 15px / 1.6</div>
+          </div>
+          <div class="uiux-layout">
+            <div class="uiux-layout-item"><div class="lbl">Radius</div><div class="val">12px</div></div>
+            <div class="uiux-layout-item"><div class="lbl">Spacing</div><div class="val">8px Grid</div></div>
+            <div class="uiux-layout-item"><div class="lbl">Breakpoints</div><div class="val">3</div></div>
+            <div class="uiux-layout-item"><div class="lbl">Komponenten</div><div class="val">24</div></div>
+          </div>
+          <div class="uiux-components">
+            <div class="uiux-comp-btn uiux-comp-primary">Primary</div>
+            <div class="uiux-comp-btn uiux-comp-ghost">Ghost</div>
+            <div class="uiux-comp-btn uiux-comp-accent">Accent</div>
           </div>
         </div>
       </div>
@@ -1237,51 +1550,51 @@ p { color: var(--text-secondary); }
   <div class="container">
     <div class="reveal">
       <div class="section-label">Features</div>
-      <h2 class="section-title">Alles was du brauchst.<br>Nichts was du nicht brauchst.</h2>
-      <p class="section-subtitle">Von der Idee zur fertigen Website — ohne Code, ohne Designkenntnisse.</p>
+      <h2 class="section-title">Nicht nur Design.<br>Die komplette Web-App.</h2>
+      <p class="section-subtitle">Frontend, Backend, Datenbank, API — alles aus einem Gespräch.</p>
     </div>
     <div class="features-grid reveal">
       <div class="feature-card">
         <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Frontend-Entwicklung</h3>
+        <p>HTML, CSS, JavaScript — responsive Layouts, Animationen und Interaktionen. Pixel-perfekt generiert.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        </div>
+        <h3>Backend & Datenbank</h3>
+        <p>Server-Logik, Datenbankanbindung und Authentifizierung — automatisch konfiguriert und deployed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         </div>
-        <h3>KI-Design-Engine</h3>
-        <p>Generiert Layouts, Farbpaletten und Typografie automatisch aus deiner Beschreibung.</p>
+        <h3>API-Integration</h3>
+        <p>Stripe, Supabase, externe APIs — Integrationen per Beschreibung hinzufügen. Kein Boilerplate.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
         </div>
-        <h3>Smart Copywriting</h3>
-        <p>Headlines, CTAs, SEO-Texte — alles aus deiner Beschreibung generiert.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
-        </div>
-        <h3>Responsive by Default</h3>
-        <p>Jede Seite perfekt auf Mobile, Tablet und Desktop — automatisch.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><polyline points="12 12 12 21"/><polyline points="8 17 12 21 16 17"/></svg>
-        </div>
-        <h3>One-Click Publish</h3>
-        <p>Eigene Domain oder Qntum-Subdomain — ein Klick und deine Seite ist live.</p>
+        <h3>Custom Domain & SSL</h3>
+        <p>Eigene Domain verbinden, SSL automatisch. Ein Klick und dein Projekt ist live.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
         <h3>Echtzeit-Vorschau</h3>
-        <p>Sieh jede Änderung sofort live — direkt neben dem Chat.</p>
+        <p>Sieh jede Änderung sofort live — Desktop, Tablet, Mobile. Direkt neben dem Chat.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <h3>Iteration per Chat</h3>
-        <p>„Mach den Header größer", „Ändere die Farbe" — sage es einfach.</p>
+        <p>„Füge ein Kontaktformular hinzu", „Ändere die Datenbank-Struktur" — beschreibe es einfach.</p>
       </div>
     </div>
   </div>
@@ -1344,48 +1657,154 @@ p { color: var(--text-secondary); }
     </div>
 
     <div class="showcase-grid">
+      <!-- SaaS Dashboard -->
       <div class="showcase-card reveal" data-category="saas">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-saas"><div class="mini-saas-nav"><span>FlowMetrics</span><span>Dashboard · Reports · Settings</span></div><div class="mini-saas-body"><div class="mini-saas-card"><div class="val">12.4K</div><div class="lbl">Active Users</div></div><div class="mini-saas-card"><div class="val">$84K</div><div class="lbl">Revenue</div></div><div class="mini-saas-chart"></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-saas">
+          <div class="mini-saas-nav"><span>FlowMetrics</span><span>Dashboard · Reports · Settings</span></div>
+          <div class="mini-saas-body">
+            <div class="mini-saas-sidebar"><div></div><div></div><div></div></div>
+            <div class="mini-saas-card"><div class="val">12.4K</div><div class="lbl">Active Users</div><div class="change">↑ 12.3%</div></div>
+            <div class="mini-saas-card"><div class="val">$84K</div><div class="lbl">MRR</div><div class="change">↑ 8.1%</div></div>
+            <div class="mini-saas-card"><div class="val">2.4%</div><div class="lbl">Churn</div><div class="change">↓ 0.3%</div></div>
+            <div class="mini-saas-chart"></div>
+            <div class="mini-saas-table">
+              <div class="mini-saas-row"><span>enterprise-v2</span><span>success</span></div>
+              <div class="mini-saas-row"><span>api-gateway</span><span>pending</span></div>
+            </div>
+          </div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">SaaS</div><h3>FlowMetrics Analytics</h3><p class="showcase-prompt">Erstelle ein SaaS-Dashboard für ein Analytics-Tool mit dunklem Theme</p></div>
       </div>
+
+      <!-- Portfolio -->
       <div class="showcase-card reveal" data-category="portfolio">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-portfolio"><div class="mini-portfolio-header"><h6>Marie Lehmann</h6></div><div class="mini-portfolio-grid"><div></div><div></div><div></div><div></div><div></div><div></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-portfolio">
+          <div class="mini-portfolio-header"><h6>Marie Lehmann</h6><p>Fotografie & Visual Art</p></div>
+          <div class="mini-portfolio-nav"><span>Projekte</span><span>Portrait</span><span>Natur</span><span>Info</span></div>
+          <div class="mini-portfolio-grid"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Portfolio</div><h3>Marie Lehmann Fotografie</h3><p class="showcase-prompt">Minimalistisches Portfolio für eine Fotografin, viel Weißraum</p></div>
       </div>
+
+      <!-- Restaurant -->
       <div class="showcase-card reveal" data-category="restaurant">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-restaurant"><div class="mini-restaurant-hero"><h6>Trattoria Milano</h6><p>Authentische italienische Küche</p></div><div class="mini-restaurant-imgs"><div></div><div></div><div></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-restaurant">
+          <div class="mini-restaurant-nav"><span>Trattoria Milano</span><span>Reservieren</span></div>
+          <div class="mini-restaurant-hero"><h6>Trattoria Milano</h6><p>Authentische italienische Küche seit 1987</p><div class="mini-divider"></div></div>
+          <div class="mini-restaurant-imgs"><div></div><div></div><div></div></div>
+          <div class="mini-restaurant-info"><span>Pasta</span><span>·</span><span>Vino</span><span>·</span><span>Dolci</span></div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Restaurant</div><h3>Trattoria Milano</h3><p class="showcase-prompt">Elegante Website für ein italienisches Restaurant mit Reservierung</p></div>
       </div>
+
+      <!-- E-Commerce -->
       <div class="showcase-card reveal" data-category="ecommerce">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-ecommerce"><div class="mini-ecommerce-nav"><span>Tonwerk</span><span>Shop · Über uns</span></div><div class="mini-ecommerce-grid"><div class="mini-ecommerce-item"><div></div><span>Vase €49</span></div><div class="mini-ecommerce-item"><div></div><span>Schale €35</span></div><div class="mini-ecommerce-item"><div></div><span>Tasse €24</span></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-ecommerce">
+          <div class="mini-ecommerce-nav"><span>Tonwerk</span><span>Shop · Über uns · ♡</span></div>
+          <div class="mini-ecommerce-hero"><span>Neue Kollektion</span></div>
+          <div class="mini-ecommerce-grid">
+            <div class="mini-ecommerce-item"><div></div><span class="name">Vase Nara</span><span class="price">€49</span></div>
+            <div class="mini-ecommerce-item"><div></div><span class="name">Schale Kinto</span><span class="price">€35</span></div>
+            <div class="mini-ecommerce-item"><div></div><span class="name">Tasse Wabi</span><span class="price">€24</span></div>
+          </div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">E-Commerce</div><h3>Tonwerk Keramik</h3><p class="showcase-prompt">Online-Shop für handgemachte Keramik mit warmen Farben</p></div>
       </div>
+
+      <!-- Agency -->
       <div class="showcase-card reveal" data-category="agency">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-agency"><h6>NØRD</h6><div class="mini-agency-line"></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-agency">
+          <div class="mini-agency-tag">Creative Studio 2026</div>
+          <div class="mini-agency-line"></div>
+          <div class="mini-agency-hero"><h6>NØRD</h6></div>
+          <div class="mini-agency-nav"><span>Projekte</span><span>Studio</span><span>Kontakt</span><div class="dot"></div></div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Agency</div><h3>Nørd Kreativagentur</h3><p class="showcase-prompt">Mutige Kreativagentur-Website mit riesiger Typografie</p></div>
       </div>
+
+      <!-- Fitness -->
       <div class="showcase-card reveal" data-category="fitness">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-fitness"><div class="mini-fitness-hero"><h6>APEX FITNESS</h6><p>Transform your body</p></div><div class="mini-fitness-cards"><div><span>Kurse</span></div><div><span>Trainer</span></div><div><span>Preise</span></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-fitness">
+          <div class="mini-fitness-nav"><span>APEX</span><span>Join Now</span></div>
+          <div class="mini-fitness-hero"><h6>Transform<br>Your Body</h6><p>Premium Fitness · Personal Training</p></div>
+          <div class="mini-fitness-cards">
+            <div><span class="icon">◎</span><span>Kurse</span></div>
+            <div><span class="icon">◈</span><span>Trainer</span></div>
+            <div><span class="icon">◉</span><span>Preise</span></div>
+          </div>
+          <div class="mini-fitness-stats"><div><strong>500+</strong><span>Members</span></div><div><strong>25</strong><span>Trainer</span></div><div><strong>60+</strong><span>Kurse</span></div></div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Fitness</div><h3>APEX Fitness Club</h3><p class="showcase-prompt">Energiegeladene Fitness-Studio-Website mit Kursplan</p></div>
       </div>
+
+      <!-- Medical -->
       <div class="showcase-card reveal" data-category="medical">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-medical"><div class="mini-medical-nav"><span>Dr. Wellness</span><span>Termin</span></div><div class="mini-medical-body"><h6>Willkommen</h6><div class="mini-medical-form"><div></div><div></div><div></div></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-medical">
+          <div class="mini-medical-nav"><span>Dr. Wellness</span><span>Termin buchen</span></div>
+          <div class="mini-medical-body">
+            <h6>Ihre Gesundheit. Unser Anliegen.</h6>
+            <p>Moderne Zahnmedizin</p>
+            <div class="mini-medical-services">
+              <div><span class="ico">⚕</span><span>Prophylaxe</span></div>
+              <div><span class="ico">✦</span><span>Ästhetik</span></div>
+              <div><span class="ico">◎</span><span>Implantate</span></div>
+            </div>
+            <div class="mini-medical-form"><div></div><div></div><div></div></div>
+          </div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Arztpraxis</div><h3>Dr. Wellness Praxis</h3><p class="showcase-prompt">Zahnarztpraxis-Website mit Online-Terminbuchung</p></div>
       </div>
+
+      <!-- Real Estate -->
       <div class="showcase-card reveal" data-category="realestate">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-realestate"><div class="mini-realestate-search"><div></div><div></div></div><div class="mini-realestate-grid"><div class="mini-realestate-card"><div class="mini-realestate-card-img"></div><div class="mini-realestate-card-info"><strong>€420.000</strong><span>3 Zi · 85m²</span></div></div><div class="mini-realestate-card"><div class="mini-realestate-card-img"></div><div class="mini-realestate-card-info"><strong>€680.000</strong><span>4 Zi · 120m²</span></div></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-realestate">
+          <div class="mini-realestate-nav"><span>Skyline</span><span>Kaufen · Mieten · Bewerten</span></div>
+          <div class="mini-realestate-search"><div></div><div></div><div class="btn"></div></div>
+          <div class="mini-realestate-grid">
+            <div class="mini-realestate-card"><div class="mini-realestate-card-img"><span class="tag">Neu</span></div><div class="mini-realestate-card-info"><strong>€420.000</strong><span>3 Zi · 85m² · München</span><div class="details"><span>◎ Balkon</span><span>◎ Garage</span></div></div></div>
+            <div class="mini-realestate-card"><div class="mini-realestate-card-img"><span class="tag">Top</span></div><div class="mini-realestate-card-info"><strong>€680.000</strong><span>4 Zi · 120m² · Hamburg</span><div class="details"><span>◎ Garten</span><span>◎ EBK</span></div></div></div>
+          </div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Immobilien</div><h3>Skyline Immobilien</h3><p class="showcase-prompt">Immobilien-Portal mit Suchfunktion und Kartenansicht</p></div>
       </div>
+
+      <!-- Startup -->
       <div class="showcase-card reveal" data-category="startup">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-startup"><div class="mini-startup-hero"><h6>NovaMind AI</h6><p>The future of intelligence</p></div><div class="mini-startup-stats"><div><strong>10M+</strong><span>Users</span></div><div><strong>99.9%</strong><span>Uptime</span></div><div><strong>150+</strong><span>Countries</span></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-startup">
+          <div class="mini-startup-nav"><span>NovaMind</span><span>Get Started</span></div>
+          <div class="mini-startup-hero"><h6>The Future of Intelligence</h6><p>AI-powered insights for modern teams. Automate, analyze, accelerate.</p><span class="mini-cta">Start Free Trial →</span></div>
+          <div class="mini-startup-stats"><div><strong>10M+</strong><span>Users</span></div><div><strong>99.9%</strong><span>Uptime</span></div><div><strong>150+</strong><span>Countries</span></div></div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Startup</div><h3>NovaMind AI</h3><p class="showcase-prompt">Futuristische Startup-Landing-Page mit Gradient-Design</p></div>
       </div>
+
+      <!-- Coaching -->
       <div class="showcase-card reveal" data-category="coaching">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-coaching"><div class="mini-coaching-hero"><div class="mini-coaching-avatar"></div><div class="mini-coaching-text"><h6>Julia Kraft</h6><p>Life & Business Coach</p></div></div><div class="mini-coaching-cards"><div></div><div></div><div></div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-coaching">
+          <div class="mini-coaching-nav"><span>Julia Kraft</span><span>Angebote · Blog · Kontakt</span></div>
+          <div class="mini-coaching-hero"><div class="mini-coaching-avatar"></div><div class="mini-coaching-text"><h6>Julia Kraft</h6><p>Life & Business Coach</p></div></div>
+          <div class="mini-coaching-cards">
+            <div><span class="ico">◎</span><span>1:1 Coaching</span></div>
+            <div><span class="ico">◈</span><span>Workshop</span></div>
+            <div><span class="ico">◉</span><span>Online-Kurs</span></div>
+          </div>
+          <div class="mini-coaching-testimonial"><p>„Julia hat mir geholfen, mein Business auf das nächste Level zu bringen."</p></div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Coaching</div><h3>Julia Kraft Coaching</h3><p class="showcase-prompt">Coaching-Website mit Buchungssystem und Bewertungen</p></div>
       </div>
+
+      <!-- Wedding -->
       <div class="showcase-card reveal" data-category="wedding">
-        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-wedding"><div class="mini-wedding-content"><h6>Anna & Lukas</h6><p>12. September 2026</p><div class="mini-wedding-hearts">♥ ♥ ♥</div></div></div></div></div>
+        <div class="showcase-thumb"><div class="showcase-thumb-inner"><div class="mini-site mini-wedding">
+          <div class="mini-wedding-nav"><span>Unsere Geschichte</span><span>Location</span><span>RSVP</span></div>
+          <div class="mini-wedding-content">
+            <div class="mini-divider"></div>
+            <h6>Anna & Lukas</h6>
+            <p>12. September 2026</p>
+            <span class="save-date">Save the Date</span>
+            <div class="mini-wedding-hearts">♥ ♥ ♥</div>
+          </div>
+        </div></div></div>
         <div class="showcase-info"><div class="showcase-category">Hochzeit</div><h3>Anna & Lukas</h3><p class="showcase-prompt">Romantische Hochzeitswebsite mit Fotos und Gästebuch</p></div>
       </div>
     </div>
@@ -1446,7 +1865,6 @@ p { color: var(--text-secondary); }
       <!-- Explorer -->
       <div class="pricing-card reveal">
         <div class="pricing-plan">Explorer</div>
-        <div class="pricing-model">Haiku 4.5</div>
         <div class="pricing-price">€0</div>
         <div class="pricing-period">Für immer kostenlos</div>
         <div class="pricing-features">
@@ -1461,7 +1879,6 @@ p { color: var(--text-secondary); }
       <!-- Starter -->
       <div class="pricing-card reveal">
         <div class="pricing-plan">Starter</div>
-        <div class="pricing-model">Sonnet 4.6</div>
         <div class="pricing-price">€29 <span>/ Mo</span></div>
         <div class="pricing-period">oder €290 / Jahr (spare 20%)</div>
         <div class="pricing-features">
@@ -1487,7 +1904,6 @@ p { color: var(--text-secondary); }
       <div class="pricing-card featured reveal">
         <div class="pricing-badge">Empfohlen</div>
         <div class="pricing-plan">Pro</div>
-        <div class="pricing-model">Sonnet 4.6 + Opus 4.6</div>
         <div class="pricing-price">€79 <span>/ Mo</span></div>
         <div class="pricing-period">oder €790 / Jahr (spare 20%)</div>
         <div class="pricing-features">
@@ -1513,7 +1929,6 @@ p { color: var(--text-secondary); }
       <!-- Business -->
       <div class="pricing-card reveal">
         <div class="pricing-plan">Business</div>
-        <div class="pricing-model">Opus 4.6</div>
         <div class="pricing-price">€149 <span>/ Mo</span></div>
         <div class="pricing-period">oder €1.490 / Jahr (spare 20%)</div>
         <div class="pricing-features">
@@ -1554,8 +1969,8 @@ p { color: var(--text-secondary); }
         <div class="faq-answer"><p>Nein. Qntum ist komplett No-Code. Du beschreibst per Chat was du willst und die KI baut es. Für Profis gibt es trotzdem Code-Export in HTML, CSS und JavaScript.</p></div>
       </div>
       <div class="faq-item reveal">
-        <button class="faq-question">Welche KI-Modelle stehen zur Verfügung?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
-        <div class="faq-answer"><p>Je nach Plan: Haiku 4.5 (Explorer), Sonnet 4.6 (Starter), Sonnet 4.6 + Opus 4.6 (Pro) oder Opus 4.6 (Business). Höhere Modelle liefern komplexere Designs und besseren Code.</p></div>
+        <button class="faq-question">Wird die KI besser mit höheren Plänen?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+        <div class="faq-answer"><p>Ja. Höhere Pläne nutzen leistungsstärkere KI-Modelle, die komplexere Designs, besseren Code und mehr Features generieren. Du merkst den Unterschied sofort in der Qualität der Ergebnisse.</p></div>
       </div>
       <div class="faq-item reveal">
         <button class="faq-question">Kann ich meine eigene Domain nutzen?<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
@@ -1580,16 +1995,23 @@ p { color: var(--text-secondary); }
 <!-- ═══════════════════════════════════════════════════
      FINAL CTA
      ═══════════════════════════════════════════════════ -->
-<section class="section">
+<section class="section" id="demo-section">
   <div class="container">
     <div class="final-cta reveal">
+      <div class="badge" style="margin-bottom:24px;"><span class="badge-dot"></span> Powered by Qntum AI</div>
       <h2>Bereit, deine Website<br><span class="accent">zu erstellen?</span></h2>
       <p>Beschreibe dein Projekt — und sieh zu, wie es Wirklichkeit wird.</p>
       <div class="final-input-wrap">
         <input type="text" class="final-input" placeholder="Beschreibe deine Website...">
         <button class="btn btn-primary" onclick="window.location.href='auth.html'">Loslegen</button>
       </div>
-      <p class="final-note">Kostenlos starten · Keine Kreditkarte nötig</p>
+      <div style="margin-top:32px;">
+        <a href="auth.html" class="btn-demo">
+          Live Demo starten
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+      <p class="final-note" style="margin-top:16px;">Keine Kreditkarte nötig · Kostenlos starten · Sofort loslegen</p>
     </div>
   </div>
 </section>
@@ -1602,7 +2024,7 @@ p { color: var(--text-secondary); }
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="footer-brand-name">Qntum<span>.</span></div>
-        <p>Erstelle professionelle Websites durch natürliche Sprache. Powered by Claude AI.</p>
+        <p>Erstelle professionelle Websites durch natürliche Sprache. Powered by Qntum AI.</p>
         <div class="footer-social">
           <a href="#" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
           <a href="#" aria-label="GitHub"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>

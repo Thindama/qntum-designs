@@ -928,9 +928,24 @@ function checkStrength(pw) {
 }
 
 // ═══ Form Submit Handlers ═══
+// Redirect helper: respects ?redirect= and ?plan= URL params
+const _authParams = new URLSearchParams(window.location.search);
+const _authRedirect = _authParams.get('redirect');
+const _authPlan = _authParams.get('plan');
+function getPostAuthUrl() {
+  if (_authRedirect === 'pricing' && _authPlan) {
+    return 'index.html?checkout=' + _authPlan + '#pricing';
+  }
+  if (_authRedirect === 'checkout' && _authPlan) {
+    return 'checkout.html?plan=' + _authPlan;
+  }
+  if (_authRedirect) return _authRedirect;
+  return 'dashboard.html';
+}
+
 // Redirect if already logged in
 if (localStorage.getItem('qntum_token')) {
-  window.location.href = 'dashboard.html';
+  window.location.href = getPostAuthUrl();
 }
 
 async function handleLogin(e) {
@@ -960,7 +975,7 @@ async function handleLogin(e) {
       localStorage.setItem('qntum_refresh', data.session.refresh_token);
       localStorage.setItem('qntum_user', JSON.stringify(data.user));
       showToast('Erfolgreich angemeldet! Weiterleitung...');
-      setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+      setTimeout(() => { window.location.href = getPostAuthUrl(); }, 800);
     } else {
       errorEl.textContent = data.error || 'Anmeldung fehlgeschlagen';
       if (!e.target.querySelector('.form-error')) btn.parentElement.appendChild(errorEl);
@@ -1000,7 +1015,8 @@ async function handleRegister(e) {
       localStorage.setItem('qntum_refresh', data.session.refresh_token);
       localStorage.setItem('qntum_user', JSON.stringify(data.user));
       showToast('Konto erstellt! Weiterleitung...');
-      setTimeout(() => { window.location.href = 'onboarding.html'; }, 800);
+      const registerDest = _authRedirect ? getPostAuthUrl() : 'onboarding.html';
+      setTimeout(() => { window.location.href = registerDest; }, 800);
     } else {
       errorEl.textContent = data.error || 'Registrierung fehlgeschlagen';
       if (!e.target.querySelector('.form-error')) btn.parentElement.appendChild(errorEl);
