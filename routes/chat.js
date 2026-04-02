@@ -45,9 +45,9 @@ router.post('/send', async (req, res) => {
         id: req.userId,
         name: authUser?.user?.user_metadata?.name || '',
         email: authUser?.user?.email || '',
-        plan: 'free',
+        plan: 'explorer',
         tokens_used: 0,
-        tokens_limit: 500000
+        tokens_limit: 30000
       }, { onConflict: 'id' })
       .select('plan, tokens_used, tokens_limit')
       .single();
@@ -69,10 +69,14 @@ router.post('/send', async (req, res) => {
   }
 
   // Restrict Opus to pro/business plans
-  const userPlan = profile.plan || 'free';
-  let modelId = MODELS[model] || MODELS['sonnet'];
-  if (model === 'opus' && userPlan === 'free') {
+  const userPlan = profile.plan || 'explorer';
+  let modelId = MODELS[model] || MODELS['haiku'];
+  if (model === 'opus' && (userPlan === 'explorer' || userPlan === 'starter')) {
     modelId = MODELS['sonnet'];
+  }
+  // Explorer only gets Haiku
+  if (userPlan === 'explorer') {
+    modelId = MODELS['haiku'];
   }
 
   try {

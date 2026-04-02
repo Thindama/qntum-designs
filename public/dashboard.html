@@ -1506,6 +1506,18 @@ function showToast(message) {
 (async function loadDashboard() {
   try {
     const headers = { 'Authorization': 'Bearer ' + token };
+
+    // After Stripe payment redirect: verify & sync subscription before loading
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+      try {
+        await fetch('/api/stripe/verify', { method: 'POST', headers });
+        // Clean URL
+        window.history.replaceState({}, '', 'dashboard.html');
+        showToast('Zahlung erfolgreich! Dein Plan wurde aktualisiert.');
+      } catch (e) { /* proceed anyway */ }
+    }
+
     const [profileRes, projectsRes] = await Promise.all([
       fetch('/api/auth/me', { headers }),
       fetch('/api/projects', { headers })
@@ -1532,10 +1544,10 @@ function showToast(message) {
     const totalProjects = projects.length;
     const liveProjects = projects.filter(p => p.status === 'live').length;
     const tokensUsed = profile.tokens_used || 0;
-    const tokensLimit = profile.tokens_limit || 500000;
+    const tokensLimit = profile.tokens_limit || 30000;
     const tokensPercent = tokensLimit > 0 ? Math.round((tokensUsed / tokensLimit) * 100) : 0;
     const totalVersions = projects.reduce((sum, p) => sum + (p.version_count || 0), 0);
-    const plan = (profile.plan || 'free').charAt(0).toUpperCase() + (profile.plan || 'free').slice(1);
+    const plan = (profile.plan || 'explorer').charAt(0).toUpperCase() + (profile.plan || 'explorer').slice(1);
 
     // ── Welcome ──
     document.getElementById('welcomeSub').textContent =

@@ -35,9 +35,9 @@ router.post('/register', async (req, res) => {
         id: data.user.id,
         name,
         email,
-        plan: 'free',
+        plan: 'explorer',
         tokens_used: 0,
-        tokens_limit: 500000
+        tokens_limit: 30000
       }, { onConflict: 'id' });
 
     if (profileError) {
@@ -120,9 +120,9 @@ router.post('/login', async (req, res) => {
         id: data.user.id,
         name: profile?.name || '',
         email: data.user.email,
-        plan: profile?.plan || 'free',
+        plan: profile?.plan || 'explorer',
         tokens_used: profile?.tokens_used || 0,
-        tokens_limit: profile?.tokens_limit || 500000
+        tokens_limit: profile?.tokens_limit || 30000
       },
       session: {
         access_token: data.session.access_token,
@@ -207,9 +207,9 @@ router.get('/me', async (req, res) => {
       id: user.id,
       name: profile?.name || '',
       email: user.email,
-      plan: profile?.plan || 'free',
+      plan: profile?.plan || 'explorer',
       tokens_used: profile?.tokens_used || 0,
-      tokens_limit: profile?.tokens_limit || 500000
+      tokens_limit: profile?.tokens_limit || 30000
     });
   } catch (err) {
     res.status(500).json({ error: 'Profil konnte nicht geladen werden' });

@@ -1410,7 +1410,8 @@ input, textarea { font-family: inherit; }
   let currentFiles = {};
   let sessionTokens = 0;
   let userTokensUsed = 0;
-  let userTokensLimit = 500000;
+  let userTokensLimit = 30000;
+  let userPlan = 'explorer';
   let isSending = false;
 
   const chatMessages = document.getElementById('chatMessages');
@@ -2027,18 +2028,48 @@ input, textarea { font-family: inherit; }
       const profile = await res.json();
 
       userTokensUsed = profile.tokens_used || 0;
-      userTokensLimit = profile.tokens_limit || 500000;
-      const plan = (profile.plan || 'free').charAt(0).toUpperCase() + (profile.plan || 'free').slice(1);
+      userTokensLimit = profile.tokens_limit || 30000;
+      userPlan = profile.plan || 'explorer';
+      const planLabel = userPlan.charAt(0).toUpperCase() + userPlan.slice(1);
       const initials = (profile.name || '?').split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
 
-      document.getElementById('planBadge').textContent = plan;
+      document.getElementById('planBadge').textContent = planLabel;
       document.getElementById('topbarAvatar').textContent = initials;
       document.getElementById('topbarAvatar').title = profile.name || 'Dashboard';
       updateTokenBar();
+
+      // Check if token limit reached on load
+      if (userTokensUsed >= userTokensLimit) {
+        showTokenLimitReached();
+      }
     } catch (e) {
       console.error('Profile load error:', e);
     }
   })();
+
+  // Token limit reached overlay
+  function showTokenLimitReached() {
+    const overlay = document.createElement('div');
+    overlay.id = 'tokenLimitOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(5,15,10,0.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;';
+    overlay.innerHTML = `
+      <div style="background:rgba(15,25,20,0.95);border:1px solid rgba(0,230,138,0.15);border-radius:20px;padding:48px;max-width:440px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.5);">
+        <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,180,0,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFB400" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3 style="color:#fff;font-family:var(--ws-font);font-size:20px;font-weight:700;margin-bottom:10px;">Token-Limit erreicht</h3>
+        <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin-bottom:28px;">Du hast dein monatliches Limit von <strong style="color:rgba(255,255,255,0.8);">${fmtTokens(userTokensLimit)} Tokens</strong> erreicht. Upgrade deinen Plan fuer mehr Tokens.</p>
+        <a href="/index.html#pricing" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:linear-gradient(135deg,#00E68A,#00CC7A);color:#000;font-weight:700;font-size:14px;border-radius:12px;text-decoration:none;transition:all 0.3s;">Plan upgraden</a>
+        <button onclick="this.closest('#tokenLimitOverlay').remove()" style="display:block;margin:16px auto 0;background:none;border:none;color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;">Schliessen (nur ansehen)</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  // Upgrade redirect
+  window.__openUpgrade = function() {
+    window.location.href = '/index.html#pricing';
+  };
 
   loadProject();
 
