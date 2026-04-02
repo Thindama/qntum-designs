@@ -60,6 +60,29 @@ const PLANS = {
 // Alias: 'free' maps to 'explorer' for backwards compatibility
 PLANS.free = PLANS.explorer;
 
+// ═══ STARTUP DIAGNOSTICS ═══
+console.log('═══════════════════════════════════════════');
+console.log('  Stripe Config Check (Server-Start)');
+console.log('═══════════════════════════════════════════');
+console.log('  STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? `✅ ${process.env.STRIPE_SECRET_KEY.substring(0, 12)}...` : '❌ FEHLT');
+console.log('');
+console.log('  Env-Variablen (process.env):');
+console.log('    STRIPE_PRICE_STARTER_MONTHLY:', process.env.STRIPE_PRICE_STARTER_MONTHLY || '❌ FEHLT');
+console.log('    STRIPE_PRICE_STARTER_YEARLY: ', process.env.STRIPE_PRICE_STARTER_YEARLY || '❌ FEHLT');
+console.log('    STRIPE_PRICE_PRO_MONTHLY:    ', process.env.STRIPE_PRICE_PRO_MONTHLY || '❌ FEHLT');
+console.log('    STRIPE_PRICE_PRO_YEARLY:     ', process.env.STRIPE_PRICE_PRO_YEARLY || '❌ FEHLT');
+console.log('    STRIPE_PRICE_BIZ_MONTHLY:    ', process.env.STRIPE_PRICE_BIZ_MONTHLY || '❌ FEHLT');
+console.log('    STRIPE_PRICE_BIZ_YEARLY:     ', process.env.STRIPE_PRICE_BIZ_YEARLY || '❌ FEHLT');
+console.log('');
+console.log('  In PLANS gespeichert (diese Werte werden beim Checkout verwendet):');
+console.log('    starter.stripePriceMonthly:', PLANS.starter.stripePriceMonthly || '❌ undefined');
+console.log('    starter.stripePriceYearly: ', PLANS.starter.stripePriceYearly || '❌ undefined');
+console.log('    pro.stripePriceMonthly:    ', PLANS.pro.stripePriceMonthly || '❌ undefined');
+console.log('    pro.stripePriceYearly:     ', PLANS.pro.stripePriceYearly || '❌ undefined');
+console.log('    business.stripePriceMonthly:', PLANS.business.stripePriceMonthly || '❌ undefined');
+console.log('    business.stripePriceYearly: ', PLANS.business.stripePriceYearly || '❌ undefined');
+console.log('═══════════════════════════════════════════');
+
 // GET /api/stripe/plans — list available plans (public)
 router.get('/plans', (req, res) => {
   res.json(PLANS);
@@ -70,40 +93,63 @@ router.post('/checkout', requireAuth, async (req, res) => {
   const s = getStripe();
   if (!s) return res.status(503).json({ error: 'Zahlungen sind noch nicht konfiguriert.' });
 
-  const { plan, interval } = req.body; // plan: 'pro'|'business', interval: 'monthly'|'yearly'
+  const { plan, interval } = req.body; // plan: 'starter'|'pro'|'business', interval: 'monthly'|'yearly'
   const planDef = PLANS[plan];
-  if (!planDef || plan === 'free') {
-    return res.status(400).json({ error: 'Ungültiger Plan' });
+
+  if (!planDef || plan === 'free' || plan === 'explorer') {
+    return res.status(400).json({ error: `Ungültiger Plan: "${plan}". Erlaubt: starter, pro, business` });
   }
 
   const priceId = interval === 'yearly' ? planDef.stripePriceYearly : planDef.stripePriceMonthly;
-  if (!priceId) return res.status(400).json({ error: 'Preis nicht konfiguriert' });
+  const priceEnvKey = `STRIPE_PRICE_${plan === 'business' ? 'BIZ' : plan.toUpperCase()}_${(interval || 'monthly').toUpperCase()}`;
+
+  if (!priceId) {
+    console.error(`❌ Stripe Price ID fehlt! Plan: ${plan}, Interval: ${interval}, Env-Variable: ${priceEnvKey}`);
+    return res.status(400).json({
+      error: `Preis nicht konfiguriert. Env-Variable ${priceEnvKey} ist nicht gesetzt.`
+    });
+  }
+
+  console.log(`💳 Checkout: plan=${plan}, interval=${interval}, priceId=${priceId}`);
 
   try {
     // Get or create Stripe customer
-    const { data: profile } = await supabaseAdmin
+    const { data: profile, error: profileErr } = await supabaseAdmin
       .from('profiles')
       .select('email, stripe_customer_id')
       .eq('id', req.userId)
       .single();
 
-    let customerId = profile?.stripe_customer_id;
+    if (profileErr || !profile) {
+      console.error('❌ Profil nicht gefunden:', profileErr?.message, 'userId:', req.userId);
+      return res.status(400).json({ error: 'Benutzerprofil nicht gefunden.' });
+    }
+
+    console.log(`👤 Profile: email=${profile.email}, stripe_customer_id=${profile.stripe_customer_id || 'noch keiner'}`);
+
+    let customerId = profile.stripe_customer_id;
     if (!customerId) {
       const customer = await s.customers.create({
-        email: profile.email,
+        email: profile.email || undefined,
         metadata: { supabase_uid: req.userId }
       });
       customerId = customer.id;
       await supabaseAdmin.from('profiles').update({ stripe_customer_id: customerId }).eq('id', req.userId);
+      console.log(`✅ Stripe Customer erstellt: ${customerId}`);
     }
+
+    // Use https for production (Railway proxy terminates TLS)
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? `https://${req.get('host')}`
+      : `${req.protocol}://${req.get('host')}`;
 
     const session = await s.checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${req.protocol}://${req.get('host')}/dashboard.html?payment=success&plan=${plan}`,
-      cancel_url: `${req.protocol}://${req.get('host')}/checkout.html?payment=cancelled`,
+      success_url: `${baseUrl}/dashboard.html?payment=success&plan=${plan}`,
+      cancel_url: `${baseUrl}/checkout.html?payment=cancelled`,
       metadata: { supabase_uid: req.userId, plan },
       subscription_data: {
         metadata: { supabase_uid: req.userId, plan }
@@ -112,8 +158,18 @@ router.post('/checkout', requireAuth, async (req, res) => {
 
     res.json({ url: session.url });
   } catch (err) {
-    console.error('Stripe checkout error:', err);
-    res.status(500).json({ error: 'Checkout konnte nicht erstellt werden' });
+    console.error('❌ Stripe Checkout Error:');
+    console.error('  Type:', err.type);
+    console.error('  Code:', err.code);
+    console.error('  Message:', err.message);
+    console.error('  Param:', err.param);
+    console.error('  StatusCode:', err.statusCode);
+    if (err.raw) console.error('  Raw:', JSON.stringify(err.raw, null, 2));
+
+    const clientMsg = err.type === 'StripeInvalidRequestError'
+      ? `Stripe-Fehler: ${err.message}`
+      : 'Checkout konnte nicht erstellt werden. Siehe Server-Logs.';
+    res.status(500).json({ error: clientMsg });
   }
 });
 
@@ -133,9 +189,13 @@ router.post('/portal', requireAuth, async (req, res) => {
       return res.status(400).json({ error: 'Kein aktives Abonnement' });
     }
 
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? `https://${req.get('host')}`
+      : `${req.protocol}://${req.get('host')}`;
+
     const session = await s.billingPortal.sessions.create({
       customer: profile.stripe_customer_id,
-      return_url: `${req.protocol}://${req.get('host')}/dashboard.html`
+      return_url: `${baseUrl}/dashboard.html`
     });
 
     res.json({ url: session.url });
