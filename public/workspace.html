@@ -1496,6 +1496,251 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 }
 .toggle-switch.on::after { transform: translateX(18px); }
 
+/* ═══════════════════════════════════════
+   CHAT FLOW — Interactive Cards & Chips
+   ═══════════════════════════════════════ */
+.flow-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 10px;
+}
+.flow-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 12px;
+  color: var(--ws-text-2);
+  font-weight: 500;
+}
+.flow-card:hover {
+  background: rgba(0,229,255,0.04);
+  border-color: rgba(0,229,255,0.2);
+  color: var(--ws-text);
+}
+.flow-card.selected {
+  background: rgba(0,229,255,0.08);
+  border-color: rgba(0,229,255,0.35);
+  color: #00e5ff;
+}
+.flow-card-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  width: 24px;
+  text-align: center;
+}
+.flow-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.flow-card-label {
+  font-weight: 600;
+  font-size: 12px;
+}
+.flow-card-desc {
+  font-size: 10px;
+  color: var(--ws-text-3);
+  font-weight: 400;
+}
+
+/* Industry cards — smaller, 3 columns */
+.flow-cards.flow-cards-sm {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.flow-cards-sm .flow-card {
+  padding: 8px 10px;
+  font-size: 11px;
+}
+.flow-cards-sm .flow-card-icon {
+  font-size: 15px;
+  width: 20px;
+}
+
+/* Multi-select chips */
+.flow-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+.flow-chip {
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-text-3);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.flow-chip:hover {
+  border-color: rgba(0,229,255,0.2);
+  color: var(--ws-text-2);
+}
+.flow-chip.selected {
+  background: rgba(0,229,255,0.08);
+  border-color: rgba(0,229,255,0.35);
+  color: #00e5ff;
+}
+
+/* Style cards — horizontal */
+.flow-cards.flow-cards-style {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Confirm button */
+.flow-confirm-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 10px 24px;
+  background: var(--ws-primary);
+  color: #000;
+  font-size: 13px;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.flow-confirm-btn:hover {
+  background: var(--ws-primary-l);
+  box-shadow: 0 4px 20px rgba(0,230,138,0.3);
+}
+
+/* Summary box */
+.flow-summary {
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ws-text-2);
+}
+.flow-summary strong {
+  color: var(--ws-text);
+}
+.flow-summary-row {
+  display: flex;
+  gap: 6px;
+}
+.flow-summary-label {
+  color: var(--ws-text-3);
+  min-width: 90px;
+  font-size: 11px;
+}
+
+/* Freetext row within flow */
+.flow-freetext {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.flow-freetext input {
+  flex: 1;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  border-radius: 8px;
+  color: var(--ws-text);
+  font-size: 12px;
+  font-family: var(--ws-font);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.flow-freetext input:focus { border-color: rgba(0,229,255,0.4); }
+.flow-freetext button {
+  padding: 8px 14px;
+  background: rgba(0,229,255,0.1);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 8px;
+  color: #00e5ff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--ws-font);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.flow-freetext button:hover { background: rgba(0,229,255,0.15); }
+
+/* Chat loading overlay (inside chat panel) */
+.chat-gen-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8,8,15,0.95);
+  backdrop-filter: blur(8px);
+  z-index: 40;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.chat-gen-overlay.active { display: flex; }
+.chat-gen-pulse {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,229,255,0.12), transparent 70%);
+  position: relative;
+  animation: genPulse 2s ease-in-out infinite;
+}
+.chat-gen-pulse::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,229,255,0.25);
+  border-top-color: #00e5ff;
+  animation: spin 1s linear infinite;
+}
+.chat-gen-status {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ws-text);
+  text-align: center;
+  transition: opacity 0.25s;
+}
+.chat-gen-progress {
+  width: 160px;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.chat-gen-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00e5ff, var(--ws-primary));
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+/* Flow question label */
+.flow-question {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ws-text);
+  margin-bottom: 2px;
+}
+.flow-question-num {
+  color: #00e5ff;
+  font-family: var(--ws-mono);
+  margin-right: 4px;
+}
+
 </style>
 </head>
 
@@ -1639,6 +1884,11 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
     <!-- CHAT PANEL -->
     <section class="chat-panel" style="position:relative;">
+      <div class="chat-gen-overlay" id="chatGenOverlay">
+        <div class="chat-gen-pulse"></div>
+        <div class="chat-gen-status" id="chatGenStatus">Analysiere deine Angaben...</div>
+        <div class="chat-gen-progress"><div class="chat-gen-progress-bar" id="chatGenProgressBar"></div></div>
+      </div>
       <div class="chat-header">
         <div class="chat-header-left">
           <div class="chat-header-dot"></div>
@@ -2248,7 +2498,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   // ═══════════════════════════════════════
   async function loadProject() {
     if (!projectId) {
-      appendMessage('assistant', 'Willkommen! Beschreibe die Website, die du erstellen möchtest, und ich generiere sie für dich.');
+      appendMessage('assistant', 'Willkommen bei Qntum! Beschreibe mir kurz, welche Website du erstellen möchtest — ich führe dich durch den Prozess.');
       return;
     }
 
@@ -2276,6 +2526,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       // Load messages (strip all code blocks, not just HTML)
       if (project.messages?.length) {
         project.messages.forEach(m => appendMessage(m.role, m.content.replace(/```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?[\s\S]*?```/g, '<em>[Code generiert]</em>')));
+        flowStep = FLOW_COMPLETE; // Project already has history
       } else {
         appendMessage('assistant', `Projekt "${project.name}" geladen. Was möchtest du ändern oder erstellen?`);
       }
@@ -2283,9 +2534,573 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       // Load preview
       if (project.current_html) {
         updatePreview(project.current_html);
+        flowStep = FLOW_COMPLETE;
       }
     } catch (err) {
       appendMessage('assistant', 'Willkommen! Beschreibe die Website, die du erstellen möchtest.');
+    }
+  }
+
+  // ═══════════════════════════════════════
+  // STRUCTURED QUESTION FLOW
+  // ═══════════════════════════════════════
+  const FLOW_COMPLETE = 99;
+  let flowStep = 0;
+  let flowData = {
+    type: null,          // landing, multipage, shop, portfolio
+    industry: null,      // friseursalon, fitness, restaurant, etc.
+    sections: [],        // hero, about, services, pricing, etc.
+    pages: null,         // 3, 5, 7
+    colors: null,        // dark, light, colorful, custom
+    customColor: null,
+    style: null,         // minimal, luxury, playful, corporate, tech
+    animations: null,    // none, subtle, heavy
+    language: null,      // de, en, both
+    extras: null         // freetext
+  };
+
+  // Check if first prompt already contains answers
+  function parseInitialPrompt(text) {
+    const lower = text.toLowerCase();
+    // Type detection
+    if (/shop|e-commerce|produkt|checkout/i.test(lower)) flowData.type = 'shop';
+    else if (/portfolio|showcase|arbeiten/i.test(lower)) flowData.type = 'portfolio';
+    else if (/multi.*page|mehrere.*seiten/i.test(lower)) flowData.type = 'multipage';
+    else if (/landing|landingpage|einzelne.*seite/i.test(lower)) flowData.type = 'landing';
+
+    // Industry detection
+    const industries = {
+      'friseur': 'friseur', 'salon': 'friseur', 'hair': 'friseur',
+      'fitness': 'fitness', 'gym': 'fitness', 'sport': 'fitness',
+      'restaurant': 'restaurant', 'gastro': 'restaurant', 'pizza': 'restaurant', 'café': 'restaurant',
+      'immobilien': 'immobilien', 'makler': 'immobilien', 'real estate': 'immobilien',
+      'coaching': 'coaching', 'beratung': 'coaching', 'consulting': 'coaching',
+      'e-commerce': 'ecommerce', 'online.*shop': 'ecommerce',
+      'agentur': 'agentur', 'agency': 'agentur', 'kreativ': 'agentur',
+      'arzt': 'arztpraxis', 'praxis': 'arztpraxis', 'zahnarzt': 'arztpraxis', 'medizin': 'arztpraxis',
+      'startup': 'startup', 'tech': 'startup', 'saas': 'startup',
+      'handwerk': 'handwerk', 'elektriker': 'handwerk', 'schreiner': 'handwerk'
+    };
+    for (const [keyword, val] of Object.entries(industries)) {
+      if (new RegExp(keyword, 'i').test(lower)) { flowData.industry = val; break; }
+    }
+
+    // Color detection
+    if (/dunkel|dark|schwarz/i.test(lower)) flowData.colors = 'dark';
+    else if (/hell|light|weiß|white/i.test(lower)) flowData.colors = 'light';
+    else if (/bunt|farb|kreativ|colorful/i.test(lower)) flowData.colors = 'colorful';
+
+    // Style detection
+    if (/minimal/i.test(lower)) flowData.style = 'minimal';
+    else if (/luxu|premium|elegant/i.test(lower)) flowData.style = 'luxury';
+    else if (/verspielt|playful|fun/i.test(lower)) flowData.style = 'playful';
+    else if (/corporate|seriös|business/i.test(lower)) flowData.style = 'corporate';
+    else if (/modern|tech/i.test(lower)) flowData.style = 'tech';
+
+    // Language
+    if (/englisch|english/i.test(lower)) flowData.language = 'en';
+    else if (/deutsch|german/i.test(lower)) flowData.language = 'de';
+  }
+
+  function appendFlowMessage(content) {
+    const html = `<div class="msg">
+      <div class="msg-avatar ai">Q</div>
+      <div class="msg-body">
+        <div class="msg-header"><span class="msg-name">Qntum</span><span class="msg-time">${timeNow()}</span></div>
+        <div class="msg-content">${content}</div>
+      </div>
+    </div>`;
+    chatMessages.insertAdjacentHTML('beforeend', html);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return chatMessages.lastElementChild;
+  }
+
+  function startFlow(userText) {
+    parseInitialPrompt(userText);
+
+    // If type not detected, ask
+    if (!flowData.type) {
+      flowStep = 1;
+      showTypeQuestion();
+    } else if (!flowData.industry) {
+      flowStep = 2;
+      showIndustryQuestion();
+    } else {
+      flowStep = 3;
+      showDetailQuestions();
+    }
+  }
+
+  function showTypeQuestion() {
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Was möchtest du erstellen?</div>
+      <div class="flow-cards">
+        <div class="flow-card" data-value="landing">
+          <span class="flow-card-icon">🏠</span>
+          <div class="flow-card-text"><span class="flow-card-label">Landing Page</span><span class="flow-card-desc">Eine einzelne, conversion-starke Seite</span></div>
+        </div>
+        <div class="flow-card" data-value="multipage">
+          <span class="flow-card-icon">🌐</span>
+          <div class="flow-card-text"><span class="flow-card-label">Multi-Page Website</span><span class="flow-card-desc">Mehrere verlinkte Seiten</span></div>
+        </div>
+        <div class="flow-card" data-value="shop">
+          <span class="flow-card-icon">🛍️</span>
+          <div class="flow-card-text"><span class="flow-card-label">Online-Shop</span><span class="flow-card-desc">E-Commerce mit Produkten & Checkout</span></div>
+        </div>
+        <div class="flow-card" data-value="portfolio">
+          <span class="flow-card-icon">📁</span>
+          <div class="flow-card-text"><span class="flow-card-label">Portfolio</span><span class="flow-card-desc">Showcase deiner Arbeiten</span></div>
+        </div>
+      </div>
+    `);
+    msg.querySelectorAll('.flow-card').forEach(card => {
+      card.addEventListener('click', () => {
+        msg.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        flowData.type = card.dataset.value;
+        // Disable further clicks
+        msg.querySelectorAll('.flow-card').forEach(c => c.style.pointerEvents = 'none');
+        // Show user selection as message
+        appendMessage('user', card.querySelector('.flow-card-label').textContent);
+        // Next step
+        if (!flowData.industry) {
+          flowStep = 2;
+          setTimeout(() => showIndustryQuestion(), 400);
+        } else {
+          flowStep = 3;
+          setTimeout(() => showDetailQuestions(), 400);
+        }
+      });
+    });
+  }
+
+  function showIndustryQuestion() {
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Für welche Branche?</div>
+      <div class="flow-cards flow-cards-sm">
+        <div class="flow-card" data-value="friseur"><span class="flow-card-icon">💈</span><span class="flow-card-label">Friseursalon</span></div>
+        <div class="flow-card" data-value="fitness"><span class="flow-card-icon">💪</span><span class="flow-card-label">Fitness/Sport</span></div>
+        <div class="flow-card" data-value="restaurant"><span class="flow-card-icon">🍕</span><span class="flow-card-label">Restaurant</span></div>
+        <div class="flow-card" data-value="immobilien"><span class="flow-card-icon">🏠</span><span class="flow-card-label">Immobilien</span></div>
+        <div class="flow-card" data-value="coaching"><span class="flow-card-icon">🎯</span><span class="flow-card-label">Coaching</span></div>
+        <div class="flow-card" data-value="ecommerce"><span class="flow-card-icon">🛒</span><span class="flow-card-label">E-Commerce</span></div>
+        <div class="flow-card" data-value="agentur"><span class="flow-card-icon">🎨</span><span class="flow-card-label">Agentur</span></div>
+        <div class="flow-card" data-value="arztpraxis"><span class="flow-card-icon">🏥</span><span class="flow-card-label">Arztpraxis</span></div>
+        <div class="flow-card" data-value="startup"><span class="flow-card-icon">🚀</span><span class="flow-card-label">Startup/Tech</span></div>
+        <div class="flow-card" data-value="handwerk"><span class="flow-card-icon">🔨</span><span class="flow-card-label">Handwerk</span></div>
+        <div class="flow-card" data-value="andere"><span class="flow-card-icon">✍️</span><span class="flow-card-label">Andere</span></div>
+      </div>
+    `);
+    msg.querySelectorAll('.flow-card').forEach(card => {
+      card.addEventListener('click', () => {
+        if (card.dataset.value === 'andere') {
+          // Show freetext input
+          msg.querySelector('.flow-cards').insertAdjacentHTML('afterend', `
+            <div class="flow-freetext" id="flowIndustryFreetext">
+              <input type="text" placeholder="Branche eingeben..." autofocus>
+              <button>OK</button>
+            </div>
+          `);
+          const ft = document.getElementById('flowIndustryFreetext');
+          const ftBtn = ft.querySelector('button');
+          const ftInput = ft.querySelector('input');
+          ftInput.focus();
+          const submitFreetext = () => {
+            const val = ftInput.value.trim();
+            if (!val) return;
+            flowData.industry = val;
+            msg.querySelectorAll('.flow-card').forEach(c => c.style.pointerEvents = 'none');
+            card.classList.add('selected');
+            ft.remove();
+            appendMessage('user', val);
+            flowStep = 3;
+            setTimeout(() => showDetailQuestions(), 400);
+          };
+          ftBtn.addEventListener('click', submitFreetext);
+          ftInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitFreetext(); });
+          return;
+        }
+        msg.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        flowData.industry = card.dataset.value;
+        msg.querySelectorAll('.flow-card').forEach(c => c.style.pointerEvents = 'none');
+        appendMessage('user', card.querySelector('.flow-card-label').textContent);
+        flowStep = 3;
+        setTimeout(() => showDetailQuestions(), 400);
+      });
+    });
+  }
+
+  function showDetailQuestions() {
+    const showPages = flowData.type === 'multipage';
+    const msg = appendFlowMessage(`
+      <div style="display:flex;flex-direction:column;gap:14px;">
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">1.</span> Welche Sektionen sollen enthalten sein?</div>
+          <div class="flow-chips" id="flowSections">
+            <span class="flow-chip selected" data-val="hero">Hero</span>
+            <span class="flow-chip selected" data-val="about">Über uns</span>
+            <span class="flow-chip selected" data-val="services">Services</span>
+            <span class="flow-chip selected" data-val="pricing">Preise</span>
+            <span class="flow-chip" data-val="testimonials">Testimonials</span>
+            <span class="flow-chip selected" data-val="contact">Kontakt</span>
+            <span class="flow-chip" data-val="faq">FAQ</span>
+            <span class="flow-chip" data-val="team">Team</span>
+            <span class="flow-chip" data-val="portfolio">Portfolio</span>
+            <span class="flow-chip" data-val="blog">Blog</span>
+          </div>
+        </div>
+
+        ${showPages ? `<div>
+          <div class="flow-question"><span class="flow-question-num">2.</span> Wie viele Seiten?</div>
+          <div class="flow-cards flow-cards-style" id="flowPages">
+            <div class="flow-card selected" data-value="3"><span class="flow-card-label">3 Seiten</span></div>
+            <div class="flow-card" data-value="5"><span class="flow-card-label">5 Seiten</span></div>
+            <div class="flow-card" data-value="7"><span class="flow-card-label">7+ Seiten</span></div>
+          </div>
+        </div>` : ''}
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">${showPages ? '3' : '2'}.</span> Farbschema?</div>
+          <div class="flow-cards flow-cards-style" id="flowColors">
+            <div class="flow-card${flowData.colors === 'dark' ? ' selected' : ''}" data-value="dark"><span class="flow-card-icon">🌙</span><span class="flow-card-label">Dunkel & Elegant</span></div>
+            <div class="flow-card${flowData.colors === 'light' ? ' selected' : ''}" data-value="light"><span class="flow-card-icon">☀️</span><span class="flow-card-label">Hell & Modern</span></div>
+            <div class="flow-card${flowData.colors === 'colorful' ? ' selected' : ''}" data-value="colorful"><span class="flow-card-icon">🎨</span><span class="flow-card-label">Bunt & Kreativ</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">${showPages ? '4' : '3'}.</span> Design-Stil?</div>
+          <div class="flow-cards flow-cards-style" id="flowStyle">
+            <div class="flow-card${flowData.style === 'minimal' ? ' selected' : ''}" data-value="minimal"><span class="flow-card-label">Minimalistisch</span></div>
+            <div class="flow-card${flowData.style === 'luxury' ? ' selected' : ''}" data-value="luxury"><span class="flow-card-label">Luxus & Premium</span></div>
+            <div class="flow-card${flowData.style === 'playful' ? ' selected' : ''}" data-value="playful"><span class="flow-card-label">Verspielt</span></div>
+            <div class="flow-card${flowData.style === 'corporate' ? ' selected' : ''}" data-value="corporate"><span class="flow-card-label">Corporate</span></div>
+            <div class="flow-card${flowData.style === 'tech' ? ' selected' : ''}" data-value="tech"><span class="flow-card-label">Modern & Tech</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">${showPages ? '5' : '4'}.</span> Animationen?</div>
+          <div class="flow-cards flow-cards-style" id="flowAnimations">
+            <div class="flow-card" data-value="none"><span class="flow-card-label">Keine</span></div>
+            <div class="flow-card selected" data-value="subtle"><span class="flow-card-label">Subtil & Dezent</span></div>
+            <div class="flow-card" data-value="heavy"><span class="flow-card-label">Viele & Auffällig</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">${showPages ? '6' : '5'}.</span> Sprache?</div>
+          <div class="flow-cards flow-cards-style" id="flowLanguage">
+            <div class="flow-card selected" data-value="de"><span class="flow-card-label">Deutsch</span></div>
+            <div class="flow-card" data-value="en"><span class="flow-card-label">Englisch</span></div>
+            <div class="flow-card" data-value="both"><span class="flow-card-label">Beides</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">${showPages ? '7' : '6'}.</span> Besonderheiten? <span style="color:var(--ws-text-3);font-weight:400;">(optional)</span></div>
+          <div class="flow-freetext" style="margin-top:6px;">
+            <input type="text" id="flowExtrasInput" placeholder="z.B. Buchungssystem, Dark Mode, bestimmte Farbe...">
+          </div>
+        </div>
+
+        <div style="text-align:center;padding-top:4px;">
+          <button class="flow-confirm-btn" id="flowConfirmDetails">Weiter zur Zusammenfassung →</button>
+        </div>
+
+      </div>
+    `);
+
+    // Chips multi-select
+    msg.querySelectorAll('.flow-chips .flow-chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    // Single-select card groups
+    ['flowColors', 'flowStyle', 'flowAnimations', 'flowLanguage'].forEach(id => {
+      const group = msg.querySelector('#' + id);
+      if (!group) return;
+      group.querySelectorAll('.flow-card').forEach(card => {
+        card.addEventListener('click', () => {
+          group.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+        });
+      });
+    });
+
+    if (showPages) {
+      const pagesGroup = msg.querySelector('#flowPages');
+      if (pagesGroup) {
+        pagesGroup.querySelectorAll('.flow-card').forEach(card => {
+          card.addEventListener('click', () => {
+            pagesGroup.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+          });
+        });
+      }
+    }
+
+    // Confirm button
+    msg.querySelector('#flowConfirmDetails').addEventListener('click', () => {
+      // Collect all selections
+      flowData.sections = [...msg.querySelectorAll('#flowSections .flow-chip.selected')].map(c => c.dataset.val);
+
+      if (showPages) {
+        const pagesSel = msg.querySelector('#flowPages .flow-card.selected');
+        flowData.pages = pagesSel ? pagesSel.dataset.value : '3';
+      }
+
+      const colorSel = msg.querySelector('#flowColors .flow-card.selected');
+      flowData.colors = colorSel ? colorSel.dataset.value : 'dark';
+
+      const styleSel = msg.querySelector('#flowStyle .flow-card.selected');
+      flowData.style = styleSel ? styleSel.dataset.value : 'tech';
+
+      const animSel = msg.querySelector('#flowAnimations .flow-card.selected');
+      flowData.animations = animSel ? animSel.dataset.value : 'subtle';
+
+      const langSel = msg.querySelector('#flowLanguage .flow-card.selected');
+      flowData.language = langSel ? langSel.dataset.value : 'de';
+
+      flowData.extras = document.getElementById('flowExtrasInput')?.value.trim() || null;
+
+      // Disable all interactions
+      msg.querySelectorAll('.flow-card, .flow-chip, .flow-confirm-btn, .flow-freetext input').forEach(el => {
+        el.style.pointerEvents = 'none';
+        el.style.opacity = el.classList.contains('selected') ? '1' : '0.3';
+      });
+      msg.querySelector('#flowConfirmDetails').style.display = 'none';
+
+      flowStep = 4;
+      setTimeout(() => showSummary(), 400);
+    });
+  }
+
+  function getTypeLabel(type) {
+    const map = { landing: 'Landing Page', multipage: 'Multi-Page Website', shop: 'Online-Shop', portfolio: 'Portfolio' };
+    return map[type] || type;
+  }
+  function getIndustryLabel(ind) {
+    const map = { friseur: 'Friseursalon', fitness: 'Fitness/Sport', restaurant: 'Restaurant', immobilien: 'Immobilien', coaching: 'Coaching/Beratung', ecommerce: 'E-Commerce', agentur: 'Agentur', arztpraxis: 'Arztpraxis', startup: 'Startup/Tech', handwerk: 'Handwerk' };
+    return map[ind] || ind;
+  }
+  function getColorLabel(c) {
+    const map = { dark: 'Dunkel & Elegant', light: 'Hell & Modern', colorful: 'Bunt & Kreativ' };
+    return map[c] || c;
+  }
+  function getStyleLabel(s) {
+    const map = { minimal: 'Minimalistisch', luxury: 'Luxus & Premium', playful: 'Verspielt & Kreativ', corporate: 'Corporate & Seriös', tech: 'Modern & Tech' };
+    return map[s] || s;
+  }
+  function getAnimLabel(a) {
+    const map = { none: 'Keine', subtle: 'Subtil & Dezent', heavy: 'Viele & Auffällig' };
+    return map[a] || a;
+  }
+  function getLangLabel(l) {
+    const map = { de: 'Deutsch', en: 'Englisch', both: 'Beides' };
+    return map[l] || l;
+  }
+
+  function showSummary() {
+    const sectionsStr = flowData.sections.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ');
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Hier ist deine Zusammenfassung:</div>
+      <div class="flow-summary">
+        <div class="flow-summary-row"><span class="flow-summary-label">Typ:</span><strong>${getTypeLabel(flowData.type)}</strong></div>
+        <div class="flow-summary-row"><span class="flow-summary-label">Branche:</span><strong>${getIndustryLabel(flowData.industry)}</strong></div>
+        <div class="flow-summary-row"><span class="flow-summary-label">Sektionen:</span><strong>${sectionsStr}</strong></div>
+        ${flowData.pages ? `<div class="flow-summary-row"><span class="flow-summary-label">Seiten:</span><strong>${flowData.pages}</strong></div>` : ''}
+        <div class="flow-summary-row"><span class="flow-summary-label">Farben:</span><strong>${getColorLabel(flowData.colors)}</strong></div>
+        <div class="flow-summary-row"><span class="flow-summary-label">Stil:</span><strong>${getStyleLabel(flowData.style)}</strong></div>
+        <div class="flow-summary-row"><span class="flow-summary-label">Animationen:</span><strong>${getAnimLabel(flowData.animations)}</strong></div>
+        <div class="flow-summary-row"><span class="flow-summary-label">Sprache:</span><strong>${getLangLabel(flowData.language)}</strong></div>
+        ${flowData.extras ? `<div class="flow-summary-row"><span class="flow-summary-label">Extras:</span><strong>${escapeHtml(flowData.extras)}</strong></div>` : ''}
+      </div>
+      <button class="flow-confirm-btn" id="flowStartGeneration">Ja, Website erstellen 🚀</button>
+    `);
+
+    msg.querySelector('#flowStartGeneration').addEventListener('click', () => {
+      msg.querySelector('#flowStartGeneration').style.display = 'none';
+      flowStep = FLOW_COMPLETE;
+      startGeneration();
+    });
+  }
+
+  function buildFlowPrompt() {
+    let prompt = `Erstelle eine ${getTypeLabel(flowData.type)} für die Branche "${getIndustryLabel(flowData.industry)}".`;
+    prompt += `\nSektionen: ${flowData.sections.join(', ')}.`;
+    if (flowData.pages) prompt += `\nAnzahl Seiten: ${flowData.pages}.`;
+    prompt += `\nFarbschema: ${getColorLabel(flowData.colors)}.`;
+    prompt += `\nDesign-Stil: ${getStyleLabel(flowData.style)}.`;
+    prompt += `\nAnimationen: ${getAnimLabel(flowData.animations)}.`;
+    prompt += `\nSprache: ${getLangLabel(flowData.language)}.`;
+    if (flowData.extras) prompt += `\nBesonderheiten: ${flowData.extras}.`;
+    return prompt;
+  }
+
+  // Chat generation overlay controller
+  const chatGenOverlay = document.getElementById('chatGenOverlay');
+  const chatGenStatus = document.getElementById('chatGenStatus');
+  const chatGenProgressBar = document.getElementById('chatGenProgressBar');
+
+  const CHAT_GEN_MESSAGES = [
+    'Analysiere deine Angaben...',
+    'Erstelle Design-Struktur...',
+    'Generiere HTML & CSS...',
+    'Füge Animationen hinzu...',
+    'Optimiere für alle Geräte...',
+    'Fast fertig...'
+  ];
+  let chatGenInterval = null;
+  let chatGenMsgIdx = 0;
+  let chatGenProgress = 0;
+
+  function showChatGenOverlay() {
+    chatGenOverlay.classList.add('active');
+    chatGenMsgIdx = 0;
+    chatGenProgress = 0;
+    chatGenProgressBar.style.width = '0%';
+    chatGenStatus.textContent = CHAT_GEN_MESSAGES[0];
+    chatGenStatus.style.opacity = '1';
+
+    chatGenInterval = setInterval(() => {
+      chatGenMsgIdx = (chatGenMsgIdx + 1) % CHAT_GEN_MESSAGES.length;
+      chatGenStatus.style.opacity = '0';
+      setTimeout(() => {
+        chatGenStatus.textContent = CHAT_GEN_MESSAGES[chatGenMsgIdx];
+        chatGenStatus.style.opacity = '1';
+      }, 250);
+      chatGenProgress = Math.min(90, chatGenProgress + 12);
+      chatGenProgressBar.style.width = chatGenProgress + '%';
+    }, 2500);
+  }
+
+  function hideChatGenOverlay() {
+    if (chatGenInterval) clearInterval(chatGenInterval);
+    chatGenProgressBar.style.width = '100%';
+    setTimeout(() => {
+      chatGenOverlay.classList.remove('active');
+    }, 500);
+  }
+
+  async function startGeneration() {
+    showChatGenOverlay();
+
+    const text = buildFlowPrompt();
+
+    // Create project if none exists
+    let activeProjectId = projectId;
+    if (!activeProjectId && !isDemo) {
+      try {
+        const res = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: getIndustryLabel(flowData.industry) + ' Website' })
+        });
+        const proj = await res.json();
+        activeProjectId = proj.id;
+        history.replaceState(null, '', `workspace.html?project=${activeProjectId}`);
+        document.getElementById('projectNameLabel').textContent = proj.name || getIndustryLabel(flowData.industry) + ' Website';
+      } catch (err) {
+        hideChatGenOverlay();
+        showToast('Projekt konnte nicht erstellt werden');
+        return;
+      }
+    }
+
+    if (isDemo) {
+      // Demo mode — simulate generation
+      setTimeout(() => {
+        hideChatGenOverlay();
+        appendFlowMessage('Deine Website wurde erstellt! Du kannst die Vorschau rechts sehen und jederzeit Änderungen per Chat vornehmen.');
+      }, 6000);
+      return;
+    }
+
+    try {
+      const model = document.querySelector('.model-select').value;
+      const response = await fetch('/api/chat/send', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ projectId: activeProjectId, message: text, model, skills: getActiveSkills() })
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        hideChatGenOverlay();
+        if (response.status === 429) {
+          appendFlowMessage(`⚠️ ${err.error}`);
+        } else {
+          appendFlowMessage('Fehler bei der Generierung. Bitte versuche es erneut.');
+        }
+        return;
+      }
+
+      // Read SSE stream
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let fullText = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = JSON.parse(line.slice(6));
+
+          if (data.type === 'text') {
+            fullText += data.content;
+            // Live render: try to update preview with partial HTML
+            if (fullText.includes('</head>') && fullText.includes('<body')) {
+              try { updatePreview(fullText); } catch(e) {}
+            }
+          }
+
+          if (data.type === 'done') {
+            hideChatGenOverlay();
+
+            if (data.files && Object.keys(data.files).length) {
+              updateFileTree(data.files);
+              if (!workspace.classList.contains('sidebar-open')) {
+                workspace.classList.add('sidebar-open');
+              }
+            }
+
+            if (data.html) {
+              updatePreview(data.html);
+            }
+
+            // Show clean summary (no markdown, no code)
+            const summary = data.text || 'Deine Website wurde erstellt!';
+            appendFlowMessage(summary.replace(/[*_`#]/g, '').replace(/```[\s\S]*?```/g, '').trim() + ' Du kannst jetzt Änderungen per Chat vornehmen.');
+
+            if (data.usage) {
+              sessionTokens += data.usage.total;
+              userTokensUsed += data.usage.total;
+              updateStatus();
+            }
+          }
+
+          if (data.type === 'error') {
+            hideChatGenOverlay();
+            showToast(data.error);
+          }
+        }
+      }
+    } catch (err) {
+      hideChatGenOverlay();
+      appendFlowMessage('Fehler bei der Generierung. Bitte versuche es erneut.');
     }
   }
 
@@ -2296,6 +3111,27 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     const text = textarea.value.trim();
     if (!text || isSending) return;
     isSending = true;
+
+    // If flow not complete, handle flow
+    if (flowStep < FLOW_COMPLETE && flowStep !== 0) {
+      // User typed during flow — treat as extras
+      appendMessage('user', text);
+      textarea.value = '';
+      textarea.style.height = 'auto';
+      flowData.extras = (flowData.extras ? flowData.extras + '. ' : '') + text;
+      isSending = false;
+      return;
+    }
+
+    // First message ever → start flow
+    if (flowStep === 0 && !currentHtml) {
+      appendMessage('user', text);
+      textarea.value = '';
+      textarea.style.height = 'auto';
+      isSending = false;
+      startFlow(text);
+      return;
+    }
 
     // Create project if none exists
     let activeProjectId = projectId;
