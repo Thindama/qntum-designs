@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Qntum Designs — Deine Website. Ein Gespräch entfernt.</title>
-<meta name="description" content="Erstelle professionelle Websites durch KI-gestützten Dialog. Design, Code, Content — alles automatisch. Powered by Claude AI.">
+<meta name="description" content="Erstelle professionelle Websites durch KI-gestützten Dialog. Design, Code, Content — alles automatisch. Powered by Qntum AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,11 +23,11 @@
   --accent: #00D4FF;
   --accent-dim: #00B8DB;
   --accent-glow: rgba(0,212,255,0.25);
-  --bg-deep: #06060F;
-  --bg-dark: #0A0A1A;
-  --bg-elevated: #0F0F24;
-  --bg-card: #13132B;
-  --bg-card-hover: #1A1A3E;
+  --bg-deep: #080808;
+  --bg-dark: #0C0C0C;
+  --bg-elevated: #111111;
+  --bg-card: #151515;
+  --bg-card-hover: #1C1C1C;
   --border: rgba(255,255,255,0.06);
   --border-light: rgba(255,255,255,0.1);
   --text: #EEEEF4;
@@ -207,7 +207,7 @@ p { color: var(--text-secondary); }
   transition: all var(--transition);
 }
 .nav.scrolled {
-  background: rgba(6,6,15,0.8);
+  background: rgba(8,8,8,0.85);
   backdrop-filter: blur(20px) saturate(1.5);
   -webkit-backdrop-filter: blur(20px) saturate(1.5);
   border-bottom: 1px solid var(--border);
@@ -327,9 +327,29 @@ p { color: var(--text-secondary); }
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: 1fr 1.2fr;
   gap: 60px;
   align-items: center;
+}
+
+/* Hero dual mockups */
+.hero-mockups {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 16px;
+  align-items: start;
+}
+.mockup-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+.hero-mockup-secondary {
+  animation-delay: 0.6s !important;
 }
 
 .hero-content { max-width: 540px; }
@@ -524,7 +544,7 @@ p { color: var(--text-secondary); }
 
 .mockup-preview {
   padding: 16px;
-  background: #0D0D1E;
+  background: #0D0D14;
   position: relative;
   overflow: hidden;
 }
@@ -618,6 +638,58 @@ p { color: var(--text-secondary); }
   border-radius: 4px;
   border: 1px solid #E8E2D8;
 }
+
+/* Call Center mini-site */
+.mini-callcenter { background: #0B1120; display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; height: 100%; }
+.mini-cc-nav { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.mini-cc-logo { font-size: 0.5rem; font-weight: 700; color: #00B4D8; }
+.mini-cc-nav-links { display: flex; gap: 6px; }
+.mini-cc-nav-links span { font-size: 0.32rem; color: rgba(255,255,255,0.3); }
+.mini-cc-hero { padding: 10px; flex: 1; display: flex; align-items: center; background: linear-gradient(135deg, rgba(0,180,216,0.08), transparent); }
+.mini-cc-hero-text { width: 100%; }
+.mini-cc-badge { display: inline-block; font-size: 0.28rem; padding: 1px 6px; background: rgba(0,180,216,0.15); color: #00B4D8; border-radius: 10px; margin-bottom: 4px; font-weight: 600; }
+.mini-cc-hero h6 { font-size: 0.6rem; font-weight: 800; color: #fff; line-height: 1.2; margin-bottom: 3px; }
+.mini-cc-hero p { font-size: 0.3rem; color: rgba(255,255,255,0.35); line-height: 1.3; }
+.mini-cc-btns { display: flex; gap: 4px; margin-top: 6px; }
+.mini-cc-btn-primary { font-size: 0.28rem; padding: 2px 8px; background: #00B4D8; color: #fff; border-radius: 3px; font-weight: 600; }
+.mini-cc-btn-ghost { font-size: 0.28rem; padding: 2px 8px; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); border-radius: 3px; }
+.mini-cc-services { display: flex; gap: 4px; padding: 6px 8px; }
+.mini-cc-card { flex: 1; padding: 6px 5px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; text-align: center; }
+.mini-cc-icon { font-size: 0.55rem; display: block; margin-bottom: 2px; }
+.mini-cc-card-title { font-size: 0.32rem; color: #fff; font-weight: 600; display: block; }
+.mini-cc-card-desc { font-size: 0.25rem; color: rgba(255,255,255,0.3); display: block; }
+.mini-cc-stats { display: flex; justify-content: center; gap: 14px; padding: 5px 8px; border-top: 1px solid rgba(255,255,255,0.06); }
+.mini-cc-stats div { text-align: center; }
+.mini-cc-stats div strong { font-size: 0.4rem; color: #00B4D8; display: block; font-weight: 800; }
+.mini-cc-stats div span { font-size: 0.25rem; color: rgba(255,255,255,0.25); }
+
+/* UI/UX Skill Preview */
+.uiux-preview {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.4), 0 0 60px -20px var(--glow-m);
+  animation: fadeInRight 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  opacity: 0;
+}
+.uiux-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.uiux-title { font-size: 0.7rem; font-weight: 700; color: var(--text); font-family: var(--font-heading); }
+.uiux-badge { font-size: 0.5rem; padding: 2px 8px; background: rgba(0,212,255,0.12); color: var(--accent); border-radius: 20px; font-weight: 600; }
+.uiux-section { margin-bottom: 10px; }
+.uiux-label { font-size: 0.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px; }
+.uiux-palette { display: flex; gap: 4px; }
+.uiux-palette div { width: 100%; height: 22px; border-radius: 4px; border: 1px solid var(--border); }
+.uiux-type-row { display: flex; justify-content: space-between; align-items: baseline; padding: 3px 0; }
+.uiux-type-sample { color: var(--text); font-family: var(--font-heading); }
+.uiux-type-meta { font-size: 0.35rem; color: var(--text-muted); }
+.uiux-components { display: flex; gap: 4px; }
+.uiux-comp-btn { font-size: 0.4rem; padding: 3px 10px; border-radius: 4px; font-weight: 600; }
+.uiux-comp-btn.primary { background: var(--primary); color: #fff; }
+.uiux-comp-btn.secondary { background: var(--accent); color: var(--bg-deep); }
+.uiux-comp-btn.ghost { border: 1px solid var(--border-light); color: var(--text-secondary); }
+.uiux-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; }
+.uiux-grid div { height: 18px; background: var(--glass); border: 1px solid var(--border); border-radius: 2px; }
 
 .mockup-shimmer {
   position: absolute;
@@ -1443,6 +1515,40 @@ p { color: var(--text-secondary); }
   white-space: nowrap;
 }
 
+/* Premium Demo Button */
+.btn-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  color: var(--bg-deep);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px var(--glow-v),
+    0 0 60px -10px rgba(0,230,138,0.3);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-demo::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.6s ease;
+}
+.btn-demo:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 8px 40px var(--glow-v),
+    0 0 80px -10px rgba(0,230,138,0.4);
+}
+.btn-demo:hover::before { left: 100%; }
+
 /* ═══════════════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════════════ */
@@ -1735,7 +1841,7 @@ p { color: var(--text-secondary); }
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(6,6,15,0.95);
+    background: rgba(8,8,8,0.95);
     backdrop-filter: blur(20px);
     padding: 40px 24px;
     gap: 24px;
@@ -1744,6 +1850,9 @@ p { color: var(--text-secondary); }
   .nav-links.mobile-open a { font-size: 1.2rem; }
 
   .hero { padding: 120px 0 60px; min-height: auto; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-mockups { grid-template-columns: 1fr; }
+  .hero-mockup-secondary { display: none; }
   .hero-ctas { flex-direction: column; }
   .hero-ctas .btn { width: 100%; }
 
@@ -1825,7 +1934,7 @@ p { color: var(--text-secondary); }
       <div class="hero-badge">
         <div class="badge">
           <span class="badge-dot"></span>
-          Powered by Claude AI
+          Powered by Qntum AI
         </div>
       </div>
 
@@ -1836,7 +1945,7 @@ p { color: var(--text-secondary); }
 
       <p class="hero-sub">
         Beschreibe deine Vision — unsere KI baut sie.<br>
-        Design, Code, Content. Alles automatisch.
+        Frontend, Backend, Datenbank. Alles automatisch.
       </p>
 
       <div class="hero-ctas">
@@ -1856,49 +1965,98 @@ p { color: var(--text-secondary); }
       </p>
     </div>
 
-    <div class="hero-mockup">
-      <div class="mockup-browser">
-        <div class="mockup-topbar">
-          <div class="mockup-dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="mockup-url">qntum.design/workspace</div>
-        </div>
-        <div class="mockup-workspace">
-          <div class="mockup-chat">
-            <div class="mockup-chat-label">Qntum Chat</div>
-            <div class="chat-msg user">Erstelle eine Landing Page für ein Yoga-Studio in München, warm und erdig.</div>
-            <div class="chat-msg ai">Welchen Stil bevorzugst du? Minimalistisch, organisch oder luxuriös?</div>
-            <div class="chat-msg user">Organisch, mit Erdtönen und sanften Formen.</div>
-            <div class="chat-msg ai">Deine Seite wird generiert — mit Kursplan, Preisen und Buchungsformular…</div>
-            <div class="chat-input-mock">
-              <span>Nachricht eingeben…</span>
-              <div class="typing-cursor"></div>
+    <div class="hero-mockups">
+      <!-- Mockup 1: Call Center Website -->
+      <div class="hero-mockup">
+        <div class="mockup-label">Website Preview</div>
+        <div class="mockup-browser">
+          <div class="mockup-topbar">
+            <div class="mockup-dots">
+              <span></span><span></span><span></span>
             </div>
+            <div class="mockup-url">callflow-ai.qntum.design</div>
           </div>
-          <div class="mockup-preview">
-            <div class="mockup-shimmer active"></div>
-            <div class="mockup-preview-inner">
-              <div class="mini-site">
-                <div class="mini-nav">
-                  <div class="mini-nav-logo"></div>
-                  <div class="mini-nav-links">
-                    <span></span><span></span><span></span>
+          <div class="mockup-workspace">
+            <div class="mockup-chat">
+              <div class="mockup-chat-label">Qntum Chat</div>
+              <div class="chat-msg user">Erstelle eine Website für meine KI-Calling-Agentur. Dunkel, modern, professionell.</div>
+              <div class="chat-msg ai">Perfekt — ich erstelle eine Landing Page mit Hero, Services, Statistiken und Kontaktformular.</div>
+              <div class="chat-msg user">Ja, und zeig unsere 3 Produkte: Chatbot, Calling Agent, Buchungs-Agent.</div>
+              <div class="chat-msg ai">Deine Seite wird generiert — inklusive Service-Karten, Stats und CTA…</div>
+              <div class="chat-input-mock">
+                <span>Nachricht eingeben…</span>
+                <div class="typing-cursor"></div>
+              </div>
+            </div>
+            <div class="mockup-preview">
+              <div class="mockup-shimmer active"></div>
+              <div class="mockup-preview-inner">
+                <div class="mini-site mini-callcenter">
+                  <div class="mini-cc-nav">
+                    <span class="mini-cc-logo">CallFlow AI</span>
+                    <div class="mini-cc-nav-links"><span>Services</span><span>Pricing</span><span>Demo</span></div>
                   </div>
-                </div>
-                <div class="mini-hero-section">
-                  <div class="mini-hero-content">
-                    <div class="mh-title"></div>
-                    <div class="mh-sub"></div>
-                    <div class="mh-btn"></div>
+                  <div class="mini-cc-hero">
+                    <div class="mini-cc-hero-text">
+                      <div class="mini-cc-badge">KI-Telefonie</div>
+                      <h6>Intelligente Anrufe.<br>Automatisiert.</h6>
+                      <p>KI-Agenten für Kundenservice, Vertrieb und Terminbuchung.</p>
+                      <div class="mini-cc-btns"><span class="mini-cc-btn-primary">Demo buchen</span><span class="mini-cc-btn-ghost">Mehr erfahren</span></div>
+                    </div>
                   </div>
-                </div>
-                <div class="mini-cards-row">
-                  <div class="mini-card"></div>
-                  <div class="mini-card"></div>
-                  <div class="mini-card"></div>
+                  <div class="mini-cc-services">
+                    <div class="mini-cc-card"><span class="mini-cc-icon">💬</span><span class="mini-cc-card-title">Chatbot</span><span class="mini-cc-card-desc">24/7 Support</span></div>
+                    <div class="mini-cc-card"><span class="mini-cc-icon">📞</span><span class="mini-cc-card-title">Calling Agent</span><span class="mini-cc-card-desc">Outbound Calls</span></div>
+                    <div class="mini-cc-card"><span class="mini-cc-icon">📅</span><span class="mini-cc-card-title">Buchungs-Agent</span><span class="mini-cc-card-desc">Terminplanung</span></div>
+                  </div>
+                  <div class="mini-cc-stats">
+                    <div><strong>500+</strong><span>Kunden</span></div>
+                    <div><strong>2M+</strong><span>Anrufe</span></div>
+                    <div><strong>99.7%</strong><span>Uptime</span></div>
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mockup 2: UI/UX Skill Preview -->
+      <div class="hero-mockup hero-mockup-secondary">
+        <div class="mockup-label">UI/UX Skill</div>
+        <div class="uiux-preview">
+          <div class="uiux-header">
+            <span class="uiux-title">Design System</span>
+            <span class="uiux-badge">UI/UX Pro</span>
+          </div>
+          <div class="uiux-section">
+            <span class="uiux-label">Farbpalette</span>
+            <div class="uiux-palette">
+              <div style="background:#0B1120"></div>
+              <div style="background:#1E3A5F"></div>
+              <div style="background:#00B4D8"></div>
+              <div style="background:#00E68A"></div>
+              <div style="background:#F8F9FA"></div>
+            </div>
+          </div>
+          <div class="uiux-section">
+            <span class="uiux-label">Typografie</span>
+            <div class="uiux-type-row"><span class="uiux-type-sample" style="font-size:0.75rem;font-weight:800;">Heading H1</span><span class="uiux-type-meta">Syne · 48px · 800</span></div>
+            <div class="uiux-type-row"><span class="uiux-type-sample" style="font-size:0.55rem;font-weight:600;">Heading H2</span><span class="uiux-type-meta">Syne · 32px · 700</span></div>
+            <div class="uiux-type-row"><span class="uiux-type-sample" style="font-size:0.45rem;">Body Text</span><span class="uiux-type-meta">Manrope · 16px · 400</span></div>
+          </div>
+          <div class="uiux-section">
+            <span class="uiux-label">Komponenten</span>
+            <div class="uiux-components">
+              <span class="uiux-comp-btn primary">Primary</span>
+              <span class="uiux-comp-btn secondary">Secondary</span>
+              <span class="uiux-comp-btn ghost">Ghost</span>
+            </div>
+          </div>
+          <div class="uiux-section">
+            <span class="uiux-label">Layout Grid</span>
+            <div class="uiux-grid">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
             </div>
           </div>
         </div>
@@ -1949,34 +2107,34 @@ p { color: var(--text-secondary); }
     <div class="features-grid">
       <div class="feature-card reveal">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
-        <h3>KI-Design-Engine</h3>
-        <p>Generiert Layouts, Farbpaletten und Typografie automatisch — abgestimmt auf deine Branche und Zielgruppe.</p>
+        <h3>Frontend-Entwicklung</h3>
+        <p>HTML, CSS, JavaScript — vollständig generiert. Responsive Layouts, Animationen und moderne UI-Komponenten.</p>
       </div>
 
       <div class="feature-card reveal reveal-delay-1">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="8" x="2" y="2" rx="2" ry="2"/><rect width="20" height="8" x="2" y="14" rx="2" ry="2"/><line x1="6" x2="6.01" y1="6" y2="6"/><line x1="6" x2="6.01" y1="18" y2="18"/></svg>
         </div>
-        <h3>Smart Copywriting</h3>
-        <p>Headlines, CTAs, SEO-Texte — alles aus deiner Beschreibung generiert. In deinem Ton, für deine Zielgruppe.</p>
+        <h3>Backend & Datenbank</h3>
+        <p>Server-Logik, Datenbank-Anbindung und Authentifizierung — die KI baut nicht nur das Frontend, sondern das gesamte System.</p>
       </div>
 
       <div class="feature-card reveal reveal-delay-2">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
         </div>
-        <h3>Responsive by Default</h3>
-        <p>Jede Seite perfekt auf Mobile, Tablet und Desktop. Ohne zusätzlichen Aufwand, ohne manuelles Testen.</p>
+        <h3>API-Integration</h3>
+        <p>Stripe, Supabase, externe APIs — nahtlos integriert. Zahlungen, Daten und Drittanbieter-Services automatisch verbunden.</p>
       </div>
 
       <div class="feature-card reveal reveal-delay-3">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
         </div>
-        <h3>One-Click Publish</h3>
-        <p>Eigene Domain oder Qntum-Subdomain — ein Klick und deine Seite ist live. SSL inklusive.</p>
+        <h3>Custom Domain & SSL</h3>
+        <p>Verbinde deine eigene Domain mit einem Klick. Automatisches SSL-Zertifikat — oder nutze eine kostenlose Qntum-Subdomain.</p>
       </div>
 
       <div class="feature-card reveal reveal-delay-4">
@@ -1989,10 +2147,10 @@ p { color: var(--text-secondary); }
 
       <div class="feature-card reveal reveal-delay-5">
         <div class="feature-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <h3>Iteration per Chat</h3>
-        <p>„Mach den Header größer", „Ändere die Farbe zu Blau" — sage es einfach, die KI setzt es um.</p>
+        <p>„Mach den Header größer", „Füge ein Kontaktformular hinzu" — sage es einfach, die KI setzt es um.</p>
       </div>
     </div>
   </div>
@@ -2555,10 +2713,6 @@ p { color: var(--text-secondary); }
       <!-- Explorer Free -->
       <div class="pricing-card reveal">
         <div class="pricing-plan-name">Explorer</div>
-        <div class="pricing-model-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-          Haiku 4.5
-        </div>
         <div class="pricing-price">0€ <span>/ Monat</span></div>
         <p class="pricing-desc">Perfekt zum Ausprobieren</p>
 
@@ -2601,10 +2755,6 @@ p { color: var(--text-secondary); }
       <!-- Starter -->
       <div class="pricing-card reveal reveal-delay-1">
         <div class="pricing-plan-name">Starter</div>
-        <div class="pricing-model-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-          Sonnet 4.6
-        </div>
         <div class="pricing-price">29€ <span>/ Monat</span></div>
         <p class="pricing-desc">Für einzelne Projekte</p>
 
@@ -2649,10 +2799,6 @@ p { color: var(--text-secondary); }
       <div class="pricing-card featured reveal reveal-delay-2">
         <div class="pricing-badge-rec">Empfohlen</div>
         <div class="pricing-plan-name">Pro</div>
-        <div class="pricing-model-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-          Sonnet 4.6 + Opus 4.6
-        </div>
         <div class="pricing-price">79€ <span>/ Monat</span></div>
         <p class="pricing-desc">Für professionelle Websites</p>
 
@@ -2697,10 +2843,6 @@ p { color: var(--text-secondary); }
       <!-- Business -->
       <div class="pricing-card reveal reveal-delay-3">
         <div class="pricing-plan-name">Business</div>
-        <div class="pricing-model-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
-          Opus 4.6
-        </div>
         <div class="pricing-price">149€ <span>/ Monat</span></div>
         <p class="pricing-desc">Für Teams & Agenturen</p>
 
@@ -2772,11 +2914,11 @@ p { color: var(--text-secondary); }
 
       <div class="faq-item reveal reveal-delay-1">
         <button class="faq-question">
-          Welche KI-Modelle stehen zur Verfügung?
+          Wird die KI besser mit höheren Plänen?
           <span class="faq-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
         </button>
         <div class="faq-answer">
-          <div class="faq-answer-inner">Wir nutzen die neuesten Claude-Modelle von Anthropic: Haiku 4.5 für schnelle Ergebnisse (Explorer), Sonnet 4.6 für hochwertige Designs (Starter & Pro) und Opus 4.6 für maximale Qualität und Komplexität (Pro & Business).</div>
+          <div class="faq-answer-inner">Ja. Höhere Pläne schalten leistungsstärkere KI-Modelle frei, die komplexere Designs, bessere Code-Qualität und detailliertere Ergebnisse liefern. Außerdem erhältst du Zugang zu mehr spezialisierten Skills für professionellere Websites.</div>
         </div>
       </div>
 
@@ -2828,10 +2970,16 @@ p { color: var(--text-secondary); }
 <!-- ═══════════════════════════════════════
      FINAL CTA
      ═══════════════════════════════════════ -->
-<section class="final-cta" id="final-cta">
+<section class="final-cta" id="demo-section">
   <div class="final-cta-glow"></div>
   <div class="container">
     <div class="final-cta-content">
+      <div class="reveal">
+        <div class="badge" style="margin-bottom:20px;">
+          <span class="badge-dot"></span>
+          Powered by Qntum AI
+        </div>
+      </div>
       <h2 class="reveal">Bereit, deine Website<br><span class="gradient-text">zu erstellen?</span></h2>
       <p class="reveal reveal-delay-1">Beschreibe dein Projekt — und sieh zu, wie es Wirklichkeit wird.</p>
       <div class="cta-input-group reveal reveal-delay-2">
@@ -2841,7 +2989,13 @@ p { color: var(--text-secondary); }
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </div>
-      <p class="hero-note reveal reveal-delay-3" style="margin-top:20px;">Kostenlos starten · Keine Kreditkarte nötig</p>
+      <div class="reveal reveal-delay-3" style="margin-top:24px;">
+        <a href="workspace.html" class="btn-demo">
+          <span>Live Demo ansehen</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+        </a>
+      </div>
+      <p class="hero-note reveal reveal-delay-4" style="margin-top:16px;">Kostenlos starten · Keine Kreditkarte nötig</p>
     </div>
   </div>
 </section>
@@ -2886,7 +3040,7 @@ p { color: var(--text-secondary); }
           </svg>
           <span>Qntum <span style="color:var(--primary-light)">Designs</span></span>
         </a>
-        <p class="footer-brand-desc">Deine Website. Ein Gespräch entfernt.<br>Powered by Claude AI.</p>
+        <p class="footer-brand-desc">Deine Website. Ein Gespräch entfernt.<br>Powered by Qntum AI.</p>
         <div class="footer-socials">
           <a href="#" class="footer-social-link" aria-label="X / Twitter">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
