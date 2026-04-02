@@ -16,8 +16,8 @@ function formatTokenLimit(n) {
 }
 
 const MODELS = {
-  'sonnet': 'claude-sonnet-4-5-20250514',
-  'opus': 'claude-sonnet-4-5-20250514',
+  'sonnet': 'claude-sonnet-4-6',
+  'opus': 'claude-sonnet-4-6',
   'haiku': 'claude-haiku-4-5-20251001',
 };
 
@@ -131,7 +131,7 @@ router.post('/send', async (req, res) => {
 
     const stream = await anthropic.messages.stream({
       model: modelId,
-      max_tokens: 12000,
+      max_tokens: 8000,
       system: getSystemPrompt(currentFiles, skills),
       messages: claudeMessages
     });
@@ -228,10 +228,24 @@ router.post('/send', async (req, res) => {
     });
 
     stream.on('error', (error) => {
-      console.error('Claude stream error:', error);
+      console.error('Claude stream error:', {
+        status: error.status,
+        message: error.message,
+        type: error.error?.type,
+        detail: error.error?.message,
+        model: modelId,
+        userId: req.userId
+      });
+      const userMsg = error.status === 404
+        ? 'Modell nicht verfügbar. Bitte versuche es erneut.'
+        : error.status === 429
+        ? 'API-Limit erreicht. Bitte warte einen Moment und versuche es erneut.'
+        : error.status === 529
+        ? 'KI-Server überlastet. Bitte versuche es in einer Minute erneut.'
+        : `KI-Antwort fehlgeschlagen (${error.status || 'Netzwerk'}). Bitte versuche es erneut.`;
       res.write(`data: ${JSON.stringify({
         type: 'error',
-        error: 'KI-Antwort fehlgeschlagen. Bitte versuche es erneut.'
+        error: userMsg
       })}\n\n`);
       res.end();
     });
@@ -239,11 +253,18 @@ router.post('/send', async (req, res) => {
     req.on('close', () => { stream.abort?.(); });
 
   } catch (err) {
-    console.error('Chat send error:', err);
+    console.error('Chat send error:', {
+      status: err.status,
+      message: err.message,
+      type: err.error?.type,
+      detail: err.error?.message,
+      model: MODELS[model] || model,
+      userId: req.userId
+    });
     if (!res.headersSent) {
-      res.status(500).json({ error: 'Nachricht konnte nicht gesendet werden' });
+      res.status(500).json({ error: 'Nachricht konnte nicht gesendet werden: ' + (err.message || 'Unbekannter Fehler') });
     } else {
-      res.write(`data: ${JSON.stringify({ type: 'error', error: err.message })}\n\n`);
+      res.write(`data: ${JSON.stringify({ type: 'error', error: 'KI-Antwort fehlgeschlagen. Bitte versuche es erneut.' })}\n\n`);
       res.end();
     }
   }

@@ -3114,15 +3114,28 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
           if (data.type === 'error') {
             hideChatGenOverlay();
-            showToast(data.error);
+            showErrorWithRetry(data.error);
           }
         }
       }
     } catch (err) {
       hideChatGenOverlay();
-      appendFlowMessage('Fehler bei der Generierung. Bitte versuche es erneut.');
+      console.error('Generation fetch error:', err);
+      showErrorWithRetry('Verbindungsfehler. Bitte prüfe deine Internetverbindung.');
     }
   }
+
+  function showErrorWithRetry(errorMsg) {
+    const msg = appendFlowMessage(`
+      <div style="color:#ff6b6b;">⚠️ ${errorMsg}</div>
+      <button onclick="this.parentElement.parentElement.parentElement.remove(); window.__retryGeneration();"
+        style="margin-top:10px; padding:8px 20px; background:linear-gradient(135deg,#6C3AED,#06F5C0); color:#fff; border:none; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; transition:opacity .2s;"
+        onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        🔄 Erneut versuchen
+      </button>
+    `);
+  }
+  window.__retryGeneration = function() { startGeneration(); };
 
   // ═══════════════════════════════════════
   // SEND MESSAGE (REAL API + SSE STREAMING)
@@ -3270,13 +3283,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
           if (data.type === 'error') {
             hideChatGenOverlay();
-            showToast(data.error);
+            appendFlowMessage(`<div style="color:#ff6b6b;">⚠️ ${data.error}</div>`);
           }
         }
       }
     } catch (err) {
       hideChatGenOverlay();
-      appendFlowMessage(`Fehler: ${err.message}. Bitte versuche es erneut.`);
+      console.error('sendMessage error:', err);
+      appendFlowMessage(`<div style="color:#ff6b6b;">⚠️ Fehler: ${err.message || 'Verbindungsfehler'}. Bitte versuche es erneut.</div>`);
     }
 
     isSending = false;
