@@ -4,10 +4,11 @@ const { supabaseAdmin } = require('../db/supabase');
 const { requireAuth } = require('../middleware/auth');
 
 // Stripe is initialized lazily (only when keys are set)
+// .trim() entfernt unsichtbare Leerzeichen/Newlines aus env vars
 let stripe = null;
 function getStripe() {
   if (!stripe && process.env.STRIPE_SECRET_KEY) {
-    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY.trim());
   }
   return stripe;
 }
@@ -28,8 +29,8 @@ const PLANS = {
     priceYearly: 290,
     tokens_limit: 150000,
     projects_limit: 5,
-    stripePriceMonthly: process.env.STRIPE_PRICE_STARTER_MONTHLY,
-    stripePriceYearly: process.env.STRIPE_PRICE_STARTER_YEARLY,
+    stripePriceMonthly: process.env.STRIPE_PRICE_STARTER_MONTHLY?.trim(),
+    stripePriceYearly: process.env.STRIPE_PRICE_STARTER_YEARLY?.trim(),
     features: ['5 Projekte', '150K Tokens/Monat', 'Custom Domain', 'HTML/CSS Export', 'Frontend Design, UI Styling, UI/UX Pro, Brand Design, Design System Skills'],
     capabilities: { custom_domain: true, code_export: 'html_css', priority: false, white_label: false, team: false, api: false }
   },
@@ -39,8 +40,8 @@ const PLANS = {
     priceYearly: 790,
     tokens_limit: 500000,
     projects_limit: 25,
-    stripePriceMonthly: process.env.STRIPE_PRICE_PRO_MONTHLY,
-    stripePriceYearly: process.env.STRIPE_PRICE_PRO_YEARLY,
+    stripePriceMonthly: process.env.STRIPE_PRICE_PRO_MONTHLY?.trim(),
+    stripePriceYearly: process.env.STRIPE_PRICE_PRO_YEARLY?.trim(),
     features: ['25 Projekte', '500K Tokens/Monat', 'Custom Domain + SSL', 'Vollständiger Code-Export', 'Priority Generation', 'Alle Design-Skills'],
     capabilities: { custom_domain: true, code_export: 'full', priority: true, white_label: false, team: false, api: false }
   },
@@ -50,8 +51,8 @@ const PLANS = {
     priceYearly: 1490,
     tokens_limit: 1500000,
     projects_limit: -1, // unlimited
-    stripePriceMonthly: process.env.STRIPE_PRICE_BIZ_MONTHLY,
-    stripePriceYearly: process.env.STRIPE_PRICE_BIZ_YEARLY,
+    stripePriceMonthly: process.env.STRIPE_PRICE_BIZ_MONTHLY?.trim(),
+    stripePriceYearly: process.env.STRIPE_PRICE_BIZ_YEARLY?.trim(),
     features: ['Unbegrenzte Projekte', '1.5M Tokens/Monat', 'White-Label', 'Team-Zugang (10 Mitglieder)', 'API-Zugang', 'Komplettes Skill-Paket'],
     capabilities: { custom_domain: true, code_export: 'full', priority: true, white_label: true, team: true, api: true }
   }
@@ -64,7 +65,14 @@ PLANS.free = PLANS.explorer;
 console.log('═══════════════════════════════════════════');
 console.log('  Stripe Config Check (Server-Start)');
 console.log('═══════════════════════════════════════════');
-console.log('  STRIPE_SECRET_KEY:', process.env.STRIPE_SECRET_KEY ? `✅ ${process.env.STRIPE_SECRET_KEY.substring(0, 12)}...` : '❌ FEHLT');
+const rawKey = process.env.STRIPE_SECRET_KEY;
+console.log('  STRIPE_SECRET_KEY:', rawKey ? `✅ ${rawKey.substring(0, 12)}...` : '❌ FEHLT');
+if (rawKey) {
+  console.log('    Length:', rawKey.length, '| Trimmed length:', rawKey.trim().length, '| Diff:', rawKey.length - rawKey.trim().length);
+  console.log('    First char:', JSON.stringify(rawKey[0]), '| Last char:', JSON.stringify(rawKey.slice(-1)));
+  console.log('    Starts with sk_:', rawKey.trim().startsWith('sk_') ? '✅' : '❌ FALSCH — Key muss mit sk_ beginnen');
+  if (rawKey.length !== rawKey.trim().length) console.log('    ⚠️  UNSICHTBARE ZEICHEN ERKANNT — wird automatisch getrimmt');
+}
 console.log('');
 console.log('  Env-Variablen (process.env):');
 console.log('    STRIPE_PRICE_STARTER_MONTHLY:', process.env.STRIPE_PRICE_STARTER_MONTHLY || '❌ FEHLT');
