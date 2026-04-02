@@ -2481,8 +2481,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       + '*{margin:0;padding:0;box-sizing:border-box}'
       + 'body{background:#080808;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}'
       + '.fact-container{max-width:520px;text-align:center;padding:0 40px;position:relative;min-height:120px;display:flex;align-items:center;justify-content:center}'
-      + '.fact{font-size:17px;line-height:1.7;color:rgba(255,255,255,0.82);font-weight:400;letter-spacing:0.01em;opacity:0;transform:translateY(12px);animation:factIn 6s ease forwards}'
-      + '@keyframes factIn{0%{opacity:0;transform:translateY(12px)}8%{opacity:1;transform:translateY(0)}88%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}'
+      + '.fact{font-size:17px;line-height:1.7;color:rgba(255,255,255,0.82);font-weight:400;letter-spacing:0.01em;opacity:0;transform:translateY(12px);animation:factIn 8s ease forwards}'
+      + '@keyframes factIn{0%{opacity:0;transform:translateY(12px)}6%{opacity:1;transform:translateY(0)}90%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}'
       + '.bottom{position:fixed;bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px}'
       + '.pulse-line{width:200px;height:2px;background:rgba(0,229,255,0.1);border-radius:1px;overflow:hidden;position:relative}'
       + '.pulse-line::after{content:\'\';position:absolute;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,#00e5ff,transparent);animation:pulseLine 2s ease-in-out infinite}'
@@ -2502,7 +2502,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       + 'var el=document.getElementById("factText");'
       + 'function showFact(){el.style.animation="none";el.offsetHeight;el.textContent=facts[idx];el.style.animation="factIn 6s ease forwards";idx=(idx+1)%facts.length}'
       + 'showFact();'
-      + 'setInterval(showFact,6000);'
+      + 'setInterval(showFact,8000);'
       + '<\/script></body></html>';
     previewIframe.srcdoc = loaderHtml;
   }
@@ -3206,7 +3206,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'text') {
               fullText += data.content;
-              // Don't render anything during streaming — keep fact slideshow
+              // Live preview: once we have <body> content, start showing partial site
+              if (fullText.length > 3000 && fullText.includes('<body')) {
+                const partial = extractHtmlFromResponse(fullText);
+                if (partial) {
+                  try { previewIframe.srcdoc = partial; previewIframe.style.opacity = '1'; } catch(e) {}
+                }
+              }
             }
 
             if (data.type === 'done') {
@@ -3225,7 +3231,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
                 htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
               }
 
-              // Render the website with smooth transition from slideshow
+              // Final render with smooth transition
               if (htmlToRender) {
                 updatePreview(htmlToRender);
               }
@@ -3394,7 +3400,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'text') {
               fullText += data.content;
-              // Keep fact slideshow — don't render partial HTML
+              // Live preview: once we have <body> content, start showing partial site
+              if (fullText.length > 3000 && fullText.includes('<body')) {
+                const partial = extractHtmlFromResponse(fullText);
+                if (partial) {
+                  try { previewIframe.srcdoc = partial; previewIframe.style.opacity = '1'; } catch(e) {}
+                }
+              }
             }
 
             if (data.type === 'done') {

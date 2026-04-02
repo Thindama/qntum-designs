@@ -55,7 +55,15 @@ REGELN:
 5. Google Fonts über CDN, CSS-Animationen, Gradients, responsive.
 6. Bei Änderungen: Gib die komplette aktualisierte index.html aus.
 7. Die index.html wird als Live-Vorschau im iframe angezeigt.
-8. Halte den Code kompakt — keine unnötigen Kommentare.
+
+KOMPAKTER CODE — WICHTIG:
+- KEINE Kommentare im Code (weder HTML noch CSS noch JS)
+- CSS: Shorthand Properties nutzen (margin, padding, border, background, font)
+- CSS: Ähnliche Selektoren kombinieren (h1,h2,h3{...})
+- CSS: Keine redundanten Deklarationen oder Resets die der Browser schon hat
+- JS: Kurze Variablennamen für lokale Variablen, kompakte Event-Handler
+- HTML: Keine überflüssigen Wrapper-Divs, semantische Tags direkt nutzen
+- Ziel: Maximale visuelle Qualität bei minimalem Code-Umfang
 
 ${hasFiles && projectFiles['index.html']
     ? `AKTUELLE WEBSITE (übernimm als Basis, ändere nur was gewünscht wird):
