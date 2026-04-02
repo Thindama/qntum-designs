@@ -75,7 +75,7 @@ ${skillAddons ? '\n' + skillAddons : ''}`;
  */
 function extractFiles(responseText) {
   const files = {};
-  // Match code blocks with FILE: header
+  // Match complete code blocks with FILE: header
   const regex = /```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?\s*\n(?:<!--|\/\/|--|#)\s*FILE:\s*(.+?)(?:\s*-->|\s*$)\n([\s\S]*?)```/g;
   let match;
 
@@ -85,11 +85,26 @@ function extractFiles(responseText) {
     files[filename] = content;
   }
 
-  // Fallback: if no FILE: headers found, try old single-HTML format
+  // Fallback 1: complete code block without FILE: header
   if (Object.keys(files).length === 0) {
     const htmlMatch = responseText.match(/```html\s*([\s\S]*?)```/);
     if (htmlMatch) {
-      files['index.html'] = htmlMatch[1].trim();
+      files['index.html'] = htmlMatch[1].replace(/^<!--\s*FILE:\s*\S+\s*-->\s*\n?/, '').trim();
+    }
+  }
+
+  // Fallback 2: truncated response (no closing ```) — extract whatever HTML we have
+  if (Object.keys(files).length === 0) {
+    const truncMatch = responseText.match(/```html\s*\n?(?:<!--\s*FILE:\s*\S+\s*-->\s*\n?)?([\s\S]+)/);
+    if (truncMatch) {
+      let html = truncMatch[1].trim();
+      // Close unclosed HTML if truncated
+      if (html.includes('<!DOCTYPE') && !html.includes('</html>')) {
+        // Close any open tags to make it renderable
+        if (!html.includes('</body>')) html += '\n</body>';
+        html += '\n</html>';
+      }
+      files['index.html'] = html;
     }
   }
 
@@ -102,6 +117,7 @@ function extractFiles(responseText) {
 function extractText(responseText) {
   return responseText
     .replace(/```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?[\s\S]*?```/g, '')
+    .replace(/```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?\s*\n?[\s\S]*/g, '') // truncated block
     .trim();
 }
 

@@ -3065,12 +3065,24 @@ setInterval(()=>{const s=Math.floor((Date.now()-start)/1000);const m=Math.floor(
 
   // Extract HTML from Claude response (client-side fallback)
   function extractHtmlFromResponse(text) {
-    // Try ```html ... ``` code block first
+    // Try complete ```html ... ``` code block first
     const codeBlockMatch = text.match(/```html\s*\n?([\s\S]*?)```/);
-    if (codeBlockMatch) return codeBlockMatch[1].trim();
-    // Try raw HTML starting with <!DOCTYPE or <html
+    if (codeBlockMatch) {
+      return codeBlockMatch[1].replace(/^<!--\s*FILE:\s*\S+\s*-->\s*\n?/, '').trim();
+    }
+    // Try raw HTML with closing tag
     const rawMatch = text.match(/(<!DOCTYPE html[\s\S]*<\/html>)/i);
     if (rawMatch) return rawMatch[1].trim();
+    // Handle truncated response (no closing ``` or </html>)
+    const truncMatch = text.match(/```html\s*\n?(?:<!--\s*FILE:\s*\S+\s*-->\s*\n?)?([\s\S]+)/);
+    if (truncMatch) {
+      let html = truncMatch[1].trim();
+      if (html.includes('<!DOCTYPE') && !html.includes('</html>')) {
+        if (!html.includes('</body>')) html += '\n</body>';
+        html += '\n</html>';
+      }
+      return html;
+    }
     return null;
   }
 
