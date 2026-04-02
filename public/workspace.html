@@ -783,6 +783,7 @@ input, textarea { font-family: inherit; }
   border: none;
   background: #0B1120;
   border-radius: 12px;
+  overflow-y: auto;
 }
 .preview-empty {
   display: flex;
@@ -2469,6 +2470,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   function updatePreview(html) {
     if (!html) return;
     currentHtml = html;
+    console.log('[Qntum] updatePreview: htmlContent.length =', html.length, '| has </html>:', html.includes('</html>'));
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     // Smooth fade transition
@@ -3195,15 +3197,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
                 }
               }
 
-              // Clean 1-2 sentence summary — no code, no markdown, no asterisks
-              let summaryText = data.text || '';
-              if (!summaryText && fullText) {
-                summaryText = fullText.replace(/```[\s\S]*?```/g, '').trim();
-              }
-              summaryText = summaryText.replace(/```[\s\S]*?```/g, '').replace(/[*_`#]/g, '').replace(/<!--[\s\S]*?-->/g, '').trim();
-              const sentences = summaryText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 5 && !s.includes('<') && !s.includes('{'));
-              const cleanSummary = sentences.slice(0, 2).join(' ').trim();
-              appendFlowMessage(cleanSummary || 'Deine Website wurde erstellt! Du kannst jetzt Änderungen per Chat vornehmen.');
+              // Fixed summary — never show website content in chat
+              const typeLabel = getTypeLabel(flowData.type) || 'Website';
+              const industryLabel = getIndustryLabel(flowData.industry) || '';
+              const summaryMsg = industryLabel
+                ? `Deine ${typeLabel} für ${industryLabel} wurde erfolgreich erstellt. Du kannst sie jetzt in der Vorschau sehen und weiter anpassen.`
+                : `Deine ${typeLabel} wurde erfolgreich erstellt. Du kannst sie jetzt in der Vorschau sehen und weiter anpassen.`;
+              appendFlowMessage(summaryMsg);
 
               if (data.usage) {
                 sessionTokens += data.usage.total;
@@ -3380,15 +3380,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
                 }
               }
 
-              // Clean summary — no code, no markdown, no asterisks
-              let summaryText = data.text || '';
-              if (!summaryText && fullText) {
-                summaryText = fullText.replace(/```[\s\S]*?```/g, '').trim();
-              }
-              summaryText = summaryText.replace(/```[\s\S]*?```/g, '').replace(/[*_`#]/g, '').replace(/<!--[\s\S]*?-->/g, '').trim();
-              const sentences = summaryText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 5 && !s.includes('<') && !s.includes('{'));
-              const cleanSummary = sentences.slice(0, 2).join(' ').trim();
-              appendFlowMessage(`✅ ${cleanSummary || 'Änderungen wurden übernommen.'}`);
+              // Fixed summary — never show website content in chat
+              appendFlowMessage('✅ Änderungen wurden übernommen. Du kannst die aktualisierte Vorschau rechts sehen.');
 
               if (data.usage) {
                 sessionTokens += data.usage.total;

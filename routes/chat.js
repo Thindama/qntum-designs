@@ -131,7 +131,7 @@ router.post('/send', async (req, res) => {
 
     const stream = await anthropic.messages.stream({
       model: modelId,
-      max_tokens: 16000,
+      max_tokens: 30000,
       system: getSystemPrompt(currentFiles, skills),
       messages: claudeMessages
     });
