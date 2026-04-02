@@ -620,52 +620,57 @@ p { color: var(--text-secondary); }
 }
 
 /* Call Center mini-site */
-.mini-callcenter { background: #0B1120; display: flex; flex-direction: column; border-radius: 8px; overflow-y: auto; overflow-x: hidden; height: 100%; scrollbar-width: none; }
-.mini-callcenter::-webkit-scrollbar { display: none; }
-.mini-cc-nav { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-.mini-cc-logo { font-size: 0.5rem; font-weight: 700; color: #00B4D8; }
-.mini-cc-nav-links { display: flex; gap: 6px; }
-.mini-cc-nav-links span { font-size: 0.32rem; color: rgba(255,255,255,0.3); }
-.mini-cc-hero { padding: 14px 12px 12px; display: flex; align-items: center; background: linear-gradient(135deg, rgba(0,180,216,0.08), rgba(0,180,216,0.02), transparent); position: relative; }
-.mini-cc-hero::after { content: ''; position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0,180,216,0.12), transparent); }
-.mini-cc-hero-text { width: 100%; }
-.mini-cc-badge { display: inline-block; font-size: 0.26rem; padding: 2px 7px; background: rgba(0,180,216,0.12); color: #00B4D8; border-radius: 10px; margin-bottom: 5px; font-weight: 600; border: 1px solid rgba(0,180,216,0.15); }
-.mini-cc-hero h6 { font-size: 0.75rem; font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 4px; letter-spacing: -0.01em; }
-.mini-cc-hero p { font-size: 0.3rem; color: rgba(255,255,255,0.4); line-height: 1.35; }
-.mini-cc-btns { display: flex; gap: 5px; margin-top: 8px; }
-.mini-cc-btn-primary { font-size: 0.28rem; padding: 3px 10px; background: #00B4D8; color: #fff; border-radius: 3px; font-weight: 600; }
-.mini-cc-btn-ghost { font-size: 0.28rem; padding: 3px 10px; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.5); border-radius: 3px; }
-.mini-cc-services { display: flex; gap: 4px; padding: 6px 8px; }
-.mini-cc-card { flex: 1; padding: 6px 5px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 4px; text-align: center; }
-.mini-cc-icon { font-size: 0.55rem; display: block; margin-bottom: 2px; }
-.mini-cc-card-title { font-size: 0.32rem; color: #fff; font-weight: 600; display: block; }
-.mini-cc-card-desc { font-size: 0.25rem; color: rgba(255,255,255,0.3); display: block; }
-.mini-cc-stats { display: flex; justify-content: center; gap: 10px; padding: 6px 8px; background: rgba(0,180,216,0.04); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); }
-.mini-cc-stats div { text-align: center; flex: 1; }
-.mini-cc-stats div strong { font-size: 0.42rem; color: #00B4D8; display: block; font-weight: 800; }
-.mini-cc-stats div span { font-size: 0.22rem; color: rgba(255,255,255,0.25); text-transform: uppercase; letter-spacing: 0.03em; }
-.mini-cc-steps { padding: 6px 8px; }
-.mini-cc-steps-title { font-size: 0.32rem; font-weight: 700; color: rgba(255,255,255,0.5); text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
-.mini-cc-steps-row { display: flex; gap: 4px; }
-.mini-cc-step { flex: 1; padding: 5px 4px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 4px; text-align: center; position: relative; }
-.mini-cc-step-num { font-size: 0.35rem; font-weight: 800; color: #00B4D8; display: block; margin-bottom: 1px; }
-.mini-cc-step-label { font-size: 0.24rem; color: rgba(255,255,255,0.4); display: block; line-height: 1.2; }
-.mini-cc-step-arrow { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); font-size: 0.25rem; color: rgba(0,180,216,0.35); z-index: 1; }
-.mini-cc-testimonial { padding: 5px 10px; }
-.mini-cc-testimonial-inner { padding: 5px 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 5px; border-left: 2px solid rgba(0,180,216,0.4); }
-.mini-cc-testimonial q { font-size: 0.24rem; color: rgba(255,255,255,0.35); font-style: italic; display: block; line-height: 1.3; }
-.mini-cc-testimonial cite { font-size: 0.22rem; color: rgba(0,180,216,0.6); display: block; margin-top: 2px; font-style: normal; font-weight: 600; }
-.mini-cc-about { padding: 6px 8px; }
-.mini-cc-about-title { font-size: 0.32rem; font-weight: 700; color: rgba(255,255,255,0.5); text-align: center; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
-.mini-cc-about-text { font-size: 0.24rem; color: rgba(255,255,255,0.3); text-align: center; line-height: 1.3; margin-bottom: 5px; }
-.mini-cc-about-team { display: flex; justify-content: center; gap: 4px; margin-bottom: 5px; }
-.mini-cc-avatar { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,180,216,0.3); }
-.mini-cc-values { display: flex; gap: 4px; }
-.mini-cc-value { flex: 1; padding: 4px 3px; background: rgba(0,180,216,0.04); border: 1px solid rgba(0,180,216,0.08); border-radius: 4px; text-align: center; }
-.mini-cc-value-icon { font-size: 0.35rem; display: block; margin-bottom: 1px; }
-.mini-cc-value-label { font-size: 0.22rem; color: rgba(255,255,255,0.35); display: block; line-height: 1.2; }
-.mini-cc-cta { padding: 6px 10px 8px; text-align: center; }
-.mini-cc-cta span { font-size: 0.32rem; padding: 4px 16px; background: linear-gradient(135deg, #00B4D8, #0090b0); color: #fff; border-radius: 3px; font-weight: 600; box-shadow: 0 2px 8px rgba(0,180,216,0.25); }
+/* Bento Grid mini-site */
+.mini-bento { background: #0d0d0d; border-radius: 8px; overflow: hidden; height: 100%; padding: 5px; display: flex; flex-direction: column; }
+.mini-bento-grid { display: grid; grid-template-columns: 1.1fr 0.5fr 0.9fr; grid-template-rows: 1.1fr 0.9fr; gap: 4px; flex: 1; grid-template-areas: "chat stat1 consult" "workflow stat2 cta"; }
+.bento-chat { grid-area: chat; }
+.bento-stat:not(.bento-sat) { grid-area: stat1; }
+.bento-consult { grid-area: consult; }
+.bento-sat { grid-area: stat2; }
+.bento-workflow { grid-area: workflow; }
+.bento-cta-tile { grid-area: cta; }
+.bento-tile { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 7px 8px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+.bento-tile-title { font-size: 0.38rem; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.2; }
+.bento-tile-desc { font-size: 0.24rem; color: rgba(255,255,255,0.35); line-height: 1.3; }
+/* Chat tile (top-left) */
+.bento-chat .bento-tile-title { color: #00e5ff; }
+.bento-chat-log { display: flex; flex-direction: column; gap: 3px; margin-top: 4px; flex: 1; }
+.bento-msg { display: flex; align-items: flex-start; gap: 4px; }
+.bento-msg-avatar { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; }
+.bento-msg-bubble { font-size: 0.24rem; padding: 3px 6px; border-radius: 4px; line-height: 1.3; max-width: 90%; }
+.bento-msg.user .bento-msg-bubble { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.55); margin-left: auto; }
+.bento-msg.user .bento-msg-avatar { order: 1; }
+.bento-msg.user { flex-direction: row-reverse; }
+.bento-msg.agent .bento-msg-bubble { background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.12); color: rgba(255,255,255,0.6); }
+.bento-msg.agent .bento-msg-avatar { background: linear-gradient(135deg, #00e5ff, #006d7a); }
+/* Stat tile */
+.bento-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.bento-stat-num { font-size: 0.72rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1; }
+.bento-stat-label { font-size: 0.22rem; color: rgba(255,255,255,0.3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+.bento-stat-avatars { display: flex; justify-content: center; margin-bottom: 5px; }
+.bento-stat-avatars span { width: 12px; height: 12px; border-radius: 50%; margin-left: -3px; border: 1px solid #1a1a1a; }
+.bento-stat-avatars span:first-child { margin-left: 0; }
+/* Consulting tile (top-right) */
+.bento-consult { position: relative; }
+.bento-consult-icon { position: absolute; right: 6px; bottom: 6px; font-size: 1.1rem; opacity: 0.12; line-height: 1; }
+/* Satisfaction tile */
+.bento-sat .bento-stat-num { color: #00e5ff; }
+/* Workflow tile (bottom-left) */
+.bento-workflow .bento-tile-desc { margin-bottom: 5px; }
+.bento-flow { display: flex; align-items: center; gap: 3px; margin-top: auto; }
+.bento-flow-node { padding: 3px 5px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.15); border-radius: 4px; text-align: center; flex: 1; }
+.bento-flow-icon { font-size: 0.35rem; display: block; }
+.bento-flow-label { font-size: 0.2rem; color: rgba(255,255,255,0.35); display: block; margin-top: 1px; }
+.bento-flow-arrow { font-size: 0.3rem; color: rgba(0,229,255,0.3); flex-shrink: 0; }
+/* CTA tile (bottom-right) */
+.bento-cta-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.bento-cta-avatars { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
+.bento-cta-avatars span { width: 14px; height: 14px; border-radius: 50%; }
+.bento-cta-plus { font-size: 0.3rem; color: rgba(255,255,255,0.2); }
+.bento-cta-you { font-size: 0.24rem; color: rgba(255,255,255,0.4); padding: 2px 5px; background: rgba(255,255,255,0.06); border-radius: 3px; font-weight: 600; }
+.bento-cta-text { font-size: 0.32rem; font-weight: 700; color: #fff; margin-bottom: 5px; line-height: 1.2; }
+.bento-cta-btn { font-size: 0.26rem; padding: 3px 10px; border: 1px solid #00e5ff; color: #00e5ff; border-radius: 3px; font-weight: 600; display: inline-block; }
+.bento-cta-sub { font-size: 0.2rem; color: rgba(255,255,255,0.25); margin-top: 3px; }
 
 .mockup-shimmer {
   position: absolute;
@@ -1882,59 +1887,54 @@ p { color: var(--text-secondary); }
           <div class="mockup-preview">
             <div class="mockup-shimmer active"></div>
             <div class="mockup-preview-inner">
-              <div class="mini-site mini-callcenter">
-                <div class="mini-cc-nav">
-                  <span class="mini-cc-logo">CallFlow AI</span>
-                  <div class="mini-cc-nav-links"><span>Services</span><span>Pricing</span><span>Über uns</span><span>Kontakt</span></div>
-                </div>
-                <div class="mini-cc-hero">
-                  <div class="mini-cc-hero-text">
-                    <div class="mini-cc-badge">⚡ KI-Telefonie der nächsten Generation</div>
-                    <h6>Intelligente Anrufe.<br>Automatisiert.</h6>
-                    <p>KI-Calling-Agents für Kundenservice, Vertrieb und Terminbuchung — rund um die Uhr, ohne Wartezeiten.</p>
-                    <div class="mini-cc-btns"><span class="mini-cc-btn-primary">Demo buchen →</span><span class="mini-cc-btn-ghost">Mehr erfahren</span></div>
+              <div class="mini-site mini-bento">
+                <div class="mini-bento-grid">
+                  <!-- Top-left: KI Calling Agents + Chat -->
+                  <div class="bento-tile bento-chat">
+                    <div class="bento-tile-title">KI Calling Agents</div>
+                    <div class="bento-tile-desc">Wir bauen KI-Agents die Anrufe führen — schnell, empathisch, rund um die Uhr.</div>
+                    <div class="bento-chat-log">
+                      <div class="bento-msg user"><div class="bento-msg-avatar" style="background:linear-gradient(135deg,#6366f1,#818cf8);"></div><div class="bento-msg-bubble">Wir haben 200+ Support-Anrufe am Tag.</div></div>
+                      <div class="bento-msg agent"><div class="bento-msg-avatar"></div><div class="bento-msg-bubble">Ich übernehme Tier-1, eskaliere den Rest und synce alles ins CRM.</div></div>
+                      <div class="bento-msg user"><div class="bento-msg-avatar" style="background:linear-gradient(135deg,#6366f1,#818cf8);"></div><div class="bento-msg-bubble">Let's do it.</div></div>
+                    </div>
                   </div>
-                </div>
-                <div class="mini-cc-stats">
-                  <div><strong>10K+</strong><span>Anrufe/Tag</span></div>
-                  <div><strong>500+</strong><span>Kunden</span></div>
-                  <div><strong>99.7%</strong><span>Uptime</span></div>
-                </div>
-                <div class="mini-cc-services">
-                  <div class="mini-cc-card"><span class="mini-cc-icon">💬</span><span class="mini-cc-card-title">Chatbot Agent</span><span class="mini-cc-card-desc">24/7 automatisierter Kundensupport via Chat</span></div>
-                  <div class="mini-cc-card"><span class="mini-cc-icon">📞</span><span class="mini-cc-card-title">Calling Agent</span><span class="mini-cc-card-desc">KI-Telefonate für Inbound &amp; Outbound</span></div>
-                  <div class="mini-cc-card"><span class="mini-cc-icon">📅</span><span class="mini-cc-card-title">Buchungs-Agent</span><span class="mini-cc-card-desc">Intelligente Terminplanung &amp; Bestätigung</span></div>
-                </div>
-                <div class="mini-cc-steps">
-                  <div class="mini-cc-steps-title">So funktioniert's</div>
-                  <div class="mini-cc-steps-row">
-                    <div class="mini-cc-step"><span class="mini-cc-step-num">01</span><span class="mini-cc-step-label">Integration</span><span class="mini-cc-step-arrow">→</span></div>
-                    <div class="mini-cc-step"><span class="mini-cc-step-num">02</span><span class="mini-cc-step-label">KI-Training</span><span class="mini-cc-step-arrow">→</span></div>
-                    <div class="mini-cc-step"><span class="mini-cc-step-num">03</span><span class="mini-cc-step-label">Live schalten</span></div>
+                  <!-- Top-center: 500+ Kunden stat -->
+                  <div class="bento-tile bento-stat">
+                    <div class="bento-stat-avatars"><span style="background:linear-gradient(135deg,#f59e0b,#d97706);"></span><span style="background:linear-gradient(135deg,#6366f1,#4f46e5);"></span><span style="background:linear-gradient(135deg,#10b981,#059669);"></span></div>
+                    <div class="bento-stat-num">500+</div>
+                    <div class="bento-stat-label">Kunden</div>
                   </div>
-                </div>
-                <div class="mini-cc-about">
-                  <div class="mini-cc-about-title">Über uns</div>
-                  <div class="mini-cc-about-text">CallFlow AI entwickelt KI-gestützte Kommunikationslösungen für mittelständische Unternehmen — made in Germany.</div>
-                  <div class="mini-cc-about-team">
-                    <div class="mini-cc-avatar" style="background:linear-gradient(135deg,#00B4D8,#0077b6);"></div>
-                    <div class="mini-cc-avatar" style="background:linear-gradient(135deg,#0090b0,#00B4D8);"></div>
-                    <div class="mini-cc-avatar" style="background:linear-gradient(135deg,#48cae4,#0090b0);"></div>
+                  <!-- Top-right: KI Consulting -->
+                  <div class="bento-tile bento-consult">
+                    <div class="bento-tile-title">KI Consulting &amp; Setup</div>
+                    <div class="bento-tile-desc">Wir begleiten Teams durch jede Phase der KI-Adoption — von der Analyse bis zum Go-Live.</div>
+                    <div class="bento-consult-icon">🤖</div>
                   </div>
-                  <div class="mini-cc-values">
-                    <div class="mini-cc-value"><span class="mini-cc-value-icon">⚡</span><span class="mini-cc-value-label">KI-First</span></div>
-                    <div class="mini-cc-value"><span class="mini-cc-value-icon">🔒</span><span class="mini-cc-value-label">Datenschutz made in Germany</span></div>
-                    <div class="mini-cc-value"><span class="mini-cc-value-icon">🕐</span><span class="mini-cc-value-label">24/7 Support</span></div>
+                  <!-- Bottom-center: 99% Zufriedenheit -->
+                  <div class="bento-tile bento-stat bento-sat">
+                    <div class="bento-stat-num">99%</div>
+                    <div class="bento-stat-label">Zufriedenheit</div>
                   </div>
-                </div>
-                <div class="mini-cc-testimonial">
-                  <div class="mini-cc-testimonial-inner">
-                    <q>CallFlow hat unseren Support revolutioniert. 80% der Anrufe werden jetzt automatisch bearbeitet.</q>
-                    <cite>— Thomas M., CEO TechVentures GmbH</cite>
+                  <!-- Bottom-left: Workflow Automation -->
+                  <div class="bento-tile bento-workflow">
+                    <div class="bento-tile-title">Workflow Automation</div>
+                    <div class="bento-tile-desc">Daten automatisch verarbeiten — vom Anruf bis ins CRM.</div>
+                    <div class="bento-flow">
+                      <div class="bento-flow-node"><span class="bento-flow-icon">📞</span><span class="bento-flow-label">Anruf</span></div>
+                      <span class="bento-flow-arrow">→</span>
+                      <div class="bento-flow-node"><span class="bento-flow-icon" style="color:#00e5ff;">⚡</span><span class="bento-flow-label">KI Agent</span></div>
+                      <span class="bento-flow-arrow">→</span>
+                      <div class="bento-flow-node"><span class="bento-flow-icon">💾</span><span class="bento-flow-label">CRM</span></div>
+                    </div>
                   </div>
-                </div>
-                <div class="mini-cc-cta">
-                  <span>Jetzt kostenlos testen →</span>
+                  <!-- Bottom-right: CTA -->
+                  <div class="bento-tile bento-cta-tile">
+                    <div class="bento-cta-avatars"><span style="background:linear-gradient(135deg,#00e5ff,#006d7a);"></span><span class="bento-cta-plus">+</span><span class="bento-cta-you">YOU</span></div>
+                    <div class="bento-cta-text">Bereit für KI?</div>
+                    <span class="bento-cta-btn">DEMO BUCHEN</span>
+                    <div class="bento-cta-sub">Nur 20 Min. Unverbindlich.</div>
+                  </div>
                 </div>
               </div>
             </div>
