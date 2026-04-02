@@ -179,7 +179,7 @@ router.post('/verify', requireAuth, async (req, res) => {
       .single();
 
     if (!profile?.stripe_customer_id) {
-      return res.json({ plan: profile?.plan || 'free', tokens_limit: profile?.tokens_limit || 30000, synced: false });
+      return res.json({ plan: profile?.plan || 'explorer', tokens_limit: profile?.tokens_limit || 30000, synced: false });
     }
 
     // Fetch active subscriptions from Stripe
@@ -191,9 +191,9 @@ router.post('/verify', requireAuth, async (req, res) => {
 
     if (subscriptions.data.length === 0) {
       // No active subscription — ensure profile reflects free
-      if (profile.plan !== 'free') {
+      if (profile.plan !== 'explorer') {
         await supabaseAdmin.from('profiles').update({
-          plan: 'free', tokens_limit: 500000, updated_at: new Date().toISOString()
+          plan: 'explorer', tokens_limit: 30000, updated_at: new Date().toISOString()
         }).eq('id', req.userId);
       }
       return res.json({ plan: 'explorer', tokens_limit: 30000, synced: true });

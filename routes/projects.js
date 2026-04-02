@@ -67,9 +67,9 @@ router.post('/', async (req, res) => {
         id: req.userId,
         name: user?.user_metadata?.name || '',
         email: user?.email || '',
-        plan: 'free',
+        plan: 'explorer',
         tokens_used: 0,
-        tokens_limit: 500000
+        tokens_limit: 30000
       }, { onConflict: 'id' });
     }
 

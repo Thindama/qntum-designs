@@ -105,9 +105,9 @@ router.post('/login', async (req, res) => {
           id: data.user.id,
           name: data.user.user_metadata?.name || '',
           email: data.user.email,
-          plan: 'free',
+          plan: 'explorer',
           tokens_used: 0,
-          tokens_limit: 500000
+          tokens_limit: 30000
         }, { onConflict: 'id' })
         .select()
         .single();
@@ -194,9 +194,9 @@ router.get('/me', async (req, res) => {
           id: user.id,
           name: user.user_metadata?.name || '',
           email: user.email,
-          plan: 'free',
+          plan: 'explorer',
           tokens_used: 0,
-          tokens_limit: 500000
+          tokens_limit: 30000
         }, { onConflict: 'id' })
         .select()
         .single();
