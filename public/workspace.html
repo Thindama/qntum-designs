@@ -730,28 +730,108 @@ input, textarea { font-family: inherit; }
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 .comp-thumb {
-  height: 90px;
+  height: 100px;
   background: var(--ws-bg-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
-.comp-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.comp-thumb iframe {
+  width: 1200px;
+  height: 800px;
+  transform: scale(0.155);
+  transform-origin: 0 0;
+  border: none;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
-.comp-thumb-placeholder {
-  width: 100%;
-  height: 100%;
+.comp-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  opacity: 0;
+  background: rgba(0,0,0,0.5);
+  transition: opacity 0.2s;
+}
+.comp-thumb:hover .comp-thumb-overlay { opacity: 1; }
+.comp-thumb-overlay svg { width: 24px; height: 24px; color: #fff; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
+
+/* Component Preview Modal */
+.comp-preview-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  animation: fadeIn 0.2s ease;
+}
+.comp-preview-modal.open { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.comp-preview-box {
+  width: 100%;
+  max-width: 1100px;
+  height: 75vh;
+  background: var(--ws-bg-1);
+  border: 1px solid var(--ws-border-l);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+}
+.comp-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--ws-border);
+  flex-shrink: 0;
+}
+.comp-preview-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ws-text);
+}
+.comp-preview-tags { display: flex; gap: 6px; margin-left: 12px; }
+.comp-preview-tags .comp-tag { font-size: 10px; }
+.comp-preview-actions { display: flex; gap: 8px; margin-left: auto; }
+.comp-preview-use {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--ws-primary);
+  color: #000;
+  transition: all var(--ws-transition);
+}
+.comp-preview-use:hover { background: var(--ws-primary-l); }
+.comp-preview-close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
   color: var(--ws-text-3);
-  opacity: 0.4;
+  transition: all var(--ws-transition);
+}
+.comp-preview-close:hover { background: rgba(255,255,255,0.06); color: var(--ws-text); }
+.comp-preview-close svg { width: 16px; height: 16px; }
+.comp-preview-iframe {
+  flex: 1;
+  border: none;
+  width: 100%;
+  background: #0B1120;
 }
 .comp-card-body {
   padding: 8px 10px 10px;
@@ -2682,6 +2762,23 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     </div>
   </div>
 
+  <!-- ═══ COMPONENT PREVIEW MODAL ═══ -->
+  <div class="comp-preview-modal" id="compPreviewModal">
+    <div class="comp-preview-box">
+      <div class="comp-preview-header">
+        <span class="comp-preview-title" id="compPreviewTitle">Component</span>
+        <div class="comp-preview-tags" id="compPreviewTags"></div>
+        <div class="comp-preview-actions">
+          <button class="comp-preview-use" id="compPreviewUse">Verwenden</button>
+          <button class="comp-preview-close" id="compPreviewClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <iframe class="comp-preview-iframe" id="compPreviewIframe" sandbox="allow-scripts"></iframe>
+    </div>
+  </div>
+
   <!-- ═══ STATUS BAR ═══ -->
   <footer class="statusbar">
     <span>Zuletzt gespeichert: vor 2 Min</span>
@@ -4231,41 +4328,113 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   let activeCategory = 'all';
   let compCache = {};
 
+  // Shared base styles for all component previews
+  const PV_BASE = `*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;background:#0B1120;color:#E2E2F0;overflow:hidden}`;
+  const PV = (css,html) => `<!DOCTYPE html><html><head><style>${PV_BASE}${css}</style></head><body>${html}</body></html>`;
+
   const COMPONENT_DATA = [
-    { id:'hero-gradient', name:'Gradient Hero', category:'hero', tags:['modern','dark','animated'], prompt:'Erstelle eine Hero-Sektion mit grossem Gradient-Hintergrund, animiertem Orb-Element, prominenter Headline, Subline und zwei CTA-Buttons. Modernes dark Design mit leuchtenden Farbakzenten.', thumb:'gradient' },
-    { id:'hero-split', name:'Split Hero', category:'hero', tags:['clean','image','responsive'], prompt:'Erstelle eine Split-Screen Hero-Sektion: Links der Text-Content mit Headline, Subline und CTA-Button, rechts ein grosses Bild oder Illustration. Klares, professionelles Layout.', thumb:'split' },
-    { id:'hero-video', name:'Video Hero', category:'hero', tags:['immersive','fullscreen'], prompt:'Erstelle eine Fullscreen Hero-Sektion mit Video-Hintergrund (Placeholder), Overlay-Gradient, zentrierter Headline, Subline und CTA. Cinematic Look.', thumb:'video' },
-    { id:'hero-minimal', name:'Minimal Hero', category:'hero', tags:['minimal','typo'], prompt:'Erstelle eine minimalistische Hero-Sektion: Nur grosse Typografie, dezenter Hintergrund, ein CTA-Button. Weniger ist mehr — elegantes, reduktiertes Design.', thumb:'minimal' },
-    { id:'feat-bento', name:'Bento Grid', category:'features', tags:['modern','grid','animated'], prompt:'Erstelle eine Features-Sektion im Bento-Grid-Stil: 6 Feature-Karten in asymmetrischem Grid (grosse Karte links, 4 kleine rechts, 1 breite unten), mit Icons, Hover-Lift-Effekt und subtile Gradient-Borders.', thumb:'bento' },
-    { id:'feat-cards', name:'Feature Cards', category:'features', tags:['clean','icons'], prompt:'Erstelle eine Features-Sektion mit 3-4 Karten in einer Reihe. Jede Karte hat ein Icon, Titel und kurze Beschreibung. Hover-Effekt mit leichtem Glow. Responsive Grid-Layout.', thumb:'cards' },
-    { id:'feat-zigzag', name:'Zigzag Features', category:'features', tags:['alternating','image'], prompt:'Erstelle eine Features-Sektion im Zigzag-Layout: Abwechselnd Bild links/Text rechts, dann Bild rechts/Text links. 3 Features mit Icon, Headline und Beschreibung.', thumb:'zigzag' },
-    { id:'feat-tabs', name:'Tabbed Features', category:'features', tags:['interactive','tabs'], prompt:'Erstelle eine Features-Sektion mit Tabs: Obere Tab-Leiste zum Umschalten zwischen 3-4 Feature-Kategorien. Jeder Tab zeigt anderen Content mit Bild und Text. Animated Tab-Wechsel.', thumb:'tabs' },
-    { id:'pricing-cards', name:'Pricing Cards', category:'pricing', tags:['popular','3-tier'], prompt:'Erstelle eine Pricing-Sektion mit 3 Preispaketen nebeneinander: Basic, Pro (hervorgehoben mit Badge "Beliebt"), Enterprise. Jede Karte mit Preis, Feature-Liste und CTA-Button. Der Pro-Plan hat einen Glow-Effekt.', thumb:'pricing' },
-    { id:'pricing-toggle', name:'Pricing + Toggle', category:'pricing', tags:['monthly','yearly','toggle'], prompt:'Erstelle eine Pricing-Sektion mit monatlich/jaehrlich Toggle-Switch oben. 3 Preiskarten die sich beim Umschalten animiert aendern. Jaehrlich zeigt Rabatt-Badge "Spare 20%".', thumb:'toggle' },
-    { id:'pricing-comparison', name:'Vergleichstabelle', category:'pricing', tags:['table','detailed'], prompt:'Erstelle eine Pricing-Sektion als Vergleichstabelle: Spalten fuer 3 Plaene, Zeilen fuer Features mit Checkmarks. Sticky Header beim Scrollen. Hervorgehobene "Empfohlen"-Spalte.', thumb:'table' },
-    { id:'cta-gradient', name:'Gradient CTA', category:'cta', tags:['bold','gradient','centered'], prompt:'Erstelle eine Call-to-Action Sektion mit grossem Gradient-Hintergrund, zentrierter Headline, kurzer Beschreibung und prominentem Button. Animated Background-Shift.', thumb:'gradient' },
-    { id:'cta-split', name:'Split CTA', category:'cta', tags:['image','action'], prompt:'Erstelle eine CTA-Sektion im Split-Layout: Links ueberzeugender Text mit Headline und Benefits-Liste, rechts ein grosser CTA-Button oder Formular. Kontrastreicher Hintergrund.', thumb:'split' },
-    { id:'cta-banner', name:'Floating Banner CTA', category:'cta', tags:['sticky','minimal'], prompt:'Erstelle eine schwebende CTA-Banner-Sektion: Kompakter Banner mit Headline, kurzer Text und Button in einer Zeile. Glassmorphism-Effekt mit Blur-Hintergrund.', thumb:'banner' },
-    { id:'test-cards', name:'Testimonial Cards', category:'testimonials', tags:['cards','avatar','rating'], prompt:'Erstelle eine Testimonials-Sektion mit 3 Karten: Jede mit Bewertungs-Sternen, Zitat-Text, Autorenname, Position und rundem Avatar-Bild. Subtiler Card-Shadow und Hover-Effekt.', thumb:'cards' },
-    { id:'test-carousel', name:'Testimonial Slider', category:'testimonials', tags:['carousel','animated'], prompt:'Erstelle eine Testimonials-Sektion als horizontaler Slider/Carousel: Grosses Zitat zentriert, Navigation-Pfeile links/rechts, Dots-Indikator unten. Auto-Slide alle 5 Sekunden mit Fade-Transition.', thumb:'carousel' },
-    { id:'test-wall', name:'Social Proof Wall', category:'testimonials', tags:['masonry','many'], prompt:'Erstelle eine Testimonials-Sektion im Masonry-Grid-Stil: Viele kurze Testimonial-Karten in unterschiedlichen Hoehen, wie eine Social-Media-Wall. Mindestens 6 Testimonials mit Name und Firma.', thumb:'masonry' },
-    { id:'footer-mega', name:'Mega Footer', category:'footer', tags:['links','newsletter','social'], prompt:'Erstelle einen umfangreichen Footer mit 4 Spalten: Logo + Beschreibung, Produkt-Links, Unternehmen-Links, Newsletter-Anmeldung. Darunter Social-Icons und Copyright-Zeile. Dark Design.', thumb:'mega' },
-    { id:'footer-minimal', name:'Minimal Footer', category:'footer', tags:['clean','simple'], prompt:'Erstelle einen minimalistischen Footer: Logo links, wichtigste Links zentriert, Social-Icons rechts. Alles in einer Zeile. Dezent und elegant.', thumb:'minimal' },
-    { id:'footer-cta', name:'Footer + CTA', category:'footer', tags:['cta','newsletter'], prompt:'Erstelle einen Footer mit integrierter CTA-Sektion oben: Grosse Headline "Bereit zu starten?" mit E-Mail-Input und Button. Darunter klassischer Footer mit Links und Copyright.', thumb:'ctafooter' },
-    { id:'nav-transparent', name:'Transparent Navbar', category:'nav', tags:['sticky','blur','modern'], prompt:'Erstelle eine fixierte Navbar die beim Scrollen einen Glassmorphism-Effekt bekommt: Logo links, Nav-Links zentriert, CTA-Button rechts. Transparent auf Hero, Blur-Background nach Scroll.', thumb:'transparent' },
-    { id:'nav-mega', name:'Mega Menu Nav', category:'nav', tags:['dropdown','mega','complex'], prompt:'Erstelle eine Navbar mit Mega-Menu-Dropdown: Bei Hover ueber "Produkte" oeffnet sich ein grosses Panel mit kategorisierten Links, Icons und Featured-Item. Smooth Slide-Down Animation.', thumb:'mega' },
-    { id:'nav-sidebar', name:'Sidebar Navigation', category:'nav', tags:['mobile','hamburger'], prompt:'Erstelle eine Navbar mit Hamburger-Menu fuer Mobile: Klick oeffnet eine Sidebar von links mit Nav-Links, Social-Icons und CTA. Smooth Slide-In mit Overlay-Dimmer.', thumb:'sidebar' },
-    { id:'faq-accordion', name:'FAQ Akkordeon', category:'faq', tags:['expandable','animated'], prompt:'Erstelle eine FAQ-Sektion mit Akkordeon: 6-8 Fragen, Klick oeffnet/schliesst die Antwort mit Smooth-Animation. Plus/Minus Icon das sich dreht. Nur eine Antwort gleichzeitig offen.', thumb:'accordion' },
-    { id:'faq-two-col', name:'FAQ Zwei Spalten', category:'faq', tags:['grid','clean'], prompt:'Erstelle eine FAQ-Sektion in zwei Spalten: Links 4 Fragen, rechts 4 Fragen. Jede FAQ hat fette Frage und darunter die Antwort. Sauberes Grid-Layout ohne Akkordeon.', thumb:'twocol' },
-    { id:'faq-search', name:'FAQ mit Suche', category:'faq', tags:['search','filter','interactive'], prompt:'Erstelle eine FAQ-Sektion mit Suchfeld oben: User kann Fragen durchsuchen, nicht-passende werden ausgeblendet. Darunter kategorisierte FAQ-Gruppen mit Akkordeon.', thumb:'search' },
-    { id:'stats-counter', name:'Animated Counters', category:'stats', tags:['numbers','animated'], prompt:'Erstelle eine Stats-Sektion mit 4 animierten Zahlen-Countern: Die Zahlen zaehlen von 0 hoch beim Scrollen (Intersection Observer). Grosse Zahlen mit Labels darunter. Gradient-Akzente.', thumb:'counter' },
-    { id:'stats-cards', name:'Stats mit Icons', category:'stats', tags:['cards','icons'], prompt:'Erstelle eine Stats-Sektion mit 4 Karten: Jede mit grossem Icon, Zahl und Label. Hover-Effekt hebt die Karte hervor. Einheitliches Dark-Card-Design mit farbigen Icon-Akzenten.', thumb:'icons' },
-    { id:'contact-form', name:'Kontaktformular', category:'contact', tags:['form','modern'], prompt:'Erstelle eine Kontakt-Sektion mit modernem Formular: Name, E-Mail, Betreff, Nachricht-Textarea und Submit-Button. Links daneben Kontaktinfos (E-Mail, Telefon, Adresse) mit Icons.', thumb:'form' },
-    { id:'contact-map', name:'Kontakt + Karte', category:'contact', tags:['map','split'], prompt:'Erstelle eine Kontakt-Sektion im Split-Layout: Links das Kontaktformular, rechts eine eingebettete Karte (Placeholder). Darunter Oeffnungszeiten und Social-Links.', thumb:'map' },
-    { id:'hero-3d', name:'3D Hero', category:'hero', tags:['premium','3d','animated'], prompt:'Erstelle eine Hero-Sektion mit 3D-Perspektive: Floating Cards oder Elemente mit CSS 3D-Transforms, Parallax-Mauseffekt, grosse Headline mit Gradient-Text. Premium-Look.', pro:true, thumb:'3d' },
-    { id:'feat-interactive', name:'Interactive Features', category:'features', tags:['premium','hover','3d'], prompt:'Erstelle eine Features-Sektion mit interaktiven 3D-Karten: Karten kippen beim Hover in Maus-Richtung (CSS perspective + JS), Glow-Effekt am Rand, animierte Icons.', pro:true, thumb:'interactive' },
-    { id:'pricing-slider', name:'Pricing Slider', category:'pricing', tags:['premium','slider','dynamic'], prompt:'Erstelle eine Pricing-Sektion mit Slider: User bewegt einen Range-Slider (z.B. Anzahl User), Preis aendert sich dynamisch. Animierte Zahlen, visuelles Feedback beim Schieben.', pro:true, thumb:'slider' },
-    { id:'test-video', name:'Video Testimonials', category:'testimonials', tags:['premium','video','trust'], prompt:'Erstelle eine Testimonials-Sektion mit Video-Thumbnails: 3 Karten mit Play-Button-Overlay auf Bild, Name und Firma darunter. Klick oeffnet Modal mit Video-Player (Placeholder).', pro:true, thumb:'video' },
+    { id:'hero-gradient', name:'Gradient Hero', category:'hero', tags:['modern','dark','animated'],
+      prompt:'Erstelle eine Hero-Sektion mit grossem Gradient-Hintergrund, animiertem Orb-Element, prominenter Headline, Subline und zwei CTA-Buttons. Modernes dark Design mit leuchtenden Farbakzenten.',
+      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 30% 50%,#6C3AED33,transparent 60%),radial-gradient(ellipse at 70% 50%,#00D4FF22,transparent 60%),#0B1120}.w{text-align:center;padding:60px}.h1{font-size:64px;font-weight:800;line-height:1.1;margin-bottom:20px;background:linear-gradient(135deg,#fff,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.sub{font-size:20px;color:#8888A8;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}.btns{display:flex;gap:16px;justify-content:center}.b1{padding:14px 32px;background:linear-gradient(135deg,#6C3AED,#00D4FF);border-radius:12px;color:#fff;font-weight:700;font-size:16px;border:none}.b2{padding:14px 32px;border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#ccc;font-size:16px;background:none}.orb{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#6C3AED44,transparent);top:10%;right:10%;filter:blur(60px);animation:float 6s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}`,`<div class="orb"></div><div class="w"><div class="h1">Baue die Zukunft<br>mit KI</div><div class="sub">Erstelle beeindruckende Websites in Sekunden mit der Kraft kuenstlicher Intelligenz.</div><div class="btns"><button class="b1">Jetzt starten</button><button class="b2">Mehr erfahren</button></div></div>`) },
+    { id:'hero-split', name:'Split Hero', category:'hero', tags:['clean','image','responsive'],
+      prompt:'Erstelle eine Split-Screen Hero-Sektion: Links der Text-Content mit Headline, Subline und CTA-Button, rechts ein grosses Bild oder Illustration. Klares, professionelles Layout.',
+      preview: PV(`body{display:flex;min-height:100vh}.left{flex:1;display:flex;flex-direction:column;justify-content:center;padding:80px}.right{flex:1;background:linear-gradient(135deg,#1a2540,#0B1120);display:flex;align-items:center;justify-content:center}.h1{font-size:52px;font-weight:800;line-height:1.15;margin-bottom:16px}.sub{font-size:18px;color:#8888A8;margin-bottom:36px;line-height:1.6}button{padding:16px 36px;background:#00E68A;color:#000;font-weight:700;font-size:16px;border:none;border-radius:12px}.img{width:280px;height:280px;border-radius:24px;background:linear-gradient(135deg,#6C3AED33,#00D4FF33);border:1px solid rgba(255,255,255,0.08)}`,`<div class="left"><div class="h1">Design trifft<br>Technologie</div><div class="sub">Professionelle Websites fuer Ihr Unternehmen. Modern, schnell und konversionsoptimiert.</div><button>Kostenlos testen</button></div><div class="right"><div class="img"></div></div>`) },
+    { id:'hero-video', name:'Video Hero', category:'hero', tags:['immersive','fullscreen'],
+      prompt:'Erstelle eine Fullscreen Hero-Sektion mit Video-Hintergrund (Placeholder), Overlay-Gradient, zentrierter Headline, Subline und CTA. Cinematic Look.',
+      preview: PV(`body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%)}.ov{position:absolute;inset:0;background:rgba(0,0,0,0.5)}.w{position:relative;z-index:1;text-align:center}.h1{font-size:72px;font-weight:800;margin-bottom:20px;letter-spacing:-2px}.sub{font-size:20px;color:#aaa;margin-bottom:40px}.play{width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;justify-content:center;margin-bottom:40px;background:rgba(255,255,255,0.05)}.play::after{content:"";border:12px solid transparent;border-left:20px solid #fff;margin-left:6px}button{padding:16px 40px;background:#fff;color:#000;font-weight:700;font-size:16px;border:none;border-radius:50px}`,`<div class="ov"></div><div class="w"><div class="play"></div><div class="h1">Erlebe Innovation</div><div class="sub">Cinematic Experiences fuer deine Marke</div><button>Video abspielen</button></div>`) },
+    { id:'hero-minimal', name:'Minimal Hero', category:'hero', tags:['minimal','typo'],
+      prompt:'Erstelle eine minimalistische Hero-Sektion: Nur grosse Typografie, dezenter Hintergrund, ein CTA-Button. Weniger ist mehr — elegantes, reduktiertes Design.',
+      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0a0a0f}.w{text-align:center;max-width:700px;padding:40px}.h1{font-size:80px;font-weight:300;letter-spacing:-3px;line-height:1;margin-bottom:32px;color:#f0f0f0}.sub{font-size:16px;color:#666;margin-bottom:48px;line-height:1.8;letter-spacing:0.5px}button{padding:14px 44px;border:1px solid #333;background:none;color:#888;font-size:14px;letter-spacing:2px;text-transform:uppercase;border-radius:0;cursor:pointer}`,`<div class="w"><div class="h1">less is<br>more</div><div class="sub">Reduktion auf das Wesentliche.<br>Klarheit in jedem Pixel.</div><button>Entdecken</button></div>`) },
+    { id:'feat-bento', name:'Bento Grid', category:'features', tags:['modern','grid','animated'],
+      prompt:'Erstelle eine Features-Sektion im Bento-Grid-Stil: 6 Feature-Karten in asymmetrischem Grid (grosse Karte links, 4 kleine rechts, 1 breite unten), mit Icons, Hover-Lift-Effekt und subtile Gradient-Borders.',
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:400px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end}.c:first-child{grid-row:span 2}.ic{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6C3AED,#00D4FF);margin-bottom:14px}.cn{font-size:16px;font-weight:600;margin-bottom:6px}.cd{font-size:12px;color:#666;line-height:1.5}`,`<div class="w"><div class="t">Features</div><div class="g"><div class="c"><div class="ic"></div><div class="cn">KI-Engine</div><div class="cd">Intelligente Generierung von Code und Design in Echtzeit.</div></div><div class="c"><div class="ic"></div><div class="cn">Live Preview</div><div class="cd">Sofortige Vorschau</div></div><div class="c"><div class="ic"></div><div class="cn">Responsive</div><div class="cd">Alle Geraete</div></div><div class="c"><div class="ic"></div><div class="cn">Export</div><div class="cd">Clean Code</div></div><div class="c"><div class="ic"></div><div class="cn">Hosting</div><div class="cd">One-Click Deploy</div></div></div></div>`) },
+    { id:'feat-cards', name:'Feature Cards', category:'features', tags:['clean','icons'],
+      prompt:'Erstelle eine Features-Sektion mit 3-4 Karten in einer Reihe. Jede Karte hat ein Icon, Titel und kurze Beschreibung. Hover-Effekt mit leichtem Glow. Responsive Grid-Layout.',
+      preview: PV(`.w{padding:80px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:12px}.st{color:#888;font-size:16px;margin-bottom:48px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:36px 24px;text-align:left}.ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00E68A33,#00E68A11);margin-bottom:20px}.cn{font-size:17px;font-weight:600;margin-bottom:8px}.cd{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Alles was du brauchst</div><div class="st">Leistungsstarke Tools fuer dein Projekt</div><div class="g"><div class="c"><div class="ic"></div><div class="cn">Schnell</div><div class="cd">Blitzschnelle Ladezeiten durch optimierten Code und modernste Technik.</div></div><div class="c"><div class="ic"></div><div class="cn">Sicher</div><div class="cd">Enterprise-Grade Security fuer alle deine Projekte und Daten.</div></div><div class="c"><div class="ic"></div><div class="cn">Skalierbar</div><div class="cd">Waechst mit deinem Unternehmen. Von Startup bis Enterprise.</div></div></div></div>`) },
+    { id:'feat-zigzag', name:'Zigzag Features', category:'features', tags:['alternating','image'],
+      prompt:'Erstelle eine Features-Sektion im Zigzag-Layout: Abwechselnd Bild links/Text rechts, dann Bild rechts/Text links. 3 Features mit Icon, Headline und Beschreibung.',
+      preview: PV(`.w{padding:60px 40px}.r{display:flex;align-items:center;gap:40px;margin-bottom:48px}.r:nth-child(even){flex-direction:row-reverse}.img{flex:1;height:180px;border-radius:16px;background:linear-gradient(135deg,#1a2540,#0B1120);border:1px solid rgba(255,255,255,0.06)}.txt{flex:1}.h{font-size:24px;font-weight:700;margin-bottom:10px}.d{font-size:14px;color:#888;line-height:1.7}`,`<div class="w"><div class="r"><div class="img"></div><div class="txt"><div class="h">Intuitives Design</div><div class="d">Erstelle beeindruckende Layouts mit Drag-and-Drop. Keine Vorkenntnisse noetig.</div></div></div><div class="r"><div class="img"></div><div class="txt"><div class="h">KI-Assistent</div><div class="d">Beschreibe was du willst und unsere KI erstellt es fuer dich in Sekunden.</div></div></div><div class="r"><div class="img"></div><div class="txt"><div class="h">Sofort live</div><div class="d">Ein Klick und deine Website ist weltweit erreichbar. Hosting inklusive.</div></div></div></div>`) },
+    { id:'feat-tabs', name:'Tabbed Features', category:'features', tags:['interactive','tabs'],
+      prompt:'Erstelle eine Features-Sektion mit Tabs: Obere Tab-Leiste zum Umschalten zwischen 3-4 Feature-Kategorien. Jeder Tab zeigt anderen Content mit Bild und Text. Animated Tab-Wechsel.',
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:32px}.tabs{display:flex;justify-content:center;gap:4px;margin-bottom:36px}.tab{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;color:#666;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}.tab.a{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:#00D4FF}.ct{display:flex;align-items:center;gap:40px;text-align:left}.img{flex:1;height:280px;border-radius:16px;background:linear-gradient(135deg,#0D1B2A,#1a2540);border:1px solid rgba(255,255,255,0.06)}.info{flex:1}.h{font-size:24px;font-weight:700;margin-bottom:12px}.d{font-size:14px;color:#888;line-height:1.7}`,`<div class="w"><div class="t">So funktioniert es</div><div class="tabs"><div class="tab a">Design</div><div class="tab">Develop</div><div class="tab">Deploy</div><div class="tab">Analyse</div></div><div class="ct"><div class="img"></div><div class="info"><div class="h">Design mit KI</div><div class="d">Waehle aus hunderten Templates oder beschreibe dein Wunschdesign. Unsere KI erstellt es in Sekunden — pixel-perfekt und responsive.</div></div></div></div>`) },
+    { id:'pricing-cards', name:'Pricing Cards', category:'pricing', tags:['popular','3-tier'],
+      prompt:'Erstelle eine Pricing-Sektion mit 3 Preispaketen nebeneinander: Basic, Pro (hervorgehoben mit Badge "Beliebt"), Enterprise. Jede Karte mit Preis, Feature-Liste und CTA-Button. Der Pro-Plan hat einen Glow-Effekt.',
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:auto}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px 24px;text-align:left}.c.pop{border-color:rgba(0,230,138,0.3);background:rgba(0,230,138,0.04);position:relative}.badge{position:absolute;top:-10px;right:20px;background:#00E68A;color:#000;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px}.pn{font-size:16px;font-weight:600;margin-bottom:8px;color:#888}.pr{font-size:40px;font-weight:800;margin-bottom:4px}.pm{font-size:12px;color:#555;margin-bottom:20px}.f{list-style:none;margin-bottom:24px}.f li{padding:6px 0;font-size:13px;color:#888;border-bottom:1px solid rgba(255,255,255,0.04)}.f li::before{content:"\\2713 ";color:#00E68A}button{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:14px;border:none;background:rgba(255,255,255,0.06);color:#ccc}.c.pop button{background:#00E68A;color:#000}`,`<div class="w"><div class="t">Pricing</div><div class="g"><div class="c"><div class="pn">Starter</div><div class="pr">$9</div><div class="pm">pro Monat</div><ul class="f"><li>5 Projekte</li><li>Basis-Templates</li><li>Community Support</li></ul><button>Waehlen</button></div><div class="c pop"><div class="badge">Beliebt</div><div class="pn">Pro</div><div class="pr">$29</div><div class="pm">pro Monat</div><ul class="f"><li>Unbegrenzt Projekte</li><li>Alle Templates</li><li>Priority Support</li><li>Custom Domain</li></ul><button>Waehlen</button></div><div class="c"><div class="pn">Enterprise</div><div class="pr">$99</div><div class="pm">pro Monat</div><ul class="f"><li>Alles in Pro</li><li>Dedicated Support</li><li>SLA Garantie</li></ul><button>Waehlen</button></div></div></div>`) },
+    { id:'pricing-toggle', name:'Pricing + Toggle', category:'pricing', tags:['monthly','yearly','toggle'],
+      prompt:'Erstelle eine Pricing-Sektion mit monatlich/jaehrlich Toggle-Switch oben. 3 Preiskarten die sich beim Umschalten animiert aendern. Jaehrlich zeigt Rabatt-Badge "Spare 20%".',
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:24px}.tog{display:inline-flex;align-items:center;gap:12px;margin-bottom:40px;font-size:14px;color:#888}.sw{width:48px;height:26px;background:#333;border-radius:13px;position:relative}.sw::after{content:"";width:20px;height:20px;background:#00E68A;border-radius:50%;position:absolute;top:3px;left:25px}.sav{background:rgba(0,230,138,0.1);color:#00E68A;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:auto}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px}.pn{font-weight:600;color:#888;margin-bottom:12px}.pr{font-size:36px;font-weight:800;margin-bottom:4px}.pm{font-size:12px;color:#555;margin-bottom:20px}button{width:100%;padding:10px;border-radius:8px;font-weight:600;border:1px solid rgba(255,255,255,0.1);background:none;color:#ccc}`,`<div class="w"><div class="t">Einfache Preise</div><div class="tog">Monatlich <div class="sw"></div> Jaehrlich <span class="sav">-20%</span></div><div class="g"><div class="c"><div class="pn">Basic</div><div class="pr">$7</div><div class="pm">/Monat</div><button>Starten</button></div><div class="c"><div class="pn">Pro</div><div class="pr">$23</div><div class="pm">/Monat</div><button>Starten</button></div><div class="c"><div class="pn">Team</div><div class="pr">$79</div><div class="pm">/Monat</div><button>Starten</button></div></div></div>`) },
+    { id:'pricing-comparison', name:'Vergleichstabelle', category:'pricing', tags:['table','detailed'],
+      prompt:'Erstelle eine Pricing-Sektion als Vergleichstabelle: Spalten fuer 3 Plaene, Zeilen fuer Features mit Checkmarks. Sticky Header beim Scrollen. Hervorgehobene "Empfohlen"-Spalte.',
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}table{width:100%;border-collapse:collapse}th,td{padding:14px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}th{font-weight:700;font-size:15px;color:#fff}td:first-child{text-align:left;color:#888}.hl{background:rgba(0,230,138,0.04);border-left:1px solid rgba(0,230,138,0.15);border-right:1px solid rgba(0,230,138,0.15)}.ck{color:#00E68A}.no{color:#333}`,`<div class="w"><div class="t">Plaene vergleichen</div><table><tr><th></th><th>Starter</th><th class="hl">Pro</th><th>Business</th></tr><tr><td>Projekte</td><td>5</td><td class="hl">50</td><td>Unbegrenzt</td></tr><tr><td>KI-Generierung</td><td class="ck">&#10003;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Custom Domain</td><td class="no">&#10007;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Priority Support</td><td class="no">&#10007;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Team-Zugang</td><td class="no">&#10007;</td><td class="hl no">&#10007;</td><td class="ck">&#10003;</td></tr></table></div>`) },
+    { id:'cta-gradient', name:'Gradient CTA', category:'cta', tags:['bold','gradient','centered'],
+      prompt:'Erstelle eine Call-to-Action Sektion mit grossem Gradient-Hintergrund, zentrierter Headline, kurzer Beschreibung und prominentem Button. Animated Background-Shift.',
+      preview: PV(`.w{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#6C3AED,#00D4FF,#00E68A);background-size:300% 300%;animation:bg 6s ease infinite;text-align:center;padding:40px}@keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.h{font-size:48px;font-weight:800;margin-bottom:16px;color:#fff}.d{font-size:18px;color:rgba(255,255,255,0.8);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}button{padding:16px 48px;background:#fff;color:#000;font-weight:700;font-size:16px;border:none;border-radius:50px}`,`<div class="w"><div class="h">Bereit zu starten?</div><div class="d">Erstelle deine professionelle Website in unter 5 Minuten. Kostenlos testen.</div><button>Jetzt starten</button></div>`) },
+    { id:'cta-split', name:'Split CTA', category:'cta', tags:['image','action'],
+      prompt:'Erstelle eine CTA-Sektion im Split-Layout: Links ueberzeugender Text mit Headline und Benefits-Liste, rechts ein grosser CTA-Button oder Formular. Kontrastreicher Hintergrund.',
+      preview: PV(`.w{display:flex;align-items:center;min-height:80vh;padding:60px 40px;gap:60px;background:#0D1117}.left{flex:1}.h{font-size:36px;font-weight:700;margin-bottom:16px}.d{font-size:15px;color:#888;line-height:1.7;margin-bottom:24px}.ul{list-style:none}.ul li{padding:8px 0;color:#aaa;font-size:14px}.ul li::before{content:"\\2713 ";color:#00E68A;margin-right:8px}.right{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:40px;text-align:center}.rh{font-size:20px;font-weight:700;margin-bottom:20px}input{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;margin-bottom:12px;font-size:14px}button{width:100%;padding:14px;background:#00E68A;color:#000;font-weight:700;font-size:15px;border:none;border-radius:10px}`,`<div class="w"><div class="left"><div class="h">Mach den naechsten Schritt</div><div class="d">Tausende Unternehmen vertrauen bereits auf unsere Plattform.</div><ul class="ul"><li>Keine Kreditkarte noetig</li><li>14 Tage kostenlos testen</li><li>Jederzeit kuendbar</li></ul></div><div class="right"><div class="rh">Kostenlos starten</div><input placeholder="Deine E-Mail-Adresse"><button>Account erstellen</button></div></div>`) },
+    { id:'cta-banner', name:'Floating Banner CTA', category:'cta', tags:['sticky','minimal'],
+      prompt:'Erstelle eine schwebende CTA-Banner-Sektion: Kompakter Banner mit Headline, kurzer Text und Button in einer Zeile. Glassmorphism-Effekt mit Blur-Hintergrund.',
+      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080810;padding:40px}.b{display:flex;align-items:center;gap:24px;padding:20px 32px;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;max-width:800px;width:100%}.h{font-size:18px;font-weight:700;white-space:nowrap}.d{font-size:13px;color:#888;flex:1}button{padding:12px 28px;background:linear-gradient(135deg,#6C3AED,#00D4FF);color:#fff;font-weight:700;font-size:13px;border:none;border-radius:10px;white-space:nowrap}`,`<div class="b"><div class="h">Neu: KI-Agent</div><div class="d">Automatisiere deine Website-Erstellung mit unserem neuen KI-Agenten.</div><button>Jetzt testen</button></div>`) },
+    { id:'test-cards', name:'Testimonial Cards', category:'testimonials', tags:['cards','avatar','rating'],
+      prompt:'Erstelle eine Testimonials-Sektion mit 3 Karten: Jede mit Bewertungs-Sternen, Zitat-Text, Autorenname, Position und rundem Avatar-Bild. Subtiler Card-Shadow und Hover-Effekt.',
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;text-align:left}.stars{color:#F59E0B;font-size:16px;margin-bottom:12px;letter-spacing:2px}.q{font-size:14px;color:#aaa;line-height:1.7;margin-bottom:20px;font-style:italic}.au{display:flex;align-items:center;gap:12px}.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6C3AED,#00D4FF)}.an{font-size:13px;font-weight:600}.ar{font-size:11px;color:#666}`,`<div class="w"><div class="t">Was Kunden sagen</div><div class="g"><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Beste Entscheidung fuer unser Startup. Die Website war in 10 Minuten fertig."</div><div class="au"><div class="av"></div><div><div class="an">Sarah M.</div><div class="ar">CEO, TechStart</div></div></div></div><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Unglaubliche Qualitaet. Unsere Conversion-Rate ist um 40% gestiegen."</div><div class="au"><div class="av"></div><div><div class="an">Thomas K.</div><div class="ar">Marketing, Brandify</div></div></div></div><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Support ist erstklassig und die KI versteht genau was man will."</div><div class="au"><div class="av"></div><div><div class="an">Lisa W.</div><div class="ar">Freelancerin</div></div></div></div></div></div>`) },
+    { id:'test-carousel', name:'Testimonial Slider', category:'testimonials', tags:['carousel','animated'],
+      prompt:'Erstelle eine Testimonials-Sektion als horizontaler Slider/Carousel: Grosses Zitat zentriert, Navigation-Pfeile links/rechts, Dots-Indikator unten. Auto-Slide alle 5 Sekunden mit Fade-Transition.',
+      preview: PV(`.w{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:60px;text-align:center;position:relative}.q{font-size:28px;font-weight:300;line-height:1.6;max-width:700px;color:#ddd;font-style:italic;margin-bottom:32px}.q::before{content:'"';font-size:80px;color:#6C3AED;display:block;line-height:0.5;margin-bottom:20px}.au{font-size:16px;font-weight:600;margin-bottom:4px}.ar{font-size:13px;color:#666}.dots{margin-top:32px;display:flex;gap:8px;justify-content:center}.dot{width:8px;height:8px;border-radius:50%;background:#333}.dot.a{background:#00D4FF}.arr{position:absolute;top:50%;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:#888;font-size:18px}.arr.l{left:40px}.arr.r{right:40px}`,`<div class="w"><div class="arr l">&#8249;</div><div><div class="q">Die beste Plattform die ich je genutzt habe. Einfach, schnell und die Ergebnisse sind beeindruckend.</div><div class="au">Michael R.</div><div class="ar">Gruender, NextLevel GmbH</div><div class="dots"><div class="dot a"></div><div class="dot"></div><div class="dot"></div></div></div><div class="arr r">&#8250;</div></div>`) },
+    { id:'test-wall', name:'Social Proof Wall', category:'testimonials', tags:['masonry','many'],
+      prompt:'Erstelle eine Testimonials-Sektion im Masonry-Grid-Stil: Viele kurze Testimonial-Karten in unterschiedlichen Hoehen, wie eine Social-Media-Wall. Mindestens 6 Testimonials mit Name und Firma.',
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{columns:3;gap:14px}.c{break-inside:avoid;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:14px}.q{font-size:13px;color:#aaa;line-height:1.6;margin-bottom:12px}.n{font-size:12px;font-weight:600}.r{font-size:10px;color:#555}`,`<div class="w"><div class="t">Social Proof</div><div class="g"><div class="c"><div class="q">"Absolut fantastisch!"</div><div class="n">Anna K.</div><div class="r">Designer</div></div><div class="c"><div class="q">"Hat unseren Workflow komplett veraendert. Wir sparen 20 Stunden pro Woche."</div><div class="n">Max P.</div><div class="r">CTO, DataFlow</div></div><div class="c"><div class="q">"Einfach genial."</div><div class="n">Julia S.</div><div class="r">Freelancerin</div></div><div class="c"><div class="q">"Die KI versteht genau was ich brauche. Nie wieder manuell coden."</div><div class="n">Tom B.</div><div class="r">Agentur-Inhaber</div></div><div class="c"><div class="q">"5 Sterne!"</div><div class="n">Lisa M.</div><div class="r">Startup</div></div><div class="c"><div class="q">"Unsere Kunden sind begeistert von der neuen Website."</div><div class="n">Chris R.</div><div class="r">E-Commerce</div></div></div></div>`) },
+    { id:'footer-mega', name:'Mega Footer', category:'footer', tags:['links','newsletter','social'],
+      prompt:'Erstelle einen umfangreichen Footer mit 4 Spalten: Logo + Beschreibung, Produkt-Links, Unternehmen-Links, Newsletter-Anmeldung. Darunter Social-Icons und Copyright-Zeile. Dark Design.',
+      preview: PV(`.w{padding:60px 40px 30px;background:#080810;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end}.g{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.5fr;gap:40px;margin-bottom:40px}.logo{font-size:22px;font-weight:800;margin-bottom:12px}.ld{font-size:13px;color:#555;line-height:1.7}.ch{font-size:13px;font-weight:600;color:#888;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}.cl{list-style:none}.cl li{padding:5px 0;font-size:13px;color:#444}input{width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;margin-bottom:10px;font-size:13px}button{width:100%;padding:10px;background:#00E68A;color:#000;font-weight:600;border:none;border-radius:8px;font-size:13px}.bt{border-top:1px solid rgba(255,255,255,0.05);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;color:#333}`,`<div class="w"><div class="g"><div><div class="logo">Qntum</div><div class="ld">Erstelle professionelle Websites mit KI. Schnell, einfach und beeindruckend.</div></div><div><div class="ch">Produkt</div><ul class="cl"><li>Features</li><li>Pricing</li><li>Templates</li><li>Changelog</li></ul></div><div><div class="ch">Unternehmen</div><ul class="cl"><li>Ueber uns</li><li>Blog</li><li>Karriere</li><li>Kontakt</li></ul></div><div><div class="ch">Newsletter</div><input placeholder="E-Mail Adresse"><button>Abonnieren</button></div></div><div class="bt"><span>&copy; 2026 Qntum. Alle Rechte vorbehalten.</span><span>Datenschutz &middot; Impressum &middot; AGB</span></div></div>`) },
+    { id:'footer-minimal', name:'Minimal Footer', category:'footer', tags:['clean','simple'],
+      prompt:'Erstelle einen minimalistischen Footer: Logo links, wichtigste Links zentriert, Social-Icons rechts. Alles in einer Zeile. Dezent und elegant.',
+      preview: PV(`.w{min-height:100vh;display:flex;align-items:flex-end}.f{width:100%;padding:24px 40px;border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between}.logo{font-weight:700;font-size:16px}.links{display:flex;gap:24px}.links a{color:#555;font-size:13px;text-decoration:none}.soc{display:flex;gap:12px}.soc span{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:12px;color:#666}`,`<div class="w"><div class="f"><div class="logo">Qntum</div><div class="links"><a>Features</a><a>Pricing</a><a>Blog</a><a>Kontakt</a></div><div class="soc"><span>X</span><span>in</span><span>gh</span></div></div></div>`) },
+    { id:'footer-cta', name:'Footer + CTA', category:'footer', tags:['cta','newsletter'],
+      prompt:'Erstelle einen Footer mit integrierter CTA-Sektion oben: Grosse Headline "Bereit zu starten?" mit E-Mail-Input und Button. Darunter klassischer Footer mit Links und Copyright.',
+      preview: PV(`.w{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:#080810}.cta{text-align:center;padding:60px 40px;border-bottom:1px solid rgba(255,255,255,0.05)}.ch{font-size:36px;font-weight:700;margin-bottom:16px}.cd{color:#888;margin-bottom:28px;font-size:15px}.row{display:flex;gap:10px;justify-content:center;max-width:400px;margin:auto}input{flex:1;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px}button{padding:12px 28px;background:#00E68A;color:#000;font-weight:700;border:none;border-radius:10px;font-size:14px}.f{padding:24px 40px;display:flex;justify-content:space-between;font-size:12px;color:#333}`,`<div class="w"><div class="cta"><div class="ch">Bereit zu starten?</div><div class="cd">Kostenlos registrieren. Keine Kreditkarte noetig.</div><div class="row"><input placeholder="E-Mail Adresse"><button>Starten</button></div></div><div class="f"><span>&copy; 2026 Qntum</span><span>Datenschutz &middot; Impressum</span></div></div>`) },
+    { id:'nav-transparent', name:'Transparent Navbar', category:'nav', tags:['sticky','blur','modern'],
+      prompt:'Erstelle eine fixierte Navbar die beim Scrollen einen Glassmorphism-Effekt bekommt: Logo links, Nav-Links zentriert, CTA-Button rechts. Transparent auf Hero, Blur-Background nach Scroll.',
+      preview: PV(`nav{display:flex;align-items:center;padding:16px 40px;background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800}.links{margin:0 auto;display:flex;gap:28px}.links a{color:#888;font-size:14px;text-decoration:none}button{padding:10px 24px;background:#00E68A;color:#000;font-weight:700;font-size:13px;border:none;border-radius:8px}.hero{height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0B1120,#1a2540)}.hh{font-size:56px;font-weight:800;text-align:center}`,`<nav><div class="logo">Brand</div><div class="links"><a>Produkt</a><a>Features</a><a>Pricing</a><a>Kontakt</a></div><button>Demo buchen</button></nav><div class="hero"><div class="hh">Willkommen</div></div>`) },
+    { id:'nav-mega', name:'Mega Menu Nav', category:'nav', tags:['dropdown','mega','complex'],
+      prompt:'Erstelle eine Navbar mit Mega-Menu-Dropdown: Bei Hover ueber "Produkte" oeffnet sich ein grosses Panel mit kategorisierten Links, Icons und Featured-Item. Smooth Slide-Down Animation.',
+      preview: PV(`nav{display:flex;align-items:center;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800;margin-right:40px}.links{display:flex;gap:24px}.links a{color:#888;font-size:14px;text-decoration:none}.mega{position:absolute;top:56px;left:40px;right:40px;background:rgba(16,16,36,0.98);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.mc{font-size:12px}.mh{font-size:13px;font-weight:600;margin-bottom:12px;color:#00D4FF}.ml{color:#666;font-size:12px;padding:4px 0}button{margin-left:auto;padding:10px 24px;background:#6C3AED;color:#fff;font-weight:700;font-size:13px;border:none;border-radius:8px}`,`<nav><div class="logo">Brand</div><div class="links"><a>Produkte &#9662;</a><a>Loesungen</a><a>Preise</a></div><button>Kontakt</button></nav><div class="mega"><div class="mc"><div class="mh">Plattform</div><div class="ml">Website Builder</div><div class="ml">KI-Assistent</div><div class="ml">Templates</div></div><div class="mc"><div class="mh">Loesungen</div><div class="ml">E-Commerce</div><div class="ml">SaaS</div><div class="ml">Portfolio</div></div><div class="mc"><div class="mh">Ressourcen</div><div class="ml">Dokumentation</div><div class="ml">Blog</div><div class="ml">Community</div></div></div>`) },
+    { id:'nav-sidebar', name:'Sidebar Navigation', category:'nav', tags:['mobile','hamburger'],
+      prompt:'Erstelle eine Navbar mit Hamburger-Menu fuer Mobile: Klick oeffnet eine Sidebar von links mit Nav-Links, Social-Icons und CTA. Smooth Slide-In mit Overlay-Dimmer.',
+      preview: PV(`nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800}.ham{display:flex;flex-direction:column;gap:5px;cursor:pointer}.ham span{width:24px;height:2px;background:#fff;border-radius:1px}.sb{position:fixed;top:0;left:0;width:280px;height:100%;background:rgba(11,17,32,0.98);border-right:1px solid rgba(255,255,255,0.06);padding:40px 28px;display:flex;flex-direction:column;gap:12px}.sl{font-size:18px;font-weight:600;color:#aaa;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}.dim{position:fixed;inset:0;background:rgba(0,0,0,0.5)}button{margin-top:auto;padding:14px;background:#00E68A;color:#000;font-weight:700;border:none;border-radius:10px;font-size:15px}`,`<div class="dim"></div><nav><div class="logo">Brand</div><div class="ham"><span></span><span></span><span></span></div></nav><div class="sb"><div class="sl">Home</div><div class="sl">Produkte</div><div class="sl">Preise</div><div class="sl">Ueber uns</div><div class="sl">Kontakt</div><button>Demo buchen</button></div>`) },
+    { id:'faq-accordion', name:'FAQ Akkordeon', category:'faq', tags:['expandable','animated'],
+      prompt:'Erstelle eine FAQ-Sektion mit Akkordeon: 6-8 Fragen, Klick oeffnet/schliesst die Antwort mit Smooth-Animation. Plus/Minus Icon das sich dreht. Nur eine Antwort gleichzeitig offen.',
+      preview: PV(`.w{padding:60px 40px;max-width:700px;margin:auto}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.q{border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:10px;overflow:hidden}.qh{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px;cursor:pointer}.qh span{color:#00D4FF;font-size:20px}.qa{padding:0 20px 18px;font-size:13px;color:#888;line-height:1.7;display:none}.q.open .qa{display:block}.q.open{background:rgba(255,255,255,0.02)}`,`<div class="w"><div class="t">FAQ</div><div class="q open"><div class="qh">Wie funktioniert die KI?<span>-</span></div><div class="qa">Beschreibe einfach deine Wunsch-Website und unsere KI generiert den Code automatisch. Du kannst jederzeit Aenderungen per Chat vornehmen.</div></div><div class="q"><div class="qh">Brauche ich Programmierkenntnisse?<span>+</span></div><div class="qa"></div></div><div class="q"><div class="qh">Kann ich meine eigene Domain nutzen?<span>+</span></div><div class="qa"></div></div><div class="q"><div class="qh">Gibt es eine kostenlose Version?<span>+</span></div><div class="qa"></div></div></div>`) },
+    { id:'faq-two-col', name:'FAQ Zwei Spalten', category:'faq', tags:['grid','clean'],
+      prompt:'Erstelle eine FAQ-Sektion in zwei Spalten: Links 4 Fragen, rechts 4 Fragen. Jede FAQ hat fette Frage und darunter die Antwort. Sauberes Grid-Layout ohne Akkordeon.',
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:1fr 1fr;gap:28px}.i{margin-bottom:8px}.ih{font-size:15px;font-weight:600;margin-bottom:6px}.id{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Haeufige Fragen</div><div class="g"><div class="i"><div class="ih">Was ist Qntum?</div><div class="id">Ein KI-Website-Builder der professionelle Seiten in Minuten erstellt.</div></div><div class="i"><div class="ih">Wie starte ich?</div><div class="id">Registriere dich kostenlos und beschreibe deine Wunsch-Website im Chat.</div></div><div class="i"><div class="ih">Welche Technologien?</div><div class="id">HTML, CSS, JS oder React + Tailwind. Du waehlst den Stack.</div></div><div class="i"><div class="ih">Support?</div><div class="id">E-Mail-Support fuer alle. Priority-Support ab Pro-Plan.</div></div><div class="i"><div class="ih">Eigene Domain?</div><div class="id">Ja, ab dem Pro-Plan kannst du deine Domain verbinden.</div></div><div class="i"><div class="ih">Export moeglich?</div><div class="id">Ja, du kannst jederzeit den Code als ZIP herunterladen.</div></div></div></div>`) },
+    { id:'faq-search', name:'FAQ mit Suche', category:'faq', tags:['search','filter','interactive'],
+      prompt:'Erstelle eine FAQ-Sektion mit Suchfeld oben: User kann Fragen durchsuchen, nicht-passende werden ausgeblendet. Darunter kategorisierte FAQ-Gruppen mit Akkordeon.',
+      preview: PV(`.w{padding:60px 40px;max-width:700px;margin:auto}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:24px}input{width:100%;padding:14px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#fff;font-size:15px;margin-bottom:32px}input::placeholder{color:#555}.cat{font-size:12px;color:#00D4FF;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;margin-top:24px}.q{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;font-size:14px;color:#aaa}.q span{color:#333}`,`<div class="w"><div class="t">Hilfe-Center</div><input placeholder="Frage suchen..."><div class="cat">Allgemein</div><div class="q">Was ist Qntum? <span>+</span></div><div class="q">Wie funktioniert die KI? <span>+</span></div><div class="cat">Preise</div><div class="q">Gibt es eine kostenlose Version? <span>+</span></div><div class="q">Kann ich jederzeit kuendigen? <span>+</span></div><div class="cat">Technik</div><div class="q">Welche Frameworks werden unterstuetzt? <span>+</span></div></div>`) },
+    { id:'stats-counter', name:'Animated Counters', category:'stats', tags:['numbers','animated'],
+      prompt:'Erstelle eine Stats-Sektion mit 4 animierten Zahlen-Countern: Die Zahlen zaehlen von 0 hoch beim Scrollen (Intersection Observer). Grosse Zahlen mit Labels darunter. Gradient-Akzente.',
+      preview: PV(`.w{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:40px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}.n{font-size:56px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}.l{font-size:14px;color:#666;font-weight:500}`,`<div class="w"><div class="g"><div><div class="n">2.4K+</div><div class="l">Kunden weltweit</div></div><div><div class="n">15M+</div><div class="l">Generierte Seiten</div></div><div><div class="n">99.9%</div><div class="l">Uptime</div></div><div><div class="n">4.9</div><div class="l">Bewertung</div></div></div></div>`) },
+    { id:'stats-cards', name:'Stats mit Icons', category:'stats', tags:['cards','icons'],
+      prompt:'Erstelle eine Stats-Sektion mit 4 Karten: Jede mit grossem Icon, Zahl und Label. Hover-Effekt hebt die Karte hervor. Einheitliches Dark-Card-Design mit farbigen Icon-Akzenten.',
+      preview: PV(`.w{padding:60px 40px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;text-align:center}.ic{width:48px;height:48px;border-radius:14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:22px}.ic.a{background:rgba(108,58,237,0.15);color:#6C3AED}.ic.b{background:rgba(0,230,138,0.12);color:#00E68A}.ic.c{background:rgba(0,212,255,0.12);color:#00D4FF}.ic.d{background:rgba(245,158,11,0.12);color:#F59E0B}.n{font-size:32px;font-weight:800;margin-bottom:4px}.l{font-size:12px;color:#666}`,`<div class="w"><div class="g"><div class="c"><div class="ic a">&#9733;</div><div class="n">500+</div><div class="l">Projekte</div></div><div class="c"><div class="ic b">&#10003;</div><div class="n">99.7%</div><div class="l">Uptime</div></div><div class="c"><div class="ic c">&#9889;</div><div class="n">0.8s</div><div class="l">Avg. Ladezeit</div></div><div class="c"><div class="ic d">&#9829;</div><div class="n">4.9/5</div><div class="l">Kundenbewertung</div></div></div></div>`) },
+    { id:'contact-form', name:'Kontaktformular', category:'contact', tags:['form','modern'],
+      prompt:'Erstelle eine Kontakt-Sektion mit modernem Formular: Name, E-Mail, Betreff, Nachricht-Textarea und Submit-Button. Links daneben Kontaktinfos (E-Mail, Telefon, Adresse) mit Icons.',
+      preview: PV(`.w{padding:60px 40px;display:flex;gap:60px;align-items:flex-start}.left{flex:1}.t{font-size:32px;font-weight:700;margin-bottom:12px}.d{font-size:14px;color:#888;margin-bottom:32px;line-height:1.7}.ci{display:flex;align-items:center;gap:12px;padding:10px 0;color:#888;font-size:14px}.ci .ic{width:36px;height:36px;border-radius:10px;background:rgba(0,230,138,0.1);display:flex;align-items:center;justify-content:center;color:#00E68A;font-size:14px}.right{flex:1.2}input,textarea{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px;margin-bottom:12px;font-family:inherit}textarea{height:100px;resize:none}button{width:100%;padding:14px;background:#00E68A;color:#000;font-weight:700;font-size:15px;border:none;border-radius:10px}`,`<div class="w"><div class="left"><div class="t">Kontakt</div><div class="d">Wir freuen uns auf deine Nachricht. Unser Team antwortet innerhalb von 24 Stunden.</div><div class="ci"><div class="ic">@</div>info@qntum.design</div><div class="ci"><div class="ic">T</div>+49 30 123456</div><div class="ci"><div class="ic">A</div>Berlin, Deutschland</div></div><div class="right"><input placeholder="Name"><input placeholder="E-Mail"><input placeholder="Betreff"><textarea placeholder="Nachricht"></textarea><button>Senden</button></div></div>`) },
+    { id:'contact-map', name:'Kontakt + Karte', category:'contact', tags:['map','split'],
+      prompt:'Erstelle eine Kontakt-Sektion im Split-Layout: Links das Kontaktformular, rechts eine eingebettete Karte (Placeholder). Darunter Oeffnungszeiten und Social-Links.',
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.r{display:flex;gap:24px}.form{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px}input,textarea{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;font-size:13px;margin-bottom:10px;font-family:inherit}textarea{height:80px;resize:none}button{width:100%;padding:12px;background:#00E68A;color:#000;font-weight:700;border:none;border-radius:8px}.map{flex:1;background:linear-gradient(135deg,#0D1B2A,#1a2540);border:1px solid rgba(255,255,255,0.06);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#333;font-size:48px}`,`<div class="w"><div class="t">Finde uns</div><div class="r"><div class="form"><input placeholder="Name"><input placeholder="E-Mail"><textarea placeholder="Nachricht"></textarea><button>Senden</button></div><div class="map">&#9906;</div></div></div>`) },
+    { id:'hero-3d', name:'3D Hero', category:'hero', tags:['premium','3d','animated'],
+      prompt:'Erstelle eine Hero-Sektion mit 3D-Perspektive: Floating Cards oder Elemente mit CSS 3D-Transforms, Parallax-Mauseffekt, grosse Headline mit Gradient-Text. Premium-Look.', pro:true,
+      preview: PV(`body{perspective:1000px;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080810;overflow:hidden}.w{text-align:center;transform:rotateX(5deg)}.h1{font-size:72px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#00D4FF,#00E68A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}.sub{font-size:18px;color:#666;margin-bottom:40px}.cards{display:flex;gap:16px;justify-content:center;perspective:800px}.card{width:160px;height:100px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;transform:rotateY(-10deg) rotateX(5deg);box-shadow:0 20px 40px rgba(0,0,0,0.3)}.card:nth-child(2){transform:rotateY(0deg) translateY(-20px)}.card:nth-child(3){transform:rotateY(10deg) rotateX(5deg)}button{margin-top:32px;padding:14px 36px;background:linear-gradient(135deg,#6C3AED,#00D4FF);color:#fff;font-weight:700;border:none;border-radius:12px;font-size:16px}`,`<div class="w"><div class="h1">Next Level</div><div class="sub">3D-Experiences fuer deine Marke</div><div class="cards"><div class="card"></div><div class="card"></div><div class="card"></div></div><button>Erleben</button></div>`) },
+    { id:'feat-interactive', name:'Interactive Features', category:'features', tags:['premium','hover','3d'],
+      prompt:'Erstelle eine Features-Sektion mit interaktiven 3D-Karten: Karten kippen beim Hover in Maus-Richtung (CSS perspective + JS), Glow-Effekt am Rand, animierte Icons.', pro:true,
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;perspective:800px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(108,58,237,0.2);border-radius:16px;padding:36px;transform:rotateY(-3deg);transition:transform 0.3s;box-shadow:0 0 30px rgba(108,58,237,0.1)}.c:nth-child(2){transform:rotateY(0deg);border-color:rgba(0,212,255,0.2);box-shadow:0 0 30px rgba(0,212,255,0.1)}.c:nth-child(3){transform:rotateY(3deg);border-color:rgba(0,230,138,0.2);box-shadow:0 0 30px rgba(0,230,138,0.1)}.ic{font-size:32px;margin-bottom:16px}.cn{font-size:17px;font-weight:600;margin-bottom:8px}.cd{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Premium Features</div><div class="g"><div class="c"><div class="ic">&#9889;</div><div class="cn">Lightning Fast</div><div class="cd">Sub-second builds mit optimiertem Rendering.</div></div><div class="c"><div class="ic">&#10024;</div><div class="cn">KI-Magic</div><div class="cd">Fortschrittlichste KI fuer perfekte Designs.</div></div><div class="c"><div class="ic">&#9881;</div><div class="cn">Full Control</div><div class="cd">Volle Kontrolle ueber jeden Pixel.</div></div></div></div>`) },
+    { id:'pricing-slider', name:'Pricing Slider', category:'pricing', tags:['premium','slider','dynamic'],
+      prompt:'Erstelle eine Pricing-Sektion mit Slider: User bewegt einen Range-Slider (z.B. Anzahl User), Preis aendert sich dynamisch. Animierte Zahlen, visuelles Feedback beim Schieben.', pro:true,
+      preview: PV(`.w{padding:60px 40px;text-align:center;max-width:600px;margin:auto}.t{font-size:36px;font-weight:700;margin-bottom:12px}.st{color:#888;margin-bottom:40px;font-size:15px}.sl{width:100%;margin-bottom:32px;accent-color:#6C3AED;height:6px}.val{font-size:14px;color:#888;margin-bottom:24px}.pr{font-size:64px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}.pm{color:#555;margin-bottom:32px}button{padding:16px 48px;background:linear-gradient(135deg,#6C3AED,#00D4FF);color:#fff;font-weight:700;font-size:16px;border:none;border-radius:12px}`,`<div class="w"><div class="t">Flexible Preise</div><div class="st">Bezahle nur was du brauchst</div><input type="range" class="sl" min="1" max="100" value="25"><div class="val">25 Projekte</div><div class="pr">$49</div><div class="pm">pro Monat</div><button>Plan waehlen</button></div>`) },
+    { id:'test-video', name:'Video Testimonials', category:'testimonials', tags:['premium','video','trust'],
+      prompt:'Erstelle eine Testimonials-Sektion mit Video-Thumbnails: 3 Karten mit Play-Button-Overlay auf Bild, Name und Firma darunter. Klick oeffnet Modal mit Video-Player (Placeholder).', pro:true,
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.c{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}.vid{height:200px;background:linear-gradient(135deg,#1a1a3e,#0B1120);display:flex;align-items:center;justify-content:center;position:relative}.play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}.play::after{content:"";border:10px solid transparent;border-left:16px solid #fff;margin-left:4px}.info{padding:16px;text-align:left;background:rgba(255,255,255,0.02)}.n{font-weight:600;font-size:14px;margin-bottom:2px}.r{font-size:12px;color:#666}`,`<div class="w"><div class="t">Kunden-Stories</div><div class="g"><div class="c"><div class="vid"><div class="play"></div></div><div class="info"><div class="n">Sarah Mueller</div><div class="r">CEO, TechVenture</div></div></div><div class="c"><div class="vid"><div class="play"></div></div><div class="info"><div class="n">Thomas Klein</div><div class="r">Founder, DataPro</div></div></div><div class="c"><div class="vid"><div class="play"></div></div><div class="info"><div class="n">Lisa Weber</div><div class="r">Marketing, BrandX</div></div></div></div></div>`) },
   ];
 
   function renderCompGrid(filter, query) {
@@ -4283,44 +4452,10 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
     compGrid.innerHTML = items.map(c => {
       const isLocked = c.pro && (userPlan === 'explorer' || userPlan === 'starter');
-      const thumbColors = {
-        gradient:'linear-gradient(135deg,#6C3AED,#00D4FF)',
-        split:'linear-gradient(135deg,#0F172A 50%,#00E68A 50%)',
-        video:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',
-        minimal:'linear-gradient(135deg,#111,#222)',
-        bento:'linear-gradient(135deg,#1E293B,#334155)',
-        cards:'linear-gradient(135deg,#0D1B2A,#1B2838)',
-        zigzag:'linear-gradient(135deg,#0a0a1a,#1a0a2e)',
-        tabs:'linear-gradient(135deg,#0c1220,#1a2540)',
-        pricing:'linear-gradient(135deg,#0B1120,#1E3A5F)',
-        toggle:'linear-gradient(135deg,#111827,#1F2937)',
-        table:'linear-gradient(135deg,#0D1117,#161B22)',
-        banner:'linear-gradient(135deg,#0a0f1a,#162032)',
-        carousel:'linear-gradient(135deg,#1a0a2e,#2d1b69)',
-        masonry:'linear-gradient(135deg,#0F172A,#1E293B)',
-        mega:'linear-gradient(135deg,#09090B,#18181B)',
-        transparent:'linear-gradient(135deg,#0c1220,#162440)',
-        sidebar:'linear-gradient(135deg,#111,#1a1a2e)',
-        accordion:'linear-gradient(135deg,#0D1117,#1c2333)',
-        twocol:'linear-gradient(135deg,#101828,#1D2939)',
-        search:'linear-gradient(135deg,#0B1120,#162032)',
-        counter:'linear-gradient(135deg,#0a1628,#1a3a5f)',
-        icons:'linear-gradient(135deg,#0c0c1d,#1a1a3e)',
-        form:'linear-gradient(135deg,#0D1117,#162032)',
-        map:'linear-gradient(135deg,#0a1a0a,#1a3a1a)',
-        ctafooter:'linear-gradient(135deg,#09090B,#1a1a2e)',
-        '3d':'linear-gradient(135deg,#2d1b69,#6C3AED,#00D4FF)',
-        interactive:'linear-gradient(135deg,#1a0a3e,#3b1d8e)',
-        slider:'linear-gradient(135deg,#0B1120,#00E68A22)',
-        video2:'linear-gradient(135deg,#1a1a2e,#2d1b69)'
-      };
-      const bg = thumbColors[c.thumb] || 'linear-gradient(135deg,#111,#222)';
-      const categoryIcons = { hero:'\u25B3', features:'\u2B2A', pricing:'\u25C7', cta:'\u25B6', testimonials:'\u275D', footer:'\u2581', nav:'\u2630', faq:'\u003F', stats:'\u0023', contact:'\u2709' };
-      const icon = categoryIcons[c.category] || '\u25A0';
-
       return `<div class="comp-card${isLocked ? ' locked' : ''}" data-id="${c.id}">
-        <div class="comp-thumb" style="background:${bg}">
-          <div class="comp-thumb-placeholder">${icon}</div>
+        <div class="comp-thumb" onclick="window.__previewComp('${c.id}')">
+          <iframe srcdoc="${c.preview.replace(/"/g,'&quot;')}" scrolling="no" loading="lazy"></iframe>
+          <div class="comp-thumb-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg></div>
         </div>
         <div class="comp-card-body">
           <div class="comp-card-name">${c.name}</div>
@@ -4333,6 +4468,43 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       </div>`;
     }).join('');
   }
+
+  // Preview Modal
+  const compPreviewModal = document.getElementById('compPreviewModal');
+  const compPreviewIframe = document.getElementById('compPreviewIframe');
+  const compPreviewTitle = document.getElementById('compPreviewTitle');
+  const compPreviewTags = document.getElementById('compPreviewTags');
+  let previewCompId = null;
+
+  window.__previewComp = function(id) {
+    const comp = COMPONENT_DATA.find(c => c.id === id);
+    if (!comp) return;
+    previewCompId = id;
+    compPreviewTitle.textContent = comp.name;
+    compPreviewTags.innerHTML = comp.tags.map(t => `<span class="comp-tag">${t}</span>`).join('');
+    compPreviewIframe.srcdoc = comp.preview;
+    compPreviewModal.classList.add('open');
+  };
+
+  document.getElementById('compPreviewClose').addEventListener('click', () => {
+    compPreviewModal.classList.remove('open');
+    previewCompId = null;
+  });
+
+  document.getElementById('compPreviewUse').addEventListener('click', () => {
+    if (previewCompId) {
+      compPreviewModal.classList.remove('open');
+      useComponent(previewCompId);
+      previewCompId = null;
+    }
+  });
+
+  compPreviewModal.addEventListener('click', (e) => {
+    if (e.target === compPreviewModal) {
+      compPreviewModal.classList.remove('open');
+      previewCompId = null;
+    }
+  });
 
   function useComponent(id) {
     const comp = COMPONENT_DATA.find(c => c.id === id);
