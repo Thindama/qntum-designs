@@ -103,7 +103,7 @@ router.post('/checkout', requireAuth, async (req, res) => {
       payment_method_types: ['card'],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${req.protocol}://${req.get('host')}/dashboard.html?payment=success&plan=${plan}`,
-      cancel_url: `${req.protocol}://${req.get('host')}/dashboard.html?payment=cancelled`,
+      cancel_url: `${req.protocol}://${req.get('host')}/checkout.html?payment=cancelled`,
       metadata: { supabase_uid: req.userId, plan },
       subscription_data: {
         metadata: { supabase_uid: req.userId, plan }

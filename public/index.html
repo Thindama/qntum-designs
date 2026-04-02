@@ -2642,7 +2642,7 @@ p { color: var(--text-secondary); }
           </div>
         </div>
 
-        <a href="checkout.html?plan=starter" class="btn btn-ghost">Starter wählen</a>
+        <button class="btn btn-ghost" onclick="startCheckout('starter')">Starter wählen</button>
       </div>
 
       <!-- Pro -->
@@ -2691,7 +2691,7 @@ p { color: var(--text-secondary); }
           </div>
         </div>
 
-        <a href="checkout.html?plan=pro" class="btn btn-primary">Pro wählen</a>
+        <button class="btn btn-primary" onclick="startCheckout('pro')">Pro wählen</button>
       </div>
 
       <!-- Business -->
@@ -2740,7 +2740,7 @@ p { color: var(--text-secondary); }
           </div>
         </div>
 
-        <a href="checkout.html?plan=business" class="btn btn-ghost">Business wählen</a>
+        <button class="btn btn-ghost" onclick="startCheckout('business')">Business wählen</button>
       </div>
 
     </div>
@@ -3198,6 +3198,48 @@ p { color: var(--text-secondary); }
   });
 
 })();
+
+// ═══ Stripe Checkout — direct API call from pricing buttons ═══
+async function startCheckout(plan) {
+  const token = localStorage.getItem('qntum_token');
+  if (!token) {
+    window.location.href = 'auth.html?redirect=pricing&plan=' + plan;
+    return;
+  }
+
+  // Disable the clicked button
+  const btn = event.target;
+  const origText = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Weiterleitung...';
+
+  try {
+    const res = await fetch('/api/stripe/checkout', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ plan, interval: 'monthly' })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'Checkout konnte nicht erstellt werden.');
+      btn.disabled = false;
+      btn.textContent = origText;
+      return;
+    }
+
+    // Redirect to Stripe hosted checkout
+    window.location.href = data.url;
+  } catch (err) {
+    alert('Verbindungsfehler. Bitte versuche es erneut.');
+    btn.disabled = false;
+    btn.textContent = origText;
+  }
+}
 </script>
 
 </body>

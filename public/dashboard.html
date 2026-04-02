@@ -1287,13 +1287,13 @@ input { font-family: inherit; }
 
     <div class="sidebar-plan">
       <div class="plan-label">Aktueller Plan</div>
-      <div class="plan-name" id="sidebarPlan">Free</div>
+      <div class="plan-name" id="sidebarPlan">Explorer</div>
       <div class="plan-tokens-label">Token-Verbrauch</div>
       <div class="plan-tokens-bar">
         <div class="plan-tokens-fill" id="sidebarTokensFill"></div>
       </div>
-      <div class="plan-tokens-info" id="sidebarTokensInfo">0 / 500K Tokens</div>
-      <a href="checkout.html?plan=pro" class="plan-upgrade" id="sidebarUpgradeLink" style="text-decoration:none;">Upgrade auf Pro</a>
+      <div class="plan-tokens-info" id="sidebarTokensInfo">0 / 30K Tokens</div>
+      <a href="#" class="plan-upgrade" id="sidebarUpgradeLink" style="text-decoration:none;" onclick="event.preventDefault(); startCheckout(this.dataset.plan);" data-plan="starter">Upgrade auf Starter</a>
     </div>
 
     <div class="sidebar-user">
@@ -1578,8 +1578,9 @@ function showToast(message) {
 
     const upgradeLink = document.getElementById('sidebarUpgradeLink');
     if (profile.plan === 'business') { upgradeLink.textContent = 'Business Plan aktiv'; upgradeLink.style.pointerEvents = 'none'; upgradeLink.style.opacity = '0.5'; }
-    else if (profile.plan === 'pro') { upgradeLink.textContent = 'Upgrade auf Business'; upgradeLink.href = 'checkout.html?plan=business'; }
-    else { upgradeLink.textContent = 'Upgrade auf Pro'; upgradeLink.href = 'checkout.html?plan=pro'; }
+    else if (profile.plan === 'pro') { upgradeLink.textContent = 'Upgrade auf Business'; upgradeLink.dataset.plan = 'business'; }
+    else if (profile.plan === 'starter') { upgradeLink.textContent = 'Upgrade auf Pro'; upgradeLink.dataset.plan = 'pro'; }
+    else { upgradeLink.textContent = 'Upgrade auf Starter'; upgradeLink.dataset.plan = 'starter'; }
 
     // ── Project Cards ──
     const grid = document.getElementById('projectsGrid');
@@ -1785,6 +1786,30 @@ function animateCounters() {
     }
     requestAnimationFrame(update);
   });
+}
+
+// ═══ Stripe Checkout ═══
+async function startCheckout(plan) {
+  if (!plan) return;
+  const el = document.getElementById('sidebarUpgradeLink');
+  const origText = el.textContent;
+  el.textContent = 'Weiterleitung...';
+  el.style.pointerEvents = 'none';
+
+  try {
+    const res = await fetch('/api/stripe/checkout', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, interval: 'monthly' })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.error || 'Checkout fehlgeschlagen'); el.textContent = origText; el.style.pointerEvents = ''; return; }
+    window.location.href = data.url;
+  } catch (e) {
+    showToast('Verbindungsfehler');
+    el.textContent = origText;
+    el.style.pointerEvents = '';
+  }
 }
 </script>
 
