@@ -10,6 +10,7 @@ const chatRoutes = require('./routes/chat');
 const publishRoutes = require('./routes/publish');
 const stripeRoutes = require('./routes/stripe');
 const webhookRoutes = require('./routes/webhook');
+const componentRoutes = require('./routes/components');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -79,6 +80,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/components', componentRoutes);
 app.use('/api/stripe', stripeRoutes);
 
 // ── Published Sites (public, no auth) ─────────────

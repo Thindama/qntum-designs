@@ -83,7 +83,7 @@ router.post('/send', async (req, res) => {
     // 1. Get project with all files
     const { data: project, error: projErr } = await supabaseAdmin
       .from('projects')
-      .select('id, current_html, project_files, user_id')
+      .select('id, current_html, project_files, user_id, stack')
       .eq('id', projectId)
       .eq('user_id', req.userId)
       .single();
@@ -132,7 +132,7 @@ router.post('/send', async (req, res) => {
     const stream = await anthropic.messages.stream({
       model: modelId,
       max_tokens: 30000,
-      system: getSystemPrompt(currentFiles, skills),
+      system: getSystemPrompt(currentFiles, skills, project.stack || 'html'),
       messages: claudeMessages
     });
 

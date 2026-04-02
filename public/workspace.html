@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+function loadSandpack(){if(!window._sandpackLoading){window._sandpackLoading=true;var s=document.createElement('script');s.src='https://unpkg.com/@codesandbox/sandpack-client@latest/dist/index.umd.js';s.onload=function(){console.log('[Qntum] Sandpack loaded');};document.head.appendChild(s);}}
+</script>
 
 <style>
 /* ═══════════════════════════════════════
@@ -225,6 +228,28 @@ input, textarea { font-family: inherit; }
   flex-shrink: 0;
 }
 .topbar-project svg { width: 14px; height: 14px; color: var(--ws-text-3); }
+
+.stack-select {
+  padding: 4px 24px 4px 10px;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-accent);
+  cursor: pointer;
+  font-family: var(--ws-mono);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%2300D4FF' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  transition: all var(--ws-transition);
+  margin-left: 8px;
+}
+.stack-select:hover { border-color: rgba(0,212,255,0.3); background-color: rgba(0,212,255,0.1); }
+.stack-select option { background: var(--ws-bg-2); color: var(--ws-text); }
 
 .topbar-center {
   display: flex;
@@ -578,6 +603,261 @@ input, textarea { font-family: inherit; }
   margin-top: 6px;
   font-size: 10px;
   color: var(--ws-text-3);
+}
+
+/* ═══════════════════════════════════════
+   CHAT TABS + COMPONENT LIBRARY
+   ═══════════════════════════════════════ */
+.chat-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--ws-border);
+  flex-shrink: 0;
+  background: var(--ws-bg);
+}
+.chat-tab {
+  flex: 1;
+  padding: 11px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ws-text-3);
+  border-bottom: 2px solid transparent;
+  transition: all var(--ws-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  letter-spacing: 0.01em;
+}
+.chat-tab:hover { color: var(--ws-text-2); background: rgba(255,255,255,0.02); }
+.chat-tab.active {
+  color: var(--ws-primary-l);
+  border-bottom-color: var(--ws-primary);
+  background: rgba(0,230,138,0.03);
+}
+.chat-tab svg { width: 14px; height: 14px; }
+
+.chat-tab-content { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+.chat-tab-content.active { display: flex; }
+
+/* Component Library Panel */
+.comp-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.comp-search-wrap {
+  padding: 12px 16px;
+  flex-shrink: 0;
+}
+.comp-search {
+  width: 100%;
+  padding: 8px 12px 8px 34px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ws-border);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--ws-text);
+  outline: none;
+  font-family: var(--ws-font);
+  transition: border-color var(--ws-transition);
+}
+.comp-search:focus { border-color: rgba(0,230,138,0.3); }
+.comp-search::placeholder { color: var(--ws-text-3); }
+.comp-search-wrap { position: relative; }
+.comp-search-icon {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--ws-text-3);
+  pointer-events: none;
+}
+
+.comp-categories {
+  padding: 0 16px 12px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.comp-categories::-webkit-scrollbar { display: none; }
+.comp-cat {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-3);
+  transition: all var(--ws-transition);
+  cursor: pointer;
+}
+.comp-cat:hover { border-color: var(--ws-border-l); color: var(--ws-text-2); }
+.comp-cat.active {
+  background: rgba(0,212,255,0.1);
+  border-color: rgba(0,212,255,0.3);
+  color: var(--ws-accent);
+}
+
+.comp-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  align-content: start;
+}
+
+.comp-card {
+  border-radius: 10px;
+  border: 1px solid var(--ws-border);
+  background: rgba(255,255,255,0.02);
+  overflow: hidden;
+  transition: all var(--ws-transition);
+  cursor: pointer;
+}
+.comp-card:hover {
+  border-color: rgba(0,212,255,0.25);
+  background: rgba(0,212,255,0.04);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+.comp-thumb {
+  height: 90px;
+  background: var(--ws-bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+.comp-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.comp-thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--ws-text-3);
+  opacity: 0.4;
+}
+.comp-card-body {
+  padding: 8px 10px 10px;
+}
+.comp-card-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ws-text);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.comp-card-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.comp-tag {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.04);
+  color: var(--ws-text-3);
+  font-weight: 500;
+}
+.comp-card-action {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 700;
+  background: rgba(0,230,138,0.1);
+  border: 1px solid rgba(0,230,138,0.2);
+  color: var(--ws-primary-l);
+  transition: all var(--ws-transition);
+}
+.comp-card-action:hover {
+  background: rgba(0,230,138,0.2);
+  border-color: rgba(0,230,138,0.4);
+}
+.comp-card-lock {
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.comp-card-lock svg { width: 10px; height: 10px; }
+.comp-card.locked { opacity: 0.55; }
+.comp-card.locked:hover { transform: none; box-shadow: none; }
+
+.comp-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ws-text-3);
+  font-size: 12px;
+}
+.comp-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ws-text-3);
+  font-size: 12px;
+}
+.comp-loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ws-text-3);
+  border-top-color: var(--ws-accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Stack badge in component panel */
+.comp-stack-info {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ws-text-3);
+  border-bottom: 1px solid var(--ws-border);
+  flex-shrink: 0;
+}
+.comp-stack-badge {
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--ws-mono);
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.2);
+  color: var(--ws-accent);
 }
 
 /* ═══════════════════════════════════════
@@ -1841,6 +2121,10 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>
       <span id="projectNameLabel">KI-Agentur Pro</span>
     </div>
+    <select class="stack-select" id="stackSelect" title="Stack wählen">
+      <option value="html">HTML/CSS/JS</option>
+      <option value="react">React + Tailwind</option>
+    </select>
 
     <div class="topbar-center">
       <button class="topbar-icon-btn" title="Rückgängig">
@@ -1928,7 +2212,6 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
           <div class="chat-header-dot"></div>
           <span class="chat-header-title">Qntum Chat</span>
         </div>
-        <!-- Open preview button (visible when collapsed) -->
         <button class="preview-open-btn" id="previewOpenBtn" title="Vorschau öffnen">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
           Vorschau
@@ -1939,51 +2222,97 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         </select>
       </div>
 
-      <div class="chat-skills">
-        <button class="skill-pill active" data-skill="ui-ux">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-          UI/UX Pro
+      <!-- Tab Navigation -->
+      <div class="chat-tabs">
+        <button class="chat-tab active" data-tab="chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Chat
         </button>
-        <button class="skill-pill" data-skill="brand">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-          Brand Identity
-        </button>
-        <button class="skill-pill" data-skill="design-system">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-          Design System
-        </button>
-        <button class="skill-pill" data-skill="frontend">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-          Frontend Design
-        </button>
-        <button class="skill-pill" data-skill="locked">
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          Banner
-        </button>
-        <button class="skill-pill" data-skill="locked">
-          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          Slides
+        <button class="chat-tab" data-tab="components">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Komponenten
         </button>
       </div>
 
-      <div class="chat-messages" id="chatMessages">
-        <!-- Messages loaded dynamically -->
-      </div>
-
-      <div class="chat-input-area">
-        <div class="chat-input-box">
-          <input type="file" id="fileUploadInput" style="display:none;" accept=".html,.css,.js,.json,.txt,.md,.sql,.env,.csv,.xml,.svg,.ts,.jsx,.tsx,.py">
-          <button class="chat-input-btn" id="attachBtn" title="Datei anhängen">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      <!-- TAB: Chat (default) -->
+      <div class="chat-tab-content active" data-tab-content="chat">
+        <div class="chat-skills">
+          <button class="skill-pill active" data-skill="ui-ux">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            UI/UX Pro
           </button>
-          <textarea rows="1" placeholder="Beschreibe eine Änderung…"></textarea>
-          <button class="chat-input-btn send-btn" title="Senden">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+          <button class="skill-pill" data-skill="brand">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Brand Identity
+          </button>
+          <button class="skill-pill" data-skill="design-system">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Design System
+          </button>
+          <button class="skill-pill" data-skill="frontend">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            Frontend Design
+          </button>
+          <button class="skill-pill" data-skill="locked">
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            Banner
+          </button>
+          <button class="skill-pill" data-skill="locked">
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+            Slides
           </button>
         </div>
-        <div class="chat-input-hint">
-          <span>Enter ↵ senden · Shift+Enter Zeilenumbruch</span>
-          <span style="font-family:var(--ws-mono);">Opus 4.6</span>
+
+        <div class="chat-messages" id="chatMessages">
+          <!-- Messages loaded dynamically -->
+        </div>
+
+        <div class="chat-input-area">
+          <div class="chat-input-box">
+            <input type="file" id="fileUploadInput" style="display:none;" accept=".html,.css,.js,.json,.txt,.md,.sql,.env,.csv,.xml,.svg,.ts,.jsx,.tsx,.py">
+            <button class="chat-input-btn" id="attachBtn" title="Datei anhängen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            </button>
+            <textarea rows="1" placeholder="Beschreibe eine Änderung…"></textarea>
+            <button class="chat-input-btn send-btn" title="Senden">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+            </button>
+          </div>
+          <div class="chat-input-hint">
+            <span>Enter ↵ senden · Shift+Enter Zeilenumbruch</span>
+            <span style="font-family:var(--ws-mono);">Opus 4.6</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: Component Library -->
+      <div class="chat-tab-content" data-tab-content="components">
+        <div class="comp-panel">
+          <div class="comp-stack-info">
+            <span>Stack:</span>
+            <span class="comp-stack-badge" id="compStackBadge">React + Tailwind</span>
+            <span style="margin-left:auto;font-size:10px;opacity:0.5;">via 21st.dev</span>
+          </div>
+          <div class="comp-search-wrap">
+            <svg class="comp-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" class="comp-search" id="compSearch" placeholder="Komponente suchen...">
+          </div>
+          <div class="comp-categories" id="compCategories">
+            <button class="comp-cat active" data-category="all">Alle</button>
+            <button class="comp-cat" data-category="hero">Hero</button>
+            <button class="comp-cat" data-category="features">Features</button>
+            <button class="comp-cat" data-category="pricing">Pricing</button>
+            <button class="comp-cat" data-category="cta">CTA</button>
+            <button class="comp-cat" data-category="testimonials">Testimonials</button>
+            <button class="comp-cat" data-category="footer">Footer</button>
+            <button class="comp-cat" data-category="nav">Navigation</button>
+            <button class="comp-cat" data-category="faq">FAQ</button>
+            <button class="comp-cat" data-category="stats">Stats</button>
+            <button class="comp-cat" data-category="contact">Kontakt</button>
+          </div>
+          <div class="comp-grid" id="compGrid">
+            <!-- Component cards loaded dynamically -->
+          </div>
         </div>
       </div>
     </section>
@@ -2377,6 +2706,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const projectId = new URLSearchParams(window.location.search).get('project');
   let currentHtml = '';
   let currentFiles = {};
+  let currentStack = 'html';
+  let sandpackClient = null;
   let sessionTokens = 0;
   let userTokensUsed = 0;
   let userTokensLimit = 30000;
@@ -2545,11 +2876,44 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   function updatePreview(html) {
     if (!html) return;
     currentHtml = html;
-    console.log('[Qntum] updatePreview: htmlContent.length =', html.length, '| has </html>:', html.includes('</html>'));
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
     previewIframe.srcdoc = html;
+  }
+
+  function updateReactPreview(files) {
+    if (!files || !Object.keys(files).length) return;
+    previewEmpty.style.display = 'none';
+    previewIframe.style.display = 'block';
+    previewIframe.style.opacity = '1';
+
+    const sandpackFiles = {};
+    Object.keys(files).forEach(name => {
+      const key = name.startsWith('/') ? name : '/' + name;
+      sandpackFiles[key] = { code: files[name] };
+    });
+
+    if (!sandpackFiles['/index.js'] && !sandpackFiles['/index.jsx']) {
+      sandpackFiles['/index.js'] = { code: `import React from "react";\nimport { createRoot } from "react-dom/client";\nimport App from "./App";\ncreateRoot(document.getElementById("root")).render(<App />);` };
+    }
+    if (!sandpackFiles['/public/index.html']) {
+      sandpackFiles['/public/index.html'] = { code: `<!DOCTYPE html>\n<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css" rel="stylesheet"><title>Qntum Preview</title></head><body><div id="root"></div></body></html>` };
+    }
+
+    if (sandpackClient) {
+      sandpackClient.updateSandbox({ files: sandpackFiles });
+    } else if (window.SandpackClient) {
+      sandpackClient = new window.SandpackClient(previewIframe, {
+        files: sandpackFiles,
+        template: 'react',
+        entry: '/index.js'
+      });
+    } else {
+      const appCode = files['App.jsx'] || files['App.js'] || Object.values(files)[0] || '';
+      const fallbackHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><link href="https://cdn.jsdelivr.net/npm/tailwindcss@2/dist/tailwind.min.css" rel="stylesheet"><style>body{background:#0B1120;color:#E2E2F0;font-family:system-ui;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;}</style></head><body><div style="text-align:center;padding:40px;"><h2 style="margin-bottom:16px;">React Preview</h2><p style="color:#888;margin-bottom:24px;">Sandpack wird geladen...</p><pre style="text-align:left;background:#111;padding:20px;border-radius:12px;overflow:auto;max-height:70vh;font-size:12px;color:#0f0;">${escapeHtml(appCode).substring(0, 3000)}</pre></div></body></html>`;
+      previewIframe.srcdoc = fallbackHtml;
+    }
   }
 
   function fmtTokens(n) {
@@ -2578,7 +2942,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
   function getFileIcon(filename) {
     const ext = filename.split('.').pop().toLowerCase();
-    const colors = { html: '#E44D26', css: '#A86DDB', js: '#F7DF1E', json: '#F7DF1E', sql: '#00B4D8', env: '#888', sh: '#4EAA25', bash: '#4EAA25' };
+    const colors = { html: '#E44D26', css: '#A86DDB', js: '#F7DF1E', jsx: '#61DAFB', tsx: '#3178C6', ts: '#3178C6', json: '#F7DF1E', sql: '#00B4D8', env: '#888', sh: '#4EAA25', bash: '#4EAA25' };
     const color = colors[ext] || '#888';
     return `<svg class="file-tree-icon" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>`;
   }
@@ -2656,6 +3020,15 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       document.getElementById('projectNameLabel').textContent = project.name;
       document.querySelector('.preview-url').innerHTML = `<span class="url-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> ${project.name.toLowerCase().replace(/\s+/g,'-')}.qntum.design`;
 
+      // Set stack from project
+      if (project.stack) {
+        currentStack = project.stack;
+        stackSelect.value = project.stack;
+        if (project.stack === 'react') loadSandpack();
+        const badge = document.getElementById('compStackBadge');
+        if (badge) badge.textContent = project.stack === 'react' ? 'React + Tailwind' : 'HTML / CSS / JS';
+      }
+
       // Load project files into tree
       if (project.project_files && Object.keys(project.project_files).length) {
         updateFileTree(project.project_files);
@@ -2670,7 +3043,10 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       }
 
       // Load preview
-      if (project.current_html) {
+      if (currentStack === 'react' && project.project_files && Object.keys(project.project_files).length) {
+        updateReactPreview(project.project_files);
+        flowStep = FLOW_COMPLETE;
+      } else if (project.current_html) {
         updatePreview(project.current_html);
         flowStep = FLOW_COMPLETE;
       }
@@ -3201,7 +3577,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ projectId: activeProjectId, message: text, model, skills: getActiveSkills() })
+        body: JSON.stringify({ projectId: activeProjectId, message: text, model, skills: getActiveSkills(), stack: currentStack })
       });
 
       if (!response.ok) {
@@ -3263,7 +3639,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
               }
 
               // Final render with smooth transition
-              if (htmlToRender) {
+              if (currentStack === 'react' && data.files && Object.keys(data.files).length) {
+                updateReactPreview(data.files);
+              } else if (htmlToRender) {
                 updatePreview(htmlToRender);
               }
 
@@ -3393,7 +3771,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ projectId: activeProjectId, message: finalMessage, model, skills: getActiveSkills() })
+        body: JSON.stringify({ projectId: activeProjectId, message: finalMessage, model, skills: getActiveSkills(), stack: currentStack })
       });
 
       if (!response.ok) {
@@ -3455,7 +3833,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
                 htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
               }
 
-              if (htmlToRender) {
+              if (currentStack === 'react' && data.files && Object.keys(data.files).length) {
+                updateReactPreview(data.files);
+              } else if (htmlToRender) {
                 updatePreview(htmlToRender);
               }
 
@@ -3504,6 +3884,33 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const workspace = document.getElementById('workspace');
   document.getElementById('sidebarToggle').addEventListener('click', () => {
     workspace.classList.toggle('sidebar-open');
+  });
+
+  /* Stack Toggle */
+  const stackSelect = document.getElementById('stackSelect');
+  stackSelect.addEventListener('change', async () => {
+    const newStack = stackSelect.value;
+    currentStack = newStack;
+
+    // Update component panel badge
+    const badge = document.getElementById('compStackBadge');
+    if (badge) badge.textContent = newStack === 'react' ? 'React + Tailwind' : 'HTML / CSS / JS';
+
+    // Lazy-load Sandpack when React is selected
+    if (newStack === 'react') loadSandpack();
+
+    // Persist stack to project
+    if (projectId) {
+      try {
+        await fetch(`/api/projects/${projectId}`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ stack: newStack })
+        });
+      } catch (e) { console.error('Stack update error:', e); }
+    }
+
+    showToast(newStack === 'react' ? 'Stack: React + Tailwind' : 'Stack: HTML / CSS / JS');
   });
 
   /* Device Toggle */
@@ -3814,6 +4221,163 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   window.__openUpgrade = function() {
     window.location.href = '/index.html#pricing';
   };
+
+  // ═══════════════════════════════════════
+  // COMPONENT LIBRARY (TAB + 21st.dev)
+  // ═══════════════════════════════════════
+  const compGrid = document.getElementById('compGrid');
+  const compSearch = document.getElementById('compSearch');
+  const compCategories = document.getElementById('compCategories');
+  let activeCategory = 'all';
+  let compCache = {};
+
+  const COMPONENT_DATA = [
+    { id:'hero-gradient', name:'Gradient Hero', category:'hero', tags:['modern','dark','animated'], prompt:'Erstelle eine Hero-Sektion mit grossem Gradient-Hintergrund, animiertem Orb-Element, prominenter Headline, Subline und zwei CTA-Buttons. Modernes dark Design mit leuchtenden Farbakzenten.', thumb:'gradient' },
+    { id:'hero-split', name:'Split Hero', category:'hero', tags:['clean','image','responsive'], prompt:'Erstelle eine Split-Screen Hero-Sektion: Links der Text-Content mit Headline, Subline und CTA-Button, rechts ein grosses Bild oder Illustration. Klares, professionelles Layout.', thumb:'split' },
+    { id:'hero-video', name:'Video Hero', category:'hero', tags:['immersive','fullscreen'], prompt:'Erstelle eine Fullscreen Hero-Sektion mit Video-Hintergrund (Placeholder), Overlay-Gradient, zentrierter Headline, Subline und CTA. Cinematic Look.', thumb:'video' },
+    { id:'hero-minimal', name:'Minimal Hero', category:'hero', tags:['minimal','typo'], prompt:'Erstelle eine minimalistische Hero-Sektion: Nur grosse Typografie, dezenter Hintergrund, ein CTA-Button. Weniger ist mehr — elegantes, reduktiertes Design.', thumb:'minimal' },
+    { id:'feat-bento', name:'Bento Grid', category:'features', tags:['modern','grid','animated'], prompt:'Erstelle eine Features-Sektion im Bento-Grid-Stil: 6 Feature-Karten in asymmetrischem Grid (grosse Karte links, 4 kleine rechts, 1 breite unten), mit Icons, Hover-Lift-Effekt und subtile Gradient-Borders.', thumb:'bento' },
+    { id:'feat-cards', name:'Feature Cards', category:'features', tags:['clean','icons'], prompt:'Erstelle eine Features-Sektion mit 3-4 Karten in einer Reihe. Jede Karte hat ein Icon, Titel und kurze Beschreibung. Hover-Effekt mit leichtem Glow. Responsive Grid-Layout.', thumb:'cards' },
+    { id:'feat-zigzag', name:'Zigzag Features', category:'features', tags:['alternating','image'], prompt:'Erstelle eine Features-Sektion im Zigzag-Layout: Abwechselnd Bild links/Text rechts, dann Bild rechts/Text links. 3 Features mit Icon, Headline und Beschreibung.', thumb:'zigzag' },
+    { id:'feat-tabs', name:'Tabbed Features', category:'features', tags:['interactive','tabs'], prompt:'Erstelle eine Features-Sektion mit Tabs: Obere Tab-Leiste zum Umschalten zwischen 3-4 Feature-Kategorien. Jeder Tab zeigt anderen Content mit Bild und Text. Animated Tab-Wechsel.', thumb:'tabs' },
+    { id:'pricing-cards', name:'Pricing Cards', category:'pricing', tags:['popular','3-tier'], prompt:'Erstelle eine Pricing-Sektion mit 3 Preispaketen nebeneinander: Basic, Pro (hervorgehoben mit Badge "Beliebt"), Enterprise. Jede Karte mit Preis, Feature-Liste und CTA-Button. Der Pro-Plan hat einen Glow-Effekt.', thumb:'pricing' },
+    { id:'pricing-toggle', name:'Pricing + Toggle', category:'pricing', tags:['monthly','yearly','toggle'], prompt:'Erstelle eine Pricing-Sektion mit monatlich/jaehrlich Toggle-Switch oben. 3 Preiskarten die sich beim Umschalten animiert aendern. Jaehrlich zeigt Rabatt-Badge "Spare 20%".', thumb:'toggle' },
+    { id:'pricing-comparison', name:'Vergleichstabelle', category:'pricing', tags:['table','detailed'], prompt:'Erstelle eine Pricing-Sektion als Vergleichstabelle: Spalten fuer 3 Plaene, Zeilen fuer Features mit Checkmarks. Sticky Header beim Scrollen. Hervorgehobene "Empfohlen"-Spalte.', thumb:'table' },
+    { id:'cta-gradient', name:'Gradient CTA', category:'cta', tags:['bold','gradient','centered'], prompt:'Erstelle eine Call-to-Action Sektion mit grossem Gradient-Hintergrund, zentrierter Headline, kurzer Beschreibung und prominentem Button. Animated Background-Shift.', thumb:'gradient' },
+    { id:'cta-split', name:'Split CTA', category:'cta', tags:['image','action'], prompt:'Erstelle eine CTA-Sektion im Split-Layout: Links ueberzeugender Text mit Headline und Benefits-Liste, rechts ein grosser CTA-Button oder Formular. Kontrastreicher Hintergrund.', thumb:'split' },
+    { id:'cta-banner', name:'Floating Banner CTA', category:'cta', tags:['sticky','minimal'], prompt:'Erstelle eine schwebende CTA-Banner-Sektion: Kompakter Banner mit Headline, kurzer Text und Button in einer Zeile. Glassmorphism-Effekt mit Blur-Hintergrund.', thumb:'banner' },
+    { id:'test-cards', name:'Testimonial Cards', category:'testimonials', tags:['cards','avatar','rating'], prompt:'Erstelle eine Testimonials-Sektion mit 3 Karten: Jede mit Bewertungs-Sternen, Zitat-Text, Autorenname, Position und rundem Avatar-Bild. Subtiler Card-Shadow und Hover-Effekt.', thumb:'cards' },
+    { id:'test-carousel', name:'Testimonial Slider', category:'testimonials', tags:['carousel','animated'], prompt:'Erstelle eine Testimonials-Sektion als horizontaler Slider/Carousel: Grosses Zitat zentriert, Navigation-Pfeile links/rechts, Dots-Indikator unten. Auto-Slide alle 5 Sekunden mit Fade-Transition.', thumb:'carousel' },
+    { id:'test-wall', name:'Social Proof Wall', category:'testimonials', tags:['masonry','many'], prompt:'Erstelle eine Testimonials-Sektion im Masonry-Grid-Stil: Viele kurze Testimonial-Karten in unterschiedlichen Hoehen, wie eine Social-Media-Wall. Mindestens 6 Testimonials mit Name und Firma.', thumb:'masonry' },
+    { id:'footer-mega', name:'Mega Footer', category:'footer', tags:['links','newsletter','social'], prompt:'Erstelle einen umfangreichen Footer mit 4 Spalten: Logo + Beschreibung, Produkt-Links, Unternehmen-Links, Newsletter-Anmeldung. Darunter Social-Icons und Copyright-Zeile. Dark Design.', thumb:'mega' },
+    { id:'footer-minimal', name:'Minimal Footer', category:'footer', tags:['clean','simple'], prompt:'Erstelle einen minimalistischen Footer: Logo links, wichtigste Links zentriert, Social-Icons rechts. Alles in einer Zeile. Dezent und elegant.', thumb:'minimal' },
+    { id:'footer-cta', name:'Footer + CTA', category:'footer', tags:['cta','newsletter'], prompt:'Erstelle einen Footer mit integrierter CTA-Sektion oben: Grosse Headline "Bereit zu starten?" mit E-Mail-Input und Button. Darunter klassischer Footer mit Links und Copyright.', thumb:'ctafooter' },
+    { id:'nav-transparent', name:'Transparent Navbar', category:'nav', tags:['sticky','blur','modern'], prompt:'Erstelle eine fixierte Navbar die beim Scrollen einen Glassmorphism-Effekt bekommt: Logo links, Nav-Links zentriert, CTA-Button rechts. Transparent auf Hero, Blur-Background nach Scroll.', thumb:'transparent' },
+    { id:'nav-mega', name:'Mega Menu Nav', category:'nav', tags:['dropdown','mega','complex'], prompt:'Erstelle eine Navbar mit Mega-Menu-Dropdown: Bei Hover ueber "Produkte" oeffnet sich ein grosses Panel mit kategorisierten Links, Icons und Featured-Item. Smooth Slide-Down Animation.', thumb:'mega' },
+    { id:'nav-sidebar', name:'Sidebar Navigation', category:'nav', tags:['mobile','hamburger'], prompt:'Erstelle eine Navbar mit Hamburger-Menu fuer Mobile: Klick oeffnet eine Sidebar von links mit Nav-Links, Social-Icons und CTA. Smooth Slide-In mit Overlay-Dimmer.', thumb:'sidebar' },
+    { id:'faq-accordion', name:'FAQ Akkordeon', category:'faq', tags:['expandable','animated'], prompt:'Erstelle eine FAQ-Sektion mit Akkordeon: 6-8 Fragen, Klick oeffnet/schliesst die Antwort mit Smooth-Animation. Plus/Minus Icon das sich dreht. Nur eine Antwort gleichzeitig offen.', thumb:'accordion' },
+    { id:'faq-two-col', name:'FAQ Zwei Spalten', category:'faq', tags:['grid','clean'], prompt:'Erstelle eine FAQ-Sektion in zwei Spalten: Links 4 Fragen, rechts 4 Fragen. Jede FAQ hat fette Frage und darunter die Antwort. Sauberes Grid-Layout ohne Akkordeon.', thumb:'twocol' },
+    { id:'faq-search', name:'FAQ mit Suche', category:'faq', tags:['search','filter','interactive'], prompt:'Erstelle eine FAQ-Sektion mit Suchfeld oben: User kann Fragen durchsuchen, nicht-passende werden ausgeblendet. Darunter kategorisierte FAQ-Gruppen mit Akkordeon.', thumb:'search' },
+    { id:'stats-counter', name:'Animated Counters', category:'stats', tags:['numbers','animated'], prompt:'Erstelle eine Stats-Sektion mit 4 animierten Zahlen-Countern: Die Zahlen zaehlen von 0 hoch beim Scrollen (Intersection Observer). Grosse Zahlen mit Labels darunter. Gradient-Akzente.', thumb:'counter' },
+    { id:'stats-cards', name:'Stats mit Icons', category:'stats', tags:['cards','icons'], prompt:'Erstelle eine Stats-Sektion mit 4 Karten: Jede mit grossem Icon, Zahl und Label. Hover-Effekt hebt die Karte hervor. Einheitliches Dark-Card-Design mit farbigen Icon-Akzenten.', thumb:'icons' },
+    { id:'contact-form', name:'Kontaktformular', category:'contact', tags:['form','modern'], prompt:'Erstelle eine Kontakt-Sektion mit modernem Formular: Name, E-Mail, Betreff, Nachricht-Textarea und Submit-Button. Links daneben Kontaktinfos (E-Mail, Telefon, Adresse) mit Icons.', thumb:'form' },
+    { id:'contact-map', name:'Kontakt + Karte', category:'contact', tags:['map','split'], prompt:'Erstelle eine Kontakt-Sektion im Split-Layout: Links das Kontaktformular, rechts eine eingebettete Karte (Placeholder). Darunter Oeffnungszeiten und Social-Links.', thumb:'map' },
+    { id:'hero-3d', name:'3D Hero', category:'hero', tags:['premium','3d','animated'], prompt:'Erstelle eine Hero-Sektion mit 3D-Perspektive: Floating Cards oder Elemente mit CSS 3D-Transforms, Parallax-Mauseffekt, grosse Headline mit Gradient-Text. Premium-Look.', pro:true, thumb:'3d' },
+    { id:'feat-interactive', name:'Interactive Features', category:'features', tags:['premium','hover','3d'], prompt:'Erstelle eine Features-Sektion mit interaktiven 3D-Karten: Karten kippen beim Hover in Maus-Richtung (CSS perspective + JS), Glow-Effekt am Rand, animierte Icons.', pro:true, thumb:'interactive' },
+    { id:'pricing-slider', name:'Pricing Slider', category:'pricing', tags:['premium','slider','dynamic'], prompt:'Erstelle eine Pricing-Sektion mit Slider: User bewegt einen Range-Slider (z.B. Anzahl User), Preis aendert sich dynamisch. Animierte Zahlen, visuelles Feedback beim Schieben.', pro:true, thumb:'slider' },
+    { id:'test-video', name:'Video Testimonials', category:'testimonials', tags:['premium','video','trust'], prompt:'Erstelle eine Testimonials-Sektion mit Video-Thumbnails: 3 Karten mit Play-Button-Overlay auf Bild, Name und Firma darunter. Klick oeffnet Modal mit Video-Player (Placeholder).', pro:true, thumb:'video' },
+  ];
+
+  function renderCompGrid(filter, query) {
+    let items = COMPONENT_DATA;
+    if (filter && filter !== 'all') items = items.filter(c => c.category === filter);
+    if (query) {
+      const q = query.toLowerCase();
+      items = items.filter(c => c.name.toLowerCase().includes(q) || c.tags.some(t => t.includes(q)) || c.category.includes(q));
+    }
+
+    if (items.length === 0) {
+      compGrid.innerHTML = '<div class="comp-empty">Keine Komponenten gefunden</div>';
+      return;
+    }
+
+    compGrid.innerHTML = items.map(c => {
+      const isLocked = c.pro && (userPlan === 'explorer' || userPlan === 'starter');
+      const thumbColors = {
+        gradient:'linear-gradient(135deg,#6C3AED,#00D4FF)',
+        split:'linear-gradient(135deg,#0F172A 50%,#00E68A 50%)',
+        video:'linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)',
+        minimal:'linear-gradient(135deg,#111,#222)',
+        bento:'linear-gradient(135deg,#1E293B,#334155)',
+        cards:'linear-gradient(135deg,#0D1B2A,#1B2838)',
+        zigzag:'linear-gradient(135deg,#0a0a1a,#1a0a2e)',
+        tabs:'linear-gradient(135deg,#0c1220,#1a2540)',
+        pricing:'linear-gradient(135deg,#0B1120,#1E3A5F)',
+        toggle:'linear-gradient(135deg,#111827,#1F2937)',
+        table:'linear-gradient(135deg,#0D1117,#161B22)',
+        banner:'linear-gradient(135deg,#0a0f1a,#162032)',
+        carousel:'linear-gradient(135deg,#1a0a2e,#2d1b69)',
+        masonry:'linear-gradient(135deg,#0F172A,#1E293B)',
+        mega:'linear-gradient(135deg,#09090B,#18181B)',
+        transparent:'linear-gradient(135deg,#0c1220,#162440)',
+        sidebar:'linear-gradient(135deg,#111,#1a1a2e)',
+        accordion:'linear-gradient(135deg,#0D1117,#1c2333)',
+        twocol:'linear-gradient(135deg,#101828,#1D2939)',
+        search:'linear-gradient(135deg,#0B1120,#162032)',
+        counter:'linear-gradient(135deg,#0a1628,#1a3a5f)',
+        icons:'linear-gradient(135deg,#0c0c1d,#1a1a3e)',
+        form:'linear-gradient(135deg,#0D1117,#162032)',
+        map:'linear-gradient(135deg,#0a1a0a,#1a3a1a)',
+        ctafooter:'linear-gradient(135deg,#09090B,#1a1a2e)',
+        '3d':'linear-gradient(135deg,#2d1b69,#6C3AED,#00D4FF)',
+        interactive:'linear-gradient(135deg,#1a0a3e,#3b1d8e)',
+        slider:'linear-gradient(135deg,#0B1120,#00E68A22)',
+        video2:'linear-gradient(135deg,#1a1a2e,#2d1b69)'
+      };
+      const bg = thumbColors[c.thumb] || 'linear-gradient(135deg,#111,#222)';
+      const categoryIcons = { hero:'\u25B3', features:'\u2B2A', pricing:'\u25C7', cta:'\u25B6', testimonials:'\u275D', footer:'\u2581', nav:'\u2630', faq:'\u003F', stats:'\u0023', contact:'\u2709' };
+      const icon = categoryIcons[c.category] || '\u25A0';
+
+      return `<div class="comp-card${isLocked ? ' locked' : ''}" data-id="${c.id}">
+        <div class="comp-thumb" style="background:${bg}">
+          <div class="comp-thumb-placeholder">${icon}</div>
+        </div>
+        <div class="comp-card-body">
+          <div class="comp-card-name">${c.name}</div>
+          <div class="comp-card-tags">${c.tags.map(t => `<span class="comp-tag">${t}</span>`).join('')}</div>
+          ${isLocked
+            ? `<button class="comp-card-lock" onclick="window.__openUpgrade()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Pro</button>`
+            : `<button class="comp-card-action" onclick="useComponent('${c.id}')">Verwenden</button>`
+          }
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function useComponent(id) {
+    const comp = COMPONENT_DATA.find(c => c.id === id);
+    if (!comp) return;
+    document.querySelector('.chat-tab[data-tab="chat"]').click();
+    textarea.value = comp.prompt;
+    textarea.style.height = 'auto';
+    textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px';
+    textarea.focus();
+  }
+  window.useComponent = useComponent;
+
+  // Tab switching
+  document.querySelectorAll('.chat-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.chat-tab-content').forEach(c => {
+        if (c.dataset.tabContent === tab.dataset.tab) c.classList.add('active');
+        else c.classList.remove('active');
+      });
+      if (tab.dataset.tab === 'components' && compGrid.children.length === 0) {
+        renderCompGrid(activeCategory, '');
+      }
+    });
+  });
+
+  // Category filter
+  compCategories.addEventListener('click', (e) => {
+    const cat = e.target.closest('.comp-cat');
+    if (!cat) return;
+    compCategories.querySelectorAll('.comp-cat').forEach(c => c.classList.remove('active'));
+    cat.classList.add('active');
+    activeCategory = cat.dataset.category;
+    renderCompGrid(activeCategory, compSearch.value.trim());
+  });
+
+  // Search filter
+  let compSearchTimer;
+  compSearch.addEventListener('input', () => {
+    clearTimeout(compSearchTimer);
+    compSearchTimer = setTimeout(() => {
+      renderCompGrid(activeCategory, compSearch.value.trim());
+    }, 200);
+  });
 
   loadProject();
 

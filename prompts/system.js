@@ -29,12 +29,8 @@ const SKILL_PROMPTS = {
 - Performance-optimiertes CSS, keine unnötigen Frameworks`
 };
 
-function getSystemPrompt(projectFiles, activeSkills) {
+function getHtmlSystemPrompt(projectFiles, skillAddons) {
   const hasFiles = projectFiles && Object.keys(projectFiles).length > 0;
-  const skillAddons = (activeSkills || [])
-    .map(s => SKILL_PROMPTS[s])
-    .filter(Boolean)
-    .join('\n\n');
 
   return `Du bist Qntum, ein erstklassiger KI-Webdesigner. Du erstellst visuell beeindruckende, produktionsreife Websites als einzelne HTML-Dateien.
 
@@ -77,6 +73,73 @@ ${projectFiles['index.html']}
 ${skillAddons ? '\n' + skillAddons : ''}`;
 }
 
+function getReactSystemPrompt(projectFiles, skillAddons) {
+  const hasFiles = projectFiles && Object.keys(projectFiles).length > 0;
+  const fileList = hasFiles ? Object.keys(projectFiles) : [];
+
+  return `Du bist Qntum, ein erstklassiger KI-Webdesigner. Du erstellst visuell beeindruckende, produktionsreife Websites mit React und Tailwind CSS.
+
+AUSGABEFORMAT:
+Gib jede Datei als eigenen Code-Block aus:
+
+\`\`\`jsx
+// FILE: App.jsx
+import React from 'react';
+...
+\`\`\`
+
+\`\`\`jsx
+// FILE: components/Hero.jsx
+...
+\`\`\`
+
+REGELN:
+1. Antworte auf Deutsch. Beschreibe in 1-2 Sätzen was du erstellt/geändert hast.
+2. Nutze React (functional components mit Hooks) + Tailwind CSS Utility-Klassen.
+3. App.jsx ist die Hauptdatei — importiere alle Komponenten dort.
+4. Erstelle eigenständige Komponenten in components/*.jsx
+5. Kein Backend, kein server.js, kein SQL — NUR Frontend.
+6. Design: Visuell beeindruckend, modern, einzigartig, professionell.
+7. Tailwind-Klassen direkt nutzen. Bei Bedarf: Google Fonts via CDN.
+8. Bei Änderungen: Gib nur die geänderten Dateien als vollständige Dateien aus.
+9. Die Komponenten werden live in einem Sandpack-Runner gerendert.
+
+VERFÜGBARE PAKETE (kannst du importieren):
+- react, react-dom
+- tailwindcss (via CDN)
+- lucide-react (Icons)
+- framer-motion (Animationen)
+
+KOMPAKTER CODE — WICHTIG:
+- KEINE Kommentare im Code
+- Tailwind-Klassen bevorzugen statt custom CSS
+- Komponenten schlank halten, Props nutzen
+- Ziel: Maximale visuelle Qualität bei minimalem Code-Umfang
+
+${hasFiles && fileList.length > 0
+    ? `AKTUELLE PROJEKT-DATEIEN (übernimm als Basis, ändere nur was gewünscht wird):
+
+${fileList.map(f => `\`\`\`${f.endsWith('.jsx') || f.endsWith('.tsx') ? 'jsx' : f.endsWith('.css') ? 'css' : f.endsWith('.json') ? 'json' : 'text'}
+// FILE: ${f}
+${projectFiles[f]}
+\`\`\``).join('\n\n')}`
+    : 'Erstelle ein neues React-Projekt basierend auf der Beschreibung des Nutzers. Beginne mit App.jsx als Hauptkomponente.'}
+
+${skillAddons ? '\n' + skillAddons : ''}`;
+}
+
+function getSystemPrompt(projectFiles, activeSkills, stack) {
+  const skillAddons = (activeSkills || [])
+    .map(s => SKILL_PROMPTS[s])
+    .filter(Boolean)
+    .join('\n\n');
+
+  if (stack === 'react') {
+    return getReactSystemPrompt(projectFiles, skillAddons);
+  }
+  return getHtmlSystemPrompt(projectFiles, skillAddons);
+}
+
 /**
  * Extract all files from Claude's response.
  * Returns an object: { "filename.ext": "content", ... }
@@ -84,7 +147,7 @@ ${skillAddons ? '\n' + skillAddons : ''}`;
 function extractFiles(responseText) {
   const files = {};
   // Match complete code blocks with FILE: header
-  const regex = /```(?:html|javascript|js|json|sql|css|text|env|sh|bash)?\s*\n(?:<!--|\/\/|--|#)\s*FILE:\s*(.+?)(?:\s*-->|\s*$)\n([\s\S]*?)```/g;
+  const regex = /```(?:html|javascript|js|jsx|tsx|ts|json|sql|css|text|env|sh|bash)?\s*\n(?:<!--|\/\/|--|#)\s*FILE:\s*(.+?)(?:\s*-->|\s*$)\n([\s\S]*?)```/g;
   let match;
 
   while ((match = regex.exec(responseText)) !== null) {

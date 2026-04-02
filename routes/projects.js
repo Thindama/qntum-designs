@@ -50,7 +50,7 @@ router.get('/', async (req, res) => {
 
 // POST /api/projects — create new project
 router.post('/', async (req, res) => {
-  const { name, description } = req.body;
+  const { name, description, stack } = req.body;
 
   try {
     // Ensure profile exists (FK constraint: projects.user_id → profiles.id)
@@ -73,14 +73,17 @@ router.post('/', async (req, res) => {
       }, { onConflict: 'id' });
     }
 
+    const insertData = {
+      user_id: req.userId,
+      name: name || 'Neues Projekt',
+      description: description || '',
+      status: 'draft'
+    };
+    if (stack === 'react') insertData.stack = 'react';
+
     const { data, error } = await supabaseAdmin
       .from('projects')
-      .insert({
-        user_id: req.userId,
-        name: name || 'Neues Projekt',
-        description: description || '',
-        status: 'draft'
-      })
+      .insert(insertData)
       .select()
       .single();
 
@@ -134,12 +137,13 @@ router.get('/:id', async (req, res) => {
 
 // PATCH /api/projects/:id — update project
 router.patch('/:id', async (req, res) => {
-  const { name, description, status } = req.body;
+  const { name, description, status, stack } = req.body;
   const updates = {};
 
   if (name !== undefined) updates.name = name;
   if (description !== undefined) updates.description = description;
   if (status !== undefined) updates.status = status;
+  if (stack !== undefined) updates.stack = stack;
   updates.updated_at = new Date().toISOString();
 
   try {
