@@ -2417,33 +2417,77 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   let factsInterval = null;
 
   const LOADING_FACTS = [
-    'KI-gestützte Websites werden heute in Minuten erstellt — was früher Wochen professioneller Entwicklung erforderte.',
-    '73% aller Unternehmen ohne digitale Präsenz verlieren täglich qualifizierte Kundenanfragen.',
-    'QNTUM analysiert deinen Prompt und generiert Frontend, Backend und Design in einem einzigen Prozess.',
-    'Große Sprachmodelle verarbeiten hunderttausende Zeichen gleichzeitig — und verstehen dabei Kontext, Stil und Struktur.',
-    'Deine Website wird gerade auf Basis deiner exakten Angaben aufgebaut — Sektion für Sektion.',
-    'Jede generierte Website ist vollständig responsiv — optimiert für Desktop, Tablet und Smartphone.',
-    'Alle QNTUM Websites sind DSGVO-konform, SSL-verschlüsselt und auf europäischen Servern gehostet.',
-    'Nach der Generierung kannst du deine Website mit einem einzigen Klick live schalten.'
+    'Die nächste Welle der Millionäre wird nicht durch harte Arbeit entstehen — sondern durch KI-Systeme die rund um die Uhr arbeiten.',
+    'Wer heute KI-Agenten baut, verkauft morgen digitale Mitarbeiter an Unternehmen weltweit.',
+    'Ein einziger KI-Agent kann die Arbeit von fünf Vollzeitmitarbeitern übernehmen — ohne Gehalt, ohne Urlaub, ohne Fehler.',
+    'QNTUM AI gibt dir die Infrastruktur, die große Konzerne Millionen gekostet hat — für einen Bruchteil des Preises.',
+    'Der Unterschied zwischen arm und reich wird in den nächsten Jahren nicht Bildung sein — sondern wer KI für sich arbeiten lässt.',
+    'Cognitive Agents sind KI-Systeme die nicht nur antworten, sondern denken, planen und eigenständig handeln.',
+    'Agentic AI bedeutet: Die KI setzt sich selbst Ziele, führt Schritte aus und korrigiert sich — ohne dass du dabei sein musst.',
+    'Während andere noch über KI diskutieren, bauen die Ersten bereits sechsstellige Einnahmen damit auf.',
+    'Ein KI-Agent schläft nicht. Er qualifiziert Leads um 3 Uhr nachts, beantwortet Kundenanfragen um 6 Uhr morgens.',
+    'Du brauchst kein Investorenkapital um ein KI-Unternehmen zu gründen — nur einen Laptop und den richtigen Zugang.',
+    'Agentensysteme sind die neue Infrastruktur — wer sie jetzt aufbaut, wird in fünf Jahren davon leben.',
+    'Die Frage ist nicht ob KI deinen Markt verändert — sondern ob du derjenige bist der davon profitiert.',
+    'Mit QNTUM AI kannst du heute einen Agenten bauen, der morgen für deine Kunden Geld verdient.',
+    'Multi-Agent-Systeme koordinieren sich selbst — ein Agent recherchiert, der nächste schreibt, der dritte versendet.',
+    'Freelancer die KI-Agenten anbieten, verdienen heute drei bis fünf Mal mehr als klassische Webentwickler.',
+    'Der größte Fehler den du machen kannst: Warten bis KI mainstream ist — dann ist der Markt gesättigt.',
+    'Eine Website ist der Anfang. Ein KI-gestütztes Business-System ist das Ziel.',
+    'Cognitive Computing bedeutet: Maschinen die verstehen, lernen und Entscheidungen treffen — nicht nur Befehle ausführen.',
+    'Die Unternehmen die heute KI-Agenten einsetzen, haben in zwei Jahren einen Vorsprung der nicht mehr aufzuholen ist.',
+    'Wer KI-Agenten verkauft, verkauft Hebelwirkung — und Hebelwirkung ist das wertvollste Gut im Business.',
+    'Ein Calling Agent führt hunderte Verkaufsgespräche täglich — mit konstanter Qualität, ohne schlechte Tage.',
+    'Agentic AI ist nicht die Zukunft — sie ist die Gegenwart für alle die jetzt handeln.',
+    'Der Markt für KI-Automatisierung wird bis 2030 auf über eine Billion Dollar anwachsen.',
+    'Du musst kein Entwickler sein um KI-Agenten zu bauen — du musst nur wissen wie man sie konfiguriert.',
+    'Passives Einkommen durch KI bedeutet: Dein System arbeitet während du schläfst.',
+    'Die erfolgreichsten Unternehmer der nächsten Dekade werden KI als Multiplikator einsetzen, nicht als Werkzeug.',
+    'Lead-Qualifizierung, E-Mail-Marketing, Kundenbetreuung — alles kann automatisiert werden. Heute. Jetzt.',
+    'Ein einziger guter KI-Agent kann ein gesamtes Sales-Team ersetzen — und ist dabei 24/7 verfügbar.',
+    'QNTUM AI wurde gebaut damit du nicht jahrelang lernen musst — sondern sofort Ergebnisse siehst.',
+    'Die KI-Revolution belohnt nicht die Klügsten — sondern die Schnellsten.',
+    'Wer heute eine KI-Agentur gründet, baut das Unternehmen der Zukunft — mit den Werkzeugen der Gegenwart.',
+    'Autonomous Agents handeln selbstständig auf Basis von Zielen — nicht auf Basis einzelner Befehle.',
+    'Der Unterschied zwischen einem KI-Nutzer und einem KI-Unternehmer: Einer zahlt, einer verdient.',
+    'Mit einem KI-Agenten-System kannst du hundert Kunden gleichzeitig betreuen — als Einzelperson.',
+    'Jedes Unternehmen braucht einen KI-Agenten. Die wenigsten wissen wie man einen baut. Du wirst es wissen.',
+    'Orchestrierte Agentensysteme lösen komplexe Aufgaben — indem mehrere spezialisierte KI-Einheiten zusammenarbeiten.',
+    'WhatsApp-Agenten, Calling-Agenten, E-Mail-Agenten — der Markt ist riesig und kaum besetzt.',
+    'Dein erster KI-Agent könnte dein erstes digitales Produkt sein das dauerhaft Umsatz generiert.',
+    'Unternehmen zahlen heute zwischen 2.000 und 20.000 Euro für einen gut konfigurierten KI-Agenten.',
+    'Die Plattformen die heute KI-Infrastruktur bereitstellen, werden die wertvollsten Unternehmen von morgen sein.',
+    'Wer versteht wie Agenten denken, kann sie für jede Branche maßschneidern — und damit skalieren.',
+    'KI ist nicht dein Konkurrent — KI ist dein Mitarbeiter. Die Frage ist wer ihn zuerst einstellt.',
+    'Ein gut gebauter KI-Agent ist eine Investition die sich täglich auszahlt — ohne laufende Personalkosten.',
+    'Large Language Models sind die Basis. Agenten sind die Anwendung. Und du bist der Architekt.',
+    'In drei Jahren wird jedes KMU einen KI-Agenten haben. Die Frage ist wer ihn gebaut und verkauft hat.',
+    'Reaktive KI antwortet auf Fragen. Cognitive Agents stellen sie — und lösen Probleme bevor du sie bemerkst.',
+    'QNTUM AI ist nicht nur ein Tool — es ist der Einstieg in ein vollständiges KI-Business-Ökosystem.',
+    'Das Kapital des 21. Jahrhunderts ist nicht Geld — es ist der Zugang zu intelligenter Automatisierung.',
+    'Wer KI-Agenten für andere baut, sitzt auf einem der profitabelsten Geschäftsmodelle der nächsten Dekade.',
+    'Deine Website ist gerade im Entstehen. Dein KI-gestütztes Business beginnt jetzt.'
   ];
 
   function showPreviewLoader() {
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
-    const factsJson = JSON.stringify(LOADING_FACTS);
+    // Shuffle facts for each load
+    const shuffled = [...LOADING_FACTS];
+    for (let i = shuffled.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; }
+    const factsJson = JSON.stringify(shuffled);
     const loaderHtml = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>'
       + '*{margin:0;padding:0;box-sizing:border-box}'
       + 'body{background:#080808;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}'
       + '.fact-container{max-width:520px;text-align:center;padding:0 40px;position:relative;min-height:120px;display:flex;align-items:center;justify-content:center}'
-      + '.fact{font-size:17px;line-height:1.7;color:rgba(255,255,255,0.82);font-weight:400;letter-spacing:0.01em;opacity:0;transform:translateY(12px);animation:factIn 4s ease forwards}'
-      + '@keyframes factIn{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:translateY(0)}82%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}'
+      + '.fact{font-size:17px;line-height:1.7;color:rgba(255,255,255,0.82);font-weight:400;letter-spacing:0.01em;opacity:0;transform:translateY(12px);animation:factIn 6s ease forwards}'
+      + '@keyframes factIn{0%{opacity:0;transform:translateY(12px)}8%{opacity:1;transform:translateY(0)}88%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}'
       + '.bottom{position:fixed;bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px}'
       + '.pulse-line{width:200px;height:2px;background:rgba(0,229,255,0.1);border-radius:1px;overflow:hidden;position:relative}'
       + '.pulse-line::after{content:\'\';position:absolute;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,#00e5ff,transparent);animation:pulseLine 2s ease-in-out infinite}'
       + '@keyframes pulseLine{0%{left:-40%}100%{left:100%}}'
       + '.gen-label{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500;letter-spacing:0.04em}'
-      + '.timer{font-size:12px;color:rgba(255,255,255,0.25);font-variant-numeric:tabular-nums;font-family:ui-monospace,monospace}'
       + '.qntm-mark{position:fixed;top:32px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,229,255,0.18);font-weight:600}'
       + '</style></head><body>'
       + '<div class="qntm-mark">QNTUM</div>'
@@ -2451,18 +2495,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       + '<div class="bottom">'
       + '<div class="pulse-line"></div>'
       + '<div class="gen-label">Deine Website wird generiert</div>'
-      + '<div class="timer" id="loaderTimer">0:00</div>'
       + '</div>'
       + '<script>'
       + 'var facts=' + factsJson + ';'
       + 'var idx=0;'
       + 'var el=document.getElementById("factText");'
-      + 'var timer=document.getElementById("loaderTimer");'
-      + 'var start=Date.now();'
-      + 'function showFact(){el.style.animation="none";el.offsetHeight;el.textContent=facts[idx];el.style.animation="factIn 4s ease forwards";idx=(idx+1)%facts.length}'
+      + 'function showFact(){el.style.animation="none";el.offsetHeight;el.textContent=facts[idx];el.style.animation="factIn 6s ease forwards";idx=(idx+1)%facts.length}'
       + 'showFact();'
-      + 'setInterval(showFact,4000);'
-      + 'setInterval(function(){var s=Math.floor((Date.now()-start)/1000);var m=Math.floor(s/60);timer.textContent=m+":"+String(s%60).padStart(2,"0")},1000);'
+      + 'setInterval(showFact,6000);'
       + '<\/script></body></html>';
     previewIframe.srcdoc = loaderHtml;
   }
