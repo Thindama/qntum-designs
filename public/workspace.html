@@ -2413,12 +2413,70 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     return chatMessages.lastElementChild;
   }
 
+  let factsInterval = null;
+
+  const LOADING_FACTS = [
+    'KI-gestützte Websites werden heute in Minuten erstellt — was früher Wochen professioneller Entwicklung erforderte.',
+    '73% aller Unternehmen ohne digitale Präsenz verlieren täglich qualifizierte Kundenanfragen.',
+    'QNTUM analysiert deinen Prompt und generiert Frontend, Backend und Design in einem einzigen Prozess.',
+    'Große Sprachmodelle verarbeiten hunderttausende Zeichen gleichzeitig — und verstehen dabei Kontext, Stil und Struktur.',
+    'Deine Website wird gerade auf Basis deiner exakten Angaben aufgebaut — Sektion für Sektion.',
+    'Jede generierte Website ist vollständig responsiv — optimiert für Desktop, Tablet und Smartphone.',
+    'Alle QNTUM Websites sind DSGVO-konform, SSL-verschlüsselt und auf europäischen Servern gehostet.',
+    'Nach der Generierung kannst du deine Website mit einem einzigen Klick live schalten.'
+  ];
+
+  function showPreviewLoader() {
+    previewEmpty.style.display = 'none';
+    previewIframe.style.display = 'block';
+    previewIframe.style.opacity = '1';
+    const loaderHtml = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080808;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;overflow:hidden}
+.fact-container{max-width:520px;text-align:center;padding:0 40px;position:relative;min-height:120px;display:flex;align-items:center;justify-content:center}
+.fact{font-size:17px;line-height:1.7;color:rgba(255,255,255,0.82);font-weight:400;letter-spacing:0.01em;opacity:0;transform:translateY(12px);animation:factIn 4s ease forwards}
+@keyframes factIn{0%{opacity:0;transform:translateY(12px)}12%{opacity:1;transform:translateY(0)}82%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-8px)}}
+.bottom{position:fixed;bottom:48px;display:flex;flex-direction:column;align-items:center;gap:16px}
+.pulse-line{width:200px;height:2px;background:rgba(0,229,255,0.1);border-radius:1px;overflow:hidden;position:relative}
+.pulse-line::after{content:'';position:absolute;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,#00e5ff,transparent);animation:pulseLine 2s ease-in-out infinite}
+@keyframes pulseLine{0%{left:-40%}100%{left:100%}}
+.gen-label{font-size:13px;color:rgba(255,255,255,0.4);font-weight:500;letter-spacing:0.04em}
+.timer{font-size:12px;color:rgba(255,255,255,0.25);font-variant-numeric:tabular-nums;font-family:ui-monospace,monospace}
+.qntm-mark{position:fixed;top:32px;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(0,229,255,0.18);font-weight:600}
+</style></head><body>
+<div class="qntm-mark">QNTUM</div>
+<div class="fact-container"><p class="fact" id="factText"></p></div>
+<div class="bottom">
+<div class="pulse-line"></div>
+<div class="gen-label">Deine Website wird generiert</div>
+<div class="timer" id="loaderTimer">0:00</div>
+</div>
+<script>
+const facts=${JSON.stringify(LOADING_FACTS)};
+let idx=0;
+const el=document.getElementById('factText');
+const timer=document.getElementById('loaderTimer');
+let start=Date.now();
+function showFact(){el.style.animation='none';el.offsetHeight;el.textContent=facts[idx];el.style.animation='factIn 4s ease forwards';idx=(idx+1)%facts.length}
+showFact();
+setInterval(showFact,4000);
+setInterval(()=>{const s=Math.floor((Date.now()-start)/1000);const m=Math.floor(s/60);timer.textContent=m+':'+String(s%60).padStart(2,'0')},1000);
+</script></body></html>`;
+    previewIframe.srcdoc = loaderHtml;
+  }
+
   function updatePreview(html) {
     if (!html) return;
     currentHtml = html;
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
-    previewIframe.srcdoc = html;
+    // Smooth fade transition
+    previewIframe.style.transition = 'opacity 0.4s ease';
+    previewIframe.style.opacity = '0';
+    setTimeout(() => {
+      previewIframe.srcdoc = html;
+      previewIframe.style.opacity = '1';
+    }, 350);
   }
 
   function fmtTokens(n) {
@@ -3005,8 +3063,20 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     }, 500);
   }
 
+  // Extract HTML from Claude response (client-side fallback)
+  function extractHtmlFromResponse(text) {
+    // Try ```html ... ``` code block first
+    const codeBlockMatch = text.match(/```html\s*\n?([\s\S]*?)```/);
+    if (codeBlockMatch) return codeBlockMatch[1].trim();
+    // Try raw HTML starting with <!DOCTYPE or <html
+    const rawMatch = text.match(/(<!DOCTYPE html[\s\S]*<\/html>)/i);
+    if (rawMatch) return rawMatch[1].trim();
+    return null;
+  }
+
   async function startGeneration() {
     showChatGenOverlay();
+    showPreviewLoader(); // Fact slideshow in preview panel
 
     const text = buildFlowPrompt();
 
@@ -3031,7 +3101,6 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     }
 
     if (isDemo) {
-      // Demo mode — simulate generation
       setTimeout(() => {
         hideChatGenOverlay();
         appendFlowMessage('Deine Website wurde erstellt! Du kannst die Vorschau rechts sehen und jederzeit Änderungen per Chat vornehmen.');
@@ -3056,12 +3125,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         if (response.status === 429) {
           appendFlowMessage(`⚠️ ${err.error}`);
         } else {
-          appendFlowMessage('Fehler bei der Generierung. Bitte versuche es erneut.');
+          showErrorWithRetry(err.error || 'Fehler bei der Generierung.');
         }
         return;
       }
 
-      // Read SSE stream
+      // Read SSE stream — NO text in chat, only update preview when done
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -3077,44 +3146,65 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
-          const data = JSON.parse(line.slice(6));
+          try {
+            const data = JSON.parse(line.slice(6));
 
-          if (data.type === 'text') {
-            fullText += data.content;
-            // Live render: try to update preview with partial HTML
-            if (fullText.includes('</head>') && fullText.includes('<body')) {
-              try { updatePreview(fullText); } catch(e) {}
+            if (data.type === 'text') {
+              fullText += data.content;
+              // Don't render anything during streaming — keep fact slideshow
             }
-          }
 
-          if (data.type === 'done') {
-            hideChatGenOverlay();
+            if (data.type === 'done') {
+              hideChatGenOverlay();
 
-            if (data.files && Object.keys(data.files).length) {
-              updateFileTree(data.files);
-              if (!workspace.classList.contains('sidebar-open')) {
-                workspace.classList.add('sidebar-open');
+              // Priority 1: Use server-extracted HTML
+              let htmlToRender = data.html;
+
+              // Priority 2: Client-side extraction from accumulated text
+              if (!htmlToRender && fullText) {
+                htmlToRender = extractHtmlFromResponse(fullText);
+              }
+
+              // Priority 3: Check data.files
+              if (!htmlToRender && data.files) {
+                htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
+              }
+
+              // Render the website with smooth transition from slideshow
+              if (htmlToRender) {
+                updatePreview(htmlToRender);
+              }
+
+              if (data.files && Object.keys(data.files).length) {
+                updateFileTree(data.files);
+                if (!workspace.classList.contains('sidebar-open')) {
+                  workspace.classList.add('sidebar-open');
+                }
+              }
+
+              // Clean 1-2 sentence summary — no code, no markdown, no asterisks
+              let summaryText = data.text || '';
+              if (!summaryText && fullText) {
+                summaryText = fullText.replace(/```[\s\S]*?```/g, '').trim();
+              }
+              summaryText = summaryText.replace(/```[\s\S]*?```/g, '').replace(/[*_`#]/g, '').replace(/<!--[\s\S]*?-->/g, '').trim();
+              const sentences = summaryText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 5 && !s.includes('<') && !s.includes('{'));
+              const cleanSummary = sentences.slice(0, 2).join(' ').trim();
+              appendFlowMessage(cleanSummary || 'Deine Website wurde erstellt! Du kannst jetzt Änderungen per Chat vornehmen.');
+
+              if (data.usage) {
+                sessionTokens += data.usage.total;
+                userTokensUsed += data.usage.total;
+                updateStatus();
               }
             }
 
-            if (data.html) {
-              updatePreview(data.html);
+            if (data.type === 'error') {
+              hideChatGenOverlay();
+              showErrorWithRetry(data.error);
             }
-
-            // Show clean summary (no markdown, no code)
-            const summary = data.text || 'Deine Website wurde erstellt!';
-            appendFlowMessage(summary.replace(/[*_`#]/g, '').replace(/```[\s\S]*?```/g, '').trim() + ' Du kannst jetzt Änderungen per Chat vornehmen.');
-
-            if (data.usage) {
-              sessionTokens += data.usage.total;
-              userTokensUsed += data.usage.total;
-              updateStatus();
-            }
-          }
-
-          if (data.type === 'error') {
-            hideChatGenOverlay();
-            showErrorWithRetry(data.error);
+          } catch (parseErr) {
+            console.error('SSE parse error:', parseErr, line);
           }
         }
       }
@@ -3225,11 +3315,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         throw new Error(err.error || 'Anfrage fehlgeschlagen');
       }
 
-      // Show loading overlay instead of streaming text into chat
+      // Show loading overlay + fact slideshow in preview
       loadingEl.remove();
       showChatGenOverlay();
+      showPreviewLoader();
 
-      // Read SSE stream — ONLY render to preview, NEVER to chat
+      // Read SSE stream — NO text in chat, only preview on done
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -3245,45 +3336,60 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
         for (const line of lines) {
           if (!line.startsWith('data: ')) continue;
-          const data = JSON.parse(line.slice(6));
+          try {
+            const data = JSON.parse(line.slice(6));
 
-          if (data.type === 'text') {
-            fullText += data.content;
-            // Live render partial HTML to preview (NOT to chat)
-            if (fullText.includes('</head>') && fullText.includes('<body')) {
-              try { updatePreview(fullText); } catch(e) {}
+            if (data.type === 'text') {
+              fullText += data.content;
+              // Keep fact slideshow — don't render partial HTML
             }
-          }
 
-          if (data.type === 'done') {
-            hideChatGenOverlay();
+            if (data.type === 'done') {
+              hideChatGenOverlay();
 
-            if (data.files && Object.keys(data.files).length) {
-              updateFileTree(data.files);
-              if (!workspace.classList.contains('sidebar-open')) {
-                workspace.classList.add('sidebar-open');
+              // Extract HTML: server > client-side > files
+              let htmlToRender = data.html;
+              if (!htmlToRender && fullText) {
+                htmlToRender = extractHtmlFromResponse(fullText);
+              }
+              if (!htmlToRender && data.files) {
+                htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
+              }
+
+              if (htmlToRender) {
+                updatePreview(htmlToRender);
+              }
+
+              if (data.files && Object.keys(data.files).length) {
+                updateFileTree(data.files);
+                if (!workspace.classList.contains('sidebar-open')) {
+                  workspace.classList.add('sidebar-open');
+                }
+              }
+
+              // Clean summary — no code, no markdown, no asterisks
+              let summaryText = data.text || '';
+              if (!summaryText && fullText) {
+                summaryText = fullText.replace(/```[\s\S]*?```/g, '').trim();
+              }
+              summaryText = summaryText.replace(/```[\s\S]*?```/g, '').replace(/[*_`#]/g, '').replace(/<!--[\s\S]*?-->/g, '').trim();
+              const sentences = summaryText.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 5 && !s.includes('<') && !s.includes('{'));
+              const cleanSummary = sentences.slice(0, 2).join(' ').trim();
+              appendFlowMessage(`✅ ${cleanSummary || 'Änderungen wurden übernommen.'}`);
+
+              if (data.usage) {
+                sessionTokens += data.usage.total;
+                userTokensUsed += data.usage.total;
+                updateStatus();
               }
             }
 
-            if (data.html) {
-              updatePreview(data.html);
+            if (data.type === 'error') {
+              hideChatGenOverlay();
+              appendFlowMessage(`<div style="color:#ff6b6b;">⚠️ ${data.error}</div>`);
             }
-
-            // Show ONLY a clean 1-2 sentence summary in chat
-            const rawText = (data.text || 'Änderungen wurden übernommen.').replace(/[*_`#]/g, '').replace(/```[\s\S]*?```/g, '').trim();
-            const summary = rawText.split(/[.\n]/).filter(s => s.trim()).slice(0, 2).join('. ').trim();
-            appendFlowMessage(`✅ ${summary || 'Änderungen wurden übernommen.'}`);
-
-            if (data.usage) {
-              sessionTokens += data.usage.total;
-              userTokensUsed += data.usage.total;
-              updateStatus();
-            }
-          }
-
-          if (data.type === 'error') {
-            hideChatGenOverlay();
-            appendFlowMessage(`<div style="color:#ff6b6b;">⚠️ ${data.error}</div>`);
+          } catch (parseErr) {
+            console.error('SSE parse error:', parseErr, line);
           }
         }
       }
