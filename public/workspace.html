@@ -2971,12 +2971,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   }
 
   function updatePreview(html) {
-    if (!html) return;
+    if (!html) { console.warn('[Qntum] updatePreview called with empty html'); return; }
+    console.log('[Qntum] updatePreview — HTML length:', html.length, 'iframe in DOM:', !!document.getElementById('previewIframe'));
     currentHtml = html;
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
     previewIframe.srcdoc = html;
+    console.log('[Qntum] updatePreview done — iframe display:', previewIframe.style.display, 'srcdoc set:', previewIframe.srcdoc.length > 0);
   }
 
   function updateReactPreview(files) {
@@ -3614,14 +3616,21 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     // Try complete ```html ... ``` code block first
     const codeBlockMatch = text.match(/```html\s*\n?([\s\S]*?)```/);
     if (codeBlockMatch) {
+      console.log('[Qntum] extractHtml: matched complete code block');
       return codeBlockMatch[1].replace(/^<!--\s*FILE:\s*\S+\s*-->\s*\n?/, '').trim();
+    }
+    // Try complete ```jsx ... ``` or ```javascript block (React output)
+    const jsxBlockMatch = text.match(/```(?:jsx|javascript|js)\s*\n?([\s\S]*?)```/);
+    if (jsxBlockMatch) {
+      console.log('[Qntum] extractHtml: matched JSX/JS code block (React mode)');
     }
     // Try raw HTML with closing tag
     const rawMatch = text.match(/(<!DOCTYPE html[\s\S]*<\/html>)/i);
-    if (rawMatch) return rawMatch[1].trim();
+    if (rawMatch) { console.log('[Qntum] extractHtml: matched raw HTML'); return rawMatch[1].trim(); }
     // Handle truncated response (no closing ``` or </html>)
     const truncMatch = text.match(/```html\s*\n?(?:<!--\s*FILE:\s*\S+\s*-->\s*\n?)?([\s\S]+)/);
     if (truncMatch) {
+      console.log('[Qntum] extractHtml: matched truncated block');
       let html = truncMatch[1].trim();
       if (html.includes('<!DOCTYPE') && !html.includes('</html>')) {
         if (!html.includes('</body>')) html += '\n</body>';
@@ -3629,6 +3638,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       }
       return html;
     }
+    console.warn('[Qntum] extractHtml: no match found, text starts with:', text.substring(0, 200));
     return null;
   }
 
@@ -3709,16 +3719,27 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'text') {
               fullText += data.content;
-              // Live preview: once we have <body> content, start showing partial site
-              if (fullText.length > 3000 && fullText.includes('<body')) {
+              // Live preview: once we have enough content, start showing partial site
+              if (fullText.length > 1500 && fullText.includes('<body')) {
                 const partial = extractHtmlFromResponse(fullText);
                 if (partial) {
-                  try { previewIframe.srcdoc = partial; previewIframe.style.opacity = '1'; } catch(e) {}
+                  console.log('[Qntum] Live preview partial, length:', partial.length);
+                  previewEmpty.style.display = 'none';
+                  previewIframe.style.display = 'block';
+                  previewIframe.style.opacity = '1';
+                  previewIframe.srcdoc = partial;
+                  // Fade out facts overlay to reveal live preview
+                  if (previewGenOverlay.classList.contains('active')) {
+                    console.log('[Qntum] Fading out overlay for live preview');
+                    hidePreviewLoader();
+                  }
+                  mainArea.classList.remove('preview-collapsed');
                 }
               }
             }
 
             if (data.type === 'done') {
+              console.log('[Qntum] SSE done — html:', data.html?.length, 'files:', data.files ? Object.keys(data.files) : null, 'fullText:', fullText.length, 'stack:', currentStack);
               hideChatGenOverlay();
               hidePreviewLoader();
 
@@ -3735,12 +3756,18 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
                 htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
               }
 
-              // Final render with smooth transition
+              console.log('[Qntum] htmlToRender length:', htmlToRender?.length, 'iframe exists:', !!previewIframe);
+
+              // Render preview
               if (currentStack === 'react' && data.files && Object.keys(data.files).length) {
                 updateReactPreview(data.files);
               } else if (htmlToRender) {
                 updatePreview(htmlToRender);
+              } else {
+                console.warn('[Qntum] No HTML to render!');
               }
+              // Ensure preview panel is visible
+              mainArea.classList.remove('preview-collapsed');
 
               if (data.files && Object.keys(data.files).length) {
                 updateFileTree(data.files);
@@ -3908,16 +3935,26 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'text') {
               fullText += data.content;
-              // Live preview: once we have <body> content, start showing partial site
-              if (fullText.length > 3000 && fullText.includes('<body')) {
+              // Live preview: once we have enough content, start showing partial site
+              if (fullText.length > 1500 && fullText.includes('<body')) {
                 const partial = extractHtmlFromResponse(fullText);
                 if (partial) {
-                  try { previewIframe.srcdoc = partial; previewIframe.style.opacity = '1'; } catch(e) {}
+                  console.log('[Qntum] Live preview partial (msg), length:', partial.length);
+                  previewEmpty.style.display = 'none';
+                  previewIframe.style.display = 'block';
+                  previewIframe.style.opacity = '1';
+                  previewIframe.srcdoc = partial;
+                  if (previewGenOverlay.classList.contains('active')) {
+                    console.log('[Qntum] Fading out overlay for live preview (msg)');
+                    hidePreviewLoader();
+                  }
+                  mainArea.classList.remove('preview-collapsed');
                 }
               }
             }
 
             if (data.type === 'done') {
+              console.log('[Qntum] SSE done (msg) — html:', data.html?.length, 'files:', data.files ? Object.keys(data.files) : null, 'fullText:', fullText.length, 'stack:', currentStack);
               hideChatGenOverlay();
               hidePreviewLoader();
 
@@ -3930,11 +3967,16 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
                 htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
               }
 
+              console.log('[Qntum] htmlToRender length (msg):', htmlToRender?.length, 'iframe exists:', !!previewIframe);
+
               if (currentStack === 'react' && data.files && Object.keys(data.files).length) {
                 updateReactPreview(data.files);
               } else if (htmlToRender) {
                 updatePreview(htmlToRender);
+              } else {
+                console.warn('[Qntum] No HTML to render (msg)!');
               }
+              mainArea.classList.remove('preview-collapsed');
 
               if (data.files && Object.keys(data.files).length) {
                 updateFileTree(data.files);
