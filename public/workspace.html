@@ -81,8 +81,9 @@ input, textarea { font-family: inherit; }
    ═══════════════════════════════════════ */
 .sidebar {
   grid-area: sidebar;
-  background: var(--ws-bg);
+  background: rgba(8,8,15,0.85);
   border-right: 1px solid var(--ws-border);
+  position: relative; z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -187,7 +188,7 @@ input, textarea { font-family: inherit; }
    ═══════════════════════════════════════ */
 .topbar {
   grid-area: topbar;
-  background: var(--ws-bg);
+  background: rgba(8,8,15,0.85);
   border-bottom: 1px solid var(--ws-border);
   display: flex;
   align-items: center;
@@ -434,7 +435,8 @@ input, textarea { font-family: inherit; }
   grid-area: main;
   display: flex;
   overflow: hidden;
-  background: var(--ws-bg-1);
+  background: rgba(12,12,24,0.82);
+  position: relative; z-index: 1;
 }
 
 /* ═══════════════════════════════════════
@@ -446,8 +448,9 @@ input, textarea { font-family: inherit; }
   max-width: 520px;
   display: flex;
   flex-direction: column;
-  background: var(--ws-bg);
+  background: rgba(8,8,15,0.82);
   border-right: 1px solid var(--ws-border);
+  position: relative; z-index: 1;
 }
 
 .chat-header {
@@ -1050,8 +1053,9 @@ input, textarea { font-family: inherit; }
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--ws-bg-1);
+  background: rgba(12,12,24,0.82);
   overflow: hidden;
+  position: relative; z-index: 1;
   transition: flex 0.4s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
   min-width: 0;
 }
@@ -1246,8 +1250,9 @@ input, textarea { font-family: inherit; }
    ═══════════════════════════════════════ */
 .statusbar {
   grid-area: statusbar;
-  background: var(--ws-bg);
+  background: rgba(8,8,15,0.85);
   border-top: 1px solid var(--ws-border);
+  position: relative; z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
