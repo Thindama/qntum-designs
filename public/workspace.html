@@ -333,19 +333,89 @@ input, textarea { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 16px;
-  background: var(--ws-accent);
-  color: var(--ws-bg);
+  padding: 7px 18px;
+  background: var(--ws-primary);
+  color: #000;
   font-size: 12px;
   font-weight: 700;
   border-radius: 8px;
   transition: all var(--ws-transition);
+  letter-spacing: 0.01em;
 }
 .btn-publish:hover {
-  background: var(--ws-accent-d);
-  box-shadow: 0 4px 16px rgba(0,212,255,0.25);
+  background: var(--ws-primary-l);
+  box-shadow: 0 4px 20px rgba(0,230,138,0.3);
 }
+.btn-publish:disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
 .btn-publish svg { width: 14px; height: 14px; }
+
+/* ═══ PHASE STEPPER ═══ */
+.phase-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.phase-step {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  position: relative;
+}
+.phase-step:hover { background: rgba(255,255,255,0.05); }
+.phase-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ws-text-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.phase-dot svg { width: 11px; height: 11px; color: var(--ws-text-3); transition: color 0.3s; }
+.phase-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--ws-text-3);
+  transition: color 0.3s;
+  white-space: nowrap;
+}
+.phase-line {
+  width: 16px;
+  height: 1.5px;
+  background: var(--ws-border-l);
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+/* Active phase */
+.phase-step.active .phase-dot {
+  border-color: var(--ws-primary);
+  background: rgba(0,230,138,0.12);
+  box-shadow: 0 0 8px rgba(0,230,138,0.2);
+}
+.phase-step.active .phase-dot svg { color: var(--ws-primary); }
+.phase-step.active .phase-label { color: var(--ws-primary-l); }
+/* Completed phase */
+.phase-step.done .phase-dot {
+  border-color: var(--ws-primary);
+  background: var(--ws-primary);
+}
+.phase-step.done .phase-dot svg { color: #000; }
+.phase-step.done .phase-label { color: var(--ws-text-2); }
+.phase-line.done { background: var(--ws-primary); }
+/* Pulse on next step */
+.phase-step.next .phase-dot {
+  animation: phasePulse 2s ease-in-out infinite;
+  border-color: rgba(0,230,138,0.4);
+}
+@keyframes phasePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,230,138,0); }
+  50% { box-shadow: 0 0 0 4px rgba(0,230,138,0.15); }
+}
 
 /* ═══════════════════════════════════════
    MAIN AREA
@@ -1484,31 +1554,7 @@ input, textarea { font-family: inherit; }
 /* ═══════════════════════════════════════
    TOOLBAR ACTIONS
    ═══════════════════════════════════════ */
-.toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 2px;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--ws-border);
-  border-radius: 10px;
-}
-.toolbar-action {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 10px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--ws-text-3);
-  border-radius: 8px;
-  transition: all var(--ws-transition);
-  white-space: nowrap;
-}
-.toolbar-action:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
-.toolbar-action.disabled { opacity: 0.35; cursor: not-allowed; }
-.toolbar-action.disabled:hover { background: none; color: var(--ws-text-3); }
-.toolbar-action svg { width: 13px; height: 13px; flex-shrink: 0; }
+/* Toolbar actions are now handled by the phase stepper modals */
 
 /* ═══════════════════════════════════════
    GENERATION OVERLAY
@@ -2005,6 +2051,29 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   box-shadow: 0 4px 20px rgba(0,230,138,0.3);
 }
 
+/* SVG icons in flow cards */
+.flow-card-icon svg { width: 20px; height: 20px; color: var(--ws-text-2); transition: color 0.2s; flex-shrink: 0; }
+.flow-card.selected .flow-card-icon svg { color: #00e5ff; }
+.flow-cards-sm .flow-card-icon svg { width: 16px; height: 16px; }
+/* Color dot for color-schema cards */
+.flow-color-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+/* Hidden items (expandable) */
+.flow-hidden { display: none !important; }
+/* Show more button */
+.flow-show-more {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ws-accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.flow-show-more:hover { color: var(--ws-primary-l); }
+
 /* Summary box */
 .flow-summary {
   margin-top: 10px;
@@ -2214,15 +2283,38 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
       </button>
       <div class="topbar-sep"></div>
-      <button class="topbar-icon-btn active" title="Desktop" data-device="desktop">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
-      </button>
-      <button class="topbar-icon-btn" title="Tablet" data-device="tablet">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
-      </button>
-      <button class="topbar-icon-btn" title="Mobile" data-device="mobile">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="12" height="20" x="6" y="2" rx="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
-      </button>
+      <!-- Phase Stepper -->
+      <div class="phase-stepper" id="phaseStepper">
+        <button class="phase-step active" data-phase="1" title="Website erstellen">
+          <span class="phase-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span>
+          <span class="phase-label">Erstellen</span>
+        </button>
+        <div class="phase-line"></div>
+        <button class="phase-step" data-phase="2" title="Inhalte verfeinern">
+          <span class="phase-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></span>
+          <span class="phase-label">Verfeinern</span>
+        </button>
+        <div class="phase-line"></div>
+        <button class="phase-step" data-phase="3" title="Backend & Formulare">
+          <span class="phase-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg></span>
+          <span class="phase-label">Backend</span>
+        </button>
+        <div class="phase-line"></div>
+        <button class="phase-step" data-phase="4" title="Domain verbinden">
+          <span class="phase-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <span class="phase-label">Domain</span>
+        </button>
+        <div class="phase-line"></div>
+        <button class="phase-step" data-phase="5" title="SEO optimieren">
+          <span class="phase-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          <span class="phase-label">SEO</span>
+        </button>
+        <div class="phase-line"></div>
+        <button class="phase-step" data-phase="6" title="Deployen & Live schalten">
+          <span class="phase-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></span>
+          <span class="phase-label">Live</span>
+        </button>
+      </div>
     </div>
 
     <div class="topbar-right">
@@ -2232,39 +2324,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       </div>
       <span class="plan-badge" id="planBadge">...</span>
       <a href="dashboard.html" class="topbar-avatar" id="topbarAvatar" style="text-decoration:none;color:inherit;" title="Dashboard">?</a>
-      <div class="toolbar-actions">
-        <button class="toolbar-action" id="btnDeploy">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
-          Deploy
-        </button>
-        <button class="toolbar-action" id="btnShare">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Teilen
-        </button>
-        <button class="toolbar-action" id="btnAgent">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16.01"/><line x1="16" y1="16" x2="16" y2="16.01"/></svg>
-          KI-Agent
-        </button>
-        <button class="toolbar-action" id="btnDomain">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Domain
-        </button>
-        <button class="toolbar-action" id="btnSeo">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          SEO
-        </button>
-        <button class="toolbar-action" id="btnForm">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg>
-          Formular
-        </button>
-        <button class="toolbar-action" id="btnWhatsapp">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          WhatsApp
-        </button>
-      </div>
-      <button class="btn-publish">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
-        Publish
+      <button class="btn-publish" id="btnPublish" disabled>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+        Veröffentlichen
       </button>
     </div>
   </header>
@@ -3034,12 +3096,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
   function updatePreview(html) {
     if (!html) return;
-    console.log('[Qntum] updatePreview — length:', html.length);
     currentHtml = html;
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
     previewIframe.srcdoc = html;
+    // Auto-advance stepper when first content appears
+    if (typeof advanceToPhase2 === 'function') advanceToPhase2();
   }
 
   function updateReactPreview(files) {
@@ -3221,16 +3284,17 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const FLOW_COMPLETE = 99;
   let flowStep = 0;
   let flowData = {
-    type: null,          // landing, multipage, shop, portfolio
-    industry: null,      // friseursalon, fitness, restaurant, etc.
-    sections: [],        // hero, about, services, pricing, etc.
-    pages: null,         // 3, 5, 7
-    colors: null,        // dark, light, colorful, custom
+    type: null,
+    industry: null,
+    sections: [],
+    pages: null,
+    colors: null,
     customColor: null,
-    style: null,         // minimal, luxury, playful, corporate, tech
-    animations: null,    // none, subtle, heavy
-    language: null,      // de, en, both
-    extras: null         // freetext
+    style: null,
+    typography: null,
+    animations: null,
+    language: null,
+    extras: null
   };
 
   // Check if first prompt already contains answers
@@ -3305,25 +3369,68 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     }
   }
 
+  const FI = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
+  const FLOW_ICONS = {
+    landing: FI('<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="14" y2="12"/><line x1="7" y1="16" x2="11" y2="16"/>'),
+    multipage: FI('<rect x="2" y="4" width="14" height="16" rx="2"/><rect x="8" y="2" width="14" height="16" rx="2"/>'),
+    shop: FI('<path d="M6 2L3 7v13a2 2 0 002 2h14a2 2 0 002-2V7l-3-5z"/><line x1="3" y1="7" x2="21" y2="7"/><path d="M16 11a4 4 0 01-8 0"/>'),
+    portfolio: FI('<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>'),
+    blog: FI('<path d="M4 22h16a2 2 0 002-2V4a2 2 0 00-2-2H8a2 2 0 00-2 2v16a2 2 0 01-2 2zm0 0a2 2 0 01-2-2v-9c0-1.1.9-2 2-2h2"/><line x1="10" y1="6" x2="18" y2="6"/><line x1="10" y1="10" x2="18" y2="10"/><line x1="10" y1="14" x2="14" y2="14"/>'),
+    saas: FI('<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 8l3 3-3 3"/><line x1="13" y1="14" x2="17" y2="14"/>'),
+    event: FI('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="12" cy="16" r="2"/>'),
+    personal: FI('<circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 10-16 0"/>'),
+    friseur: FI('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/>'),
+    fitness: FI('<path d="M6.5 6.5h11"/><path d="M17.5 17.5h-11"/><path d="M3 10v4"/><path d="M5 8v8"/><path d="M19 8v8"/><path d="M21 10v4"/><line x1="5" y1="12" x2="19" y2="12"/>'),
+    restaurant: FI('<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 002-2V2"/><line x1="7" y1="2" x2="7" y2="22"/><path d="M21 15V2v0a5 5 0 00-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>'),
+    immobilien: FI('<path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/>'),
+    coaching: FI('<circle cx="12" cy="12" r="10"/><path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/><circle cx="12" cy="12" r="2"/>'),
+    ecommerce: FI('<path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>'),
+    agentur: FI('<path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>'),
+    arztpraxis: FI('<path d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6v0a6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3"/><path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-6v-4"/><line x1="11" y1="6" x2="11" y2="10"/><line x1="9" y1="8" x2="13" y2="8"/>'),
+    startup: FI('<path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 00-2.91-.09z"/><path d="m12 15-3-3a22 22 0 012-3.95A12.88 12.88 0 0122 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 01-4 2z"/>'),
+    handwerk: FI('<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>'),
+    fotograf: FI('<path d="M14.5 4h-5L7 7H4a2 2 0 00-2 2v9a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>'),
+    anwalt: FI('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/><line x1="13" y1="14" x2="17" y2="14"/><line x1="13" y1="17" x2="17" y2="17"/>'),
+    zahnarzt: FI('<path d="M12 2C8 2 6 5 6 8c0 2 .5 3.5 1 5 .8 2.5 1 4 1.5 6.5.3 1.5 1 2.5 2 2.5s1.5-.5 1.5-2c0-1 .5-1.5 1-1.5s1 .5 1 1.5c0 1.5.5 2 1.5 2s1.7-1 2-2.5c.5-2.5.7-4 1.5-6.5.5-1.5 1-3 1-5 0-3-2-6-6-6z"/>'),
+    bildung: FI('<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>'),
+    andere: FI('<path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 013.002 3.002L7.368 18.635a2 2 0 01-.855.506l-2.872.838a.5.5 0 01-.62-.62l.838-2.872a2 2 0 01.506-.854z"/>')
+  };
+
   function showTypeQuestion() {
     const msg = appendFlowMessage(`
       <div class="flow-question">Was möchtest du erstellen?</div>
       <div class="flow-cards">
         <div class="flow-card" data-value="landing">
-          <span class="flow-card-icon">🏠</span>
+          <span class="flow-card-icon">${FLOW_ICONS.landing}</span>
           <div class="flow-card-text"><span class="flow-card-label">Landing Page</span><span class="flow-card-desc">Eine einzelne, conversion-starke Seite</span></div>
         </div>
         <div class="flow-card" data-value="multipage">
-          <span class="flow-card-icon">🌐</span>
+          <span class="flow-card-icon">${FLOW_ICONS.multipage}</span>
           <div class="flow-card-text"><span class="flow-card-label">Multi-Page Website</span><span class="flow-card-desc">Mehrere verlinkte Seiten</span></div>
         </div>
         <div class="flow-card" data-value="shop">
-          <span class="flow-card-icon">🛍️</span>
+          <span class="flow-card-icon">${FLOW_ICONS.shop}</span>
           <div class="flow-card-text"><span class="flow-card-label">Online-Shop</span><span class="flow-card-desc">E-Commerce mit Produkten & Checkout</span></div>
         </div>
         <div class="flow-card" data-value="portfolio">
-          <span class="flow-card-icon">📁</span>
+          <span class="flow-card-icon">${FLOW_ICONS.portfolio}</span>
           <div class="flow-card-text"><span class="flow-card-label">Portfolio</span><span class="flow-card-desc">Showcase deiner Arbeiten</span></div>
+        </div>
+        <div class="flow-card" data-value="blog">
+          <span class="flow-card-icon">${FLOW_ICONS.blog}</span>
+          <div class="flow-card-text"><span class="flow-card-label">Blog / Magazin</span><span class="flow-card-desc">Content-Plattform mit Artikeln</span></div>
+        </div>
+        <div class="flow-card" data-value="saas">
+          <span class="flow-card-icon">${FLOW_ICONS.saas}</span>
+          <div class="flow-card-text"><span class="flow-card-label">SaaS / App Landing</span><span class="flow-card-desc">Produkt-Website mit Features & Pricing</span></div>
+        </div>
+        <div class="flow-card" data-value="event">
+          <span class="flow-card-icon">${FLOW_ICONS.event}</span>
+          <div class="flow-card-text"><span class="flow-card-label">Event / Konferenz</span><span class="flow-card-desc">Veranstaltung mit Agenda & Anmeldung</span></div>
+        </div>
+        <div class="flow-card" data-value="personal">
+          <span class="flow-card-icon">${FLOW_ICONS.personal}</span>
+          <div class="flow-card-text"><span class="flow-card-label">Persönliche Website</span><span class="flow-card-desc">CV, Bio & persönlicher Auftritt</span></div>
         </div>
       </div>
     `);
@@ -3349,21 +3456,24 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   }
 
   function showIndustryQuestion() {
+    const industries = [
+      ['friseur','Friseursalon','friseur'], ['fitness','Fitness/Sport','fitness'], ['restaurant','Restaurant/Gastro','restaurant'],
+      ['immobilien','Immobilien','immobilien'], ['coaching','Coaching/Beratung','coaching'], ['ecommerce','E-Commerce','ecommerce'],
+      ['agentur','Agentur/Kreativ','agentur'], ['arztpraxis','Arztpraxis','arztpraxis'], ['startup','Startup/Tech','startup'],
+      ['handwerk','Handwerk','handwerk'], ['fotograf','Fotograf/Video','fotograf'], ['anwalt','Kanzlei/Recht','anwalt'],
+      ['zahnarzt','Zahnarzt','zahnarzt'], ['bildung','Bildung/Kurse','bildung']
+    ];
+    const visibleCount = 10;
+    const cards = industries.map((b, i) =>
+      `<div class="flow-card${i >= visibleCount ? ' flow-hidden' : ''}" data-value="${b[0]}"><span class="flow-card-icon">${FLOW_ICONS[b[2]]}</span><span class="flow-card-label">${b[1]}</span></div>`
+    ).join('');
     const msg = appendFlowMessage(`
       <div class="flow-question">Für welche Branche?</div>
-      <div class="flow-cards flow-cards-sm">
-        <div class="flow-card" data-value="friseur"><span class="flow-card-icon">💈</span><span class="flow-card-label">Friseursalon</span></div>
-        <div class="flow-card" data-value="fitness"><span class="flow-card-icon">💪</span><span class="flow-card-label">Fitness/Sport</span></div>
-        <div class="flow-card" data-value="restaurant"><span class="flow-card-icon">🍕</span><span class="flow-card-label">Restaurant</span></div>
-        <div class="flow-card" data-value="immobilien"><span class="flow-card-icon">🏠</span><span class="flow-card-label">Immobilien</span></div>
-        <div class="flow-card" data-value="coaching"><span class="flow-card-icon">🎯</span><span class="flow-card-label">Coaching</span></div>
-        <div class="flow-card" data-value="ecommerce"><span class="flow-card-icon">🛒</span><span class="flow-card-label">E-Commerce</span></div>
-        <div class="flow-card" data-value="agentur"><span class="flow-card-icon">🎨</span><span class="flow-card-label">Agentur</span></div>
-        <div class="flow-card" data-value="arztpraxis"><span class="flow-card-icon">🏥</span><span class="flow-card-label">Arztpraxis</span></div>
-        <div class="flow-card" data-value="startup"><span class="flow-card-icon">🚀</span><span class="flow-card-label">Startup/Tech</span></div>
-        <div class="flow-card" data-value="handwerk"><span class="flow-card-icon">🔨</span><span class="flow-card-label">Handwerk</span></div>
-        <div class="flow-card" data-value="andere"><span class="flow-card-icon">✍️</span><span class="flow-card-label">Andere</span></div>
+      <div class="flow-cards flow-cards-sm" id="flowIndustryCards">
+        ${cards}
+        <div class="flow-card" data-value="andere"><span class="flow-card-icon">${FLOW_ICONS.andere}</span><span class="flow-card-label">Andere</span></div>
       </div>
+      ${industries.length > visibleCount ? '<button class="flow-show-more" id="flowShowMoreIndustry">Mehr Branchen anzeigen →</button>' : ''}
     `);
     msg.querySelectorAll('.flow-card').forEach(card => {
       card.addEventListener('click', () => {
@@ -3403,15 +3513,24 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         setTimeout(() => showDetailQuestions(), 400);
       });
     });
+    // "Show more" button
+    const showMoreBtn = msg.querySelector('#flowShowMoreIndustry');
+    if (showMoreBtn) {
+      showMoreBtn.addEventListener('click', () => {
+        msg.querySelectorAll('.flow-hidden').forEach(el => el.classList.remove('flow-hidden'));
+        showMoreBtn.remove();
+      });
+    }
   }
 
   function showDetailQuestions() {
     const showPages = flowData.type === 'multipage';
+    let n = 1;
     const msg = appendFlowMessage(`
       <div style="display:flex;flex-direction:column;gap:14px;">
 
         <div>
-          <div class="flow-question"><span class="flow-question-num">1.</span> Welche Sektionen sollen enthalten sein?</div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Welche Sektionen?</div>
           <div class="flow-chips" id="flowSections">
             <span class="flow-chip selected" data-val="hero">Hero</span>
             <span class="flow-chip selected" data-val="about">Über uns</span>
@@ -3423,11 +3542,20 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
             <span class="flow-chip" data-val="team">Team</span>
             <span class="flow-chip" data-val="portfolio">Portfolio</span>
             <span class="flow-chip" data-val="blog">Blog</span>
+            <span class="flow-chip flow-hidden" data-val="gallery">Galerie</span>
+            <span class="flow-chip flow-hidden" data-val="partners">Partner/Logos</span>
+            <span class="flow-chip flow-hidden" data-val="stats">Statistiken</span>
+            <span class="flow-chip flow-hidden" data-val="newsletter">Newsletter</span>
+            <span class="flow-chip flow-hidden" data-val="booking">Terminbuchung</span>
+            <span class="flow-chip flow-hidden" data-val="video">Video</span>
+            <span class="flow-chip flow-hidden" data-val="map">Standort/Map</span>
+            <span class="flow-chip flow-hidden" data-val="download">Downloads</span>
           </div>
+          <button class="flow-show-more" id="flowShowMoreSections">Mehr Sektionen +</button>
         </div>
 
         ${showPages ? `<div>
-          <div class="flow-question"><span class="flow-question-num">2.</span> Wie viele Seiten?</div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Wie viele Seiten?</div>
           <div class="flow-cards flow-cards-style" id="flowPages">
             <div class="flow-card selected" data-value="3"><span class="flow-card-label">3 Seiten</span></div>
             <div class="flow-card" data-value="5"><span class="flow-card-label">5 Seiten</span></div>
@@ -3436,36 +3564,55 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         </div>` : ''}
 
         <div>
-          <div class="flow-question"><span class="flow-question-num">${showPages ? '3' : '2'}.</span> Farbschema?</div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Farbschema?</div>
           <div class="flow-cards flow-cards-style" id="flowColors">
-            <div class="flow-card${flowData.colors === 'dark' ? ' selected' : ''}" data-value="dark"><span class="flow-card-icon">🌙</span><span class="flow-card-label">Dunkel & Elegant</span></div>
-            <div class="flow-card${flowData.colors === 'light' ? ' selected' : ''}" data-value="light"><span class="flow-card-icon">☀️</span><span class="flow-card-label">Hell & Modern</span></div>
-            <div class="flow-card${flowData.colors === 'colorful' ? ' selected' : ''}" data-value="colorful"><span class="flow-card-icon">🎨</span><span class="flow-card-label">Bunt & Kreativ</span></div>
+            <div class="flow-card" data-value="dark"><span class="flow-color-dot" style="background:#0B1120;border:1px solid rgba(255,255,255,0.2);"></span><span class="flow-card-label">Dunkel & Elegant</span></div>
+            <div class="flow-card" data-value="light"><span class="flow-color-dot" style="background:#F8F8FF;"></span><span class="flow-card-label">Hell & Modern</span></div>
+            <div class="flow-card" data-value="colorful"><span class="flow-color-dot" style="background:linear-gradient(135deg,#FF6B6B,#4ECDC4,#45B7D1);"></span><span class="flow-card-label">Bunt & Kreativ</span></div>
+            <div class="flow-card" data-value="mono"><span class="flow-color-dot" style="background:linear-gradient(135deg,#222,#888,#ddd);"></span><span class="flow-card-label">Monochrom</span></div>
+            <div class="flow-card" data-value="warm"><span class="flow-color-dot" style="background:linear-gradient(135deg,#D4A574,#C8553D,#5C3D2E);"></span><span class="flow-card-label">Warm & Erdig</span></div>
+            <div class="flow-card" data-value="cool"><span class="flow-color-dot" style="background:linear-gradient(135deg,#0EA5E9,#06B6D4,#6366F1);"></span><span class="flow-card-label">Kalt & Tech</span></div>
           </div>
         </div>
 
         <div>
-          <div class="flow-question"><span class="flow-question-num">${showPages ? '4' : '3'}.</span> Design-Stil?</div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Design-Stil?</div>
           <div class="flow-cards flow-cards-style" id="flowStyle">
-            <div class="flow-card${flowData.style === 'minimal' ? ' selected' : ''}" data-value="minimal"><span class="flow-card-label">Minimalistisch</span></div>
-            <div class="flow-card${flowData.style === 'luxury' ? ' selected' : ''}" data-value="luxury"><span class="flow-card-label">Luxus & Premium</span></div>
-            <div class="flow-card${flowData.style === 'playful' ? ' selected' : ''}" data-value="playful"><span class="flow-card-label">Verspielt</span></div>
-            <div class="flow-card${flowData.style === 'corporate' ? ' selected' : ''}" data-value="corporate"><span class="flow-card-label">Corporate</span></div>
-            <div class="flow-card${flowData.style === 'tech' ? ' selected' : ''}" data-value="tech"><span class="flow-card-label">Modern & Tech</span></div>
+            <div class="flow-card" data-value="minimal"><span class="flow-card-label">Minimalistisch</span></div>
+            <div class="flow-card" data-value="luxury"><span class="flow-card-label">Luxus & Premium</span></div>
+            <div class="flow-card" data-value="playful"><span class="flow-card-label">Verspielt</span></div>
+            <div class="flow-card" data-value="corporate"><span class="flow-card-label">Corporate</span></div>
+            <div class="flow-card" data-value="tech"><span class="flow-card-label">Modern & Tech</span></div>
+            <div class="flow-card" data-value="brutalist"><span class="flow-card-label">Brutalistisch</span></div>
+            <div class="flow-card" data-value="retro"><span class="flow-card-label">Retro / Vintage</span></div>
+            <div class="flow-card" data-value="glass"><span class="flow-card-label">Glassmorphism</span></div>
+            <div class="flow-card" data-value="neon"><span class="flow-card-label">Neon / Cyberpunk</span></div>
           </div>
         </div>
 
         <div>
-          <div class="flow-question"><span class="flow-question-num">${showPages ? '5' : '4'}.</span> Animationen?</div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Typografie?</div>
+          <div class="flow-cards flow-cards-style" id="flowTypography">
+            <div class="flow-card selected" data-value="modern"><span class="flow-card-label" style="font-family:'DM Sans',sans-serif;">Modern Sans</span></div>
+            <div class="flow-card" data-value="serif"><span class="flow-card-label" style="font-family:Georgia,serif;font-style:italic;">Elegant Serif</span></div>
+            <div class="flow-card" data-value="display"><span class="flow-card-label" style="font-family:'Figtree',sans-serif;font-weight:800;">Display Bold</span></div>
+            <div class="flow-card" data-value="mono"><span class="flow-card-label" style="font-family:'JetBrains Mono',monospace;font-size:11px;">Monospace</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Animationen?</div>
           <div class="flow-cards flow-cards-style" id="flowAnimations">
             <div class="flow-card" data-value="none"><span class="flow-card-label">Keine</span></div>
             <div class="flow-card selected" data-value="subtle"><span class="flow-card-label">Subtil & Dezent</span></div>
+            <div class="flow-card" data-value="scroll"><span class="flow-card-label">Scroll-Animationen</span></div>
+            <div class="flow-card" data-value="parallax"><span class="flow-card-label">Parallax-Effekt</span></div>
             <div class="flow-card" data-value="heavy"><span class="flow-card-label">Viele & Auffällig</span></div>
           </div>
         </div>
 
         <div>
-          <div class="flow-question"><span class="flow-question-num">${showPages ? '6' : '5'}.</span> Sprache?</div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Sprache?</div>
           <div class="flow-cards flow-cards-style" id="flowLanguage">
             <div class="flow-card selected" data-value="de"><span class="flow-card-label">Deutsch</span></div>
             <div class="flow-card" data-value="en"><span class="flow-card-label">Englisch</span></div>
@@ -3474,18 +3621,27 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         </div>
 
         <div>
-          <div class="flow-question"><span class="flow-question-num">${showPages ? '7' : '6'}.</span> Besonderheiten? <span style="color:var(--ws-text-3);font-weight:400;">(optional)</span></div>
+          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Besonderheiten? <span style="color:var(--ws-text-3);font-weight:400;">(optional)</span></div>
           <div class="flow-freetext" style="margin-top:6px;">
-            <input type="text" id="flowExtrasInput" placeholder="z.B. Buchungssystem, Dark Mode, bestimmte Farbe...">
+            <input type="text" id="flowExtrasInput" placeholder="z.B. Buchungssystem, bestimmte Farbe #FF5722, Spezialwünsche...">
           </div>
         </div>
 
         <div style="text-align:center;padding-top:4px;">
-          <button class="flow-confirm-btn" id="flowConfirmDetails">Weiter zur Zusammenfassung →</button>
+          <button class="flow-confirm-btn" id="flowConfirmDetails">Weiter zur Zusammenfassung</button>
         </div>
 
       </div>
     `);
+
+    // "Show more" for sections
+    const showMoreSec = msg.querySelector('#flowShowMoreSections');
+    if (showMoreSec) {
+      showMoreSec.addEventListener('click', () => {
+        msg.querySelectorAll('#flowSections .flow-hidden').forEach(el => el.classList.remove('flow-hidden'));
+        showMoreSec.remove();
+      });
+    }
 
     // Chips multi-select
     msg.querySelectorAll('.flow-chips .flow-chip').forEach(chip => {
@@ -3493,7 +3649,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     });
 
     // Single-select card groups
-    ['flowColors', 'flowStyle', 'flowAnimations', 'flowLanguage'].forEach(id => {
+    ['flowColors', 'flowStyle', 'flowTypography', 'flowAnimations', 'flowLanguage'].forEach(id => {
       const group = msg.querySelector('#' + id);
       if (!group) return;
       group.querySelectorAll('.flow-card').forEach(card => {
@@ -3518,7 +3674,6 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
     // Confirm button
     msg.querySelector('#flowConfirmDetails').addEventListener('click', () => {
-      // Collect all selections
       flowData.sections = [...msg.querySelectorAll('#flowSections .flow-chip.selected')].map(c => c.dataset.val);
 
       if (showPages) {
@@ -3532,6 +3687,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       const styleSel = msg.querySelector('#flowStyle .flow-card.selected');
       flowData.style = styleSel ? styleSel.dataset.value : 'tech';
 
+      const typoSel = msg.querySelector('#flowTypography .flow-card.selected');
+      flowData.typography = typoSel ? typoSel.dataset.value : 'modern';
+
       const animSel = msg.querySelector('#flowAnimations .flow-card.selected');
       flowData.animations = animSel ? animSel.dataset.value : 'subtle';
 
@@ -3541,7 +3699,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       flowData.extras = document.getElementById('flowExtrasInput')?.value.trim() || null;
 
       // Disable all interactions
-      msg.querySelectorAll('.flow-card, .flow-chip, .flow-confirm-btn, .flow-freetext input').forEach(el => {
+      msg.querySelectorAll('.flow-card, .flow-chip, .flow-confirm-btn, .flow-freetext input, .flow-show-more').forEach(el => {
         el.style.pointerEvents = 'none';
         el.style.opacity = el.classList.contains('selected') ? '1' : '0.3';
       });
@@ -3553,23 +3711,23 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   }
 
   function getTypeLabel(type) {
-    const map = { landing: 'Landing Page', multipage: 'Multi-Page Website', shop: 'Online-Shop', portfolio: 'Portfolio' };
+    const map = { landing: 'Landing Page', multipage: 'Multi-Page Website', shop: 'Online-Shop', portfolio: 'Portfolio', blog: 'Blog / Magazin', saas: 'SaaS Landing', event: 'Event-Website', personal: 'Persönliche Website' };
     return map[type] || type;
   }
   function getIndustryLabel(ind) {
-    const map = { friseur: 'Friseursalon', fitness: 'Fitness/Sport', restaurant: 'Restaurant', immobilien: 'Immobilien', coaching: 'Coaching/Beratung', ecommerce: 'E-Commerce', agentur: 'Agentur', arztpraxis: 'Arztpraxis', startup: 'Startup/Tech', handwerk: 'Handwerk' };
+    const map = { friseur: 'Friseursalon', fitness: 'Fitness/Sport', restaurant: 'Restaurant/Gastro', immobilien: 'Immobilien', coaching: 'Coaching/Beratung', ecommerce: 'E-Commerce', agentur: 'Agentur/Kreativ', arztpraxis: 'Arztpraxis', startup: 'Startup/Tech', handwerk: 'Handwerk', fotograf: 'Fotograf/Video', anwalt: 'Kanzlei/Recht', zahnarzt: 'Zahnarzt', bildung: 'Bildung/Kurse' };
     return map[ind] || ind;
   }
   function getColorLabel(c) {
-    const map = { dark: 'Dunkel & Elegant', light: 'Hell & Modern', colorful: 'Bunt & Kreativ' };
+    const map = { dark: 'Dunkel & Elegant', light: 'Hell & Modern', colorful: 'Bunt & Kreativ', mono: 'Monochrom', warm: 'Warm & Erdig', cool: 'Kalt & Tech' };
     return map[c] || c;
   }
   function getStyleLabel(s) {
-    const map = { minimal: 'Minimalistisch', luxury: 'Luxus & Premium', playful: 'Verspielt & Kreativ', corporate: 'Corporate & Seriös', tech: 'Modern & Tech' };
+    const map = { minimal: 'Minimalistisch', luxury: 'Luxus & Premium', playful: 'Verspielt & Kreativ', corporate: 'Corporate & Seriös', tech: 'Modern & Tech', brutalist: 'Brutalistisch', retro: 'Retro / Vintage', glass: 'Glassmorphism', neon: 'Neon / Cyberpunk' };
     return map[s] || s;
   }
   function getAnimLabel(a) {
-    const map = { none: 'Keine', subtle: 'Subtil & Dezent', heavy: 'Viele & Auffällig' };
+    const map = { none: 'Keine', subtle: 'Subtil & Dezent', scroll: 'Scroll-Animationen', parallax: 'Parallax-Effekt', heavy: 'Viele & Auffällig' };
     return map[a] || a;
   }
   function getLangLabel(l) {
@@ -3588,6 +3746,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         ${flowData.pages ? `<div class="flow-summary-row"><span class="flow-summary-label">Seiten:</span><strong>${flowData.pages}</strong></div>` : ''}
         <div class="flow-summary-row"><span class="flow-summary-label">Farben:</span><strong>${getColorLabel(flowData.colors)}</strong></div>
         <div class="flow-summary-row"><span class="flow-summary-label">Stil:</span><strong>${getStyleLabel(flowData.style)}</strong></div>
+        ${flowData.typography ? `<div class="flow-summary-row"><span class="flow-summary-label">Typografie:</span><strong>${getTypoLabel(flowData.typography)}</strong></div>` : ''}
         <div class="flow-summary-row"><span class="flow-summary-label">Animationen:</span><strong>${getAnimLabel(flowData.animations)}</strong></div>
         <div class="flow-summary-row"><span class="flow-summary-label">Sprache:</span><strong>${getLangLabel(flowData.language)}</strong></div>
         ${flowData.extras ? `<div class="flow-summary-row"><span class="flow-summary-label">Extras:</span><strong>${escapeHtml(flowData.extras)}</strong></div>` : ''}
@@ -3602,12 +3761,18 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     });
   }
 
+  function getTypoLabel(t) {
+    const map = { modern: 'Moderne Sans-Serif', serif: 'Elegante Serif', display: 'Display/Bold', mono: 'Monospace/Code' };
+    return map[t] || t;
+  }
+
   function buildFlowPrompt() {
     let prompt = `Erstelle eine ${getTypeLabel(flowData.type)} für die Branche "${getIndustryLabel(flowData.industry)}".`;
     prompt += `\nSektionen: ${flowData.sections.join(', ')}.`;
     if (flowData.pages) prompt += `\nAnzahl Seiten: ${flowData.pages}.`;
     prompt += `\nFarbschema: ${getColorLabel(flowData.colors)}.`;
     prompt += `\nDesign-Stil: ${getStyleLabel(flowData.style)}.`;
+    if (flowData.typography) prompt += `\nTypografie: ${getTypoLabel(flowData.typography)}.`;
     prompt += `\nAnimationen: ${getAnimLabel(flowData.animations)}.`;
     prompt += `\nSprache: ${getLangLabel(flowData.language)}.`;
     if (flowData.extras) prompt += `\nBesonderheiten: ${flowData.extras}.`;
@@ -4232,7 +4397,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   });
 
   // Modal controls
-  document.querySelector('.btn-publish').addEventListener('click', openPublishModal);
+  document.getElementById('btnPublish').addEventListener('click', openPublishModal);
   document.getElementById('publishClose').addEventListener('click', closePublishModal);
   document.getElementById('publishCancel').addEventListener('click', closePublishModal);
   document.getElementById('publishDone').addEventListener('click', closePublishModal);
@@ -4720,32 +4885,80 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   });
 
   // ═══════════════════════════════════════
-  // TOOLBAR BUTTON HANDLERS
+  // PHASE STEPPER LOGIC
   // ═══════════════════════════════════════
+  let currentPhase = 1;
+  const phaseSteps = document.querySelectorAll('.phase-step');
+  const phaseLines = document.querySelectorAll('.phase-line');
+  const publishBtn = document.getElementById('btnPublish');
 
-  // Share — copy URL to clipboard
-  document.getElementById('btnShare').addEventListener('click', () => {
-    const url = window.location.href;
-    navigator.clipboard.writeText(url).then(() => {
-      showToast('Link kopiert!');
-    }).catch(() => {
-      showToast('Link konnte nicht kopiert werden');
+  function setPhase(phase) {
+    currentPhase = phase;
+    phaseSteps.forEach((step, i) => {
+      const p = parseInt(step.dataset.phase);
+      step.classList.remove('active', 'done', 'next');
+      if (p < phase) step.classList.add('done');
+      else if (p === phase) step.classList.add('active');
+      else if (p === phase + 1) step.classList.add('next');
+    });
+    phaseLines.forEach((line, i) => {
+      line.classList.toggle('done', i < phase - 1);
+    });
+    // Enable publish button once website exists
+    if (publishBtn) publishBtn.disabled = !currentHtml && !Object.keys(currentFiles).length;
+  }
+
+  // Phase stepper click: open the correct modal/action for each phase
+  phaseSteps.forEach(step => {
+    step.addEventListener('click', () => {
+      const phase = parseInt(step.dataset.phase);
+      if (phase === 1) {
+        // Phase 1: Erstellen — just focus the chat input
+        textarea.focus();
+      } else if (phase === 2) {
+        // Phase 2: Verfeinern — insert quick-action prompts
+        setPhase(2);
+        showToast('Verfeinere deine Website per Chat — Texte, Farben, Sektionen anpassen.');
+      } else if (phase === 3) {
+        // Phase 3: Backend — open a combined modal for form/whatsapp/agent
+        setPhase(3);
+        openModal('formOverlay');
+      } else if (phase === 4) {
+        // Phase 4: Domain
+        setPhase(4);
+        openModal('domainOverlay');
+      } else if (phase === 5) {
+        // Phase 5: SEO
+        setPhase(5);
+        openModal('seoOverlay');
+      } else if (phase === 6) {
+        // Phase 6: Deploy/Live
+        setPhase(6);
+        openDeployModal();
+      }
     });
   });
 
-  // Deploy
-  document.getElementById('btnDeploy').addEventListener('click', () => {
-    // Reset state
+  // Auto-advance to phase 2 when first website is generated
+  function advanceToPhase2() {
+    if (currentPhase === 1 && (currentHtml || Object.keys(currentFiles).length)) {
+      setPhase(2);
+      if (publishBtn) publishBtn.disabled = false;
+    }
+  }
+
+  // Deploy modal open helper
+  function openDeployModal() {
     document.getElementById('deployForm').style.display = 'block';
     document.getElementById('deployLoading').classList.remove('active');
     document.getElementById('deploySuccess').classList.remove('visible');
-    document.getElementById('deployUpgrade').classList.remove('visible');
+    const upgradeEl = document.getElementById('deployUpgrade');
+    if (upgradeEl) upgradeEl.classList.remove('visible');
 
     if (userPlan === 'explorer') {
       document.getElementById('deployForm').style.display = 'none';
-      document.getElementById('deployUpgrade').classList.add('visible');
+      if (upgradeEl) upgradeEl.classList.add('visible');
     } else {
-      // Auto-fill slug
       const name = document.getElementById('projectNameLabel').textContent || '';
       const slug = document.getElementById('deploySlug');
       if (!slug.value) {
@@ -4753,7 +4966,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       }
     }
     openModal('deployOverlay');
-  });
+  }
 
   // Deploy slug validation
   document.getElementById('deploySlug').addEventListener('input', function() {
@@ -4768,26 +4981,17 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       return;
     }
 
-    // Show loading
     document.getElementById('deployForm').style.display = 'none';
     const loadingEl = document.getElementById('deployLoading');
     const loadingText = document.getElementById('deployLoadingText');
     loadingEl.classList.add('active');
 
-    const deployMessages = [
-      'Website wird vorbereitet...',
-      'Dateien werden hochgeladen...',
-      'Domain wird konfiguriert...',
-      'Fast fertig...'
-    ];
+    const deployMessages = ['Website wird vorbereitet...', 'Dateien werden hochgeladen...', 'Domain wird konfiguriert...', 'Fast fertig...'];
     let dmIdx = 0;
     const dmInterval = setInterval(() => {
       dmIdx = (dmIdx + 1) % deployMessages.length;
       loadingText.style.opacity = '0';
-      setTimeout(() => {
-        loadingText.textContent = deployMessages[dmIdx];
-        loadingText.style.opacity = '1';
-      }, 250);
+      setTimeout(() => { loadingText.textContent = deployMessages[dmIdx]; loadingText.style.opacity = '1'; }, 250);
     }, 2500);
 
     try {
@@ -4826,22 +5030,17 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     navigator.clipboard.writeText(url).then(() => showToast('URL kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen'));
   });
 
-  // Agent modal
-  document.getElementById('btnAgent').addEventListener('click', () => openModal('agentOverlay'));
-
   // Agent card clicks
   document.querySelectorAll('.agent-card').forEach(card => {
     card.addEventListener('click', () => {
       const agentType = card.dataset.agent;
       const headline = document.getElementById('projectNameLabel').textContent || '';
-      const branche = '';
-      const url = `https://qntum-ai.onrender.com?agent_type=${encodeURIComponent(agentType)}&branche=${encodeURIComponent(branche)}&headline=${encodeURIComponent(headline)}`;
+      const url = `https://qntum-ai.onrender.com?agent_type=${encodeURIComponent(agentType)}&headline=${encodeURIComponent(headline)}`;
       window.open(url, '_blank');
     });
   });
 
-  // Domain modal
-  document.getElementById('btnDomain').addEventListener('click', () => openModal('domainOverlay'));
+  // Domain save
   document.getElementById('domainSave').addEventListener('click', () => {
     const domain = document.getElementById('domainInput').value.trim();
     if (!domain) { showToast('Bitte Domain eingeben'); return; }
@@ -4849,8 +5048,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     closeModal('domainOverlay');
   });
 
-  // SEO modal
-  document.getElementById('btnSeo').addEventListener('click', () => openModal('seoOverlay'));
+  // SEO save
   document.getElementById('seoSave').addEventListener('click', () => {
     const title = document.getElementById('seoTitle').value.trim();
     const desc = document.getElementById('seoDescription').value.trim();
@@ -4860,8 +5058,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     closeModal('seoOverlay');
   });
 
-  // Formular modal
-  document.getElementById('btnForm').addEventListener('click', () => openModal('formOverlay'));
+  // Formular save
   document.getElementById('formSave').addEventListener('click', () => {
     const email = document.getElementById('formEmail').value.trim();
     if (!email) { showToast('Bitte E-Mail-Adresse eingeben'); return; }
@@ -4870,8 +5067,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     closeModal('formOverlay');
   });
 
-  // WhatsApp modal
-  document.getElementById('btnWhatsapp').addEventListener('click', () => openModal('whatsappOverlay'));
+  // WhatsApp save
   document.getElementById('waSave').addEventListener('click', () => {
     const phone = document.getElementById('waPhone').value.trim();
     if (!phone) { showToast('Bitte Telefonnummer eingeben'); return; }
