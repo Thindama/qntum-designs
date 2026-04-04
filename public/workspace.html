@@ -391,30 +391,38 @@ input, textarea { font-family: inherit; }
   flex-shrink: 0;
   transition: background 0.3s;
 }
-/* Active phase */
+/* Active phase — heartbeat pulse */
 .phase-step.active .phase-dot {
   border-color: var(--ws-primary);
   background: rgba(0,230,138,0.12);
-  box-shadow: 0 0 8px rgba(0,230,138,0.2);
+  animation: phaseHeartbeat 2s ease-in-out infinite;
 }
 .phase-step.active .phase-dot svg { color: var(--ws-primary); }
 .phase-step.active .phase-label { color: var(--ws-primary-l); }
+@keyframes phaseHeartbeat {
+  0%, 100% { box-shadow: 0 0 6px rgba(0,230,138,0.2); transform: scale(1); }
+  25% { box-shadow: 0 0 12px rgba(0,230,138,0.4); transform: scale(1.1); }
+  35% { box-shadow: 0 0 8px rgba(0,230,138,0.25); transform: scale(1.02); }
+  45% { box-shadow: 0 0 14px rgba(0,230,138,0.35); transform: scale(1.08); }
+  60% { box-shadow: 0 0 6px rgba(0,230,138,0.15); transform: scale(1); }
+}
 /* Completed phase */
 .phase-step.done .phase-dot {
   border-color: var(--ws-primary);
   background: var(--ws-primary);
+  animation: none;
 }
 .phase-step.done .phase-dot svg { color: #000; }
 .phase-step.done .phase-label { color: var(--ws-text-2); }
 .phase-line.done { background: var(--ws-primary); }
-/* Pulse on next step */
+/* Subtle hint on next step */
 .phase-step.next .phase-dot {
-  animation: phasePulse 2s ease-in-out infinite;
+  animation: phaseNext 3s ease-in-out infinite;
   border-color: rgba(0,230,138,0.4);
 }
-@keyframes phasePulse {
+@keyframes phaseNext {
   0%, 100% { box-shadow: 0 0 0 0 rgba(0,230,138,0); }
-  50% { box-shadow: 0 0 0 4px rgba(0,230,138,0.15); }
+  50% { box-shadow: 0 0 0 4px rgba(0,230,138,0.12); }
 }
 
 /* ═══════════════════════════════════════
@@ -706,6 +714,14 @@ input, textarea { font-family: inherit; }
   background: rgba(0,230,138,0.03);
 }
 .chat-tab svg { width: 14px; height: 14px; }
+.chat-tab.tab-glow {
+  animation: tabGlow 1.5s ease-in-out infinite;
+  color: var(--ws-primary-l);
+}
+@keyframes tabGlow {
+  0%, 100% { box-shadow: 0 0 4px rgba(6,245,192,0.3); }
+  50% { box-shadow: 0 0 12px rgba(6,245,192,0.6), inset 0 0 8px rgba(6,245,192,0.1); }
+}
 
 .chat-tab-content { display: none; flex-direction: column; flex: 1; overflow: hidden; }
 .chat-tab-content.active { display: flex; }
@@ -774,6 +790,20 @@ input, textarea { font-family: inherit; }
   border-color: rgba(0,212,255,0.3);
   color: var(--ws-accent);
 }
+.comp-cat-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.06);
+  font-size: 9px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+.comp-cat.active .comp-cat-count { background: rgba(0,212,255,0.2); }
 
 .comp-grid {
   flex: 1;
@@ -800,7 +830,7 @@ input, textarea { font-family: inherit; }
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 .comp-thumb {
-  height: 100px;
+  height: 140px;
   background: var(--ws-bg-2);
   overflow: hidden;
   position: relative;
@@ -808,8 +838,8 @@ input, textarea { font-family: inherit; }
 }
 .comp-thumb iframe {
   width: 1200px;
-  height: 800px;
-  transform: scale(0.155);
+  height: 900px;
+  transform: scale(0.145);
   transform-origin: 0 0;
   border: none;
   pointer-events: none;
@@ -901,6 +931,7 @@ input, textarea { font-family: inherit; }
   flex: 1;
   border: none;
   width: 100%;
+  min-height: 400px;
   background: #0B1120;
 }
 .comp-card-body {
@@ -1197,14 +1228,14 @@ input, textarea { font-family: inherit; }
 }
 .preview-gen-overlay.active { display: flex; }
 .preview-gen-overlay.fade-out { opacity: 0; pointer-events: none; }
-.pgo-mark { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,229,255,0.18); font-weight: 600; position: absolute; top: 32px; }
+.pgo-mark { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,229,255,0.35); font-weight: 600; position: absolute; top: 32px; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
 .pgo-fact-container { max-width: 520px; text-align: center; padding: 0 40px; min-height: 120px; display: flex; align-items: center; justify-content: center; }
-.pgo-fact { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.82); font-weight: 400; letter-spacing: 0.01em; opacity: 0; transform: translateY(12px); animation: pgoFactIn 8s ease forwards; }
+.pgo-fact { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.95); font-weight: 400; letter-spacing: 0.01em; opacity: 0; transform: translateY(12px); animation: pgoFactIn 8s ease forwards; text-shadow: 0 2px 16px rgba(0,0,0,0.9); }
 @keyframes pgoFactIn { 0%{opacity:0;transform:translateY(12px)} 6%{opacity:1;transform:translateY(0)} 90%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-8px)} }
 .pgo-bottom { position: absolute; bottom: 48px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .pgo-pulse { width: 200px; height: 2px; background: rgba(0,229,255,0.1); border-radius: 1px; overflow: hidden; position: relative; }
 .pgo-pulse::after { content: ''; position: absolute; left: -40%; width: 40%; height: 100%; background: linear-gradient(90deg,transparent,#00e5ff,transparent); animation: pulseLine 2s ease-in-out infinite; }
-.pgo-label { font-size: 13px; color: rgba(255,255,255,0.4); font-weight: 500; letter-spacing: 0.04em; }
+.pgo-label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500; letter-spacing: 0.04em; text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
 .preview-frame.tablet { max-width: 768px; }
 .preview-frame.mobile { max-width: 375px; }
 
@@ -1819,6 +1850,90 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   line-height: 1.7;
   margin-bottom: 16px;
 }
+.deploy-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 0;
+}
+.deploy-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ws-text-3);
+  transition: all 0.3s;
+}
+.deploy-check-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.deploy-check-item.done { color: var(--ws-primary); }
+.deploy-check-item.done svg { color: var(--ws-primary); }
+.deploy-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+}
+.deploy-step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ws-text-3);
+  opacity: 0.4;
+  transition: all 0.4s;
+}
+.deploy-step-item.active { opacity: 1; color: var(--ws-text); }
+.deploy-step-item.done { opacity: 1; color: var(--ws-primary); }
+.deploy-step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ws-text-3);
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+.deploy-step-item.active .deploy-step-dot { background: var(--ws-accent); animation: deployDotPulse 1s ease-in-out infinite; }
+.deploy-step-item.done .deploy-step-dot { background: var(--ws-primary); }
+@keyframes deployDotPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0); }
+  50% { box-shadow: 0 0 0 4px rgba(0,212,255,0.3); }
+}
+.deploy-progress-bar {
+  height: 3px;
+  background: var(--ws-border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.deploy-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ws-primary), var(--ws-accent));
+  border-radius: 100px;
+  width: 0%;
+  transition: width 0.6s ease;
+}
+.deploy-share-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.deploy-share-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-2);
+  cursor: pointer;
+  transition: all var(--ws-transition);
+}
+.deploy-share-btn:hover { border-color: var(--ws-border-l); color: var(--ws-text); background: rgba(255,255,255,0.06); }
+.deploy-share-btn svg { width: 14px; height: 14px; }
 
 /* Agent modal grid */
 .agent-grid {
@@ -1928,6 +2043,136 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   transition: transform 0.2s;
 }
 .toggle-switch.on::after { transform: translateX(18px); }
+
+/* Backend-Modal: Tabbed layout */
+.backend-tabs {
+  display: flex;
+  height: 420px;
+}
+.backend-sidebar {
+  width: 180px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.015);
+  border-right: 1px solid var(--ws-border);
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+}
+.backend-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ws-text-3);
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+}
+.backend-tab:hover { color: var(--ws-text-2); background: rgba(255,255,255,0.02); }
+.backend-tab.active {
+  color: var(--ws-text);
+  border-left-color: var(--ws-primary);
+  background: rgba(0,230,138,0.04);
+}
+.backend-tab svg { width: 15px; height: 15px; flex-shrink: 0; }
+.backend-tab .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ws-text-3);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.backend-tab .status-dot.on { background: var(--ws-primary); }
+.backend-content {
+  flex: 1;
+  padding: 20px 24px;
+  overflow-y: auto;
+}
+.backend-pane { display: none; }
+.backend-pane.active { display: block; }
+.backend-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ws-text);
+  margin-bottom: 14px;
+}
+.backend-field-checks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+}
+.backend-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ws-text-2);
+  cursor: pointer;
+}
+.backend-check input[type="checkbox"] {
+  accent-color: var(--ws-primary);
+  width: 14px;
+  height: 14px;
+}
+.backend-agent-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.backend-agent-card {
+  padding: 16px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--ws-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+.backend-agent-card:hover {
+  border-color: rgba(0,212,255,0.25);
+  background: rgba(0,212,255,0.04);
+  transform: translateY(-1px);
+}
+.backend-agent-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin: 0 auto 8px;
+}
+.backend-agent-name { font-size: 12px; font-weight: 700; color: var(--ws-text); margin-bottom: 3px; }
+.backend-agent-desc { font-size: 10.5px; color: var(--ws-text-3); line-height: 1.5; }
+.backend-platform-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  margin-top: 16px;
+  background: rgba(108,58,237,0.06);
+  border: 1px solid rgba(108,58,237,0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.backend-platform-link:hover { background: rgba(108,58,237,0.1); border-color: rgba(108,58,237,0.35); }
+.backend-platform-link svg { width: 18px; height: 18px; color: #A78BFA; flex-shrink: 0; }
+.backend-platform-link .bpl-text { font-size: 12px; font-weight: 600; color: var(--ws-text); }
+.backend-platform-link .bpl-sub { font-size: 10.5px; color: var(--ws-text-3); }
+.backend-footer-note {
+  font-size: 10px;
+  color: var(--ws-text-3);
+  text-align: center;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ws-border);
+}
 
 /* ═══════════════════════════════════════
    CHAT FLOW — Interactive Cards & Chips
@@ -2131,6 +2376,51 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 }
 .flow-freetext button:hover { background: rgba(0,229,255,0.15); }
 
+/* Quick-action buttons (welcome message) */
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.quick-action-btn {
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 11.5px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--ws-border);
+  color: var(--ws-text-2);
+  cursor: pointer;
+  transition: all var(--ws-transition);
+  font-family: var(--ws-font);
+}
+.quick-action-btn:hover {
+  border-color: rgba(0,230,138,0.3);
+  background: rgba(0,230,138,0.08);
+  color: var(--ws-primary-l);
+}
+
+/* Network error banner */
+.net-error-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  padding: 8px 16px;
+  background: rgba(255,50,50,0.95);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  display: none;
+  animation: slideDown 0.3s ease;
+}
+.net-error-banner.visible { display: block; }
+@keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+
 /* Chat loading overlay (inside chat panel) */
 .chat-gen-overlay {
   position: absolute;
@@ -2207,6 +2497,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 </head>
 
 <body>
+
+<div class="net-error-banner" id="netErrorBanner">Keine Internetverbindung — Einige Funktionen sind eingeschränkt.</div>
 
 <div class="workspace" id="workspace">
 
@@ -2440,17 +2732,17 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
             <input type="text" class="comp-search" id="compSearch" placeholder="Komponente suchen...">
           </div>
           <div class="comp-categories" id="compCategories">
-            <button class="comp-cat active" data-category="all">Alle</button>
-            <button class="comp-cat" data-category="hero">Hero</button>
-            <button class="comp-cat" data-category="features">Features</button>
-            <button class="comp-cat" data-category="pricing">Pricing</button>
-            <button class="comp-cat" data-category="cta">CTA</button>
-            <button class="comp-cat" data-category="testimonials">Testimonials</button>
-            <button class="comp-cat" data-category="footer">Footer</button>
-            <button class="comp-cat" data-category="nav">Navigation</button>
-            <button class="comp-cat" data-category="faq">FAQ</button>
-            <button class="comp-cat" data-category="stats">Stats</button>
-            <button class="comp-cat" data-category="contact">Kontakt</button>
+            <button class="comp-cat active" data-category="all">Alle <span class="comp-cat-count">34</span></button>
+            <button class="comp-cat" data-category="hero">Hero <span class="comp-cat-count">5</span></button>
+            <button class="comp-cat" data-category="features">Features <span class="comp-cat-count">5</span></button>
+            <button class="comp-cat" data-category="pricing">Pricing <span class="comp-cat-count">4</span></button>
+            <button class="comp-cat" data-category="cta">CTA <span class="comp-cat-count">3</span></button>
+            <button class="comp-cat" data-category="testimonials">Testimonials <span class="comp-cat-count">4</span></button>
+            <button class="comp-cat" data-category="footer">Footer <span class="comp-cat-count">3</span></button>
+            <button class="comp-cat" data-category="nav">Navigation <span class="comp-cat-count">3</span></button>
+            <button class="comp-cat" data-category="faq">FAQ <span class="comp-cat-count">3</span></button>
+            <button class="comp-cat" data-category="stats">Stats <span class="comp-cat-count">2</span></button>
+            <button class="comp-cat" data-category="contact">Kontakt <span class="comp-cat-count">2</span></button>
           </div>
           <div class="comp-grid" id="compGrid">
             <!-- Component cards loaded dynamically -->
@@ -2464,7 +2756,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       <div class="preview-toolbar">
         <div class="preview-url">
           <span class="url-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
-          ki-agentur-pro.qntum.design
+          <span id="previewUrlText">ki-agentur-pro.qntum.design</span>
         </div>
         <div class="preview-devices">
           <button class="device-btn active" data-device="desktop" title="Desktop">
@@ -2601,13 +2893,19 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         </button>
       </div>
       <div class="modal-body">
+        <!-- Stage 1: Config with checklist -->
         <div id="deployForm">
-          <div class="modal-field">
+          <div class="deploy-checklist" id="deployChecklist">
+            <div class="deploy-check-item done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg> Website erstellt</div>
+            <div class="deploy-check-item" id="checkSlug"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg> Subdomain festlegen</div>
+            <div class="deploy-check-item" id="checkDeploy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg> Live schalten</div>
+          </div>
+          <div class="modal-field" style="margin-top:16px;">
             <label class="modal-label">Subdomain</label>
             <div class="deploy-slug-row">
               <span class="deploy-slug-prefix" id="deployPrefix"></span>
               <input type="text" id="deploySlug" placeholder="mein-projekt" autocomplete="off" spellcheck="false">
-              <span class="deploy-slug-prefix">.qntum.design</span>
+              <span class="deploy-slug-prefix" id="deploySuffix">.qntum.design</span>
             </div>
             <div class="modal-hint">Nur Kleinbuchstaben, Zahlen und Bindestriche. Min. 3 Zeichen.</div>
           </div>
@@ -2616,21 +2914,38 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
             <button class="modal-btn modal-btn-primary" id="deploySubmit">Deploy starten</button>
           </div>
         </div>
+        <!-- Stage 2: Step-by-step animation -->
         <div class="deploy-loading" id="deployLoading">
-          <div class="gen-pulse"></div>
-          <div class="deploy-loading-text" id="deployLoadingText">Website wird vorbereitet...</div>
+          <div class="deploy-steps" id="deploySteps">
+            <div class="deploy-step-item" data-step="1"><span class="deploy-step-dot"></span> Dateien werden optimiert...</div>
+            <div class="deploy-step-item" data-step="2"><span class="deploy-step-dot"></span> CDN wird konfiguriert...</div>
+            <div class="deploy-step-item" data-step="3"><span class="deploy-step-dot"></span> SSL-Zertifikat wird erstellt...</div>
+            <div class="deploy-step-item" data-step="4"><span class="deploy-step-dot"></span> Website wird live geschaltet...</div>
+          </div>
+          <div class="deploy-progress-bar"><div class="deploy-progress-fill" id="deployProgressFill"></div></div>
         </div>
+        <!-- Stage 3: Success with share options -->
         <div class="deploy-success" id="deploySuccess">
           <div class="deploy-success-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
           </div>
-          <h3>Deploy erfolgreich!</h3>
+          <h3>Deine Website ist live!</h3>
           <div class="deploy-success-url" id="deployLiveUrl"></div>
+          <div class="deploy-share-row">
+            <button class="deploy-share-btn" id="deployCopyUrl" title="URL kopieren">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+              URL kopieren
+            </button>
+            <button class="deploy-share-btn" id="deployOpenUrl" title="Im Browser öffnen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+              Öffnen
+            </button>
+          </div>
           <div class="modal-actions" style="margin-top:16px;">
             <button class="modal-btn modal-btn-secondary" data-close="deployOverlay">Schliessen</button>
-            <button class="modal-btn modal-btn-primary" id="deployCopyUrl">URL kopieren</button>
           </div>
         </div>
+        <!-- Stage 4: Upgrade required -->
         <div class="deploy-upgrade" id="deployUpgrade">
           <div style="width:48px;height:48px;background:rgba(255,180,0,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFB400" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -2645,51 +2960,177 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     </div>
   </div>
 
-  <!-- ═══ KI-AGENT MODAL ═══ -->
-  <div class="modal-overlay" id="agentOverlay">
+  <!-- ═══ BACKEND & INTEGRATIONEN MODAL ═══ -->
+  <div class="modal-overlay" id="backendOverlay">
     <div class="modal-box wide">
       <div class="modal-header">
         <h2>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16.01"/><line x1="16" y1="16" x2="16" y2="16.01"/></svg>
-          KI-Agenten
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="8" x="2" y="2" rx="2"/><rect width="20" height="8" x="2" y="14" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          Backend & Integrationen
         </h2>
-        <button class="modal-close" data-close="agentOverlay">
+        <button class="modal-close" data-close="backendOverlay">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div class="modal-body">
-        <div class="agent-grid" id="agentGrid">
-          <div class="agent-card" data-agent="sales">
-            <div class="agent-card-icon" style="background:rgba(0,230,138,0.1);color:#00E68A;">&#128176;</div>
-            <div class="agent-card-name">Sales Agent</div>
-            <div class="agent-card-desc">Automatisiere deinen Vertrieb mit KI-gestuetzten Verkaufsgespraechen.</div>
+      <div class="backend-tabs">
+        <!-- Sidebar tabs -->
+        <div class="backend-sidebar" id="backendSidebar">
+          <div class="backend-tab active" data-pane="forms">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg>
+            Formulare
+            <span class="status-dot" id="formStatusDot"></span>
           </div>
-          <div class="agent-card" data-agent="support">
-            <div class="agent-card-icon" style="background:rgba(0,212,255,0.1);color:#00D4FF;">&#128172;</div>
-            <div class="agent-card-name">Support Agent</div>
-            <div class="agent-card-desc">24/7 Kundenservice mit intelligenten Antworten.</div>
+          <div class="backend-tab" data-pane="email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            E-Mail
           </div>
-          <div class="agent-card" data-agent="lead">
-            <div class="agent-card-icon" style="background:rgba(167,139,250,0.1);color:#A78BFA;">&#127919;</div>
-            <div class="agent-card-name">Lead Agent</div>
-            <div class="agent-card-desc">Qualifiziere und sammle Leads automatisch.</div>
+          <div class="backend-tab" data-pane="whatsapp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            WhatsApp
+            <span class="status-dot" id="waStatusDot"></span>
           </div>
-          <div class="agent-card" data-agent="booking">
-            <div class="agent-card-icon" style="background:rgba(245,158,11,0.1);color:#F59E0B;">&#128197;</div>
-            <div class="agent-card-name">Booking Agent</div>
-            <div class="agent-card-desc">Termine und Buchungen automatisch verwalten.</div>
+          <div class="backend-tab" data-pane="analytics">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            Analytics
           </div>
-          <div class="agent-card" data-agent="calling">
-            <div class="agent-card-icon" style="background:rgba(239,68,68,0.1);color:#EF4444;">&#128222;</div>
-            <div class="agent-card-name">Calling Agent</div>
-            <div class="agent-card-desc">KI-Telefonassistent fuer eingehende und ausgehende Anrufe.</div>
-          </div>
-          <div class="agent-card" data-agent="whatsapp">
-            <div class="agent-card-icon" style="background:rgba(37,211,102,0.1);color:#25D366;">&#128241;</div>
-            <div class="agent-card-name">WhatsApp Agent</div>
-            <div class="agent-card-desc">Automatisierte WhatsApp-Kommunikation mit Kunden.</div>
+          <div class="backend-tab" data-pane="agents">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/></svg>
+            KI-Agenten
           </div>
         </div>
+        <!-- Content panes -->
+        <div class="backend-content">
+          <!-- TAB: Formulare -->
+          <div class="backend-pane active" id="pane-forms">
+            <div class="modal-toggle-row" style="padding-top:0;">
+              <span class="modal-toggle-label">Kontaktformular aktivieren</span>
+              <div class="toggle-switch" id="formToggle"></div>
+            </div>
+            <div class="backend-section-title" style="margin-top:14px;">Formularfelder</div>
+            <div class="backend-field-checks">
+              <label class="backend-check"><input type="checkbox" checked disabled> Name (Pflicht)</label>
+              <label class="backend-check"><input type="checkbox" checked disabled> E-Mail (Pflicht)</label>
+              <label class="backend-check"><input type="checkbox" id="fieldPhone"> Telefon</label>
+              <label class="backend-check"><input type="checkbox" id="fieldSubject"> Betreff</label>
+              <label class="backend-check"><input type="checkbox" checked disabled> Nachricht (Pflicht)</label>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Erfolgsmeldung</label>
+              <input type="text" class="modal-input" id="formSuccessMsg" placeholder="Vielen Dank fuer Ihre Nachricht!" value="Vielen Dank fuer Ihre Nachricht!">
+            </div>
+            <div class="modal-toggle-row">
+              <span class="modal-toggle-label">Spam-Schutz (Honeypot)</span>
+              <div class="toggle-switch on" id="spamToggle"></div>
+            </div>
+          </div>
+          <!-- TAB: E-Mail -->
+          <div class="backend-pane" id="pane-email">
+            <div class="modal-field">
+              <label class="modal-label">Empfänger E-Mail</label>
+              <input type="email" class="modal-input" id="formEmail" placeholder="kontakt@mein-unternehmen.de">
+              <div class="modal-hint">Formulareingaben werden an diese E-Mail gesendet.</div>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Betreff-Template</label>
+              <input type="text" class="modal-input" id="emailSubjectTpl" placeholder="Neue Anfrage von {{name}}">
+              <div class="modal-hint">Variablen: {{name}}, {{email}}, {{betreff}}</div>
+            </div>
+            <div class="modal-toggle-row">
+              <span class="modal-toggle-label">Auto-Reply aktivieren</span>
+              <div class="toggle-switch" id="autoReplyToggle"></div>
+            </div>
+            <div class="modal-field" id="autoReplyField" style="display:none;">
+              <label class="modal-label">Auto-Reply Nachricht</label>
+              <textarea class="modal-input" id="autoReplyMsg" rows="3" placeholder="Wir haben Ihre Nachricht erhalten und melden uns innerhalb von 24 Stunden."></textarea>
+            </div>
+            <div class="modal-hint" style="margin-top:8px;">Standard-Versand ueber Qntum-Server. Eigener SMTP verfuegbar ab Pro-Plan.</div>
+          </div>
+          <!-- TAB: WhatsApp -->
+          <div class="backend-pane" id="pane-whatsapp">
+            <div class="modal-field">
+              <label class="modal-label">Telefonnummer mit Laendervorwahl</label>
+              <input type="tel" class="modal-input" id="waPhone" placeholder="+49 170 1234567">
+              <div class="modal-hint">Besucher koennen dich direkt ueber WhatsApp kontaktieren.</div>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Standard-Nachricht</label>
+              <textarea class="modal-input" id="waDefaultMsg" rows="2" placeholder="Hallo, ich habe eine Frage zu..."></textarea>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Position</label>
+              <select class="modal-input" id="waPosition" style="padding:10px 12px;">
+                <option value="right">Rechts unten</option>
+                <option value="left">Links unten</option>
+              </select>
+            </div>
+            <div class="wa-widget-preview">
+              <div class="wa-widget-mock">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              </div>
+            </div>
+          </div>
+          <!-- TAB: Analytics -->
+          <div class="backend-pane" id="pane-analytics">
+            <div class="modal-field">
+              <label class="modal-label">Google Analytics</label>
+              <input type="text" class="modal-input" id="gaId" placeholder="G-XXXXXXXXXX">
+              <div class="modal-hint">Tracking-ID aus deinem Google Analytics Dashboard.</div>
+            </div>
+            <div class="modal-field">
+              <label class="modal-label">Meta Pixel</label>
+              <input type="text" class="modal-input" id="metaPixelId" placeholder="123456789012345">
+              <div class="modal-hint">Pixel-ID aus dem Meta Business Manager.</div>
+            </div>
+            <div class="modal-hint" style="margin-top:12px;">Tracking-Code wird automatisch in deine Website integriert.</div>
+          </div>
+          <!-- TAB: KI-Agenten -->
+          <div class="backend-pane" id="pane-agents">
+            <div style="font-size:12.5px;color:var(--ws-text-2);margin-bottom:14px;line-height:1.6;">Verbinde intelligente KI-Agenten mit deiner Website. Konfiguriere sie in der Qntum AI Platform und binde sie per Embed-Code ein.</div>
+            <div class="backend-agent-grid" id="backendAgentGrid">
+              <div class="backend-agent-card" data-agent="sales">
+                <div class="backend-agent-icon" style="background:rgba(0,230,138,0.1);color:#00E68A;">&#128176;</div>
+                <div class="backend-agent-name">Sales Agent</div>
+                <div class="backend-agent-desc">KI-gestuetzte Verkaufsgespraeche</div>
+              </div>
+              <div class="backend-agent-card" data-agent="support">
+                <div class="backend-agent-icon" style="background:rgba(0,212,255,0.1);color:#00D4FF;">&#128172;</div>
+                <div class="backend-agent-name">Support Agent</div>
+                <div class="backend-agent-desc">24/7 Kundenservice</div>
+              </div>
+              <div class="backend-agent-card" data-agent="lead">
+                <div class="backend-agent-icon" style="background:rgba(167,139,250,0.1);color:#A78BFA;">&#127919;</div>
+                <div class="backend-agent-name">Lead Agent</div>
+                <div class="backend-agent-desc">Automatische Lead-Qualifizierung</div>
+              </div>
+              <div class="backend-agent-card" data-agent="booking">
+                <div class="backend-agent-icon" style="background:rgba(245,158,11,0.1);color:#F59E0B;">&#128197;</div>
+                <div class="backend-agent-name">Booking Agent</div>
+                <div class="backend-agent-desc">Termine automatisch verwalten</div>
+              </div>
+              <div class="backend-agent-card" data-agent="calling">
+                <div class="backend-agent-icon" style="background:rgba(239,68,68,0.1);color:#EF4444;">&#128222;</div>
+                <div class="backend-agent-name">Calling Agent</div>
+                <div class="backend-agent-desc">KI-Telefonassistent</div>
+              </div>
+              <div class="backend-agent-card" data-agent="whatsapp">
+                <div class="backend-agent-icon" style="background:rgba(37,211,102,0.1);color:#25D366;">&#128241;</div>
+                <div class="backend-agent-name">WhatsApp Agent</div>
+                <div class="backend-agent-desc">Automatisierte WhatsApp-Chats</div>
+              </div>
+            </div>
+            <div class="backend-platform-link" id="openQntumAI">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+              <div>
+                <div class="bpl-text">Qntum AI Platform oeffnen</div>
+                <div class="bpl-sub">Visueller Workflow-Builder mit 100+ Integrationen</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 24px 20px;display:flex;justify-content:flex-end;gap:8px;">
+        <button class="modal-btn modal-btn-secondary" data-close="backendOverlay">Abbrechen</button>
+        <button class="modal-btn modal-btn-primary" id="backendSave">Speichern</button>
       </div>
     </div>
   </div>
@@ -2763,67 +3204,6 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     </div>
   </div>
 
-  <!-- ═══ FORMULAR MODAL ═══ -->
-  <div class="modal-overlay" id="formOverlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h2>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h10"/><path d="M7 12h10"/><path d="M7 17h6"/></svg>
-          Kontaktformular
-        </h2>
-        <button class="modal-close" data-close="formOverlay">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-field">
-          <label class="modal-label">E-Mail-Adresse fuer Formulareingaenge</label>
-          <input type="email" class="modal-input" id="formEmail" placeholder="kontakt@mein-unternehmen.de">
-          <div class="modal-hint">Formulareingaben werden an diese E-Mail-Adresse gesendet.</div>
-        </div>
-        <div class="modal-toggle-row">
-          <span class="modal-toggle-label">Kontaktformular aktivieren</span>
-          <div class="toggle-switch" id="formToggle"></div>
-        </div>
-        <div class="modal-actions" style="margin-top:8px;">
-          <button class="modal-btn modal-btn-secondary" data-close="formOverlay">Abbrechen</button>
-          <button class="modal-btn modal-btn-primary" id="formSave">Speichern</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ WHATSAPP MODAL ═══ -->
-  <div class="modal-overlay" id="whatsappOverlay">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h2>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          WhatsApp-Widget
-        </h2>
-        <button class="modal-close" data-close="whatsappOverlay">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="modal-field">
-          <label class="modal-label">Telefonnummer mit Laendervorwahl</label>
-          <input type="tel" class="modal-input" id="waPhone" placeholder="+49 170 1234567">
-          <div class="modal-hint">Besucher koennen dich direkt ueber WhatsApp kontaktieren.</div>
-        </div>
-        <div class="wa-widget-preview">
-          <div class="wa-widget-mock">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          </div>
-        </div>
-        <div class="modal-actions" style="margin-top:16px;">
-          <button class="modal-btn modal-btn-secondary" data-close="whatsappOverlay">Abbrechen</button>
-          <button class="modal-btn modal-btn-primary" id="waSave">Aktivieren</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- ═══ COMPONENT PREVIEW MODAL ═══ -->
   <div class="comp-preview-modal" id="compPreviewModal">
     <div class="comp-preview-box">
@@ -2862,6 +3242,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const token = localStorage.getItem('qntum_token');
   if (!token && !isDemo) { window.location.href = '/auth.html'; return; }
 
+  // Dynamic host: use actual hostname for dev/production
+  const APP_HOST = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+    ? location.host : 'qntum.design';
+  const LIVE_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+    ? `${location.protocol}//${location.host}/live` : 'https://{slug}.qntum.design';
+
   const projectId = new URLSearchParams(window.location.search).get('project');
   let currentHtml = '';
   let currentFiles = {};
@@ -2886,6 +3272,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const previewEmpty = document.getElementById('previewEmpty');
   const previewFrameWrap = document.getElementById('previewFrameWrap');
   const statusLeft = document.querySelector('.statusbar span');
+
+  // Dynamic host: update static HTML elements
+  if (APP_HOST.includes('localhost')) {
+    const previewUrlText = document.getElementById('previewUrlText');
+    if (previewUrlText) previewUrlText.textContent = `${APP_HOST}/live/ki-agentur-pro`;
+    const deploySuffix = document.getElementById('deploySuffix');
+    if (deploySuffix) deploySuffix.textContent = `.${APP_HOST}/live/`;
+  }
   const statusCenter = document.querySelector('.statusbar-center');
 
   // ═══════════════════════════════════════
@@ -3041,13 +3435,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   // Overlay phases: 'full' (82% opaque, blur 6px) → 'reveal' (55% opaque, blur 2px) → 'done' (fade out)
   function setOverlayPhase(phase) {
     if (phase === 'reveal') {
-      previewGenOverlay.style.background = 'rgba(8,8,8,0.55)';
+      previewGenOverlay.style.background = 'rgba(8,8,8,0.68)';
+      previewGenOverlay.style.backdropFilter = 'blur(4px)';
+      previewGenOverlay.style.webkitBackdropFilter = 'blur(4px)';
+    } else if (phase === 'more') {
+      previewGenOverlay.style.background = 'rgba(8,8,8,0.50)';
       previewGenOverlay.style.backdropFilter = 'blur(2px)';
       previewGenOverlay.style.webkitBackdropFilter = 'blur(2px)';
-    } else if (phase === 'more') {
-      previewGenOverlay.style.background = 'rgba(8,8,8,0.35)';
-      previewGenOverlay.style.backdropFilter = 'blur(1px)';
-      previewGenOverlay.style.webkitBackdropFilter = 'blur(1px)';
     }
   }
 
@@ -3223,7 +3617,23 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   // ═══════════════════════════════════════
   async function loadProject() {
     if (!projectId) {
-      appendMessage('assistant', 'Willkommen bei Qntum! Beschreibe mir kurz, welche Website du erstellen möchtest — ich führe dich durch den Prozess.');
+      appendFlowMessage(`
+        <div style="margin-bottom:8px;">Willkommen bei Qntum! Beschreibe mir kurz, welche Website du erstellen möchtest — oder starte mit einem Schnellbefehl:</div>
+        <div class="quick-actions" id="quickActions">
+          <button class="quick-action-btn" data-prompt="Erstelle eine professionelle Landing Page für mein Unternehmen">Landing Page</button>
+          <button class="quick-action-btn" data-prompt="Erstelle einen modernen Online-Shop mit Produktübersicht">Online-Shop</button>
+          <button class="quick-action-btn" data-prompt="Erstelle eine Portfolio-Website für meine kreative Arbeit">Portfolio</button>
+          <button class="quick-action-btn" data-prompt="Erstelle eine SaaS-Landing-Page mit Features und Pricing">SaaS Website</button>
+        </div>
+      `);
+      document.querySelectorAll('.quick-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const prompt = btn.dataset.prompt;
+          document.querySelectorAll('.quick-action-btn').forEach(b => b.style.pointerEvents = 'none');
+          appendMessage('user', prompt);
+          startFlow(prompt);
+        });
+      });
       return;
     }
 
@@ -3241,7 +3651,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
       // Update UI
       document.getElementById('projectNameLabel').textContent = project.name;
-      document.querySelector('.preview-url').innerHTML = `<span class="url-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> ${project.name.toLowerCase().replace(/\s+/g,'-')}.qntum.design`;
+      const slug = project.name.toLowerCase().replace(/\s+/g,'-');
+      const urlDisplay = APP_HOST.includes('localhost') ? `${APP_HOST}/live/${slug}` : `${slug}.qntum.design`;
+      document.querySelector('.preview-url').innerHTML = `<span class="url-lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect width="14" height="10" x="5" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span> ${urlDisplay}`;
 
       // Set stack from project
       if (project.stack) {
@@ -3292,8 +3704,10 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     customColor: null,
     style: null,
     typography: null,
+    designFocus: null,
     animations: null,
     language: null,
+    wantComponents: false,
     extras: null
   };
 
@@ -3365,7 +3779,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       showIndustryQuestion();
     } else {
       flowStep = 3;
-      showDetailQuestions();
+      showSectionsQuestion();
     }
   }
 
@@ -3449,7 +3863,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
           setTimeout(() => showIndustryQuestion(), 400);
         } else {
           flowStep = 3;
-          setTimeout(() => showDetailQuestions(), 400);
+          setTimeout(() => showSectionsQuestion(), 400);
         }
       });
     });
@@ -3498,7 +3912,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
             ft.remove();
             appendMessage('user', val);
             flowStep = 3;
-            setTimeout(() => showDetailQuestions(), 400);
+            setTimeout(() => showSectionsQuestion(), 400);
           };
           ftBtn.addEventListener('click', submitFreetext);
           ftInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') submitFreetext(); });
@@ -3510,7 +3924,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         msg.querySelectorAll('.flow-card').forEach(c => c.style.pointerEvents = 'none');
         appendMessage('user', card.querySelector('.flow-card-label').textContent);
         flowStep = 3;
-        setTimeout(() => showDetailQuestions(), 400);
+        setTimeout(() => showSectionsQuestion(), 400);
       });
     });
     // "Show more" button
@@ -3523,118 +3937,59 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     }
   }
 
-  function showDetailQuestions() {
-    const showPages = flowData.type === 'multipage';
-    let n = 1;
+  // ── Helper: disable all interactive elements in a flow message ──
+  function disableFlowMsg(msg) {
+    msg.querySelectorAll('.flow-card, .flow-chip, .flow-confirm-btn, .flow-show-more').forEach(el => {
+      el.style.pointerEvents = 'none';
+      el.style.opacity = el.classList.contains('selected') ? '1' : '0.3';
+    });
+  }
+
+  // ── Helper: single-select card handler (click → disable → advance) ──
+  function bindSingleSelect(msg, onSelect) {
+    msg.querySelectorAll('.flow-card').forEach(card => {
+      card.addEventListener('click', () => {
+        msg.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        disableFlowMsg(msg);
+        const label = card.querySelector('.flow-card-label')?.textContent || card.dataset.value;
+        appendMessage('user', label);
+        onSelect(card.dataset.value, label);
+      });
+    });
+  }
+
+  // ── 3. Sections (multi-select with Weiter button) ──
+  function showSectionsQuestion() {
+    flowStep = 3;
     const msg = appendFlowMessage(`
-      <div style="display:flex;flex-direction:column;gap:14px;">
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Welche Sektionen?</div>
-          <div class="flow-chips" id="flowSections">
-            <span class="flow-chip selected" data-val="hero">Hero</span>
-            <span class="flow-chip selected" data-val="about">Über uns</span>
-            <span class="flow-chip selected" data-val="services">Services</span>
-            <span class="flow-chip selected" data-val="pricing">Preise</span>
-            <span class="flow-chip" data-val="testimonials">Testimonials</span>
-            <span class="flow-chip selected" data-val="contact">Kontakt</span>
-            <span class="flow-chip" data-val="faq">FAQ</span>
-            <span class="flow-chip" data-val="team">Team</span>
-            <span class="flow-chip" data-val="portfolio">Portfolio</span>
-            <span class="flow-chip" data-val="blog">Blog</span>
-            <span class="flow-chip flow-hidden" data-val="gallery">Galerie</span>
-            <span class="flow-chip flow-hidden" data-val="partners">Partner/Logos</span>
-            <span class="flow-chip flow-hidden" data-val="stats">Statistiken</span>
-            <span class="flow-chip flow-hidden" data-val="newsletter">Newsletter</span>
-            <span class="flow-chip flow-hidden" data-val="booking">Terminbuchung</span>
-            <span class="flow-chip flow-hidden" data-val="video">Video</span>
-            <span class="flow-chip flow-hidden" data-val="map">Standort/Map</span>
-            <span class="flow-chip flow-hidden" data-val="download">Downloads</span>
-          </div>
-          <button class="flow-show-more" id="flowShowMoreSections">Mehr Sektionen +</button>
-        </div>
-
-        ${showPages ? `<div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Wie viele Seiten?</div>
-          <div class="flow-cards flow-cards-style" id="flowPages">
-            <div class="flow-card selected" data-value="3"><span class="flow-card-label">3 Seiten</span></div>
-            <div class="flow-card" data-value="5"><span class="flow-card-label">5 Seiten</span></div>
-            <div class="flow-card" data-value="7"><span class="flow-card-label">7+ Seiten</span></div>
-          </div>
-        </div>` : ''}
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Farbschema?</div>
-          <div class="flow-cards flow-cards-style" id="flowColors">
-            <div class="flow-card" data-value="dark"><span class="flow-color-dot" style="background:#0B1120;border:1px solid rgba(255,255,255,0.2);"></span><span class="flow-card-label">Dunkel & Elegant</span></div>
-            <div class="flow-card" data-value="light"><span class="flow-color-dot" style="background:#F8F8FF;"></span><span class="flow-card-label">Hell & Modern</span></div>
-            <div class="flow-card" data-value="colorful"><span class="flow-color-dot" style="background:linear-gradient(135deg,#FF6B6B,#4ECDC4,#45B7D1);"></span><span class="flow-card-label">Bunt & Kreativ</span></div>
-            <div class="flow-card" data-value="mono"><span class="flow-color-dot" style="background:linear-gradient(135deg,#222,#888,#ddd);"></span><span class="flow-card-label">Monochrom</span></div>
-            <div class="flow-card" data-value="warm"><span class="flow-color-dot" style="background:linear-gradient(135deg,#D4A574,#C8553D,#5C3D2E);"></span><span class="flow-card-label">Warm & Erdig</span></div>
-            <div class="flow-card" data-value="cool"><span class="flow-color-dot" style="background:linear-gradient(135deg,#0EA5E9,#06B6D4,#6366F1);"></span><span class="flow-card-label">Kalt & Tech</span></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Design-Stil?</div>
-          <div class="flow-cards flow-cards-style" id="flowStyle">
-            <div class="flow-card" data-value="minimal"><span class="flow-card-label">Minimalistisch</span></div>
-            <div class="flow-card" data-value="luxury"><span class="flow-card-label">Luxus & Premium</span></div>
-            <div class="flow-card" data-value="playful"><span class="flow-card-label">Verspielt</span></div>
-            <div class="flow-card" data-value="corporate"><span class="flow-card-label">Corporate</span></div>
-            <div class="flow-card" data-value="tech"><span class="flow-card-label">Modern & Tech</span></div>
-            <div class="flow-card" data-value="brutalist"><span class="flow-card-label">Brutalistisch</span></div>
-            <div class="flow-card" data-value="retro"><span class="flow-card-label">Retro / Vintage</span></div>
-            <div class="flow-card" data-value="glass"><span class="flow-card-label">Glassmorphism</span></div>
-            <div class="flow-card" data-value="neon"><span class="flow-card-label">Neon / Cyberpunk</span></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Typografie?</div>
-          <div class="flow-cards flow-cards-style" id="flowTypography">
-            <div class="flow-card selected" data-value="modern"><span class="flow-card-label" style="font-family:'DM Sans',sans-serif;">Modern Sans</span></div>
-            <div class="flow-card" data-value="serif"><span class="flow-card-label" style="font-family:Georgia,serif;font-style:italic;">Elegant Serif</span></div>
-            <div class="flow-card" data-value="display"><span class="flow-card-label" style="font-family:'Figtree',sans-serif;font-weight:800;">Display Bold</span></div>
-            <div class="flow-card" data-value="mono"><span class="flow-card-label" style="font-family:'JetBrains Mono',monospace;font-size:11px;">Monospace</span></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Animationen?</div>
-          <div class="flow-cards flow-cards-style" id="flowAnimations">
-            <div class="flow-card" data-value="none"><span class="flow-card-label">Keine</span></div>
-            <div class="flow-card selected" data-value="subtle"><span class="flow-card-label">Subtil & Dezent</span></div>
-            <div class="flow-card" data-value="scroll"><span class="flow-card-label">Scroll-Animationen</span></div>
-            <div class="flow-card" data-value="parallax"><span class="flow-card-label">Parallax-Effekt</span></div>
-            <div class="flow-card" data-value="heavy"><span class="flow-card-label">Viele & Auffällig</span></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Sprache?</div>
-          <div class="flow-cards flow-cards-style" id="flowLanguage">
-            <div class="flow-card selected" data-value="de"><span class="flow-card-label">Deutsch</span></div>
-            <div class="flow-card" data-value="en"><span class="flow-card-label">Englisch</span></div>
-            <div class="flow-card" data-value="both"><span class="flow-card-label">Beides</span></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flow-question"><span class="flow-question-num">${n++}.</span> Besonderheiten? <span style="color:var(--ws-text-3);font-weight:400;">(optional)</span></div>
-          <div class="flow-freetext" style="margin-top:6px;">
-            <input type="text" id="flowExtrasInput" placeholder="z.B. Buchungssystem, bestimmte Farbe #FF5722, Spezialwünsche...">
-          </div>
-        </div>
-
-        <div style="text-align:center;padding-top:4px;">
-          <button class="flow-confirm-btn" id="flowConfirmDetails">Weiter zur Zusammenfassung</button>
-        </div>
-
+      <div class="flow-question">Welche Sektionen soll deine Website haben?</div>
+      <div class="flow-chips" id="flowSections">
+        <span class="flow-chip selected" data-val="hero">Hero</span>
+        <span class="flow-chip selected" data-val="about">Über uns</span>
+        <span class="flow-chip selected" data-val="services">Services</span>
+        <span class="flow-chip selected" data-val="pricing">Preise</span>
+        <span class="flow-chip" data-val="testimonials">Testimonials</span>
+        <span class="flow-chip selected" data-val="contact">Kontakt</span>
+        <span class="flow-chip" data-val="faq">FAQ</span>
+        <span class="flow-chip" data-val="team">Team</span>
+        <span class="flow-chip" data-val="portfolio">Portfolio</span>
+        <span class="flow-chip" data-val="blog">Blog</span>
+        <span class="flow-chip flow-hidden" data-val="gallery">Galerie</span>
+        <span class="flow-chip flow-hidden" data-val="partners">Partner/Logos</span>
+        <span class="flow-chip flow-hidden" data-val="stats">Statistiken</span>
+        <span class="flow-chip flow-hidden" data-val="newsletter">Newsletter</span>
+        <span class="flow-chip flow-hidden" data-val="booking">Terminbuchung</span>
+        <span class="flow-chip flow-hidden" data-val="video">Video</span>
+        <span class="flow-chip flow-hidden" data-val="map">Standort/Map</span>
+        <span class="flow-chip flow-hidden" data-val="download">Downloads</span>
+      </div>
+      <button class="flow-show-more" id="flowShowMoreSections">Mehr Sektionen +</button>
+      <div style="text-align:center;padding-top:8px;">
+        <button class="flow-confirm-btn" id="flowSectionsNext">Weiter</button>
       </div>
     `);
 
-    // "Show more" for sections
     const showMoreSec = msg.querySelector('#flowShowMoreSections');
     if (showMoreSec) {
       showMoreSec.addEventListener('click', () => {
@@ -3642,72 +3997,219 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         showMoreSec.remove();
       });
     }
-
-    // Chips multi-select
     msg.querySelectorAll('.flow-chips .flow-chip').forEach(chip => {
       chip.addEventListener('click', () => chip.classList.toggle('selected'));
     });
 
-    // Single-select card groups
-    ['flowColors', 'flowStyle', 'flowTypography', 'flowAnimations', 'flowLanguage'].forEach(id => {
-      const group = msg.querySelector('#' + id);
-      if (!group) return;
-      group.querySelectorAll('.flow-card').forEach(card => {
-        card.addEventListener('click', () => {
-          group.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
-          card.classList.add('selected');
-        });
-      });
-    });
-
-    if (showPages) {
-      const pagesGroup = msg.querySelector('#flowPages');
-      if (pagesGroup) {
-        pagesGroup.querySelectorAll('.flow-card').forEach(card => {
-          card.addEventListener('click', () => {
-            pagesGroup.querySelectorAll('.flow-card').forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
-          });
-        });
-      }
-    }
-
-    // Confirm button
-    msg.querySelector('#flowConfirmDetails').addEventListener('click', () => {
+    msg.querySelector('#flowSectionsNext').addEventListener('click', () => {
       flowData.sections = [...msg.querySelectorAll('#flowSections .flow-chip.selected')].map(c => c.dataset.val);
-
-      if (showPages) {
-        const pagesSel = msg.querySelector('#flowPages .flow-card.selected');
-        flowData.pages = pagesSel ? pagesSel.dataset.value : '3';
+      disableFlowMsg(msg);
+      msg.querySelector('#flowSectionsNext').style.display = 'none';
+      appendMessage('user', flowData.sections.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', '));
+      if (flowData.type === 'multipage') {
+        setTimeout(() => showPagesQuestion(), 400);
+      } else {
+        setTimeout(() => showColorsQuestion(), 400);
       }
-
-      const colorSel = msg.querySelector('#flowColors .flow-card.selected');
-      flowData.colors = colorSel ? colorSel.dataset.value : 'dark';
-
-      const styleSel = msg.querySelector('#flowStyle .flow-card.selected');
-      flowData.style = styleSel ? styleSel.dataset.value : 'tech';
-
-      const typoSel = msg.querySelector('#flowTypography .flow-card.selected');
-      flowData.typography = typoSel ? typoSel.dataset.value : 'modern';
-
-      const animSel = msg.querySelector('#flowAnimations .flow-card.selected');
-      flowData.animations = animSel ? animSel.dataset.value : 'subtle';
-
-      const langSel = msg.querySelector('#flowLanguage .flow-card.selected');
-      flowData.language = langSel ? langSel.dataset.value : 'de';
-
-      flowData.extras = document.getElementById('flowExtrasInput')?.value.trim() || null;
-
-      // Disable all interactions
-      msg.querySelectorAll('.flow-card, .flow-chip, .flow-confirm-btn, .flow-freetext input, .flow-show-more').forEach(el => {
-        el.style.pointerEvents = 'none';
-        el.style.opacity = el.classList.contains('selected') ? '1' : '0.3';
-      });
-      msg.querySelector('#flowConfirmDetails').style.display = 'none';
-
-      flowStep = 4;
-      setTimeout(() => showSummary(), 400);
     });
+  }
+
+  // ── 4. Pages (only for multipage) ──
+  function showPagesQuestion() {
+    flowStep = 4;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Wie viele Seiten?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card selected" data-value="3"><span class="flow-card-label">3 Seiten</span></div>
+        <div class="flow-card" data-value="5"><span class="flow-card-label">5 Seiten</span></div>
+        <div class="flow-card" data-value="7"><span class="flow-card-label">7+ Seiten</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.pages = val;
+      setTimeout(() => showColorsQuestion(), 400);
+    });
+  }
+
+  // ── 5. Colors ──
+  function showColorsQuestion() {
+    flowStep = 5;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Welches Farbschema?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="dark"><span class="flow-color-dot" style="background:#0B1120;border:1px solid rgba(255,255,255,0.2);"></span><span class="flow-card-label">Dunkel & Elegant</span></div>
+        <div class="flow-card" data-value="light"><span class="flow-color-dot" style="background:#F8F8FF;"></span><span class="flow-card-label">Hell & Modern</span></div>
+        <div class="flow-card" data-value="colorful"><span class="flow-color-dot" style="background:linear-gradient(135deg,#FF6B6B,#4ECDC4,#45B7D1);"></span><span class="flow-card-label">Bunt & Kreativ</span></div>
+        <div class="flow-card" data-value="mono"><span class="flow-color-dot" style="background:linear-gradient(135deg,#222,#888,#ddd);"></span><span class="flow-card-label">Monochrom</span></div>
+        <div class="flow-card" data-value="warm"><span class="flow-color-dot" style="background:linear-gradient(135deg,#D4A574,#C8553D,#5C3D2E);"></span><span class="flow-card-label">Warm & Erdig</span></div>
+        <div class="flow-card" data-value="cool"><span class="flow-color-dot" style="background:linear-gradient(135deg,#0EA5E9,#06B6D4,#6366F1);"></span><span class="flow-card-label">Kalt & Tech</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.colors = val;
+      setTimeout(() => showStyleQuestion(), 400);
+    });
+  }
+
+  // ── 6. Style ──
+  function showStyleQuestion() {
+    flowStep = 6;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Welcher Design-Stil?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="minimal"><span class="flow-card-label">Minimalistisch</span></div>
+        <div class="flow-card" data-value="luxury"><span class="flow-card-label">Luxus & Premium</span></div>
+        <div class="flow-card" data-value="playful"><span class="flow-card-label">Verspielt</span></div>
+        <div class="flow-card" data-value="corporate"><span class="flow-card-label">Corporate</span></div>
+        <div class="flow-card" data-value="tech"><span class="flow-card-label">Modern & Tech</span></div>
+        <div class="flow-card" data-value="brutalist"><span class="flow-card-label">Brutalistisch</span></div>
+        <div class="flow-card" data-value="retro"><span class="flow-card-label">Retro / Vintage</span></div>
+        <div class="flow-card" data-value="glass"><span class="flow-card-label">Glassmorphism</span></div>
+        <div class="flow-card" data-value="neon"><span class="flow-card-label">Neon / Cyberpunk</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.style = val;
+      setTimeout(() => showTypographyQuestion(), 400);
+    });
+  }
+
+  // ── 7. Typography ──
+  function showTypographyQuestion() {
+    flowStep = 7;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Welche Typografie?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="modern"><span class="flow-card-label" style="font-family:'DM Sans',sans-serif;">Modern Sans</span></div>
+        <div class="flow-card" data-value="serif"><span class="flow-card-label" style="font-family:Georgia,serif;font-style:italic;">Elegant Serif</span></div>
+        <div class="flow-card" data-value="display"><span class="flow-card-label" style="font-family:'Figtree',sans-serif;font-weight:800;">Display Bold</span></div>
+        <div class="flow-card" data-value="mono"><span class="flow-card-label" style="font-family:'JetBrains Mono',monospace;font-size:11px;">Monospace</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.typography = val;
+      setTimeout(() => showDesignFocusQuestion(), 400);
+    });
+  }
+
+  // ── 8. Design Focus (NEW — Point 1: auto-activates skill pills) ──
+  function showDesignFocusQuestion() {
+    flowStep = 8;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Design-Schwerpunkt?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="standard"><span class="flow-card-label">Standard</span></div>
+        <div class="flow-card" data-value="ui-ux"><span class="flow-card-label">UI/UX Pro</span></div>
+        <div class="flow-card" data-value="brand"><span class="flow-card-label">Brand Identity</span></div>
+        <div class="flow-card" data-value="design-system"><span class="flow-card-label">Design System</span></div>
+        <div class="flow-card" data-value="frontend"><span class="flow-card-label">Frontend Design</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.designFocus = val;
+      // Auto-activate corresponding skill pill
+      if (val !== 'standard') {
+        const skillPill = document.querySelector(`.skill-pill[data-skill="${val}"]`);
+        if (skillPill && !skillPill.classList.contains('active')) {
+          skillPill.click();
+        }
+      }
+      setTimeout(() => showAnimationsQuestion(), 400);
+    });
+  }
+
+  // ── 9. Animations ──
+  function showAnimationsQuestion() {
+    flowStep = 9;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Animationen?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="none"><span class="flow-card-label">Keine</span></div>
+        <div class="flow-card" data-value="subtle"><span class="flow-card-label">Subtil & Dezent</span></div>
+        <div class="flow-card" data-value="scroll"><span class="flow-card-label">Scroll-Animationen</span></div>
+        <div class="flow-card" data-value="parallax"><span class="flow-card-label">Parallax-Effekt</span></div>
+        <div class="flow-card" data-value="heavy"><span class="flow-card-label">Viele & Auffällig</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.animations = val;
+      setTimeout(() => showLanguageQuestion(), 400);
+    });
+  }
+
+  // ── 10. Language ──
+  function showLanguageQuestion() {
+    flowStep = 10;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Sprache der Website?</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="de"><span class="flow-card-label">Deutsch</span></div>
+        <div class="flow-card" data-value="en"><span class="flow-card-label">Englisch</span></div>
+        <div class="flow-card" data-value="both"><span class="flow-card-label">Beides</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.language = val;
+      setTimeout(() => showComponentsQuestion(), 400);
+    });
+  }
+
+  // ── 11. Components (NEW — Point 5: offer pre-built components) ──
+  function showComponentsQuestion() {
+    flowStep = 11;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Vorgefertigte Komponenten einfügen?</div>
+      <div style="color:var(--ws-text-3);font-size:12px;margin:-4px 0 8px;">Professionelle UI-Bausteine aus unserer Bibliothek</div>
+      <div class="flow-cards flow-cards-style">
+        <div class="flow-card" data-value="yes"><span class="flow-card-label">Ja, zeig mir die Bibliothek</span></div>
+        <div class="flow-card" data-value="no"><span class="flow-card-label">Nein, KI soll alles erstellen</span></div>
+      </div>
+    `);
+    bindSingleSelect(msg, (val) => {
+      flowData.wantComponents = val === 'yes';
+      if (val === 'yes') {
+        // Activate components tab with glow
+        const compTab = document.querySelector('.chat-tab[data-tab="components"]');
+        if (compTab) {
+          compTab.classList.add('tab-glow');
+          compTab.click();
+          setTimeout(() => compTab.classList.remove('tab-glow'), 4000);
+        }
+      }
+      setTimeout(() => showExtrasQuestion(), 400);
+    });
+  }
+
+  // ── 12. Extras (freetext, optional) ──
+  function showExtrasQuestion() {
+    flowStep = 12;
+    const msg = appendFlowMessage(`
+      <div class="flow-question">Besonderheiten? <span style="color:var(--ws-text-3);font-weight:400;">(optional)</span></div>
+      <div class="flow-freetext" style="margin-top:6px;">
+        <input type="text" id="flowExtrasInput" placeholder="z.B. Buchungssystem, bestimmte Farbe #FF5722, Spezialwünsche...">
+        <button id="flowExtrasOk">OK</button>
+      </div>
+      <button class="flow-confirm-btn" id="flowExtrasSkip" style="margin-top:6px;background:transparent;border:1px solid var(--ws-border);color:var(--ws-text-2);">Überspringen</button>
+    `);
+    const input = msg.querySelector('#flowExtrasInput');
+    const okBtn = msg.querySelector('#flowExtrasOk');
+    const skipBtn = msg.querySelector('#flowExtrasSkip');
+    input.focus();
+
+    const advance = () => {
+      const val = input.value.trim();
+      flowData.extras = val || null;
+      msg.querySelectorAll('input, button').forEach(el => { el.style.pointerEvents = 'none'; });
+      skipBtn.style.display = 'none';
+      if (val) appendMessage('user', val);
+      else appendMessage('user', 'Keine Besonderheiten');
+      flowStep = 13;
+      setTimeout(() => showSummary(), 400);
+    };
+
+    okBtn.addEventListener('click', advance);
+    input.addEventListener('keydown', (e) => { if (e.key === 'Enter') advance(); });
+    skipBtn.addEventListener('click', advance);
   }
 
   function getTypeLabel(type) {
@@ -3735,7 +4237,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     return map[l] || l;
   }
 
+  function getDesignFocusLabel(d) {
+    const map = { standard: 'Standard', 'ui-ux': 'UI/UX Pro', brand: 'Brand Identity', 'design-system': 'Design System', frontend: 'Frontend Design' };
+    return map[d] || d;
+  }
+
   function showSummary() {
+    flowStep = 13;
     const sectionsStr = flowData.sections.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ');
     const msg = appendFlowMessage(`
       <div class="flow-question">Hier ist deine Zusammenfassung:</div>
@@ -3747,11 +4255,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         <div class="flow-summary-row"><span class="flow-summary-label">Farben:</span><strong>${getColorLabel(flowData.colors)}</strong></div>
         <div class="flow-summary-row"><span class="flow-summary-label">Stil:</span><strong>${getStyleLabel(flowData.style)}</strong></div>
         ${flowData.typography ? `<div class="flow-summary-row"><span class="flow-summary-label">Typografie:</span><strong>${getTypoLabel(flowData.typography)}</strong></div>` : ''}
+        ${flowData.designFocus && flowData.designFocus !== 'standard' ? `<div class="flow-summary-row"><span class="flow-summary-label">Fokus:</span><strong>${getDesignFocusLabel(flowData.designFocus)}</strong></div>` : ''}
         <div class="flow-summary-row"><span class="flow-summary-label">Animationen:</span><strong>${getAnimLabel(flowData.animations)}</strong></div>
         <div class="flow-summary-row"><span class="flow-summary-label">Sprache:</span><strong>${getLangLabel(flowData.language)}</strong></div>
         ${flowData.extras ? `<div class="flow-summary-row"><span class="flow-summary-label">Extras:</span><strong>${escapeHtml(flowData.extras)}</strong></div>` : ''}
       </div>
-      <button class="flow-confirm-btn" id="flowStartGeneration">Ja, Website erstellen 🚀</button>
+      <button class="flow-confirm-btn" id="flowStartGeneration">Website erstellen</button>
     `);
 
     msg.querySelector('#flowStartGeneration').addEventListener('click', () => {
@@ -3773,6 +4282,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     prompt += `\nFarbschema: ${getColorLabel(flowData.colors)}.`;
     prompt += `\nDesign-Stil: ${getStyleLabel(flowData.style)}.`;
     if (flowData.typography) prompt += `\nTypografie: ${getTypoLabel(flowData.typography)}.`;
+    if (flowData.designFocus && flowData.designFocus !== 'standard') prompt += `\nDesign-Fokus: ${getDesignFocusLabel(flowData.designFocus)}.`;
     prompt += `\nAnimationen: ${getAnimLabel(flowData.animations)}.`;
     prompt += `\nSprache: ${getLangLabel(flowData.language)}.`;
     if (flowData.extras) prompt += `\nBesonderheiten: ${flowData.extras}.`;
@@ -4922,7 +5432,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       } else if (phase === 3) {
         // Phase 3: Backend — open a combined modal for form/whatsapp/agent
         setPhase(3);
-        openModal('formOverlay');
+        openModal('backendOverlay');
       } else if (phase === 4) {
         // Phase 4: Domain
         setPhase(4);
@@ -4973,6 +5483,28 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     this.value = this.value.toLowerCase().replace(/[^a-z0-9-]/g, '').substring(0, 50);
   });
 
+  // Deploy step animation helper
+  function animateDeploySteps(callback) {
+    const steps = document.querySelectorAll('#deploySteps .deploy-step-item');
+    const fill = document.getElementById('deployProgressFill');
+    let idx = 0;
+    fill.style.width = '0%';
+    steps.forEach(s => { s.classList.remove('active', 'done'); });
+
+    function nextStep() {
+      if (idx > 0) steps[idx - 1].classList.replace('active', 'done');
+      if (idx < steps.length) {
+        steps[idx].classList.add('active');
+        fill.style.width = ((idx + 1) / steps.length * 100) + '%';
+        idx++;
+        setTimeout(nextStep, 800);
+      } else {
+        callback();
+      }
+    }
+    nextStep();
+  }
+
   // Deploy submit
   document.getElementById('deploySubmit').addEventListener('click', async () => {
     const slug = document.getElementById('deploySlug').value.trim();
@@ -4981,35 +5513,36 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       return;
     }
 
+    // Mark slug checklist item as done
+    const checkSlug = document.getElementById('checkSlug');
+    if (checkSlug) checkSlug.classList.add('done');
+
     document.getElementById('deployForm').style.display = 'none';
     const loadingEl = document.getElementById('deployLoading');
-    const loadingText = document.getElementById('deployLoadingText');
     loadingEl.classList.add('active');
-
-    const deployMessages = ['Website wird vorbereitet...', 'Dateien werden hochgeladen...', 'Domain wird konfiguriert...', 'Fast fertig...'];
-    let dmIdx = 0;
-    const dmInterval = setInterval(() => {
-      dmIdx = (dmIdx + 1) % deployMessages.length;
-      loadingText.style.opacity = '0';
-      setTimeout(() => { loadingText.textContent = deployMessages[dmIdx]; loadingText.style.opacity = '1'; }, 250);
-    }, 2500);
 
     try {
       const pid = projectId || new URLSearchParams(location.search).get('project');
-      const res = await fetch('/api/deploy', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ subdomain: slug, html: currentHtml, projectId: pid })
-      });
 
-      clearInterval(dmInterval);
+      // Start step animation and API call in parallel
+      const [res] = await Promise.all([
+        fetch('/api/deploy', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ subdomain: slug, html: currentHtml, projectId: pid })
+        }),
+        new Promise(resolve => animateDeploySteps(resolve))
+      ]);
+
       loadingEl.classList.remove('active');
 
       if (res.ok) {
         const data = await res.json();
-        const liveUrl = data.url || `https://${slug}.qntum.design`;
+        const liveUrl = data.url || (APP_HOST.includes('localhost') ? `${location.protocol}//${APP_HOST}/live/${slug}` : `https://${slug}.qntum.design`);
         document.getElementById('deployLiveUrl').textContent = liveUrl;
         document.getElementById('deploySuccess').classList.add('visible');
+        const checkDeploy = document.getElementById('checkDeploy');
+        if (checkDeploy) checkDeploy.classList.add('done');
         showToast('Website deployed!');
       } else {
         const err = await res.json();
@@ -5017,7 +5550,6 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         showToast(err.error || 'Deploy fehlgeschlagen');
       }
     } catch (e) {
-      clearInterval(dmInterval);
       loadingEl.classList.remove('active');
       document.getElementById('deployForm').style.display = 'block';
       showToast('Netzwerkfehler — bitte versuche es erneut');
@@ -5030,14 +5562,65 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     navigator.clipboard.writeText(url).then(() => showToast('URL kopiert!')).catch(() => showToast('Kopieren fehlgeschlagen'));
   });
 
-  // Agent card clicks
-  document.querySelectorAll('.agent-card').forEach(card => {
+  // Deploy open URL
+  document.getElementById('deployOpenUrl')?.addEventListener('click', () => {
+    const url = document.getElementById('deployLiveUrl').textContent;
+    if (url) window.open(url.startsWith('http') ? url : 'https://' + url, '_blank');
+  });
+
+  // ═══════════════════════════════════════
+  // BACKEND MODAL — Tab switching, toggles, agent cards, save
+  // ═══════════════════════════════════════
+  document.querySelectorAll('#backendSidebar .backend-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('#backendSidebar .backend-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.backend-pane').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const pane = document.getElementById('pane-' + tab.dataset.pane);
+      if (pane) pane.classList.add('active');
+    });
+  });
+
+  // Auto-reply toggle → show/hide auto-reply field (class toggle handled by generic .toggle-switch handler)
+  const autoReplyToggle = document.getElementById('autoReplyToggle');
+  const autoReplyField = document.getElementById('autoReplyField');
+  if (autoReplyToggle) {
+    autoReplyToggle.addEventListener('click', () => {
+      setTimeout(() => {
+        if (autoReplyField) autoReplyField.style.display = autoReplyToggle.classList.contains('on') ? 'block' : 'none';
+      }, 0);
+    });
+  }
+
+  // Backend agent card clicks → open Qntum AI Platform
+  document.querySelectorAll('.backend-agent-card').forEach(card => {
     card.addEventListener('click', () => {
       const agentType = card.dataset.agent;
       const headline = document.getElementById('projectNameLabel').textContent || '';
-      const url = `https://qntum-ai.onrender.com?agent_type=${encodeURIComponent(agentType)}&headline=${encodeURIComponent(headline)}`;
-      window.open(url, '_blank');
+      window.open(`https://qntum-ai.onrender.com?agent_type=${encodeURIComponent(agentType)}&headline=${encodeURIComponent(headline)}`, '_blank');
     });
+  });
+
+  // Open Qntum AI Platform button
+  document.getElementById('openQntumAI')?.addEventListener('click', () => {
+    window.open('https://qntum-ai.onrender.com', '_blank');
+  });
+
+  // Backend save
+  document.getElementById('backendSave')?.addEventListener('click', () => {
+    const formEnabled = document.getElementById('formToggle')?.classList.contains('on');
+    const email = document.getElementById('formEmail')?.value.trim();
+    const phone = document.getElementById('waPhone')?.value.trim();
+    const gaId = document.getElementById('gaId')?.value.trim();
+
+    // Update status dots
+    const formDot = document.getElementById('formStatusDot');
+    const waDot = document.getElementById('waStatusDot');
+    if (formDot) formDot.classList.toggle('on', !!formEnabled);
+    if (waDot) waDot.classList.toggle('on', !!phone);
+
+    showToast('Backend-Einstellungen gespeichert');
+    closeModal('backendOverlay');
   });
 
   // Domain save
@@ -5058,22 +5641,59 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     closeModal('seoOverlay');
   });
 
-  // Formular save
-  document.getElementById('formSave').addEventListener('click', () => {
-    const email = document.getElementById('formEmail').value.trim();
-    if (!email) { showToast('Bitte E-Mail-Adresse eingeben'); return; }
-    const enabled = document.getElementById('formToggle').classList.contains('on');
-    showToast(enabled ? 'Kontaktformular aktiviert' : 'Kontaktformular-Einstellungen gespeichert');
-    closeModal('formOverlay');
+
+  // ═══════════════════════════════════════
+  // NETWORK ERROR DETECTION
+  // ═══════════════════════════════════════
+  const netBanner = document.getElementById('netErrorBanner');
+  window.addEventListener('offline', () => netBanner.classList.add('visible'));
+  window.addEventListener('online', () => netBanner.classList.remove('visible'));
+  if (!navigator.onLine) netBanner.classList.add('visible');
+
+  // ═══════════════════════════════════════
+  // KEYBOARD SHORTCUTS
+  // ═══════════════════════════════════════
+  document.addEventListener('keydown', (e) => {
+    // Cmd/Ctrl+Enter → send message
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && document.activeElement === textarea) {
+      e.preventDefault();
+      sendMessage();
+    }
+    // Cmd/Ctrl+K → focus chat input
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      textarea.focus();
+    }
+    // Esc → close any open modal
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+      const compModal = document.getElementById('compPreviewModal');
+      if (compModal.classList.contains('open')) compModal.classList.remove('open');
+    }
   });
 
-  // WhatsApp save
-  document.getElementById('waSave').addEventListener('click', () => {
-    const phone = document.getElementById('waPhone').value.trim();
-    if (!phone) { showToast('Bitte Telefonnummer eingeben'); return; }
-    showToast('WhatsApp-Widget aktiviert');
-    closeModal('whatsappOverlay');
-  });
+  // ═══════════════════════════════════════
+  // AUTO-SAVE INDICATOR
+  // ═══════════════════════════════════════
+  let lastSaveTime = Date.now();
+  function updateSaveIndicator() {
+    const elapsed = Math.floor((Date.now() - lastSaveTime) / 1000);
+    const statusEl = document.querySelector('.statusbar span:first-child');
+    if (!statusEl) return;
+    if (elapsed < 60) statusEl.textContent = 'Zuletzt gespeichert: gerade eben';
+    else if (elapsed < 3600) statusEl.textContent = `Zuletzt gespeichert: vor ${Math.floor(elapsed / 60)} Min`;
+    else statusEl.textContent = `Zuletzt gespeichert: vor ${Math.floor(elapsed / 3600)} Std`;
+  }
+  setInterval(updateSaveIndicator, 30000);
+
+  // Mark save on successful API responses
+  const origFetch = window.fetch;
+  window.fetch = function(...args) {
+    return origFetch.apply(this, args).then(res => {
+      if (res.ok && args[1]?.method && args[1].method !== 'GET') lastSaveTime = Date.now();
+      return res;
+    });
+  };
 
 })();
 </script>
