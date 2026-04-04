@@ -1123,10 +1123,10 @@ input, textarea { font-family: inherit; }
   justify-content: center;
   border-radius: 12px;
   opacity: 1;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.8s ease, background 1.2s ease, backdrop-filter 1.2s ease, -webkit-backdrop-filter 1.2s ease;
 }
 .preview-gen-overlay.active { display: flex; }
-.preview-gen-overlay.fade-out { opacity: 0; }
+.preview-gen-overlay.fade-out { opacity: 0; pointer-events: none; }
 .pgo-mark { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,229,255,0.18); font-weight: 600; position: absolute; top: 32px; }
 .pgo-fact-container { max-width: 520px; text-align: center; padding: 0 40px; min-height: 120px; display: flex; align-items: center; justify-content: center; }
 .pgo-fact { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.82); font-weight: 400; letter-spacing: 0.01em; opacity: 0; transform: translateY(12px); animation: pgoFactIn 8s ease forwards; }
@@ -2936,10 +2936,68 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const previewGenOverlay = document.getElementById('previewGenOverlay');
   const pgoFactEl = document.getElementById('pgoFact');
 
+  // Throttled live preview: update iframe max every 5 seconds to prevent flicker
+  let _livePreviewTimer = null;
+  let _livePreviewPending = null;
+  let _livePreviewActive = false;
+
+  function startLivePreview() {
+    _livePreviewActive = true;
+    _livePreviewPending = null;
+    if (_livePreviewTimer) clearInterval(_livePreviewTimer);
+    _livePreviewTimer = setInterval(() => {
+      if (_livePreviewPending) {
+        previewIframe.srcdoc = _livePreviewPending;
+        _livePreviewPending = null;
+      }
+    }, 5000);
+  }
+
+  function stopLivePreview() {
+    _livePreviewActive = false;
+    _livePreviewPending = null;
+    if (_livePreviewTimer) { clearInterval(_livePreviewTimer); _livePreviewTimer = null; }
+  }
+
+  function queueLivePreview(html) {
+    if (!_livePreviewActive) {
+      // First call: render immediately + start throttle
+      previewEmpty.style.display = 'none';
+      previewIframe.style.display = 'block';
+      previewIframe.style.opacity = '1';
+      previewIframe.srcdoc = html;
+      mainArea.classList.remove('preview-collapsed');
+      startLivePreview();
+      // Start fading the overlay: reduce opacity, reduce blur
+      setOverlayPhase('reveal');
+    } else {
+      // Subsequent calls: queue for next 5s tick
+      _livePreviewPending = html;
+    }
+  }
+
+  // Overlay phases: 'full' (82% opaque, blur 6px) → 'reveal' (55% opaque, blur 2px) → 'done' (fade out)
+  function setOverlayPhase(phase) {
+    if (phase === 'reveal') {
+      previewGenOverlay.style.background = 'rgba(8,8,8,0.55)';
+      previewGenOverlay.style.backdropFilter = 'blur(2px)';
+      previewGenOverlay.style.webkitBackdropFilter = 'blur(2px)';
+    } else if (phase === 'more') {
+      previewGenOverlay.style.background = 'rgba(8,8,8,0.35)';
+      previewGenOverlay.style.backdropFilter = 'blur(1px)';
+      previewGenOverlay.style.webkitBackdropFilter = 'blur(1px)';
+    }
+  }
+
   function showPreviewLoader() {
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
+
+    // Reset overlay to full opacity
+    previewGenOverlay.style.background = '';
+    previewGenOverlay.style.backdropFilter = '';
+    previewGenOverlay.style.webkitBackdropFilter = '';
 
     // Shuffle facts
     const shuffled = [...LOADING_FACTS];
@@ -2964,21 +3022,24 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
   function hidePreviewLoader() {
     if (pgoFactInterval) { clearInterval(pgoFactInterval); pgoFactInterval = null; }
+    stopLivePreview();
     previewGenOverlay.classList.add('fade-out');
     setTimeout(() => {
       previewGenOverlay.classList.remove('active', 'fade-out');
-    }, 600);
+      previewGenOverlay.style.background = '';
+      previewGenOverlay.style.backdropFilter = '';
+      previewGenOverlay.style.webkitBackdropFilter = '';
+    }, 800);
   }
 
   function updatePreview(html) {
-    if (!html) { console.warn('[Qntum] updatePreview called with empty html'); return; }
-    console.log('[Qntum] updatePreview — HTML length:', html.length, 'iframe in DOM:', !!document.getElementById('previewIframe'));
+    if (!html) return;
+    console.log('[Qntum] updatePreview — length:', html.length);
     currentHtml = html;
     previewEmpty.style.display = 'none';
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
     previewIframe.srcdoc = html;
-    console.log('[Qntum] updatePreview done — iframe display:', previewIframe.style.display, 'srcdoc set:', previewIframe.srcdoc.length > 0);
   }
 
   function updateReactPreview(files) {
@@ -3616,21 +3677,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     // Try complete ```html ... ``` code block first
     const codeBlockMatch = text.match(/```html\s*\n?([\s\S]*?)```/);
     if (codeBlockMatch) {
-      console.log('[Qntum] extractHtml: matched complete code block');
       return codeBlockMatch[1].replace(/^<!--\s*FILE:\s*\S+\s*-->\s*\n?/, '').trim();
-    }
-    // Try complete ```jsx ... ``` or ```javascript block (React output)
-    const jsxBlockMatch = text.match(/```(?:jsx|javascript|js)\s*\n?([\s\S]*?)```/);
-    if (jsxBlockMatch) {
-      console.log('[Qntum] extractHtml: matched JSX/JS code block (React mode)');
     }
     // Try raw HTML with closing tag
     const rawMatch = text.match(/(<!DOCTYPE html[\s\S]*<\/html>)/i);
-    if (rawMatch) { console.log('[Qntum] extractHtml: matched raw HTML'); return rawMatch[1].trim(); }
+    if (rawMatch) return rawMatch[1].trim();
     // Handle truncated response (no closing ``` or </html>)
     const truncMatch = text.match(/```html\s*\n?(?:<!--\s*FILE:\s*\S+\s*-->\s*\n?)?([\s\S]+)/);
     if (truncMatch) {
-      console.log('[Qntum] extractHtml: matched truncated block');
       let html = truncMatch[1].trim();
       if (html.includes('<!DOCTYPE') && !html.includes('</html>')) {
         if (!html.includes('</body>')) html += '\n</body>';
@@ -3638,7 +3692,6 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       }
       return html;
     }
-    console.warn('[Qntum] extractHtml: no match found, text starts with:', text.substring(0, 200));
     return null;
   }
 
@@ -3719,46 +3772,27 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'text') {
               fullText += data.content;
-              // Live preview: once we have enough content, start showing partial site
+              // Live preview: queue throttled updates (max every 5s, no flicker)
               if (fullText.length > 1500 && fullText.includes('<body')) {
                 const partial = extractHtmlFromResponse(fullText);
                 if (partial) {
-                  console.log('[Qntum] Live preview partial, length:', partial.length);
-                  previewEmpty.style.display = 'none';
-                  previewIframe.style.display = 'block';
-                  previewIframe.style.opacity = '1';
-                  previewIframe.srcdoc = partial;
-                  // Fade out facts overlay to reveal live preview
-                  if (previewGenOverlay.classList.contains('active')) {
-                    console.log('[Qntum] Fading out overlay for live preview');
-                    hidePreviewLoader();
-                  }
-                  mainArea.classList.remove('preview-collapsed');
+                  queueLivePreview(partial);
+                  // Progressively reduce overlay opacity
+                  if (fullText.length > 8000) setOverlayPhase('more');
                 }
               }
             }
 
             if (data.type === 'done') {
-              console.log('[Qntum] SSE done — html:', data.html?.length, 'files:', data.files ? Object.keys(data.files) : null, 'fullText:', fullText.length, 'stack:', currentStack);
+              console.log('[Qntum] SSE done — html:', data.html?.length, 'files:', data.files ? Object.keys(data.files) : null, 'fullText:', fullText.length);
               hideChatGenOverlay();
-              hidePreviewLoader();
 
-              // Priority 1: Use server-extracted HTML
+              // Extract final HTML
               let htmlToRender = data.html;
+              if (!htmlToRender && fullText) htmlToRender = extractHtmlFromResponse(fullText);
+              if (!htmlToRender && data.files) htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
 
-              // Priority 2: Client-side extraction from accumulated text
-              if (!htmlToRender && fullText) {
-                htmlToRender = extractHtmlFromResponse(fullText);
-              }
-
-              // Priority 3: Check data.files
-              if (!htmlToRender && data.files) {
-                htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
-              }
-
-              console.log('[Qntum] htmlToRender length:', htmlToRender?.length, 'iframe exists:', !!previewIframe);
-
-              // Render preview
+              // Final render — then fade overlay away
               if (currentStack === 'react' && data.files && Object.keys(data.files).length) {
                 updateReactPreview(data.files);
               } else if (htmlToRender) {
@@ -3766,7 +3800,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
               } else {
                 console.warn('[Qntum] No HTML to render!');
               }
-              // Ensure preview panel is visible
+              // Now fade overlay out completely
+              hidePreviewLoader();
               mainArea.classList.remove('preview-collapsed');
 
               if (data.files && Object.keys(data.files).length) {
@@ -3935,40 +3970,26 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
             if (data.type === 'text') {
               fullText += data.content;
-              // Live preview: once we have enough content, start showing partial site
+              // Live preview: queue throttled updates (max every 5s, no flicker)
               if (fullText.length > 1500 && fullText.includes('<body')) {
                 const partial = extractHtmlFromResponse(fullText);
                 if (partial) {
-                  console.log('[Qntum] Live preview partial (msg), length:', partial.length);
-                  previewEmpty.style.display = 'none';
-                  previewIframe.style.display = 'block';
-                  previewIframe.style.opacity = '1';
-                  previewIframe.srcdoc = partial;
-                  if (previewGenOverlay.classList.contains('active')) {
-                    console.log('[Qntum] Fading out overlay for live preview (msg)');
-                    hidePreviewLoader();
-                  }
-                  mainArea.classList.remove('preview-collapsed');
+                  queueLivePreview(partial);
+                  if (fullText.length > 8000) setOverlayPhase('more');
                 }
               }
             }
 
             if (data.type === 'done') {
-              console.log('[Qntum] SSE done (msg) — html:', data.html?.length, 'files:', data.files ? Object.keys(data.files) : null, 'fullText:', fullText.length, 'stack:', currentStack);
+              console.log('[Qntum] SSE done (msg) — html:', data.html?.length, 'files:', data.files ? Object.keys(data.files) : null, 'fullText:', fullText.length);
               hideChatGenOverlay();
-              hidePreviewLoader();
 
-              // Extract HTML: server > client-side > files
+              // Extract final HTML
               let htmlToRender = data.html;
-              if (!htmlToRender && fullText) {
-                htmlToRender = extractHtmlFromResponse(fullText);
-              }
-              if (!htmlToRender && data.files) {
-                htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
-              }
+              if (!htmlToRender && fullText) htmlToRender = extractHtmlFromResponse(fullText);
+              if (!htmlToRender && data.files) htmlToRender = data.files['index.html'] || Object.values(data.files).find(v => v.includes('<!DOCTYPE'));
 
-              console.log('[Qntum] htmlToRender length (msg):', htmlToRender?.length, 'iframe exists:', !!previewIframe);
-
+              // Final render — then fade overlay
               if (currentStack === 'react' && data.files && Object.keys(data.files).length) {
                 updateReactPreview(data.files);
               } else if (htmlToRender) {
@@ -3976,6 +3997,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
               } else {
                 console.warn('[Qntum] No HTML to render (msg)!');
               }
+              hidePreviewLoader();
               mainArea.classList.remove('preview-collapsed');
 
               if (data.files && Object.keys(data.files).length) {
