@@ -204,8 +204,67 @@ input{font-family:inherit}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ═══ ANIMATIONS ═══ */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.animate-in{animation:fadeIn 0.2s ease forwards;opacity:0}
+@keyframes revealUp{
+  0%{opacity:0;transform:translateY(20px) scale(0.97);filter:blur(6px)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+@keyframes gridDraw{
+  0%{stroke-dashoffset:800;opacity:0}
+  50%{opacity:0.2}
+  100%{stroke-dashoffset:0;opacity:0.08}
+}
+@keyframes pulseGlow{
+  0%,100%{opacity:0.06;transform:scale(1)}
+  50%{opacity:0.2;transform:scale(1.2)}
+}
+@keyframes floatParticle{
+  0%,100%{transform:translateY(0) translateX(0);opacity:0.15}
+  25%{transform:translateY(-12px) translateX(6px);opacity:0.5}
+  50%{transform:translateY(-6px) translateX(-4px);opacity:0.3}
+  75%{transform:translateY(-18px) translateX(8px);opacity:0.6}
+}
+@keyframes cornerReveal{
+  0%{opacity:0;transform:scale(0.5)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes rippleOut{
+  0%{transform:translate(-50%,-50%) scale(1);opacity:0.6}
+  100%{transform:translate(-50%,-50%) scale(40);opacity:0}
+}
+
+.animate-in{animation:revealUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards;opacity:0}
+.delay-1{animation-delay:0.06s}.delay-2{animation-delay:0.12s}.delay-3{animation-delay:0.18s}
+.delay-4{animation-delay:0.24s}.delay-5{animation-delay:0.30s}.delay-6{animation-delay:0.36s}
+
+/* Ambient: SVG Grid */
+.ambient-grid{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ambient-grid .grid-line{stroke:var(--accent);stroke-width:0.5;opacity:0;stroke-dasharray:6 6;stroke-dashoffset:800;animation:gridDraw 2.5s ease-out forwards}
+.ambient-grid .grid-dot{fill:var(--accent-h);opacity:0;animation:pulseGlow 4s ease-in-out infinite}
+
+/* Ambient: Mouse Gradient */
+#mouseGlow{position:fixed;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.045),rgba(99,102,241,0.02) 40%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);will-change:left,top,opacity;transition:left 80ms linear,top 80ms linear,opacity 0.3s ease;z-index:0;filter:blur(40px)}
+
+/* Ambient: Floating Particles */
+.floating-particle{position:absolute;width:2px;height:2px;background:var(--accent-h);border-radius:50%;opacity:0;animation:floatParticle 5s ease-in-out infinite;pointer-events:none;z-index:0}
+
+/* Ambient: Corner Elements */
+.corner-mark{position:absolute;width:24px;height:24px;opacity:0;animation:cornerReveal 0.8s ease-out forwards;pointer-events:none;z-index:0}
+.corner-mark::before,.corner-mark::after{content:'';position:absolute;background:var(--accent-h);opacity:0.15}
+.corner-mark.tl::before{top:0;left:0;width:12px;height:1px}
+.corner-mark.tl::after{top:0;left:0;width:1px;height:12px}
+.corner-mark.tr::before{top:0;right:0;width:12px;height:1px}
+.corner-mark.tr::after{top:0;right:0;width:1px;height:12px}
+.corner-mark.bl::before{bottom:0;left:0;width:12px;height:1px}
+.corner-mark.bl::after{bottom:0;left:0;width:1px;height:12px}
+.corner-mark.br::before{bottom:0;right:0;width:12px;height:1px}
+.corner-mark.br::after{bottom:0;right:0;width:1px;height:12px}
+
+/* Ambient: Click Ripple */
+.click-ripple{position:fixed;width:6px;height:6px;background:rgba(129,140,248,0.5);border-radius:50%;pointer-events:none;animation:rippleOut 0.7s ease-out forwards;z-index:9999}
+
+/* Card hover glow */
+.project-card:hover{box-shadow:0 0 0 1px rgba(99,102,241,0.15),0 8px 30px rgba(0,0,0,0.3)}
+.stat-card:hover{border-color:rgba(99,102,241,0.2);box-shadow:0 0 20px rgba(99,102,241,0.06)}
 
 /* ═══ RESPONSIVE ═══ */
 @media(max-width:1200px){.projects-grid{grid-template-columns:repeat(2,1fr)}.bottom-grid{grid-template-columns:1fr}}
@@ -292,10 +351,39 @@ input{font-family:inherit}
     </div>
   </aside>
 
-  <main class="main">
-    <div class="content">
+  <main class="main" style="position:relative;overflow-x:hidden;">
 
-      <div class="welcome animate-in">
+    <!-- Ambient: SVG Grid Pattern -->
+    <svg class="ambient-grid" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><pattern id="ambientGrid" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(99,102,241,0.04)" stroke-width="0.5"/></pattern></defs>
+      <rect width="100%" height="100%" fill="url(#ambientGrid)"/>
+      <line x1="0" y1="25%" x2="100%" y2="25%" class="grid-line" style="animation-delay:0.5s"/>
+      <line x1="0" y1="75%" x2="100%" y2="75%" class="grid-line" style="animation-delay:1s"/>
+      <line x1="25%" y1="0" x2="25%" y2="100%" class="grid-line" style="animation-delay:1.5s"/>
+      <line x1="75%" y1="0" x2="75%" y2="100%" class="grid-line" style="animation-delay:2s"/>
+      <circle cx="25%" cy="25%" r="1.5" class="grid-dot" style="animation-delay:2.5s"/>
+      <circle cx="75%" cy="25%" r="1.5" class="grid-dot" style="animation-delay:2.7s"/>
+      <circle cx="25%" cy="75%" r="1.5" class="grid-dot" style="animation-delay:2.9s"/>
+      <circle cx="75%" cy="75%" r="1.5" class="grid-dot" style="animation-delay:3.1s"/>
+    </svg>
+
+    <!-- Ambient: Corner Marks -->
+    <div class="corner-mark tl" style="top:24px;left:24px;animation-delay:2.5s"></div>
+    <div class="corner-mark tr" style="top:24px;right:24px;animation-delay:2.7s"></div>
+    <div class="corner-mark bl" style="bottom:24px;left:24px;animation-delay:2.9s"></div>
+    <div class="corner-mark br" style="bottom:24px;right:24px;animation-delay:3.1s"></div>
+
+    <!-- Ambient: Floating Particles -->
+    <div class="floating-particle" style="top:20%;left:12%;animation-delay:0s"></div>
+    <div class="floating-particle" style="top:55%;left:88%;animation-delay:0.8s"></div>
+    <div class="floating-particle" style="top:35%;left:8%;animation-delay:1.6s"></div>
+    <div class="floating-particle" style="top:70%;left:92%;animation-delay:2.4s"></div>
+    <div class="floating-particle" style="top:15%;left:65%;animation-delay:3.2s"></div>
+    <div class="floating-particle" style="top:85%;left:40%;animation-delay:4s"></div>
+
+    <div class="content" style="position:relative;z-index:1;">
+
+      <div class="welcome animate-in delay-1">
         <div class="welcome-row">
           <div>
             <h1>Willkommen zurueck, <span id="welcomeName">...</span></h1>
@@ -308,7 +396,7 @@ input{font-family:inherit}
         </div>
       </div>
 
-      <div class="stats-grid animate-in">
+      <div class="stats-grid animate-in delay-2">
         <div class="stat-card">
           <div class="stat-value" id="statProjects">0</div>
           <div class="stat-label">Projekte</div>
@@ -331,7 +419,7 @@ input{font-family:inherit}
         </div>
       </div>
 
-      <div id="projects" class="animate-in">
+      <div id="projects" class="animate-in delay-3">
         <div class="section-header">
           <h2>Projekte</h2>
           <div class="section-actions">
@@ -343,7 +431,7 @@ input{font-family:inherit}
       </div>
 
       <div class="projects-grid" id="projectsGrid">
-        <div class="project-card-new animate-in" id="cardNew">
+        <div class="project-card-new animate-in delay-4" id="cardNew">
           <div class="new-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </div>
@@ -352,7 +440,7 @@ input{font-family:inherit}
         </div>
       </div>
 
-      <div class="bottom-grid animate-in">
+      <div class="bottom-grid animate-in delay-6">
         <div class="activity-panel">
           <h3>Aktivitaeten</h3>
           <ul class="activity-list" id="activityList">
@@ -411,6 +499,9 @@ input{font-family:inherit}
   </main>
 
 </div>
+
+<!-- Ambient: Mouse Glow -->
+<div id="mouseGlow" style="opacity:0;left:0;top:0;"></div>
 
 <!-- Delete Confirmation Modal -->
 <div class="delete-overlay" id="deleteOverlay">
@@ -813,6 +904,32 @@ async function startCheckout(plan) {
     el.style.pointerEvents = '';
   }
 }
+
+// ═══ Ambient: Mouse Glow ═══
+const mouseGlow = document.getElementById('mouseGlow');
+document.addEventListener('mousemove', (e) => {
+  mouseGlow.style.left = e.clientX + 'px';
+  mouseGlow.style.top = e.clientY + 'px';
+  mouseGlow.style.opacity = '1';
+});
+document.addEventListener('mouseleave', () => { mouseGlow.style.opacity = '0'; });
+
+// ═══ Ambient: Click Ripples ═══
+document.addEventListener('click', (e) => {
+  const r = document.createElement('div');
+  r.className = 'click-ripple';
+  r.style.left = e.clientX + 'px';
+  r.style.top = e.clientY + 'px';
+  document.body.appendChild(r);
+  setTimeout(() => r.remove(), 700);
+});
+
+// ═══ Stagger project cards ═══
+setTimeout(() => {
+  document.querySelectorAll('.project-card').forEach((card, i) => {
+    card.style.animationDelay = (0.24 + i * 0.06) + 's';
+  });
+}, 50);
 </script>
 
 </body>
