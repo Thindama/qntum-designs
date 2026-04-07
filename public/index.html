@@ -7,7 +7,7 @@
 <meta name="description" content="Erstelle professionelle Websites durch KI-gestützten Dialog. Design, Code, Content — alles automatisch. Powered by Qntum AI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 /* ═══════════════════════════════════════════════════
@@ -16,33 +16,38 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --primary: #00E68A;
-  --primary-light: #33FFB3;
-  --primary-dark: #00B368;
-  --primary-50: rgba(0,230,138,0.08);
-  --accent: #00D4FF;
-  --accent-dim: #00B8DB;
-  --accent-glow: rgba(0,212,255,0.25);
-  --bg-deep: #050505;
-  --bg-dark: #0C0C0C;
-  --bg-elevated: #111111;
-  --bg-card: #151515;
-  --bg-card-hover: #1C1C1C;
+  /* ─── Indigo system, aligned with Dashboard ─── */
+  --primary: #6366F1;
+  --primary-light: #818CF8;
+  --primary-dark: #4F46E5;
+  --primary-50: rgba(99,102,241,0.12);
+  --accent: #818CF8;
+  --accent-dim: #4F46E5;
+  --accent-glow: rgba(99,102,241,0.25);
+  --bg-deep: #09090B;
+  --bg-dark: #0C0C0F;
+  --bg-elevated: #111114;
+  --bg-card: #18181B;
+  --bg-card-hover: #1F1F23;
   --border: rgba(255,255,255,0.06);
-  --border-light: rgba(255,255,255,0.1);
-  --text: #EEEEF4;
-  --text-secondary: #9494B8;
-  --text-muted: #5A5A7A;
+  --border-light: rgba(255,255,255,0.12);
+  --text: #FAFAFA;
+  --text-secondary: #A1A1AA;
+  --text-muted: #52525B;
   --glass: rgba(255,255,255,0.04);
   --glass-strong: rgba(255,255,255,0.08);
-  --glow-v: rgba(0,230,138,0.18);
-  --glow-m: rgba(0,212,255,0.12);
+  --glow-v: rgba(99,102,241,0.18);
+  --glow-m: rgba(99,102,241,0.12);
+  --success: #22C55E;
+  --warning: #EAB308;
+  --danger: #EF4444;
   --radius: 16px;
   --radius-sm: 10px;
   --radius-lg: 24px;
   --radius-xl: 32px;
   --font-heading: 'Syne', sans-serif;
-  --font-body: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -110,7 +115,7 @@ p { color: var(--text-secondary); }
   gap: 8px;
   padding: 6px 16px;
   background: var(--primary-50);
-  border: 1px solid rgba(0,230,138,0.2);
+  border: 1px solid rgba(99,102,241,0.2);
   border-radius: 100px;
   font-size: 0.82rem;
   font-weight: 500;
@@ -633,7 +638,7 @@ p { color: var(--text-secondary); }
 .bento-tile-title { font-size: 0.38rem; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.2; }
 .bento-tile-desc { font-size: 0.24rem; color: rgba(255,255,255,0.35); line-height: 1.3; }
 /* Chat tile (top-left) */
-.bento-chat .bento-tile-title { color: #00e5ff; }
+.bento-chat .bento-tile-title { color: #818CF8; }
 .bento-chat-log { display: flex; flex-direction: column; gap: 3px; margin-top: 4px; flex: 1; }
 .bento-msg { display: flex; align-items: flex-start; gap: 4px; }
 .bento-msg-avatar { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; }
@@ -641,8 +646,8 @@ p { color: var(--text-secondary); }
 .bento-msg.user .bento-msg-bubble { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.55); margin-left: auto; }
 .bento-msg.user .bento-msg-avatar { order: 1; }
 .bento-msg.user { flex-direction: row-reverse; }
-.bento-msg.agent .bento-msg-bubble { background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.12); color: rgba(255,255,255,0.6); }
-.bento-msg.agent .bento-msg-avatar { background: linear-gradient(135deg, #00e5ff, #006d7a); }
+.bento-msg.agent .bento-msg-bubble { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.12); color: rgba(255,255,255,0.6); }
+.bento-msg.agent .bento-msg-avatar { background: linear-gradient(135deg, #818CF8, #4F46E5); }
 /* Stat tile */
 .bento-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .bento-stat-num { font-size: 0.72rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1; }
@@ -654,14 +659,14 @@ p { color: var(--text-secondary); }
 .bento-consult { position: relative; }
 .bento-consult-icon { position: absolute; right: 6px; bottom: 6px; font-size: 1.1rem; opacity: 0.12; line-height: 1; }
 /* Satisfaction tile */
-.bento-sat .bento-stat-num { color: #00e5ff; }
+.bento-sat .bento-stat-num { color: #818CF8; }
 /* Workflow tile (bottom-left) */
 .bento-workflow .bento-tile-desc { margin-bottom: 5px; }
 .bento-flow { display: flex; align-items: center; gap: 3px; margin-top: auto; }
-.bento-flow-node { padding: 3px 5px; background: rgba(0,229,255,0.06); border: 1px solid rgba(0,229,255,0.15); border-radius: 4px; text-align: center; flex: 1; }
+.bento-flow-node { padding: 3px 5px; background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); border-radius: 4px; text-align: center; flex: 1; }
 .bento-flow-icon { font-size: 0.35rem; display: block; }
 .bento-flow-label { font-size: 0.2rem; color: rgba(255,255,255,0.35); display: block; margin-top: 1px; }
-.bento-flow-arrow { font-size: 0.3rem; color: rgba(0,229,255,0.3); flex-shrink: 0; }
+.bento-flow-arrow { font-size: 0.3rem; color: rgba(99,102,241,0.3); flex-shrink: 0; }
 /* CTA tile (bottom-right) */
 .bento-cta-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .bento-cta-avatars { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
@@ -669,13 +674,13 @@ p { color: var(--text-secondary); }
 .bento-cta-plus { font-size: 0.3rem; color: rgba(255,255,255,0.2); }
 .bento-cta-you { font-size: 0.24rem; color: rgba(255,255,255,0.4); padding: 2px 5px; background: rgba(255,255,255,0.06); border-radius: 3px; font-weight: 600; }
 .bento-cta-text { font-size: 0.32rem; font-weight: 700; color: #fff; margin-bottom: 5px; line-height: 1.2; }
-.bento-cta-btn { font-size: 0.26rem; padding: 3px 10px; border: 1px solid #00e5ff; color: #00e5ff; border-radius: 3px; font-weight: 600; display: inline-block; }
+.bento-cta-btn { font-size: 0.26rem; padding: 3px 10px; border: 1px solid #818CF8; color: #818CF8; border-radius: 3px; font-weight: 600; display: inline-block; }
 .bento-cta-sub { font-size: 0.2rem; color: rgba(255,255,255,0.25); margin-top: 3px; }
 
 .mockup-shimmer {
   position: absolute;
   inset: 16px;
-  background: linear-gradient(90deg, transparent, rgba(0,230,138,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(99,102,241,0.1), transparent);
   animation: shimmer 2s 2s infinite;
   border-radius: 8px;
   pointer-events: none;
@@ -777,7 +782,7 @@ p { color: var(--text-secondary); }
   transition: opacity var(--transition);
 }
 .feature-card:hover {
-  border-color: rgba(0,230,138,0.3);
+  border-color: rgba(99,102,241,0.3);
   transform: translateY(-4px);
   box-shadow: 0 16px 48px rgba(0,0,0,0.3);
 }
@@ -790,7 +795,7 @@ p { color: var(--text-secondary); }
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary-50), rgba(0,230,138,0.15));
+  background: linear-gradient(135deg, var(--primary-50), rgba(99,102,241,0.15));
   color: var(--primary-light);
   margin-bottom: 20px;
 }
@@ -860,7 +865,7 @@ p { color: var(--text-secondary); }
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 1px solid rgba(0,230,138,0.2);
+  border: 1px solid rgba(99,102,241,0.2);
 }
 .step h3 {
   color: var(--text);
@@ -904,7 +909,7 @@ p { color: var(--text-secondary); }
 .filter-btn:hover, .filter-btn.active {
   color: var(--text);
   background: var(--primary-50);
-  border-color: rgba(0,230,138,0.3);
+  border-color: rgba(99,102,241,0.3);
 }
 .filter-btn.active { color: var(--primary-light); }
 
@@ -925,7 +930,7 @@ p { color: var(--text-secondary); }
 }
 .showcase-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(0,230,138,0.3);
+  border-color: rgba(99,102,241,0.3);
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
 
@@ -994,7 +999,7 @@ p { color: var(--text-secondary); }
 }
 
 /* Mini-site realistic previews */
-.sc-mini { width: 100%; height: 100%; border-radius: 6px; overflow: hidden; font-family: 'Manrope', sans-serif; display: flex; flex-direction: column; }
+.sc-mini { width: 100%; height: 100%; border-radius: 6px; overflow: hidden; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; }
 .sc-mini * { margin: 0; padding: 0; box-sizing: border-box; }
 
 .showcase-hover-overlay {
@@ -1086,9 +1091,9 @@ p { color: var(--text-secondary); }
   cursor: default;
 }
 .tcard:hover {
-  border-color: rgba(0,230,138,0.25);
+  border-color: rgba(99,102,241,0.25);
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,230,138,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(99,102,241,0.1);
 }
 .tcard-stars {
   display: flex;
@@ -1129,8 +1134,8 @@ p { color: var(--text-secondary); }
   font-size: 0.65rem;
   font-weight: 600;
   color: var(--accent);
-  background: rgba(0,212,255,0.08);
-  border: 1px solid rgba(0,212,255,0.12);
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.12);
   padding: 2px 8px;
   border-radius: 20px;
   margin-bottom: 14px;
@@ -1174,7 +1179,7 @@ p { color: var(--text-secondary); }
 }
 .pricing-card.featured {
   border-color: var(--primary);
-  background: linear-gradient(180deg, rgba(0,230,138,0.08) 0%, var(--bg-card) 40%);
+  background: linear-gradient(180deg, rgba(99,102,241,0.08) 0%, var(--bg-card) 40%);
   box-shadow: 0 0 60px var(--glow-v);
   transform: scale(1.04);
   z-index: 2;
@@ -1210,9 +1215,9 @@ p { color: var(--text-secondary); }
   font-weight: 600;
   color: var(--accent);
   padding: 3px 10px;
-  background: rgba(0,212,255,0.08);
+  background: rgba(99,102,241,0.08);
   border-radius: 100px;
-  border: 1px solid rgba(0,212,255,0.15);
+  border: 1px solid rgba(99,102,241,0.15);
   margin-bottom: 20px;
 }
 .pricing-price {
@@ -1276,7 +1281,7 @@ p { color: var(--text-secondary); }
   border-radius: 6px;
   background: var(--primary-50);
   color: var(--primary-light);
-  border: 1px solid rgba(0,230,138,0.15);
+  border: 1px solid rgba(99,102,241,0.15);
 }
 .skill-tag.locked {
   background: rgba(255,255,255,0.02);
@@ -1309,7 +1314,7 @@ p { color: var(--text-secondary); }
   overflow: hidden;
   transition: border-color var(--transition);
 }
-.faq-item.open { border-color: rgba(0,230,138,0.25); }
+.faq-item.open { border-color: rgba(99,102,241,0.25); }
 
 .faq-question {
   width: 100%;
@@ -1432,7 +1437,7 @@ p { color: var(--text-secondary); }
   overflow: hidden;
   box-shadow:
     0 4px 24px var(--glow-v),
-    0 0 60px -10px rgba(0,230,138,0.3);
+    0 0 60px -10px rgba(99,102,241,0.3);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-demo::before {
@@ -1446,7 +1451,7 @@ p { color: var(--text-secondary); }
   transform: translateY(-3px) scale(1.02);
   box-shadow:
     0 8px 40px var(--glow-v),
-    0 0 80px -10px rgba(0,230,138,0.4);
+    0 0 80px -10px rgba(99,102,241,0.4);
 }
 .btn-demo:hover::before { left: 100%; }
 
@@ -1476,7 +1481,7 @@ p { color: var(--text-secondary); }
   transform: translateX(-50%);
   width: 800px;
   height: 400px;
-  background: radial-gradient(ellipse, rgba(0,230,138,0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(99,102,241,0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 .footer-svg-text {
@@ -1500,9 +1505,9 @@ p { color: var(--text-secondary); }
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .footer-svg-text:hover text {
-  stroke: rgba(0,230,138,0.3);
-  fill: rgba(0,230,138,0.04);
-  filter: drop-shadow(0 0 40px rgba(0,230,138,0.15));
+  stroke: rgba(99,102,241,0.3);
+  fill: rgba(99,102,241,0.04);
+  filter: drop-shadow(0 0 40px rgba(99,102,241,0.15));
 }
 .footer-tagline {
   font-family: var(--font-body);
@@ -1533,7 +1538,7 @@ p { color: var(--text-secondary); }
 .footer-cta-btn:hover {
   background: var(--primary-light);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,230,138,0.25);
+  box-shadow: 0 8px 30px rgba(99,102,241,0.25);
 }
 .footer-cta-or {
   color: var(--text-muted);
@@ -1552,7 +1557,7 @@ p { color: var(--text-secondary); }
 .footer-divider {
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--border) 20%, rgba(0,230,138,0.15) 50%, var(--border) 80%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, var(--border) 20%, rgba(99,102,241,0.15) 50%, var(--border) 80%, transparent 100%);
   margin: 0;
 }
 .footer-main {
@@ -1609,7 +1614,7 @@ p { color: var(--text-secondary); }
   border-color: var(--primary);
   color: var(--bg-deep);
   transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0,230,138,0.2);
+  box-shadow: 0 6px 20px rgba(99,102,241,0.2);
 }
 .footer-social-link:hover::before { opacity: 1; }
 .footer-social-link svg { position: relative; z-index: 1; }
@@ -1667,8 +1672,8 @@ p { color: var(--text-secondary); }
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: rgba(0,230,138,0.06);
-  border: 1px solid rgba(0,230,138,0.1);
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1796,8 +1801,8 @@ p { color: var(--text-secondary); }
       <svg viewBox="0 0 44 44" width="34" height="34" fill="none">
         <circle cx="20" cy="20" r="10.5" stroke="#fff" stroke-width="2.4"/>
         <line x1="27" y1="27" x2="33" y2="33" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
-        <ellipse cx="22" cy="22" rx="19" ry="7" stroke="#00D4FF" stroke-width="1.2" transform="rotate(-28 22 22)" opacity="0.65"/>
-        <circle cx="38.5" cy="12.5" r="2.5" fill="#00D4FF"/>
+        <ellipse cx="22" cy="22" rx="19" ry="7" stroke="#818CF8" stroke-width="1.2" transform="rotate(-28 22 22)" opacity="0.65"/>
+        <circle cx="38.5" cy="12.5" r="2.5" fill="#818CF8"/>
       </svg>
       <span>Qntum <span style="color:var(--primary-light)">Designs</span></span>
     </a>
@@ -1923,14 +1928,14 @@ p { color: var(--text-secondary); }
                     <div class="bento-flow">
                       <div class="bento-flow-node"><span class="bento-flow-icon">📞</span><span class="bento-flow-label">Anruf</span></div>
                       <span class="bento-flow-arrow">→</span>
-                      <div class="bento-flow-node"><span class="bento-flow-icon" style="color:#00e5ff;">⚡</span><span class="bento-flow-label">KI Agent</span></div>
+                      <div class="bento-flow-node"><span class="bento-flow-icon" style="color:#818CF8;">⚡</span><span class="bento-flow-label">KI Agent</span></div>
                       <span class="bento-flow-arrow">→</span>
                       <div class="bento-flow-node"><span class="bento-flow-icon">💾</span><span class="bento-flow-label">CRM</span></div>
                     </div>
                   </div>
                   <!-- Bottom-right: CTA -->
                   <div class="bento-tile bento-cta-tile">
-                    <div class="bento-cta-avatars"><span style="background:linear-gradient(135deg,#00e5ff,#006d7a);"></span><span class="bento-cta-plus">+</span><span class="bento-cta-you">YOU</span></div>
+                    <div class="bento-cta-avatars"><span style="background:linear-gradient(135deg,#818CF8,#4F46E5);"></span><span class="bento-cta-plus">+</span><span class="bento-cta-you">YOU</span></div>
                     <div class="bento-cta-text">Bereit für KI?</div>
                     <span class="bento-cta-btn">DEMO BUCHEN</span>
                     <div class="bento-cta-sub">Nur 20 Min. Unverbindlich.</div>
@@ -2290,11 +2295,11 @@ p { color: var(--text-secondary); }
       <!-- Column 1 -->
       <div class="testimonials-col">
         <div class="testimonials-scroll" style="--scroll-dur:26s;">
-          <div class="tcard"><div class="tcard-badge">Erstellt in 8 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Qntum hat unsere komplette KI-Agentur-Website in unter 10 Minuten erstellt. Chatbot-Integration, Booking-System — alles funktioniert perfekt."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#00E68A,#00D4FF);">NH</div><div><div class="tcard-name">Nina Hoffmann</div><div class="tcard-role">KI-Agentur Gründerin</div></div></div></div>
+          <div class="tcard"><div class="tcard-badge">Erstellt in 8 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Qntum hat unsere komplette KI-Agentur-Website in unter 10 Minuten erstellt. Chatbot-Integration, Booking-System — alles funktioniert perfekt."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#6366F1,#818CF8);">NH</div><div><div class="tcard-name">Nina Hoffmann</div><div class="tcard-role">KI-Agentur Gründerin</div></div></div></div>
           <div class="tcard"><div class="tcard-badge">Erstellt in 5 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Null Ahnung von Technik. Habe beschrieben, was ich brauche — und hatte eine wunderschöne Seite für mein Café mit Online-Reservierung."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#D97706,#F59E0B);">LW</div><div><div class="tcard-name">Lisa Weber</div><div class="tcard-role">Inhaberin, Café Lichtblick</div></div></div></div>
           <div class="tcard"><div class="tcard-badge">Erstellt in 15 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Meine Immobilien-Website mit Objekt-Galerie, Suchfilter und Kontaktformular war in 15 Minuten live. Kunden sind begeistert."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8);">DS</div><div><div class="tcard-name">David Schneider</div><div class="tcard-role">Immobilienmakler</div></div></div></div>
           <!-- Duplicate for infinite scroll -->
-          <div class="tcard"><div class="tcard-badge">Erstellt in 8 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Qntum hat unsere komplette KI-Agentur-Website in unter 10 Minuten erstellt. Chatbot-Integration, Booking-System — alles funktioniert perfekt."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#00E68A,#00D4FF);">NH</div><div><div class="tcard-name">Nina Hoffmann</div><div class="tcard-role">KI-Agentur Gründerin</div></div></div></div>
+          <div class="tcard"><div class="tcard-badge">Erstellt in 8 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Qntum hat unsere komplette KI-Agentur-Website in unter 10 Minuten erstellt. Chatbot-Integration, Booking-System — alles funktioniert perfekt."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#6366F1,#818CF8);">NH</div><div><div class="tcard-name">Nina Hoffmann</div><div class="tcard-role">KI-Agentur Gründerin</div></div></div></div>
           <div class="tcard"><div class="tcard-badge">Erstellt in 5 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Null Ahnung von Technik. Habe beschrieben, was ich brauche — und hatte eine wunderschöne Seite für mein Café mit Online-Reservierung."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#D97706,#F59E0B);">LW</div><div><div class="tcard-name">Lisa Weber</div><div class="tcard-role">Inhaberin, Café Lichtblick</div></div></div></div>
           <div class="tcard"><div class="tcard-badge">Erstellt in 15 Min</div><div class="tcard-stars"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><p class="tcard-quote">„Meine Immobilien-Website mit Objekt-Galerie, Suchfilter und Kontaktformular war in 15 Minuten live. Kunden sind begeistert."</p><div class="tcard-author"><div class="tcard-avatar" style="background:linear-gradient(135deg,#3B82F6,#1D4ED8);">DS</div><div><div class="tcard-name">David Schneider</div><div class="tcard-role">Immobilienmakler</div></div></div></div>
         </div>
@@ -2668,8 +2673,8 @@ p { color: var(--text-secondary); }
           <svg viewBox="0 0 44 44" width="28" height="28" fill="none">
             <circle cx="20" cy="20" r="10.5" stroke="#fff" stroke-width="2.4"/>
             <line x1="27" y1="27" x2="33" y2="33" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
-            <ellipse cx="22" cy="22" rx="19" ry="7" stroke="#00D4FF" stroke-width="1.2" transform="rotate(-28 22 22)" opacity="0.65"/>
-            <circle cx="38.5" cy="12.5" r="2.5" fill="#00D4FF"/>
+            <ellipse cx="22" cy="22" rx="19" ry="7" stroke="#818CF8" stroke-width="1.2" transform="rotate(-28 22 22)" opacity="0.65"/>
+            <circle cx="38.5" cy="12.5" r="2.5" fill="#818CF8"/>
           </svg>
           <span>Qntum <span style="color:var(--primary-light)">Designs</span></span>
         </a>
@@ -2791,7 +2796,7 @@ p { color: var(--text-secondary); }
         vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
         radius: Math.random() * 2 + 0.5,
-        color: Math.random() > 0.7 ? 'rgba(0,212,255,' : 'rgba(0,230,138,',
+        color: Math.random() > 0.7 ? 'rgba(99,102,241,' : 'rgba(99,102,241,',
         baseOpacity: Math.random() * 0.5 + 0.2
       });
     }
@@ -2832,7 +2837,7 @@ p { color: var(--text-secondary); }
           ctx.beginPath();
           ctx.moveTo(p.x, p.y);
           ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = 'rgba(0,230,138,' + (0.08 * (1 - d / 140)) + ')';
+          ctx.strokeStyle = 'rgba(99,102,241,' + (0.08 * (1 - d / 140)) + ')';
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
