@@ -4094,18 +4094,26 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   let lastUserPrompt = '';
 
   function startFlow(userText) {
-    // UI/UX Pro is the default — skip all questions, generate directly.
-    // The system prompt bakes in design variety + premium baselines.
-    parseInitialPrompt(userText); // still parse for project naming hints
+    parseInitialPrompt(userText);
     lastUserPrompt = userText;
-    flowStep = FLOW_COMPLETE;
 
-    // Ensure UI/UX Pro is the active skill
+    // Ensure UI/UX Pro is the active skill by default
     document.querySelectorAll('.skill-pill[data-skill]').forEach(p => {
       if (p.dataset.skill === 'ui-ux') p.classList.add('active');
     });
 
-    startGeneration(userText);
+    // Start the question flow. Skip steps whose answers were already
+    // detected in the prompt.
+    if (!flowData.type) {
+      flowStep = 1;
+      setTimeout(() => showTypeQuestion(), 300);
+    } else if (!flowData.industry) {
+      flowStep = 2;
+      setTimeout(() => showIndustryQuestion(), 300);
+    } else {
+      flowStep = 3;
+      setTimeout(() => showSectionsQuestion(), 300);
+    }
   }
 
   const FI = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
