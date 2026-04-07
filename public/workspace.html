@@ -6,7 +6,7 @@
 <title>Qntum Workspace — KI-Agentur Pro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script>
 function loadSandpack(){if(!window._sandpackLoading){window._sandpackLoading=true;var s=document.createElement('script');s.src='https://unpkg.com/@codesandbox/sandpack-client@latest/dist/index.umd.js';s.onload=function(){console.log('[Qntum] Sandpack loaded');};document.head.appendChild(s);}}
 </script>
@@ -18,24 +18,30 @@ function loadSandpack(){if(!window._sandpackLoading){window._sandpackLoading=tru
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --ws-bg: #08080F;
-  --ws-bg-1: #0C0C18;
-  --ws-bg-2: #101024;
-  --ws-bg-3: #16162E;
+  /* ─── Dashboard-aligned design tokens ─── */
+  --ws-bg: #09090B;
+  --ws-bg-1: #0C0C0F;
+  --ws-bg-2: #111114;
+  --ws-bg-3: #18181B;
   --ws-border: rgba(255,255,255,0.06);
-  --ws-border-l: rgba(255,255,255,0.1);
-  --ws-primary: #00E68A;
-  --ws-primary-l: #33FFB3;
-  --ws-accent: #00D4FF;
-  --ws-accent-d: #00B8DB;
+  --ws-border-l: rgba(255,255,255,0.12);
+  --ws-primary: #6366F1;          /* Indigo (was neon green) */
+  --ws-primary-l: #818CF8;
+  --ws-primary-bg: rgba(99,102,241,0.12);
+  --ws-accent: #6366F1;           /* Indigo (was cyan) */
+  --ws-accent-d: #4F46E5;
+  --ws-success: #22C55E;
   --ws-red: #EF4444;
-  --ws-orange: #F59E0B;
-  --ws-text: #E2E2F0;
-  --ws-text-2: #8888A8;
-  --ws-text-3: #555570;
-  --ws-font: 'Manrope', sans-serif;
+  --ws-orange: #EAB308;
+  --ws-text: #FAFAFA;
+  --ws-text-2: #A1A1AA;
+  --ws-text-3: #52525B;
+  --ws-font: 'Inter', sans-serif;
+  --ws-font-h: 'Syne', sans-serif;
   --ws-mono: 'JetBrains Mono', monospace;
-  --ws-radius: 8px;
+  --ws-radius: 12px;
+  --ws-radius-sm: 8px;
+  --ws-radius-lg: 16px;
   --ws-transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -81,7 +87,7 @@ input, textarea { font-family: inherit; }
    ═══════════════════════════════════════ */
 .sidebar {
   grid-area: sidebar;
-  background: rgba(8,8,15,0.85);
+  background: rgba(9,9,11,0.88);
   border-right: 1px solid var(--ws-border);
   position: relative; z-index: 1;
   display: flex;
@@ -111,7 +117,7 @@ input, textarea { font-family: inherit; }
   flex-shrink: 0;
 }
 .sidebar-btn:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
-.sidebar-btn.active { color: var(--ws-primary-l); background: rgba(0,230,138,0.1); }
+.sidebar-btn.active { color: var(--ws-primary-l); background: rgba(99,102,241,0.1); }
 .sidebar-btn svg { width: 18px; height: 18px; }
 
 .sidebar-open .sidebar-btn {
@@ -170,7 +176,7 @@ input, textarea { font-family: inherit; }
   transition: all 0.15s;
 }
 .file-tree-item:hover { background: rgba(255,255,255,0.04); color: var(--ws-text); }
-.file-tree-item.active { background: rgba(0,230,138,0.08); color: var(--ws-primary-l); }
+.file-tree-item.active { background: rgba(99,102,241,0.08); color: var(--ws-primary-l); }
 .file-tree-icon {
   width: 14px; height: 14px; flex-shrink: 0; opacity: 0.6;
 }
@@ -188,7 +194,7 @@ input, textarea { font-family: inherit; }
    ═══════════════════════════════════════ */
 .topbar {
   grid-area: topbar;
-  background: rgba(8,8,15,0.85);
+  background: rgba(9,9,11,0.88);
   border-bottom: 1px solid var(--ws-border);
   display: flex;
   align-items: center;
@@ -201,13 +207,27 @@ input, textarea { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: var(--ws-font-h);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: -0.02em;
   flex-shrink: 0;
 }
 .topbar-logo svg { width: 22px; height: 22px; }
 .topbar-logo span { color: var(--ws-primary-l); }
+.topbar-logo-icon {
+  width: 26px;
+  height: 26px;
+  background: var(--ws-primary);
+  border-radius: var(--ws-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ws-font-h);
+  font-weight: 800;
+  font-size: 13px;
+  color: #fff;
+}
 
 .topbar-sep {
   width: 1px;
@@ -234,8 +254,8 @@ input, textarea { font-family: inherit; }
 
 .stack-select {
   padding: 4px 24px 4px 10px;
-  background: rgba(0,212,255,0.06);
-  border: 1px solid rgba(0,212,255,0.15);
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.15);
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
@@ -251,7 +271,7 @@ input, textarea { font-family: inherit; }
   transition: all var(--ws-transition);
   margin-left: 8px;
 }
-.stack-select:hover { border-color: rgba(0,212,255,0.3); background-color: rgba(0,212,255,0.1); }
+.stack-select:hover { border-color: rgba(99,102,241,0.3); background-color: rgba(99,102,241,0.1); }
 .stack-select option { background: var(--ws-bg-2); color: var(--ws-text); }
 
 .topbar-center {
@@ -271,7 +291,7 @@ input, textarea { font-family: inherit; }
   transition: all var(--ws-transition);
 }
 .topbar-icon-btn:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
-.topbar-icon-btn.active { color: var(--ws-primary-l); background: rgba(0,230,138,0.1); }
+.topbar-icon-btn.active { color: var(--ws-primary-l); background: rgba(99,102,241,0.1); }
 .topbar-icon-btn svg { width: 16px; height: 16px; }
 .topbar-center .topbar-sep { margin: 0 4px; }
 
@@ -314,8 +334,8 @@ input, textarea { font-family: inherit; }
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ws-accent);
-  background: rgba(0,212,255,0.08);
-  border: 1px solid rgba(0,212,255,0.15);
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.15);
   border-radius: 100px;
 }
 
@@ -338,16 +358,16 @@ input, textarea { font-family: inherit; }
   gap: 6px;
   padding: 7px 18px;
   background: var(--ws-primary);
-  color: #000;
+  color: #fff;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   border-radius: 8px;
   transition: all var(--ws-transition);
   letter-spacing: 0.01em;
 }
 .btn-publish:hover {
   background: var(--ws-primary-l);
-  box-shadow: 0 4px 20px rgba(0,230,138,0.3);
+  box-shadow: 0 4px 20px rgba(99,102,241,0.3);
 }
 .btn-publish:disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
 .btn-publish svg { width: 14px; height: 14px; }
@@ -397,17 +417,17 @@ input, textarea { font-family: inherit; }
 /* Active phase — heartbeat pulse */
 .phase-step.active .phase-dot {
   border-color: var(--ws-primary);
-  background: rgba(0,230,138,0.12);
+  background: rgba(99,102,241,0.12);
   animation: phaseHeartbeat 2s ease-in-out infinite;
 }
 .phase-step.active .phase-dot svg { color: var(--ws-primary); }
 .phase-step.active .phase-label { color: var(--ws-primary-l); }
 @keyframes phaseHeartbeat {
-  0%, 100% { box-shadow: 0 0 6px rgba(0,230,138,0.2); transform: scale(1); }
-  25% { box-shadow: 0 0 12px rgba(0,230,138,0.4); transform: scale(1.1); }
-  35% { box-shadow: 0 0 8px rgba(0,230,138,0.25); transform: scale(1.02); }
-  45% { box-shadow: 0 0 14px rgba(0,230,138,0.35); transform: scale(1.08); }
-  60% { box-shadow: 0 0 6px rgba(0,230,138,0.15); transform: scale(1); }
+  0%, 100% { box-shadow: 0 0 6px rgba(99,102,241,0.2); transform: scale(1); }
+  25% { box-shadow: 0 0 12px rgba(99,102,241,0.4); transform: scale(1.1); }
+  35% { box-shadow: 0 0 8px rgba(99,102,241,0.25); transform: scale(1.02); }
+  45% { box-shadow: 0 0 14px rgba(99,102,241,0.35); transform: scale(1.08); }
+  60% { box-shadow: 0 0 6px rgba(99,102,241,0.15); transform: scale(1); }
 }
 /* Completed phase */
 .phase-step.done .phase-dot {
@@ -415,17 +435,17 @@ input, textarea { font-family: inherit; }
   background: var(--ws-primary);
   animation: none;
 }
-.phase-step.done .phase-dot svg { color: #000; }
+.phase-step.done .phase-dot svg { color: #fff; }
 .phase-step.done .phase-label { color: var(--ws-text-2); }
 .phase-line.done { background: var(--ws-primary); }
 /* Subtle hint on next step */
 .phase-step.next .phase-dot {
   animation: phaseNext 3s ease-in-out infinite;
-  border-color: rgba(0,230,138,0.4);
+  border-color: rgba(99,102,241,0.4);
 }
 @keyframes phaseNext {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0,230,138,0); }
-  50% { box-shadow: 0 0 0 4px rgba(0,230,138,0.12); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+  50% { box-shadow: 0 0 0 4px rgba(99,102,241,0.12); }
 }
 
 /* ═══════════════════════════════════════
@@ -435,7 +455,7 @@ input, textarea { font-family: inherit; }
   grid-area: main;
   display: flex;
   overflow: hidden;
-  background: rgba(12,12,24,0.82);
+  background: rgba(12,12,15,0.85);
   position: relative; z-index: 1;
 }
 
@@ -448,7 +468,7 @@ input, textarea { font-family: inherit; }
   max-width: 520px;
   display: flex;
   flex-direction: column;
-  background: rgba(8,8,15,0.82);
+  background: rgba(9,9,11,0.85);
   border-right: 1px solid var(--ws-border);
   position: relative; z-index: 1;
 }
@@ -467,7 +487,8 @@ input, textarea { font-family: inherit; }
   gap: 8px;
 }
 .chat-header-title {
-  font-size: 12.5px;
+  font-family: var(--ws-font-h);
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
@@ -527,8 +548,8 @@ input, textarea { font-family: inherit; }
 }
 .skill-pill:hover { border-color: var(--ws-border-l); color: var(--ws-text-2); }
 .skill-pill.active {
-  background: rgba(0,230,138,0.1);
-  border-color: rgba(0,230,138,0.3);
+  background: rgba(99,102,241,0.1);
+  border-color: rgba(99,102,241,0.3);
   color: var(--ws-primary-l);
 }
 .skill-pill svg { width: 10px; height: 10px; }
@@ -610,8 +631,8 @@ input, textarea { font-family: inherit; }
   gap: 8px;
   margin-top: 8px;
   padding: 6px 12px;
-  background: rgba(0,230,138,0.06);
-  border: 1px solid rgba(0,230,138,0.12);
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(99,102,241,0.12);
   border-radius: 8px;
   font-size: 11px;
   color: var(--ws-primary-l);
@@ -620,7 +641,7 @@ input, textarea { font-family: inherit; }
 .gen-spinner {
   width: 12px;
   height: 12px;
-  border: 2px solid rgba(0,230,138,0.2);
+  border: 2px solid rgba(99,102,241,0.2);
   border-top-color: var(--ws-primary-l);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -644,7 +665,7 @@ input, textarea { font-family: inherit; }
   transition: border-color var(--ws-transition);
 }
 .chat-input-box:focus-within {
-  border-color: rgba(0,230,138,0.4);
+  border-color: rgba(99,102,241,0.4);
 }
 .chat-input-box textarea {
   flex: 1;
@@ -716,7 +737,7 @@ input, textarea { font-family: inherit; }
 .chat-tab.active {
   color: var(--ws-primary-l);
   border-bottom-color: var(--ws-primary);
-  background: rgba(0,230,138,0.03);
+  background: rgba(99,102,241,0.03);
 }
 .chat-tab svg { width: 14px; height: 14px; }
 .chat-tab.tab-glow {
@@ -754,7 +775,7 @@ input, textarea { font-family: inherit; }
   font-family: var(--ws-font);
   transition: border-color var(--ws-transition);
 }
-.comp-search:focus { border-color: rgba(0,230,138,0.3); }
+.comp-search:focus { border-color: rgba(99,102,241,0.3); }
 .comp-search::placeholder { color: var(--ws-text-3); }
 .comp-search-wrap { position: relative; }
 .comp-search-icon {
@@ -791,8 +812,8 @@ input, textarea { font-family: inherit; }
 }
 .comp-cat:hover { border-color: var(--ws-border-l); color: var(--ws-text-2); }
 .comp-cat.active {
-  background: rgba(0,212,255,0.1);
-  border-color: rgba(0,212,255,0.3);
+  background: rgba(99,102,241,0.1);
+  border-color: rgba(99,102,241,0.3);
   color: var(--ws-accent);
 }
 .comp-cat-count {
@@ -808,7 +829,7 @@ input, textarea { font-family: inherit; }
   font-weight: 700;
   margin-left: 4px;
 }
-.comp-cat.active .comp-cat-count { background: rgba(0,212,255,0.2); }
+.comp-cat.active .comp-cat-count { background: rgba(99,102,241,0.2); }
 
 .comp-grid {
   flex: 1;
@@ -829,8 +850,8 @@ input, textarea { font-family: inherit; }
   cursor: pointer;
 }
 .comp-card:hover {
-  border-color: rgba(0,212,255,0.25);
-  background: rgba(0,212,255,0.04);
+  border-color: rgba(99,102,241,0.25);
+  background: rgba(99,102,241,0.04);
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
@@ -914,9 +935,9 @@ input, textarea { font-family: inherit; }
   padding: 8px 20px;
   border-radius: 8px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   background: var(--ws-primary);
-  color: #000;
+  color: #fff;
   transition: all var(--ws-transition);
 }
 .comp-preview-use:hover { background: var(--ws-primary-l); }
@@ -969,14 +990,14 @@ input, textarea { font-family: inherit; }
   border-radius: 6px;
   font-size: 10.5px;
   font-weight: 700;
-  background: rgba(0,230,138,0.1);
-  border: 1px solid rgba(0,230,138,0.2);
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
   color: var(--ws-primary-l);
   transition: all var(--ws-transition);
 }
 .comp-card-action:hover {
-  background: rgba(0,230,138,0.2);
-  border-color: rgba(0,230,138,0.4);
+  background: rgba(99,102,241,0.2);
+  border-color: rgba(99,102,241,0.4);
 }
 .comp-card-lock {
   width: 100%;
@@ -1041,8 +1062,8 @@ input, textarea { font-family: inherit; }
   font-size: 10px;
   font-weight: 700;
   font-family: var(--ws-mono);
-  background: rgba(0,212,255,0.1);
-  border: 1px solid rgba(0,212,255,0.2);
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
   color: var(--ws-accent);
 }
 
@@ -1053,7 +1074,7 @@ input, textarea { font-family: inherit; }
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: rgba(12,12,24,0.82);
+  background: rgba(12,12,15,0.85);
   overflow: hidden;
   position: relative; z-index: 1;
   transition: flex 0.4s cubic-bezier(0.16, 1, 0.3, 1), min-width 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
@@ -1097,7 +1118,7 @@ input, textarea { font-family: inherit; }
 .preview-toggle:hover {
   background: var(--ws-bg-3);
   color: var(--ws-primary-l);
-  border-color: rgba(0,230,138,0.3);
+  border-color: rgba(99,102,241,0.3);
 }
 .preview-toggle svg { width: 14px; height: 14px; }
 
@@ -1123,9 +1144,9 @@ input, textarea { font-family: inherit; }
   transition: all 0.25s;
 }
 .preview-open-btn:hover {
-  background: rgba(0,230,138,0.1);
+  background: rgba(99,102,241,0.1);
   color: var(--ws-primary-l);
-  border-color: rgba(0,230,138,0.3);
+  border-color: rgba(99,102,241,0.3);
 }
 .preview-open-btn svg { width: 14px; height: 14px; }
 .main.preview-collapsed .preview-open-btn { display: flex; }
@@ -1171,7 +1192,7 @@ input, textarea { font-family: inherit; }
   transition: all var(--ws-transition);
 }
 .device-btn:hover { background: rgba(255,255,255,0.06); color: var(--ws-text-2); }
-.device-btn.active { color: var(--ws-primary-l); background: rgba(0,230,138,0.1); }
+.device-btn.active { color: var(--ws-primary-l); background: rgba(99,102,241,0.1); }
 .device-btn svg { width: 16px; height: 16px; }
 
 .preview-actions {
@@ -1234,13 +1255,13 @@ input, textarea { font-family: inherit; }
 }
 .preview-gen-overlay.active { display: flex; }
 .preview-gen-overlay.fade-out { opacity: 0; pointer-events: none; }
-.pgo-mark { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(0,229,255,0.35); font-weight: 600; position: absolute; top: 32px; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
+.pgo-mark { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(99,102,241,0.35); font-weight: 600; position: absolute; top: 32px; text-shadow: 0 1px 8px rgba(0,0,0,0.6); }
 .pgo-fact-container { max-width: 520px; text-align: center; padding: 0 40px; min-height: 120px; display: flex; align-items: center; justify-content: center; }
 .pgo-fact { font-size: 17px; line-height: 1.7; color: rgba(255,255,255,0.95); font-weight: 400; letter-spacing: 0.01em; opacity: 0; transform: translateY(12px); animation: pgoFactIn 8s ease forwards; text-shadow: 0 2px 16px rgba(0,0,0,0.9); }
 @keyframes pgoFactIn { 0%{opacity:0;transform:translateY(12px)} 6%{opacity:1;transform:translateY(0)} 90%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-8px)} }
 .pgo-bottom { position: absolute; bottom: 48px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.pgo-pulse { width: 200px; height: 2px; background: rgba(0,229,255,0.1); border-radius: 1px; overflow: hidden; position: relative; }
-.pgo-pulse::after { content: ''; position: absolute; left: -40%; width: 40%; height: 100%; background: linear-gradient(90deg,transparent,#00e5ff,transparent); animation: pulseLine 2s ease-in-out infinite; }
+.pgo-pulse { width: 200px; height: 2px; background: rgba(99,102,241,0.1); border-radius: 1px; overflow: hidden; position: relative; }
+.pgo-pulse::after { content: ''; position: absolute; left: -40%; width: 40%; height: 100%; background: linear-gradient(90deg,transparent,#818CF8,transparent); animation: pulseLine 2s ease-in-out infinite; }
 .pgo-label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500; letter-spacing: 0.04em; text-shadow: 0 1px 8px rgba(0,0,0,0.7); }
 .preview-frame.tablet { max-width: 768px; }
 .preview-frame.mobile { max-width: 375px; }
@@ -1250,7 +1271,7 @@ input, textarea { font-family: inherit; }
    ═══════════════════════════════════════ */
 .statusbar {
   grid-area: statusbar;
-  background: rgba(8,8,15,0.85);
+  background: rgba(9,9,11,0.88);
   border-top: 1px solid var(--ws-border);
   position: relative; z-index: 1;
   display: flex;
@@ -1424,8 +1445,10 @@ input, textarea { font-family: inherit; }
   padding: 20px 24px 16px;
 }
 .publish-header h2 {
-  font-size: 16px;
+  font-family: var(--ws-font-h);
+  font-size: 17px;
   font-weight: 700;
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1465,7 +1488,7 @@ input, textarea { font-family: inherit; }
   overflow: hidden;
   transition: border-color 0.2s;
 }
-.publish-slug-row:focus-within { border-color: rgba(0,230,138,0.4); }
+.publish-slug-row:focus-within { border-color: rgba(99,102,241,0.4); }
 .publish-slug-prefix {
   padding: 10px 12px;
   font-size: 12px;
@@ -1501,14 +1524,14 @@ input, textarea { font-family: inherit; }
   outline: none;
   transition: border-color 0.2s;
 }
-.publish-domain-input:focus { border-color: rgba(0,230,138,0.4); }
+.publish-domain-input:focus { border-color: rgba(99,102,241,0.4); }
 .publish-domain-input::placeholder { color: var(--ws-text-3); }
 
 .publish-dns-info {
   margin-top: 10px;
   padding: 12px;
-  background: rgba(0,212,255,0.04);
-  border: 1px solid rgba(0,212,255,0.1);
+  background: rgba(99,102,241,0.04);
+  border: 1px solid rgba(99,102,241,0.1);
   border-radius: 8px;
   font-size: 11px;
   color: var(--ws-text-2);
@@ -1547,9 +1570,9 @@ input, textarea { font-family: inherit; }
 }
 .publish-btn-primary {
   background: var(--ws-primary);
-  color: #000;
+  color: #fff;
 }
-.publish-btn-primary:hover { background: var(--ws-primary-l); box-shadow: 0 4px 20px rgba(0,230,138,0.3); }
+.publish-btn-primary:hover { background: var(--ws-primary-l); box-shadow: 0 4px 20px rgba(99,102,241,0.3); }
 .publish-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 .publish-btn-secondary {
   background: rgba(255,255,255,0.04);
@@ -1566,7 +1589,7 @@ input, textarea { font-family: inherit; }
 .publish-success.visible { display: block; }
 .publish-success-icon {
   width: 48px; height: 48px;
-  background: rgba(0,230,138,0.1);
+  background: rgba(99,102,241,0.1);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 12px;
@@ -1576,8 +1599,8 @@ input, textarea { font-family: inherit; }
 .publish-success-url {
   display: inline-block;
   padding: 8px 16px;
-  background: rgba(0,230,138,0.08);
-  border: 1px solid rgba(0,230,138,0.2);
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.2);
   border-radius: 8px;
   font-family: var(--ws-mono);
   font-size: 13px;
@@ -1587,7 +1610,7 @@ input, textarea { font-family: inherit; }
   cursor: pointer;
   transition: all 0.15s;
 }
-.publish-success-url:hover { background: rgba(0,230,138,0.12); }
+.publish-success-url:hover { background: rgba(99,102,241,0.12); }
 
 /* ═══════════════════════════════════════
    TOOLBAR ACTIONS
@@ -1614,7 +1637,7 @@ input, textarea { font-family: inherit; }
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,229,255,0.15), transparent 70%);
+  background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%);
   position: relative;
   animation: genPulse 2s ease-in-out infinite;
 }
@@ -1623,8 +1646,8 @@ input, textarea { font-family: inherit; }
   position: absolute;
   inset: 15px;
   border-radius: 50%;
-  border: 2px solid rgba(0,229,255,0.3);
-  border-top-color: #00e5ff;
+  border: 2px solid rgba(99,102,241,0.3);
+  border-top-color: #818CF8;
   animation: spin 1s linear infinite;
 }
 .gen-pulse::after {
@@ -1632,11 +1655,11 @@ input, textarea { font-family: inherit; }
   position: absolute;
   inset: 25px;
   border-radius: 50%;
-  background: rgba(0,229,255,0.08);
+  background: rgba(99,102,241,0.08);
 }
 @keyframes genPulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,229,255,0.2); }
-  50% { transform: scale(1.05); box-shadow: 0 0 40px 10px rgba(0,229,255,0.1); }
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99,102,241,0.2); }
+  50% { transform: scale(1.05); box-shadow: 0 0 40px 10px rgba(99,102,241,0.1); }
 }
 .gen-status {
   font-size: 14px;
@@ -1653,7 +1676,7 @@ input, textarea { font-family: inherit; }
 }
 .gen-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #00e5ff, var(--ws-primary));
+  background: linear-gradient(90deg, #818CF8, var(--ws-primary));
   border-radius: 2px;
   width: 0%;
   transition: width 0.5s ease;
@@ -1692,8 +1715,10 @@ input, textarea { font-family: inherit; }
   padding: 20px 24px 16px;
 }
 .modal-header h2 {
-  font-size: 16px;
+  font-family: var(--ws-font-h);
+  font-size: 17px;
   font-weight: 700;
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1727,7 +1752,7 @@ input, textarea { font-family: inherit; }
   outline: none;
   transition: border-color 0.2s;
 }
-.modal-input:focus { border-color: rgba(0,230,138,0.4); }
+.modal-input:focus { border-color: rgba(99,102,241,0.4); }
 .modal-input::placeholder { color: var(--ws-text-3); }
 textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 .modal-hint {
@@ -1752,9 +1777,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 }
 .modal-btn-primary {
   background: var(--ws-primary);
-  color: #000;
+  color: #fff;
 }
-.modal-btn-primary:hover { background: var(--ws-primary-l); box-shadow: 0 4px 20px rgba(0,230,138,0.3); }
+.modal-btn-primary:hover { background: var(--ws-primary-l); box-shadow: 0 4px 20px rgba(99,102,241,0.3); }
 .modal-btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 .modal-btn-secondary {
   background: rgba(255,255,255,0.04);
@@ -1773,7 +1798,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   overflow: hidden;
   transition: border-color 0.2s;
 }
-.deploy-slug-row:focus-within { border-color: rgba(0,230,138,0.4); }
+.deploy-slug-row:focus-within { border-color: rgba(99,102,241,0.4); }
 .deploy-slug-prefix {
   padding: 10px 12px;
   font-size: 12px;
@@ -1823,7 +1848,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 .deploy-success.visible { display: block; }
 .deploy-success-icon {
   width: 48px; height: 48px;
-  background: rgba(0,230,138,0.1);
+  background: rgba(99,102,241,0.1);
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 12px;
@@ -1833,8 +1858,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 .deploy-success-url {
   display: inline-block;
   padding: 8px 16px;
-  background: rgba(0,230,138,0.08);
-  border: 1px solid rgba(0,230,138,0.2);
+  background: rgba(99,102,241,0.08);
+  border: 1px solid rgba(99,102,241,0.2);
   border-radius: 8px;
   font-family: var(--ws-mono);
   font-size: 13px;
@@ -1844,7 +1869,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   cursor: pointer;
   transition: all 0.15s;
 }
-.deploy-success-url:hover { background: rgba(0,230,138,0.12); }
+.deploy-success-url:hover { background: rgba(99,102,241,0.12); }
 .deploy-upgrade {
   display: none;
   text-align: center;
@@ -1902,8 +1927,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 .deploy-step-item.active .deploy-step-dot { background: var(--ws-accent); animation: deployDotPulse 1s ease-in-out infinite; }
 .deploy-step-item.done .deploy-step-dot { background: var(--ws-primary); }
 @keyframes deployDotPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(0,212,255,0); }
-  50% { box-shadow: 0 0 0 4px rgba(0,212,255,0.3); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+  50% { box-shadow: 0 0 0 4px rgba(99,102,241,0.3); }
 }
 .deploy-progress-bar {
   height: 3px;
@@ -1957,8 +1982,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   transition: all 0.2s;
 }
 .agent-card:hover {
-  background: rgba(0,230,138,0.04);
-  border-color: rgba(0,230,138,0.2);
+  background: rgba(99,102,241,0.04);
+  border-color: rgba(99,102,241,0.2);
 }
 .agent-card-icon {
   width: 36px; height: 36px;
@@ -1983,8 +2008,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 .domain-dns-info {
   margin-top: 10px;
   padding: 12px;
-  background: rgba(0,212,255,0.04);
-  border: 1px solid rgba(0,212,255,0.1);
+  background: rgba(99,102,241,0.04);
+  border: 1px solid rgba(99,102,241,0.1);
   border-radius: 8px;
   font-size: 11px;
   color: var(--ws-text-2);
@@ -2081,7 +2106,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 .backend-tab.active {
   color: var(--ws-text);
   border-left-color: var(--ws-primary);
-  background: rgba(0,230,138,0.04);
+  background: rgba(99,102,241,0.04);
 }
 .backend-tab svg { width: 15px; height: 15px; flex-shrink: 0; }
 .backend-tab .status-dot {
@@ -2140,8 +2165,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   text-align: center;
 }
 .backend-agent-card:hover {
-  border-color: rgba(0,212,255,0.25);
-  background: rgba(0,212,255,0.04);
+  border-color: rgba(99,102,241,0.25);
+  background: rgba(99,102,241,0.04);
   transform: translateY(-1px);
 }
 .backend-agent-icon {
@@ -2205,14 +2230,14 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   font-weight: 500;
 }
 .flow-card:hover {
-  background: rgba(0,229,255,0.04);
-  border-color: rgba(0,229,255,0.2);
+  background: rgba(99,102,241,0.04);
+  border-color: rgba(99,102,241,0.2);
   color: var(--ws-text);
 }
 .flow-card.selected {
-  background: rgba(0,229,255,0.08);
-  border-color: rgba(0,229,255,0.35);
-  color: #00e5ff;
+  background: rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.35);
+  color: #818CF8;
 }
 .flow-card-icon {
   font-size: 18px;
@@ -2268,13 +2293,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   user-select: none;
 }
 .flow-chip:hover {
-  border-color: rgba(0,229,255,0.2);
+  border-color: rgba(99,102,241,0.2);
   color: var(--ws-text-2);
 }
 .flow-chip.selected {
-  background: rgba(0,229,255,0.08);
-  border-color: rgba(0,229,255,0.35);
-  color: #00e5ff;
+  background: rgba(99,102,241,0.08);
+  border-color: rgba(99,102,241,0.35);
+  color: #818CF8;
 }
 
 /* Style cards — horizontal */
@@ -2290,9 +2315,9 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   margin-top: 12px;
   padding: 10px 24px;
   background: var(--ws-primary);
-  color: #000;
+  color: #fff;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -2300,12 +2325,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 }
 .flow-confirm-btn:hover {
   background: var(--ws-primary-l);
-  box-shadow: 0 4px 20px rgba(0,230,138,0.3);
+  box-shadow: 0 4px 20px rgba(99,102,241,0.3);
 }
 
 /* SVG icons in flow cards */
 .flow-card-icon svg { width: 20px; height: 20px; color: var(--ws-text-2); transition: color 0.2s; flex-shrink: 0; }
-.flow-card.selected .flow-card-icon svg { color: #00e5ff; }
+.flow-card.selected .flow-card-icon svg { color: #818CF8; }
 .flow-cards-sm .flow-card-icon svg { width: 16px; height: 16px; }
 /* Color dot for color-schema cards */
 .flow-color-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
@@ -2368,20 +2393,20 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   outline: none;
   transition: border-color 0.2s;
 }
-.flow-freetext input:focus { border-color: rgba(0,229,255,0.4); }
+.flow-freetext input:focus { border-color: rgba(99,102,241,0.4); }
 .flow-freetext button {
   padding: 8px 14px;
-  background: rgba(0,229,255,0.1);
-  border: 1px solid rgba(0,229,255,0.2);
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.2);
   border-radius: 8px;
-  color: #00e5ff;
+  color: #818CF8;
   font-size: 12px;
   font-weight: 600;
   font-family: var(--ws-font);
   cursor: pointer;
   transition: all 0.2s;
 }
-.flow-freetext button:hover { background: rgba(0,229,255,0.15); }
+.flow-freetext button:hover { background: rgba(99,102,241,0.15); }
 
 /* Quick-action buttons (welcome message) */
 .quick-actions {
@@ -2403,8 +2428,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   font-family: var(--ws-font);
 }
 .quick-action-btn:hover {
-  border-color: rgba(0,230,138,0.3);
-  background: rgba(0,230,138,0.08);
+  border-color: rgba(99,102,241,0.3);
+  background: rgba(99,102,241,0.08);
   color: var(--ws-primary-l);
 }
 
@@ -2446,7 +2471,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0,229,255,0.12), transparent 70%);
+  background: radial-gradient(circle, rgba(99,102,241,0.12), transparent 70%);
   position: relative;
   animation: genPulse 2s ease-in-out infinite;
 }
@@ -2455,8 +2480,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   position: absolute;
   inset: 12px;
   border-radius: 50%;
-  border: 2px solid rgba(0,229,255,0.25);
-  border-top-color: #00e5ff;
+  border: 2px solid rgba(99,102,241,0.25);
+  border-top-color: #818CF8;
   animation: spin 1s linear infinite;
 }
 .chat-gen-status {
@@ -2475,7 +2500,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 }
 .chat-gen-progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #00e5ff, var(--ws-primary));
+  background: linear-gradient(90deg, #818CF8, var(--ws-primary));
   border-radius: 2px;
   width: 0%;
   transition: width 0.5s ease;
@@ -2495,7 +2520,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   margin-bottom: 2px;
 }
 .flow-question-num {
-  color: #00e5ff;
+  color: #818CF8;
   font-family: var(--ws-mono);
   margin-right: 4px;
 }
@@ -2627,13 +2652,8 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   <!-- ═══ TOP BAR ═══ -->
   <header class="topbar">
     <a href="dashboard.html" class="topbar-logo" style="text-decoration:none;color:inherit;" title="Zurück zum Dashboard">
-      <svg viewBox="0 0 44 44" width="22" height="22" fill="none">
-        <circle cx="20" cy="20" r="10.5" stroke="#fff" stroke-width="2.2"/>
-        <line x1="27" y1="27" x2="33" y2="33" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
-        <ellipse cx="22" cy="22" rx="19" ry="7" stroke="#00D4FF" stroke-width="1" transform="rotate(-28 22 22)" opacity="0.6"/>
-        <circle cx="38.5" cy="12.5" r="2" fill="#00D4FF"/>
-      </svg>
-      Qntum
+      <span class="topbar-logo-icon">Q</span>
+      Qntum<span>.</span>
     </a>
     <div class="topbar-sep"></div>
     <div class="topbar-project">
@@ -3166,12 +3186,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
             <div style="font-size:12.5px;color:var(--ws-text-2);margin-bottom:14px;line-height:1.6;">Verbinde intelligente KI-Agenten mit deiner Website. Konfiguriere sie in der Qntum AI Platform und binde sie per Embed-Code ein.</div>
             <div class="backend-agent-grid" id="backendAgentGrid">
               <div class="backend-agent-card" data-agent="sales">
-                <div class="backend-agent-icon" style="background:rgba(0,230,138,0.1);color:#00E68A;">&#128176;</div>
+                <div class="backend-agent-icon" style="background:rgba(99,102,241,0.1);color:#6366F1;">&#128176;</div>
                 <div class="backend-agent-name">Sales Agent</div>
                 <div class="backend-agent-desc">KI-gestuetzte Verkaufsgespraeche</div>
               </div>
               <div class="backend-agent-card" data-agent="support">
-                <div class="backend-agent-icon" style="background:rgba(0,212,255,0.1);color:#00D4FF;">&#128172;</div>
+                <div class="backend-agent-icon" style="background:rgba(99,102,241,0.1);color:#6366F1;">&#128172;</div>
                 <div class="backend-agent-name">Support Agent</div>
                 <div class="backend-agent-desc">24/7 Kundenservice</div>
               </div>
@@ -3303,7 +3323,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   <footer class="statusbar">
     <span>Zuletzt gespeichert: vor 2 Min</span>
     <span class="statusbar-center">Tokens: 45.200 in dieser Sitzung</span>
-    <span class="statusbar-right"><a href="#" onclick="event.preventDefault(); document.querySelector('.ws-toast') ? null : null; let t=document.querySelector('.ws-toast'); if(!t){t=document.createElement('div');t.className='ws-toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(0);background:rgba(10,20,15,0.95);border:1px solid rgba(0,230,138,0.2);color:#e0e0e0;padding:12px 24px;border-radius:10px;font-size:0.85rem;backdrop-filter:blur(12px);z-index:9999;opacity:1;transition:all 0.35s;box-shadow:0 8px 24px rgba(0,0,0,0.5);';document.body.appendChild(t);} t.textContent='Versionshistorie — 5 Versionen gespeichert'; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(60px)';},2400);">v3 — 5 Versionen</a></span>
+    <span class="statusbar-right"><a href="#" onclick="event.preventDefault(); document.querySelector('.ws-toast') ? null : null; let t=document.querySelector('.ws-toast'); if(!t){t=document.createElement('div');t.className='ws-toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(0);background:rgba(10,20,15,0.95);border:1px solid rgba(99,102,241,0.2);color:#e0e0e0;padding:12px 24px;border-radius:10px;font-size:0.85rem;backdrop-filter:blur(12px);z-index:9999;opacity:1;transition:all 0.35s;box-shadow:0 8px 24px rgba(0,0,0,0.5);';document.body.appendChild(t);} t.textContent='Versionshistorie — 5 Versionen gespeichert'; t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(60px)';},2400);">v3 — 5 Versionen</a></span>
   </footer>
 
 </div>
@@ -3376,7 +3396,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     if (!toast) {
       toast = document.createElement('div');
       toast.className = 'ws-toast';
-      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(10,20,15,0.95);border:1px solid rgba(0,230,138,0.2);color:#e0e0e0;padding:12px 24px;border-radius:10px;font-size:0.85rem;font-family:var(--ws-font);backdrop-filter:blur(12px);z-index:9999;opacity:0;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,0.5);';
+      toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(10,20,15,0.95);border:1px solid rgba(99,102,241,0.2);color:#e0e0e0;padding:12px 24px;border-radius:10px;font-size:0.85rem;font-family:var(--ws-font);backdrop-filter:blur(12px);z-index:9999;opacity:0;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,0.5);';
       document.body.appendChild(toast);
     }
     toast.textContent = msg;
@@ -4160,7 +4180,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       <div class="flow-cards flow-cards-style">
         <div class="flow-card" data-value="modern"><span class="flow-card-label" style="font-family:'DM Sans',sans-serif;">Modern Sans</span></div>
         <div class="flow-card" data-value="serif"><span class="flow-card-label" style="font-family:Georgia,serif;font-style:italic;">Elegant Serif</span></div>
-        <div class="flow-card" data-value="display"><span class="flow-card-label" style="font-family:'Figtree',sans-serif;font-weight:800;">Display Bold</span></div>
+        <div class="flow-card" data-value="display"><span class="flow-card-label" style="font-family:'Syne',sans-serif;font-weight:800;">Display Bold</span></div>
         <div class="flow-card" data-value="mono"><span class="flow-card-label" style="font-family:'JetBrains Mono',monospace;font-size:11px;">Monospace</span></div>
       </div>
     `);
@@ -4690,7 +4710,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         const err = await response.json();
         if (response.status === 429) {
           loadingEl.remove();
-          appendMessage('assistant', `⚠️ ${err.error} <br><button onclick="window.__openUpgrade()" style="margin-top:8px;padding:6px 16px;background:var(--ws-primary);color:#000;border:none;border-radius:8px;font-weight:700;font-size:12px;cursor:pointer;">Plan upgraden</button>`);
+          appendMessage('assistant', `⚠️ ${err.error} <br><button onclick="window.__openUpgrade()" style="margin-top:8px;padding:6px 16px;background:var(--ws-primary);color:#fff;border:none;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer;">Plan upgraden</button>`);
           isSending = false;
           return;
         }
@@ -5118,13 +5138,13 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     overlay.id = 'tokenLimitOverlay';
     overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(5,15,10,0.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;';
     overlay.innerHTML = `
-      <div style="background:rgba(15,25,20,0.95);border:1px solid rgba(0,230,138,0.15);border-radius:20px;padding:48px;max-width:440px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.5);">
+      <div style="background:rgba(15,25,20,0.95);border:1px solid rgba(99,102,241,0.15);border-radius:20px;padding:48px;max-width:440px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.5);">
         <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,180,0,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFB400" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
         <h3 style="color:#fff;font-family:var(--ws-font);font-size:20px;font-weight:700;margin-bottom:10px;">Token-Limit erreicht</h3>
         <p style="color:rgba(255,255,255,0.55);font-size:14px;line-height:1.7;margin-bottom:28px;">Du hast dein monatliches Limit von <strong style="color:rgba(255,255,255,0.8);">${fmtTokens(userTokensLimit)} Tokens</strong> erreicht. Upgrade deinen Plan fuer mehr Tokens.</p>
-        <a href="/index.html#pricing" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:linear-gradient(135deg,#00E68A,#00CC7A);color:#000;font-weight:700;font-size:14px;border-radius:12px;text-decoration:none;transition:all 0.3s;">Plan upgraden</a>
+        <a href="/index.html#pricing" style="display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:linear-gradient(135deg,#6366F1,#818CF8);color:#fff;font-weight:700;font-size:14px;border-radius:12px;text-decoration:none;transition:all 0.3s;">Plan upgraden</a>
         <button onclick="this.closest('#tokenLimitOverlay').remove()" style="display:block;margin:16px auto 0;background:none;border:none;color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;">Schliessen (nur ansehen)</button>
       </div>
     `;
@@ -5152,10 +5172,10 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   const COMPONENT_DATA = [
     { id:'hero-gradient', name:'Gradient Hero', category:'hero', tags:['modern','dark','animated'],
       prompt:'Erstelle eine Hero-Sektion mit grossem Gradient-Hintergrund, animiertem Orb-Element, prominenter Headline, Subline und zwei CTA-Buttons. Modernes dark Design mit leuchtenden Farbakzenten.',
-      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 30% 50%,#6C3AED33,transparent 60%),radial-gradient(ellipse at 70% 50%,#00D4FF22,transparent 60%),#0B1120}.w{text-align:center;padding:60px}.h1{font-size:64px;font-weight:800;line-height:1.1;margin-bottom:20px;background:linear-gradient(135deg,#fff,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.sub{font-size:20px;color:#8888A8;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}.btns{display:flex;gap:16px;justify-content:center}.b1{padding:14px 32px;background:linear-gradient(135deg,#6C3AED,#00D4FF);border-radius:12px;color:#fff;font-weight:700;font-size:16px;border:none}.b2{padding:14px 32px;border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#ccc;font-size:16px;background:none}.orb{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#6C3AED44,transparent);top:10%;right:10%;filter:blur(60px);animation:float 6s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}`,`<div class="orb"></div><div class="w"><div class="h1">Baue die Zukunft<br>mit KI</div><div class="sub">Erstelle beeindruckende Websites in Sekunden mit der Kraft kuenstlicher Intelligenz.</div><div class="btns"><button class="b1">Jetzt starten</button><button class="b2">Mehr erfahren</button></div></div>`) },
+      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:radial-gradient(ellipse at 30% 50%,#6C3AED33,transparent 60%),radial-gradient(ellipse at 70% 50%,#6366F122,transparent 60%),#0B1120}.w{text-align:center;padding:60px}.h1{font-size:64px;font-weight:800;line-height:1.1;margin-bottom:20px;background:linear-gradient(135deg,#fff,#6366F1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.sub{font-size:20px;color:#8888A8;margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}.btns{display:flex;gap:16px;justify-content:center}.b1{padding:14px 32px;background:linear-gradient(135deg,#6C3AED,#6366F1);border-radius:12px;color:#fff;font-weight:700;font-size:16px;border:none}.b2{padding:14px 32px;border:1px solid rgba(255,255,255,0.15);border-radius:12px;color:#ccc;font-size:16px;background:none}.orb{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,#6C3AED44,transparent);top:10%;right:10%;filter:blur(60px);animation:float 6s ease-in-out infinite}@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}`,`<div class="orb"></div><div class="w"><div class="h1">Baue die Zukunft<br>mit KI</div><div class="sub">Erstelle beeindruckende Websites in Sekunden mit der Kraft kuenstlicher Intelligenz.</div><div class="btns"><button class="b1">Jetzt starten</button><button class="b2">Mehr erfahren</button></div></div>`) },
     { id:'hero-split', name:'Split Hero', category:'hero', tags:['clean','image','responsive'],
       prompt:'Erstelle eine Split-Screen Hero-Sektion: Links der Text-Content mit Headline, Subline und CTA-Button, rechts ein grosses Bild oder Illustration. Klares, professionelles Layout.',
-      preview: PV(`body{display:flex;min-height:100vh}.left{flex:1;display:flex;flex-direction:column;justify-content:center;padding:80px}.right{flex:1;background:linear-gradient(135deg,#1a2540,#0B1120);display:flex;align-items:center;justify-content:center}.h1{font-size:52px;font-weight:800;line-height:1.15;margin-bottom:16px}.sub{font-size:18px;color:#8888A8;margin-bottom:36px;line-height:1.6}button{padding:16px 36px;background:#00E68A;color:#000;font-weight:700;font-size:16px;border:none;border-radius:12px}.img{width:280px;height:280px;border-radius:24px;background:linear-gradient(135deg,#6C3AED33,#00D4FF33);border:1px solid rgba(255,255,255,0.08)}`,`<div class="left"><div class="h1">Design trifft<br>Technologie</div><div class="sub">Professionelle Websites fuer Ihr Unternehmen. Modern, schnell und konversionsoptimiert.</div><button>Kostenlos testen</button></div><div class="right"><div class="img"></div></div>`) },
+      preview: PV(`body{display:flex;min-height:100vh}.left{flex:1;display:flex;flex-direction:column;justify-content:center;padding:80px}.right{flex:1;background:linear-gradient(135deg,#1a2540,#0B1120);display:flex;align-items:center;justify-content:center}.h1{font-size:52px;font-weight:800;line-height:1.15;margin-bottom:16px}.sub{font-size:18px;color:#8888A8;margin-bottom:36px;line-height:1.6}button{padding:16px 36px;background:#6366F1;color:#000;font-weight:700;font-size:16px;border:none;border-radius:12px}.img{width:280px;height:280px;border-radius:24px;background:linear-gradient(135deg,#6C3AED33,#6366F133);border:1px solid rgba(255,255,255,0.08)}`,`<div class="left"><div class="h1">Design trifft<br>Technologie</div><div class="sub">Professionelle Websites fuer Ihr Unternehmen. Modern, schnell und konversionsoptimiert.</div><button>Kostenlos testen</button></div><div class="right"><div class="img"></div></div>`) },
     { id:'hero-video', name:'Video Hero', category:'hero', tags:['immersive','fullscreen'],
       prompt:'Erstelle eine Fullscreen Hero-Sektion mit Video-Hintergrund (Placeholder), Overlay-Gradient, zentrierter Headline, Subline und CTA. Cinematic Look.',
       preview: PV(`body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0a0a1a 0%,#1a1a3e 50%,#0a0a1a 100%)}.ov{position:absolute;inset:0;background:rgba(0,0,0,0.5)}.w{position:relative;z-index:1;text-align:center}.h1{font-size:72px;font-weight:800;margin-bottom:20px;letter-spacing:-2px}.sub{font-size:20px;color:#aaa;margin-bottom:40px}.play{width:80px;height:80px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;justify-content:center;margin-bottom:40px;background:rgba(255,255,255,0.05)}.play::after{content:"";border:12px solid transparent;border-left:20px solid #fff;margin-left:6px}button{padding:16px 40px;background:#fff;color:#000;font-weight:700;font-size:16px;border:none;border-radius:50px}`,`<div class="ov"></div><div class="w"><div class="play"></div><div class="h1">Erlebe Innovation</div><div class="sub">Cinematic Experiences fuer deine Marke</div><button>Video abspielen</button></div>`) },
@@ -5164,91 +5184,91 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0a0a0f}.w{text-align:center;max-width:700px;padding:40px}.h1{font-size:80px;font-weight:300;letter-spacing:-3px;line-height:1;margin-bottom:32px;color:#f0f0f0}.sub{font-size:16px;color:#666;margin-bottom:48px;line-height:1.8;letter-spacing:0.5px}button{padding:14px 44px;border:1px solid #333;background:none;color:#888;font-size:14px;letter-spacing:2px;text-transform:uppercase;border-radius:0;cursor:pointer}`,`<div class="w"><div class="h1">less is<br>more</div><div class="sub">Reduktion auf das Wesentliche.<br>Klarheit in jedem Pixel.</div><button>Entdecken</button></div>`) },
     { id:'feat-bento', name:'Bento Grid', category:'features', tags:['modern','grid','animated'],
       prompt:'Erstelle eine Features-Sektion im Bento-Grid-Stil: 6 Feature-Karten in asymmetrischem Grid (grosse Karte links, 4 kleine rechts, 1 breite unten), mit Icons, Hover-Lift-Effekt und subtile Gradient-Borders.',
-      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:400px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end}.c:first-child{grid-row:span 2}.ic{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6C3AED,#00D4FF);margin-bottom:14px}.cn{font-size:16px;font-weight:600;margin-bottom:6px}.cd{font-size:12px;color:#666;line-height:1.5}`,`<div class="w"><div class="t">Features</div><div class="g"><div class="c"><div class="ic"></div><div class="cn">KI-Engine</div><div class="cd">Intelligente Generierung von Code und Design in Echtzeit.</div></div><div class="c"><div class="ic"></div><div class="cn">Live Preview</div><div class="cd">Sofortige Vorschau</div></div><div class="c"><div class="ic"></div><div class="cn">Responsive</div><div class="cd">Alle Geraete</div></div><div class="c"><div class="ic"></div><div class="cn">Export</div><div class="cd">Clean Code</div></div><div class="c"><div class="ic"></div><div class="cn">Hosting</div><div class="cd">One-Click Deploy</div></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:1.2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;height:400px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:flex;flex-direction:column;justify-content:flex-end}.c:first-child{grid-row:span 2}.ic{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6C3AED,#6366F1);margin-bottom:14px}.cn{font-size:16px;font-weight:600;margin-bottom:6px}.cd{font-size:12px;color:#666;line-height:1.5}`,`<div class="w"><div class="t">Features</div><div class="g"><div class="c"><div class="ic"></div><div class="cn">KI-Engine</div><div class="cd">Intelligente Generierung von Code und Design in Echtzeit.</div></div><div class="c"><div class="ic"></div><div class="cn">Live Preview</div><div class="cd">Sofortige Vorschau</div></div><div class="c"><div class="ic"></div><div class="cn">Responsive</div><div class="cd">Alle Geraete</div></div><div class="c"><div class="ic"></div><div class="cn">Export</div><div class="cd">Clean Code</div></div><div class="c"><div class="ic"></div><div class="cn">Hosting</div><div class="cd">One-Click Deploy</div></div></div></div>`) },
     { id:'feat-cards', name:'Feature Cards', category:'features', tags:['clean','icons'],
       prompt:'Erstelle eine Features-Sektion mit 3-4 Karten in einer Reihe. Jede Karte hat ein Icon, Titel und kurze Beschreibung. Hover-Effekt mit leichtem Glow. Responsive Grid-Layout.',
-      preview: PV(`.w{padding:80px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:12px}.st{color:#888;font-size:16px;margin-bottom:48px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:36px 24px;text-align:left}.ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#00E68A33,#00E68A11);margin-bottom:20px}.cn{font-size:17px;font-weight:600;margin-bottom:8px}.cd{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Alles was du brauchst</div><div class="st">Leistungsstarke Tools fuer dein Projekt</div><div class="g"><div class="c"><div class="ic"></div><div class="cn">Schnell</div><div class="cd">Blitzschnelle Ladezeiten durch optimierten Code und modernste Technik.</div></div><div class="c"><div class="ic"></div><div class="cn">Sicher</div><div class="cd">Enterprise-Grade Security fuer alle deine Projekte und Daten.</div></div><div class="c"><div class="ic"></div><div class="cn">Skalierbar</div><div class="cd">Waechst mit deinem Unternehmen. Von Startup bis Enterprise.</div></div></div></div>`) },
+      preview: PV(`.w{padding:80px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:12px}.st{color:#888;font-size:16px;margin-bottom:48px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:36px 24px;text-align:left}.ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#6366F133,#6366F111);margin-bottom:20px}.cn{font-size:17px;font-weight:600;margin-bottom:8px}.cd{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Alles was du brauchst</div><div class="st">Leistungsstarke Tools fuer dein Projekt</div><div class="g"><div class="c"><div class="ic"></div><div class="cn">Schnell</div><div class="cd">Blitzschnelle Ladezeiten durch optimierten Code und modernste Technik.</div></div><div class="c"><div class="ic"></div><div class="cn">Sicher</div><div class="cd">Enterprise-Grade Security fuer alle deine Projekte und Daten.</div></div><div class="c"><div class="ic"></div><div class="cn">Skalierbar</div><div class="cd">Waechst mit deinem Unternehmen. Von Startup bis Enterprise.</div></div></div></div>`) },
     { id:'feat-zigzag', name:'Zigzag Features', category:'features', tags:['alternating','image'],
       prompt:'Erstelle eine Features-Sektion im Zigzag-Layout: Abwechselnd Bild links/Text rechts, dann Bild rechts/Text links. 3 Features mit Icon, Headline und Beschreibung.',
       preview: PV(`.w{padding:60px 40px}.r{display:flex;align-items:center;gap:40px;margin-bottom:48px}.r:nth-child(even){flex-direction:row-reverse}.img{flex:1;height:180px;border-radius:16px;background:linear-gradient(135deg,#1a2540,#0B1120);border:1px solid rgba(255,255,255,0.06)}.txt{flex:1}.h{font-size:24px;font-weight:700;margin-bottom:10px}.d{font-size:14px;color:#888;line-height:1.7}`,`<div class="w"><div class="r"><div class="img"></div><div class="txt"><div class="h">Intuitives Design</div><div class="d">Erstelle beeindruckende Layouts mit Drag-and-Drop. Keine Vorkenntnisse noetig.</div></div></div><div class="r"><div class="img"></div><div class="txt"><div class="h">KI-Assistent</div><div class="d">Beschreibe was du willst und unsere KI erstellt es fuer dich in Sekunden.</div></div></div><div class="r"><div class="img"></div><div class="txt"><div class="h">Sofort live</div><div class="d">Ein Klick und deine Website ist weltweit erreichbar. Hosting inklusive.</div></div></div></div>`) },
     { id:'feat-tabs', name:'Tabbed Features', category:'features', tags:['interactive','tabs'],
       prompt:'Erstelle eine Features-Sektion mit Tabs: Obere Tab-Leiste zum Umschalten zwischen 3-4 Feature-Kategorien. Jeder Tab zeigt anderen Content mit Bild und Text. Animated Tab-Wechsel.',
-      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:32px}.tabs{display:flex;justify-content:center;gap:4px;margin-bottom:36px}.tab{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;color:#666;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}.tab.a{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.3);color:#00D4FF}.ct{display:flex;align-items:center;gap:40px;text-align:left}.img{flex:1;height:280px;border-radius:16px;background:linear-gradient(135deg,#0D1B2A,#1a2540);border:1px solid rgba(255,255,255,0.06)}.info{flex:1}.h{font-size:24px;font-weight:700;margin-bottom:12px}.d{font-size:14px;color:#888;line-height:1.7}`,`<div class="w"><div class="t">So funktioniert es</div><div class="tabs"><div class="tab a">Design</div><div class="tab">Develop</div><div class="tab">Deploy</div><div class="tab">Analyse</div></div><div class="ct"><div class="img"></div><div class="info"><div class="h">Design mit KI</div><div class="d">Waehle aus hunderten Templates oder beschreibe dein Wunschdesign. Unsere KI erstellt es in Sekunden — pixel-perfekt und responsive.</div></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:32px}.tabs{display:flex;justify-content:center;gap:4px;margin-bottom:36px}.tab{padding:10px 24px;border-radius:8px;font-size:14px;font-weight:600;color:#666;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)}.tab.a{background:rgba(99,102,241,0.1);border-color:rgba(99,102,241,0.3);color:#6366F1}.ct{display:flex;align-items:center;gap:40px;text-align:left}.img{flex:1;height:280px;border-radius:16px;background:linear-gradient(135deg,#0D1B2A,#1a2540);border:1px solid rgba(255,255,255,0.06)}.info{flex:1}.h{font-size:24px;font-weight:700;margin-bottom:12px}.d{font-size:14px;color:#888;line-height:1.7}`,`<div class="w"><div class="t">So funktioniert es</div><div class="tabs"><div class="tab a">Design</div><div class="tab">Develop</div><div class="tab">Deploy</div><div class="tab">Analyse</div></div><div class="ct"><div class="img"></div><div class="info"><div class="h">Design mit KI</div><div class="d">Waehle aus hunderten Templates oder beschreibe dein Wunschdesign. Unsere KI erstellt es in Sekunden — pixel-perfekt und responsive.</div></div></div></div>`) },
     { id:'pricing-cards', name:'Pricing Cards', category:'pricing', tags:['popular','3-tier'],
       prompt:'Erstelle eine Pricing-Sektion mit 3 Preispaketen nebeneinander: Basic, Pro (hervorgehoben mit Badge "Beliebt"), Enterprise. Jede Karte mit Preis, Feature-Liste und CTA-Button. Der Pro-Plan hat einen Glow-Effekt.',
-      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:auto}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px 24px;text-align:left}.c.pop{border-color:rgba(0,230,138,0.3);background:rgba(0,230,138,0.04);position:relative}.badge{position:absolute;top:-10px;right:20px;background:#00E68A;color:#000;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px}.pn{font-size:16px;font-weight:600;margin-bottom:8px;color:#888}.pr{font-size:40px;font-weight:800;margin-bottom:4px}.pm{font-size:12px;color:#555;margin-bottom:20px}.f{list-style:none;margin-bottom:24px}.f li{padding:6px 0;font-size:13px;color:#888;border-bottom:1px solid rgba(255,255,255,0.04)}.f li::before{content:"\\2713 ";color:#00E68A}button{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:14px;border:none;background:rgba(255,255,255,0.06);color:#ccc}.c.pop button{background:#00E68A;color:#000}`,`<div class="w"><div class="t">Pricing</div><div class="g"><div class="c"><div class="pn">Starter</div><div class="pr">$9</div><div class="pm">pro Monat</div><ul class="f"><li>5 Projekte</li><li>Basis-Templates</li><li>Community Support</li></ul><button>Waehlen</button></div><div class="c pop"><div class="badge">Beliebt</div><div class="pn">Pro</div><div class="pr">$29</div><div class="pm">pro Monat</div><ul class="f"><li>Unbegrenzt Projekte</li><li>Alle Templates</li><li>Priority Support</li><li>Custom Domain</li></ul><button>Waehlen</button></div><div class="c"><div class="pn">Enterprise</div><div class="pr">$99</div><div class="pm">pro Monat</div><ul class="f"><li>Alles in Pro</li><li>Dedicated Support</li><li>SLA Garantie</li></ul><button>Waehlen</button></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:900px;margin:auto}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:32px 24px;text-align:left}.c.pop{border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.04);position:relative}.badge{position:absolute;top:-10px;right:20px;background:#6366F1;color:#000;font-size:11px;font-weight:700;padding:4px 12px;border-radius:6px}.pn{font-size:16px;font-weight:600;margin-bottom:8px;color:#888}.pr{font-size:40px;font-weight:800;margin-bottom:4px}.pm{font-size:12px;color:#555;margin-bottom:20px}.f{list-style:none;margin-bottom:24px}.f li{padding:6px 0;font-size:13px;color:#888;border-bottom:1px solid rgba(255,255,255,0.04)}.f li::before{content:"\\2713 ";color:#6366F1}button{width:100%;padding:12px;border-radius:10px;font-weight:700;font-size:14px;border:none;background:rgba(255,255,255,0.06);color:#ccc}.c.pop button{background:#6366F1;color:#000}`,`<div class="w"><div class="t">Pricing</div><div class="g"><div class="c"><div class="pn">Starter</div><div class="pr">$9</div><div class="pm">pro Monat</div><ul class="f"><li>5 Projekte</li><li>Basis-Templates</li><li>Community Support</li></ul><button>Waehlen</button></div><div class="c pop"><div class="badge">Beliebt</div><div class="pn">Pro</div><div class="pr">$29</div><div class="pm">pro Monat</div><ul class="f"><li>Unbegrenzt Projekte</li><li>Alle Templates</li><li>Priority Support</li><li>Custom Domain</li></ul><button>Waehlen</button></div><div class="c"><div class="pn">Enterprise</div><div class="pr">$99</div><div class="pm">pro Monat</div><ul class="f"><li>Alles in Pro</li><li>Dedicated Support</li><li>SLA Garantie</li></ul><button>Waehlen</button></div></div></div>`) },
     { id:'pricing-toggle', name:'Pricing + Toggle', category:'pricing', tags:['monthly','yearly','toggle'],
       prompt:'Erstelle eine Pricing-Sektion mit monatlich/jaehrlich Toggle-Switch oben. 3 Preiskarten die sich beim Umschalten animiert aendern. Jaehrlich zeigt Rabatt-Badge "Spare 20%".',
-      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:24px}.tog{display:inline-flex;align-items:center;gap:12px;margin-bottom:40px;font-size:14px;color:#888}.sw{width:48px;height:26px;background:#333;border-radius:13px;position:relative}.sw::after{content:"";width:20px;height:20px;background:#00E68A;border-radius:50%;position:absolute;top:3px;left:25px}.sav{background:rgba(0,230,138,0.1);color:#00E68A;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:auto}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px}.pn{font-weight:600;color:#888;margin-bottom:12px}.pr{font-size:36px;font-weight:800;margin-bottom:4px}.pm{font-size:12px;color:#555;margin-bottom:20px}button{width:100%;padding:10px;border-radius:8px;font-weight:600;border:1px solid rgba(255,255,255,0.1);background:none;color:#ccc}`,`<div class="w"><div class="t">Einfache Preise</div><div class="tog">Monatlich <div class="sw"></div> Jaehrlich <span class="sav">-20%</span></div><div class="g"><div class="c"><div class="pn">Basic</div><div class="pr">$7</div><div class="pm">/Monat</div><button>Starten</button></div><div class="c"><div class="pn">Pro</div><div class="pr">$23</div><div class="pm">/Monat</div><button>Starten</button></div><div class="c"><div class="pn">Team</div><div class="pr">$79</div><div class="pm">/Monat</div><button>Starten</button></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:24px}.tog{display:inline-flex;align-items:center;gap:12px;margin-bottom:40px;font-size:14px;color:#888}.sw{width:48px;height:26px;background:#333;border-radius:13px;position:relative}.sw::after{content:"";width:20px;height:20px;background:#6366F1;border-radius:50%;position:absolute;top:3px;left:25px}.sav{background:rgba(99,102,241,0.1);color:#6366F1;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:800px;margin:auto}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px}.pn{font-weight:600;color:#888;margin-bottom:12px}.pr{font-size:36px;font-weight:800;margin-bottom:4px}.pm{font-size:12px;color:#555;margin-bottom:20px}button{width:100%;padding:10px;border-radius:8px;font-weight:600;border:1px solid rgba(255,255,255,0.1);background:none;color:#ccc}`,`<div class="w"><div class="t">Einfache Preise</div><div class="tog">Monatlich <div class="sw"></div> Jaehrlich <span class="sav">-20%</span></div><div class="g"><div class="c"><div class="pn">Basic</div><div class="pr">$7</div><div class="pm">/Monat</div><button>Starten</button></div><div class="c"><div class="pn">Pro</div><div class="pr">$23</div><div class="pm">/Monat</div><button>Starten</button></div><div class="c"><div class="pn">Team</div><div class="pr">$79</div><div class="pm">/Monat</div><button>Starten</button></div></div></div>`) },
     { id:'pricing-comparison', name:'Vergleichstabelle', category:'pricing', tags:['table','detailed'],
       prompt:'Erstelle eine Pricing-Sektion als Vergleichstabelle: Spalten fuer 3 Plaene, Zeilen fuer Features mit Checkmarks. Sticky Header beim Scrollen. Hervorgehobene "Empfohlen"-Spalte.',
-      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}table{width:100%;border-collapse:collapse}th,td{padding:14px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}th{font-weight:700;font-size:15px;color:#fff}td:first-child{text-align:left;color:#888}.hl{background:rgba(0,230,138,0.04);border-left:1px solid rgba(0,230,138,0.15);border-right:1px solid rgba(0,230,138,0.15)}.ck{color:#00E68A}.no{color:#333}`,`<div class="w"><div class="t">Plaene vergleichen</div><table><tr><th></th><th>Starter</th><th class="hl">Pro</th><th>Business</th></tr><tr><td>Projekte</td><td>5</td><td class="hl">50</td><td>Unbegrenzt</td></tr><tr><td>KI-Generierung</td><td class="ck">&#10003;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Custom Domain</td><td class="no">&#10007;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Priority Support</td><td class="no">&#10007;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Team-Zugang</td><td class="no">&#10007;</td><td class="hl no">&#10007;</td><td class="ck">&#10003;</td></tr></table></div>`) },
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}table{width:100%;border-collapse:collapse}th,td{padding:14px 20px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}th{font-weight:700;font-size:15px;color:#fff}td:first-child{text-align:left;color:#888}.hl{background:rgba(99,102,241,0.04);border-left:1px solid rgba(99,102,241,0.15);border-right:1px solid rgba(99,102,241,0.15)}.ck{color:#6366F1}.no{color:#333}`,`<div class="w"><div class="t">Plaene vergleichen</div><table><tr><th></th><th>Starter</th><th class="hl">Pro</th><th>Business</th></tr><tr><td>Projekte</td><td>5</td><td class="hl">50</td><td>Unbegrenzt</td></tr><tr><td>KI-Generierung</td><td class="ck">&#10003;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Custom Domain</td><td class="no">&#10007;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Priority Support</td><td class="no">&#10007;</td><td class="hl ck">&#10003;</td><td class="ck">&#10003;</td></tr><tr><td>Team-Zugang</td><td class="no">&#10007;</td><td class="hl no">&#10007;</td><td class="ck">&#10003;</td></tr></table></div>`) },
     { id:'cta-gradient', name:'Gradient CTA', category:'cta', tags:['bold','gradient','centered'],
       prompt:'Erstelle eine Call-to-Action Sektion mit grossem Gradient-Hintergrund, zentrierter Headline, kurzer Beschreibung und prominentem Button. Animated Background-Shift.',
-      preview: PV(`.w{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#6C3AED,#00D4FF,#00E68A);background-size:300% 300%;animation:bg 6s ease infinite;text-align:center;padding:40px}@keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.h{font-size:48px;font-weight:800;margin-bottom:16px;color:#fff}.d{font-size:18px;color:rgba(255,255,255,0.8);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}button{padding:16px 48px;background:#fff;color:#000;font-weight:700;font-size:16px;border:none;border-radius:50px}`,`<div class="w"><div class="h">Bereit zu starten?</div><div class="d">Erstelle deine professionelle Website in unter 5 Minuten. Kostenlos testen.</div><button>Jetzt starten</button></div>`) },
+      preview: PV(`.w{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#6C3AED,#6366F1,#6366F1);background-size:300% 300%;animation:bg 6s ease infinite;text-align:center;padding:40px}@keyframes bg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}.h{font-size:48px;font-weight:800;margin-bottom:16px;color:#fff}.d{font-size:18px;color:rgba(255,255,255,0.8);margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto}button{padding:16px 48px;background:#fff;color:#000;font-weight:700;font-size:16px;border:none;border-radius:50px}`,`<div class="w"><div class="h">Bereit zu starten?</div><div class="d">Erstelle deine professionelle Website in unter 5 Minuten. Kostenlos testen.</div><button>Jetzt starten</button></div>`) },
     { id:'cta-split', name:'Split CTA', category:'cta', tags:['image','action'],
       prompt:'Erstelle eine CTA-Sektion im Split-Layout: Links ueberzeugender Text mit Headline und Benefits-Liste, rechts ein grosser CTA-Button oder Formular. Kontrastreicher Hintergrund.',
-      preview: PV(`.w{display:flex;align-items:center;min-height:80vh;padding:60px 40px;gap:60px;background:#0D1117}.left{flex:1}.h{font-size:36px;font-weight:700;margin-bottom:16px}.d{font-size:15px;color:#888;line-height:1.7;margin-bottom:24px}.ul{list-style:none}.ul li{padding:8px 0;color:#aaa;font-size:14px}.ul li::before{content:"\\2713 ";color:#00E68A;margin-right:8px}.right{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:40px;text-align:center}.rh{font-size:20px;font-weight:700;margin-bottom:20px}input{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;margin-bottom:12px;font-size:14px}button{width:100%;padding:14px;background:#00E68A;color:#000;font-weight:700;font-size:15px;border:none;border-radius:10px}`,`<div class="w"><div class="left"><div class="h">Mach den naechsten Schritt</div><div class="d">Tausende Unternehmen vertrauen bereits auf unsere Plattform.</div><ul class="ul"><li>Keine Kreditkarte noetig</li><li>14 Tage kostenlos testen</li><li>Jederzeit kuendbar</li></ul></div><div class="right"><div class="rh">Kostenlos starten</div><input placeholder="Deine E-Mail-Adresse"><button>Account erstellen</button></div></div>`) },
+      preview: PV(`.w{display:flex;align-items:center;min-height:80vh;padding:60px 40px;gap:60px;background:#0D1117}.left{flex:1}.h{font-size:36px;font-weight:700;margin-bottom:16px}.d{font-size:15px;color:#888;line-height:1.7;margin-bottom:24px}.ul{list-style:none}.ul li{padding:8px 0;color:#aaa;font-size:14px}.ul li::before{content:"\\2713 ";color:#6366F1;margin-right:8px}.right{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:40px;text-align:center}.rh{font-size:20px;font-weight:700;margin-bottom:20px}input{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;margin-bottom:12px;font-size:14px}button{width:100%;padding:14px;background:#6366F1;color:#000;font-weight:700;font-size:15px;border:none;border-radius:10px}`,`<div class="w"><div class="left"><div class="h">Mach den naechsten Schritt</div><div class="d">Tausende Unternehmen vertrauen bereits auf unsere Plattform.</div><ul class="ul"><li>Keine Kreditkarte noetig</li><li>14 Tage kostenlos testen</li><li>Jederzeit kuendbar</li></ul></div><div class="right"><div class="rh">Kostenlos starten</div><input placeholder="Deine E-Mail-Adresse"><button>Account erstellen</button></div></div>`) },
     { id:'cta-banner', name:'Floating Banner CTA', category:'cta', tags:['sticky','minimal'],
       prompt:'Erstelle eine schwebende CTA-Banner-Sektion: Kompakter Banner mit Headline, kurzer Text und Button in einer Zeile. Glassmorphism-Effekt mit Blur-Hintergrund.',
-      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080810;padding:40px}.b{display:flex;align-items:center;gap:24px;padding:20px 32px;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;max-width:800px;width:100%}.h{font-size:18px;font-weight:700;white-space:nowrap}.d{font-size:13px;color:#888;flex:1}button{padding:12px 28px;background:linear-gradient(135deg,#6C3AED,#00D4FF);color:#fff;font-weight:700;font-size:13px;border:none;border-radius:10px;white-space:nowrap}`,`<div class="b"><div class="h">Neu: KI-Agent</div><div class="d">Automatisiere deine Website-Erstellung mit unserem neuen KI-Agenten.</div><button>Jetzt testen</button></div>`) },
+      preview: PV(`body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080810;padding:40px}.b{display:flex;align-items:center;gap:24px;padding:20px 32px;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;max-width:800px;width:100%}.h{font-size:18px;font-weight:700;white-space:nowrap}.d{font-size:13px;color:#888;flex:1}button{padding:12px 28px;background:linear-gradient(135deg,#6C3AED,#6366F1);color:#fff;font-weight:700;font-size:13px;border:none;border-radius:10px;white-space:nowrap}`,`<div class="b"><div class="h">Neu: KI-Agent</div><div class="d">Automatisiere deine Website-Erstellung mit unserem neuen KI-Agenten.</div><button>Jetzt testen</button></div>`) },
     { id:'test-cards', name:'Testimonial Cards', category:'testimonials', tags:['cards','avatar','rating'],
       prompt:'Erstelle eine Testimonials-Sektion mit 3 Karten: Jede mit Bewertungs-Sternen, Zitat-Text, Autorenname, Position und rundem Avatar-Bild. Subtiler Card-Shadow und Hover-Effekt.',
-      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;text-align:left}.stars{color:#F59E0B;font-size:16px;margin-bottom:12px;letter-spacing:2px}.q{font-size:14px;color:#aaa;line-height:1.7;margin-bottom:20px;font-style:italic}.au{display:flex;align-items:center;gap:12px}.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6C3AED,#00D4FF)}.an{font-size:13px;font-weight:600}.ar{font-size:11px;color:#666}`,`<div class="w"><div class="t">Was Kunden sagen</div><div class="g"><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Beste Entscheidung fuer unser Startup. Die Website war in 10 Minuten fertig."</div><div class="au"><div class="av"></div><div><div class="an">Sarah M.</div><div class="ar">CEO, TechStart</div></div></div></div><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Unglaubliche Qualitaet. Unsere Conversion-Rate ist um 40% gestiegen."</div><div class="au"><div class="av"></div><div><div class="an">Thomas K.</div><div class="ar">Marketing, Brandify</div></div></div></div><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Support ist erstklassig und die KI versteht genau was man will."</div><div class="au"><div class="av"></div><div><div class="an">Lisa W.</div><div class="ar">Freelancerin</div></div></div></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;text-align:left}.stars{color:#F59E0B;font-size:16px;margin-bottom:12px;letter-spacing:2px}.q{font-size:14px;color:#aaa;line-height:1.7;margin-bottom:20px;font-style:italic}.au{display:flex;align-items:center;gap:12px}.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#6C3AED,#6366F1)}.an{font-size:13px;font-weight:600}.ar{font-size:11px;color:#666}`,`<div class="w"><div class="t">Was Kunden sagen</div><div class="g"><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Beste Entscheidung fuer unser Startup. Die Website war in 10 Minuten fertig."</div><div class="au"><div class="av"></div><div><div class="an">Sarah M.</div><div class="ar">CEO, TechStart</div></div></div></div><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Unglaubliche Qualitaet. Unsere Conversion-Rate ist um 40% gestiegen."</div><div class="au"><div class="av"></div><div><div class="an">Thomas K.</div><div class="ar">Marketing, Brandify</div></div></div></div><div class="c"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><div class="q">"Support ist erstklassig und die KI versteht genau was man will."</div><div class="au"><div class="av"></div><div><div class="an">Lisa W.</div><div class="ar">Freelancerin</div></div></div></div></div></div>`) },
     { id:'test-carousel', name:'Testimonial Slider', category:'testimonials', tags:['carousel','animated'],
       prompt:'Erstelle eine Testimonials-Sektion als horizontaler Slider/Carousel: Grosses Zitat zentriert, Navigation-Pfeile links/rechts, Dots-Indikator unten. Auto-Slide alle 5 Sekunden mit Fade-Transition.',
-      preview: PV(`.w{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:60px;text-align:center;position:relative}.q{font-size:28px;font-weight:300;line-height:1.6;max-width:700px;color:#ddd;font-style:italic;margin-bottom:32px}.q::before{content:'"';font-size:80px;color:#6C3AED;display:block;line-height:0.5;margin-bottom:20px}.au{font-size:16px;font-weight:600;margin-bottom:4px}.ar{font-size:13px;color:#666}.dots{margin-top:32px;display:flex;gap:8px;justify-content:center}.dot{width:8px;height:8px;border-radius:50%;background:#333}.dot.a{background:#00D4FF}.arr{position:absolute;top:50%;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:#888;font-size:18px}.arr.l{left:40px}.arr.r{right:40px}`,`<div class="w"><div class="arr l">&#8249;</div><div><div class="q">Die beste Plattform die ich je genutzt habe. Einfach, schnell und die Ergebnisse sind beeindruckend.</div><div class="au">Michael R.</div><div class="ar">Gruender, NextLevel GmbH</div><div class="dots"><div class="dot a"></div><div class="dot"></div><div class="dot"></div></div></div><div class="arr r">&#8250;</div></div>`) },
+      preview: PV(`.w{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:60px;text-align:center;position:relative}.q{font-size:28px;font-weight:300;line-height:1.6;max-width:700px;color:#ddd;font-style:italic;margin-bottom:32px}.q::before{content:'"';font-size:80px;color:#6C3AED;display:block;line-height:0.5;margin-bottom:20px}.au{font-size:16px;font-weight:600;margin-bottom:4px}.ar{font-size:13px;color:#666}.dots{margin-top:32px;display:flex;gap:8px;justify-content:center}.dot{width:8px;height:8px;border-radius:50%;background:#333}.dot.a{background:#6366F1}.arr{position:absolute;top:50%;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;color:#888;font-size:18px}.arr.l{left:40px}.arr.r{right:40px}`,`<div class="w"><div class="arr l">&#8249;</div><div><div class="q">Die beste Plattform die ich je genutzt habe. Einfach, schnell und die Ergebnisse sind beeindruckend.</div><div class="au">Michael R.</div><div class="ar">Gruender, NextLevel GmbH</div><div class="dots"><div class="dot a"></div><div class="dot"></div><div class="dot"></div></div></div><div class="arr r">&#8250;</div></div>`) },
     { id:'test-wall', name:'Social Proof Wall', category:'testimonials', tags:['masonry','many'],
       prompt:'Erstelle eine Testimonials-Sektion im Masonry-Grid-Stil: Viele kurze Testimonial-Karten in unterschiedlichen Hoehen, wie eine Social-Media-Wall. Mindestens 6 Testimonials mit Name und Firma.',
       preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{columns:3;gap:14px}.c{break-inside:avoid;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:20px;margin-bottom:14px}.q{font-size:13px;color:#aaa;line-height:1.6;margin-bottom:12px}.n{font-size:12px;font-weight:600}.r{font-size:10px;color:#555}`,`<div class="w"><div class="t">Social Proof</div><div class="g"><div class="c"><div class="q">"Absolut fantastisch!"</div><div class="n">Anna K.</div><div class="r">Designer</div></div><div class="c"><div class="q">"Hat unseren Workflow komplett veraendert. Wir sparen 20 Stunden pro Woche."</div><div class="n">Max P.</div><div class="r">CTO, DataFlow</div></div><div class="c"><div class="q">"Einfach genial."</div><div class="n">Julia S.</div><div class="r">Freelancerin</div></div><div class="c"><div class="q">"Die KI versteht genau was ich brauche. Nie wieder manuell coden."</div><div class="n">Tom B.</div><div class="r">Agentur-Inhaber</div></div><div class="c"><div class="q">"5 Sterne!"</div><div class="n">Lisa M.</div><div class="r">Startup</div></div><div class="c"><div class="q">"Unsere Kunden sind begeistert von der neuen Website."</div><div class="n">Chris R.</div><div class="r">E-Commerce</div></div></div></div>`) },
     { id:'footer-mega', name:'Mega Footer', category:'footer', tags:['links','newsletter','social'],
       prompt:'Erstelle einen umfangreichen Footer mit 4 Spalten: Logo + Beschreibung, Produkt-Links, Unternehmen-Links, Newsletter-Anmeldung. Darunter Social-Icons und Copyright-Zeile. Dark Design.',
-      preview: PV(`.w{padding:60px 40px 30px;background:#080810;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end}.g{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.5fr;gap:40px;margin-bottom:40px}.logo{font-size:22px;font-weight:800;margin-bottom:12px}.ld{font-size:13px;color:#555;line-height:1.7}.ch{font-size:13px;font-weight:600;color:#888;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}.cl{list-style:none}.cl li{padding:5px 0;font-size:13px;color:#444}input{width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;margin-bottom:10px;font-size:13px}button{width:100%;padding:10px;background:#00E68A;color:#000;font-weight:600;border:none;border-radius:8px;font-size:13px}.bt{border-top:1px solid rgba(255,255,255,0.05);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;color:#333}`,`<div class="w"><div class="g"><div><div class="logo">Qntum</div><div class="ld">Erstelle professionelle Websites mit KI. Schnell, einfach und beeindruckend.</div></div><div><div class="ch">Produkt</div><ul class="cl"><li>Features</li><li>Pricing</li><li>Templates</li><li>Changelog</li></ul></div><div><div class="ch">Unternehmen</div><ul class="cl"><li>Ueber uns</li><li>Blog</li><li>Karriere</li><li>Kontakt</li></ul></div><div><div class="ch">Newsletter</div><input placeholder="E-Mail Adresse"><button>Abonnieren</button></div></div><div class="bt"><span>&copy; 2026 Qntum. Alle Rechte vorbehalten.</span><span>Datenschutz &middot; Impressum &middot; AGB</span></div></div>`) },
+      preview: PV(`.w{padding:60px 40px 30px;background:#080810;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end}.g{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.5fr;gap:40px;margin-bottom:40px}.logo{font-size:22px;font-weight:800;margin-bottom:12px}.ld{font-size:13px;color:#555;line-height:1.7}.ch{font-size:13px;font-weight:600;color:#888;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}.cl{list-style:none}.cl li{padding:5px 0;font-size:13px;color:#444}input{width:100%;padding:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;margin-bottom:10px;font-size:13px}button{width:100%;padding:10px;background:#6366F1;color:#000;font-weight:600;border:none;border-radius:8px;font-size:13px}.bt{border-top:1px solid rgba(255,255,255,0.05);padding-top:20px;display:flex;justify-content:space-between;font-size:12px;color:#333}`,`<div class="w"><div class="g"><div><div class="logo">Qntum</div><div class="ld">Erstelle professionelle Websites mit KI. Schnell, einfach und beeindruckend.</div></div><div><div class="ch">Produkt</div><ul class="cl"><li>Features</li><li>Pricing</li><li>Templates</li><li>Changelog</li></ul></div><div><div class="ch">Unternehmen</div><ul class="cl"><li>Ueber uns</li><li>Blog</li><li>Karriere</li><li>Kontakt</li></ul></div><div><div class="ch">Newsletter</div><input placeholder="E-Mail Adresse"><button>Abonnieren</button></div></div><div class="bt"><span>&copy; 2026 Qntum. Alle Rechte vorbehalten.</span><span>Datenschutz &middot; Impressum &middot; AGB</span></div></div>`) },
     { id:'footer-minimal', name:'Minimal Footer', category:'footer', tags:['clean','simple'],
       prompt:'Erstelle einen minimalistischen Footer: Logo links, wichtigste Links zentriert, Social-Icons rechts. Alles in einer Zeile. Dezent und elegant.',
       preview: PV(`.w{min-height:100vh;display:flex;align-items:flex-end}.f{width:100%;padding:24px 40px;border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between}.logo{font-weight:700;font-size:16px}.links{display:flex;gap:24px}.links a{color:#555;font-size:13px;text-decoration:none}.soc{display:flex;gap:12px}.soc span{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-size:12px;color:#666}`,`<div class="w"><div class="f"><div class="logo">Qntum</div><div class="links"><a>Features</a><a>Pricing</a><a>Blog</a><a>Kontakt</a></div><div class="soc"><span>X</span><span>in</span><span>gh</span></div></div></div>`) },
     { id:'footer-cta', name:'Footer + CTA', category:'footer', tags:['cta','newsletter'],
       prompt:'Erstelle einen Footer mit integrierter CTA-Sektion oben: Grosse Headline "Bereit zu starten?" mit E-Mail-Input und Button. Darunter klassischer Footer mit Links und Copyright.',
-      preview: PV(`.w{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:#080810}.cta{text-align:center;padding:60px 40px;border-bottom:1px solid rgba(255,255,255,0.05)}.ch{font-size:36px;font-weight:700;margin-bottom:16px}.cd{color:#888;margin-bottom:28px;font-size:15px}.row{display:flex;gap:10px;justify-content:center;max-width:400px;margin:auto}input{flex:1;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px}button{padding:12px 28px;background:#00E68A;color:#000;font-weight:700;border:none;border-radius:10px;font-size:14px}.f{padding:24px 40px;display:flex;justify-content:space-between;font-size:12px;color:#333}`,`<div class="w"><div class="cta"><div class="ch">Bereit zu starten?</div><div class="cd">Kostenlos registrieren. Keine Kreditkarte noetig.</div><div class="row"><input placeholder="E-Mail Adresse"><button>Starten</button></div></div><div class="f"><span>&copy; 2026 Qntum</span><span>Datenschutz &middot; Impressum</span></div></div>`) },
+      preview: PV(`.w{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:#080810}.cta{text-align:center;padding:60px 40px;border-bottom:1px solid rgba(255,255,255,0.05)}.ch{font-size:36px;font-weight:700;margin-bottom:16px}.cd{color:#888;margin-bottom:28px;font-size:15px}.row{display:flex;gap:10px;justify-content:center;max-width:400px;margin:auto}input{flex:1;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px}button{padding:12px 28px;background:#6366F1;color:#000;font-weight:700;border:none;border-radius:10px;font-size:14px}.f{padding:24px 40px;display:flex;justify-content:space-between;font-size:12px;color:#333}`,`<div class="w"><div class="cta"><div class="ch">Bereit zu starten?</div><div class="cd">Kostenlos registrieren. Keine Kreditkarte noetig.</div><div class="row"><input placeholder="E-Mail Adresse"><button>Starten</button></div></div><div class="f"><span>&copy; 2026 Qntum</span><span>Datenschutz &middot; Impressum</span></div></div>`) },
     { id:'nav-transparent', name:'Transparent Navbar', category:'nav', tags:['sticky','blur','modern'],
       prompt:'Erstelle eine fixierte Navbar die beim Scrollen einen Glassmorphism-Effekt bekommt: Logo links, Nav-Links zentriert, CTA-Button rechts. Transparent auf Hero, Blur-Background nach Scroll.',
-      preview: PV(`nav{display:flex;align-items:center;padding:16px 40px;background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800}.links{margin:0 auto;display:flex;gap:28px}.links a{color:#888;font-size:14px;text-decoration:none}button{padding:10px 24px;background:#00E68A;color:#000;font-weight:700;font-size:13px;border:none;border-radius:8px}.hero{height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0B1120,#1a2540)}.hh{font-size:56px;font-weight:800;text-align:center}`,`<nav><div class="logo">Brand</div><div class="links"><a>Produkt</a><a>Features</a><a>Pricing</a><a>Kontakt</a></div><button>Demo buchen</button></nav><div class="hero"><div class="hh">Willkommen</div></div>`) },
+      preview: PV(`nav{display:flex;align-items:center;padding:16px 40px;background:rgba(255,255,255,0.03);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800}.links{margin:0 auto;display:flex;gap:28px}.links a{color:#888;font-size:14px;text-decoration:none}button{padding:10px 24px;background:#6366F1;color:#000;font-weight:700;font-size:13px;border:none;border-radius:8px}.hero{height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0B1120,#1a2540)}.hh{font-size:56px;font-weight:800;text-align:center}`,`<nav><div class="logo">Brand</div><div class="links"><a>Produkt</a><a>Features</a><a>Pricing</a><a>Kontakt</a></div><button>Demo buchen</button></nav><div class="hero"><div class="hh">Willkommen</div></div>`) },
     { id:'nav-mega', name:'Mega Menu Nav', category:'nav', tags:['dropdown','mega','complex'],
       prompt:'Erstelle eine Navbar mit Mega-Menu-Dropdown: Bei Hover ueber "Produkte" oeffnet sich ein grosses Panel mit kategorisierten Links, Icons und Featured-Item. Smooth Slide-Down Animation.',
-      preview: PV(`nav{display:flex;align-items:center;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800;margin-right:40px}.links{display:flex;gap:24px}.links a{color:#888;font-size:14px;text-decoration:none}.mega{position:absolute;top:56px;left:40px;right:40px;background:rgba(16,16,36,0.98);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.mc{font-size:12px}.mh{font-size:13px;font-weight:600;margin-bottom:12px;color:#00D4FF}.ml{color:#666;font-size:12px;padding:4px 0}button{margin-left:auto;padding:10px 24px;background:#6C3AED;color:#fff;font-weight:700;font-size:13px;border:none;border-radius:8px}`,`<nav><div class="logo">Brand</div><div class="links"><a>Produkte &#9662;</a><a>Loesungen</a><a>Preise</a></div><button>Kontakt</button></nav><div class="mega"><div class="mc"><div class="mh">Plattform</div><div class="ml">Website Builder</div><div class="ml">KI-Assistent</div><div class="ml">Templates</div></div><div class="mc"><div class="mh">Loesungen</div><div class="ml">E-Commerce</div><div class="ml">SaaS</div><div class="ml">Portfolio</div></div><div class="mc"><div class="mh">Ressourcen</div><div class="ml">Dokumentation</div><div class="ml">Blog</div><div class="ml">Community</div></div></div>`) },
+      preview: PV(`nav{display:flex;align-items:center;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800;margin-right:40px}.links{display:flex;gap:24px}.links a{color:#888;font-size:14px;text-decoration:none}.mega{position:absolute;top:56px;left:40px;right:40px;background:rgba(16,16,36,0.98);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.mc{font-size:12px}.mh{font-size:13px;font-weight:600;margin-bottom:12px;color:#6366F1}.ml{color:#666;font-size:12px;padding:4px 0}button{margin-left:auto;padding:10px 24px;background:#6C3AED;color:#fff;font-weight:700;font-size:13px;border:none;border-radius:8px}`,`<nav><div class="logo">Brand</div><div class="links"><a>Produkte &#9662;</a><a>Loesungen</a><a>Preise</a></div><button>Kontakt</button></nav><div class="mega"><div class="mc"><div class="mh">Plattform</div><div class="ml">Website Builder</div><div class="ml">KI-Assistent</div><div class="ml">Templates</div></div><div class="mc"><div class="mh">Loesungen</div><div class="ml">E-Commerce</div><div class="ml">SaaS</div><div class="ml">Portfolio</div></div><div class="mc"><div class="mh">Ressourcen</div><div class="ml">Dokumentation</div><div class="ml">Blog</div><div class="ml">Community</div></div></div>`) },
     { id:'nav-sidebar', name:'Sidebar Navigation', category:'nav', tags:['mobile','hamburger'],
       prompt:'Erstelle eine Navbar mit Hamburger-Menu fuer Mobile: Klick oeffnet eine Sidebar von links mit Nav-Links, Social-Icons und CTA. Smooth Slide-In mit Overlay-Dimmer.',
-      preview: PV(`nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800}.ham{display:flex;flex-direction:column;gap:5px;cursor:pointer}.ham span{width:24px;height:2px;background:#fff;border-radius:1px}.sb{position:fixed;top:0;left:0;width:280px;height:100%;background:rgba(11,17,32,0.98);border-right:1px solid rgba(255,255,255,0.06);padding:40px 28px;display:flex;flex-direction:column;gap:12px}.sl{font-size:18px;font-weight:600;color:#aaa;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}.dim{position:fixed;inset:0;background:rgba(0,0,0,0.5)}button{margin-top:auto;padding:14px;background:#00E68A;color:#000;font-weight:700;border:none;border-radius:10px;font-size:15px}`,`<div class="dim"></div><nav><div class="logo">Brand</div><div class="ham"><span></span><span></span><span></span></div></nav><div class="sb"><div class="sl">Home</div><div class="sl">Produkte</div><div class="sl">Preise</div><div class="sl">Ueber uns</div><div class="sl">Kontakt</div><button>Demo buchen</button></div>`) },
+      preview: PV(`nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;border-bottom:1px solid rgba(255,255,255,0.06)}.logo{font-size:18px;font-weight:800}.ham{display:flex;flex-direction:column;gap:5px;cursor:pointer}.ham span{width:24px;height:2px;background:#fff;border-radius:1px}.sb{position:fixed;top:0;left:0;width:280px;height:100%;background:rgba(11,17,32,0.98);border-right:1px solid rgba(255,255,255,0.06);padding:40px 28px;display:flex;flex-direction:column;gap:12px}.sl{font-size:18px;font-weight:600;color:#aaa;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}.dim{position:fixed;inset:0;background:rgba(0,0,0,0.5)}button{margin-top:auto;padding:14px;background:#6366F1;color:#000;font-weight:700;border:none;border-radius:10px;font-size:15px}`,`<div class="dim"></div><nav><div class="logo">Brand</div><div class="ham"><span></span><span></span><span></span></div></nav><div class="sb"><div class="sl">Home</div><div class="sl">Produkte</div><div class="sl">Preise</div><div class="sl">Ueber uns</div><div class="sl">Kontakt</div><button>Demo buchen</button></div>`) },
     { id:'faq-accordion', name:'FAQ Akkordeon', category:'faq', tags:['expandable','animated'],
       prompt:'Erstelle eine FAQ-Sektion mit Akkordeon: 6-8 Fragen, Klick oeffnet/schliesst die Antwort mit Smooth-Animation. Plus/Minus Icon das sich dreht. Nur eine Antwort gleichzeitig offen.',
-      preview: PV(`.w{padding:60px 40px;max-width:700px;margin:auto}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.q{border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:10px;overflow:hidden}.qh{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px;cursor:pointer}.qh span{color:#00D4FF;font-size:20px}.qa{padding:0 20px 18px;font-size:13px;color:#888;line-height:1.7;display:none}.q.open .qa{display:block}.q.open{background:rgba(255,255,255,0.02)}`,`<div class="w"><div class="t">FAQ</div><div class="q open"><div class="qh">Wie funktioniert die KI?<span>-</span></div><div class="qa">Beschreibe einfach deine Wunsch-Website und unsere KI generiert den Code automatisch. Du kannst jederzeit Aenderungen per Chat vornehmen.</div></div><div class="q"><div class="qh">Brauche ich Programmierkenntnisse?<span>+</span></div><div class="qa"></div></div><div class="q"><div class="qh">Kann ich meine eigene Domain nutzen?<span>+</span></div><div class="qa"></div></div><div class="q"><div class="qh">Gibt es eine kostenlose Version?<span>+</span></div><div class="qa"></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;max-width:700px;margin:auto}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.q{border:1px solid rgba(255,255,255,0.06);border-radius:12px;margin-bottom:10px;overflow:hidden}.qh{padding:18px 20px;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px;cursor:pointer}.qh span{color:#6366F1;font-size:20px}.qa{padding:0 20px 18px;font-size:13px;color:#888;line-height:1.7;display:none}.q.open .qa{display:block}.q.open{background:rgba(255,255,255,0.02)}`,`<div class="w"><div class="t">FAQ</div><div class="q open"><div class="qh">Wie funktioniert die KI?<span>-</span></div><div class="qa">Beschreibe einfach deine Wunsch-Website und unsere KI generiert den Code automatisch. Du kannst jederzeit Aenderungen per Chat vornehmen.</div></div><div class="q"><div class="qh">Brauche ich Programmierkenntnisse?<span>+</span></div><div class="qa"></div></div><div class="q"><div class="qh">Kann ich meine eigene Domain nutzen?<span>+</span></div><div class="qa"></div></div><div class="q"><div class="qh">Gibt es eine kostenlose Version?<span>+</span></div><div class="qa"></div></div></div>`) },
     { id:'faq-two-col', name:'FAQ Zwei Spalten', category:'faq', tags:['grid','clean'],
       prompt:'Erstelle eine FAQ-Sektion in zwei Spalten: Links 4 Fragen, rechts 4 Fragen. Jede FAQ hat fette Frage und darunter die Antwort. Sauberes Grid-Layout ohne Akkordeon.',
       preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:1fr 1fr;gap:28px}.i{margin-bottom:8px}.ih{font-size:15px;font-weight:600;margin-bottom:6px}.id{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Haeufige Fragen</div><div class="g"><div class="i"><div class="ih">Was ist Qntum?</div><div class="id">Ein KI-Website-Builder der professionelle Seiten in Minuten erstellt.</div></div><div class="i"><div class="ih">Wie starte ich?</div><div class="id">Registriere dich kostenlos und beschreibe deine Wunsch-Website im Chat.</div></div><div class="i"><div class="ih">Welche Technologien?</div><div class="id">HTML, CSS, JS oder React + Tailwind. Du waehlst den Stack.</div></div><div class="i"><div class="ih">Support?</div><div class="id">E-Mail-Support fuer alle. Priority-Support ab Pro-Plan.</div></div><div class="i"><div class="ih">Eigene Domain?</div><div class="id">Ja, ab dem Pro-Plan kannst du deine Domain verbinden.</div></div><div class="i"><div class="ih">Export moeglich?</div><div class="id">Ja, du kannst jederzeit den Code als ZIP herunterladen.</div></div></div></div>`) },
     { id:'faq-search', name:'FAQ mit Suche', category:'faq', tags:['search','filter','interactive'],
       prompt:'Erstelle eine FAQ-Sektion mit Suchfeld oben: User kann Fragen durchsuchen, nicht-passende werden ausgeblendet. Darunter kategorisierte FAQ-Gruppen mit Akkordeon.',
-      preview: PV(`.w{padding:60px 40px;max-width:700px;margin:auto}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:24px}input{width:100%;padding:14px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#fff;font-size:15px;margin-bottom:32px}input::placeholder{color:#555}.cat{font-size:12px;color:#00D4FF;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;margin-top:24px}.q{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;font-size:14px;color:#aaa}.q span{color:#333}`,`<div class="w"><div class="t">Hilfe-Center</div><input placeholder="Frage suchen..."><div class="cat">Allgemein</div><div class="q">Was ist Qntum? <span>+</span></div><div class="q">Wie funktioniert die KI? <span>+</span></div><div class="cat">Preise</div><div class="q">Gibt es eine kostenlose Version? <span>+</span></div><div class="q">Kann ich jederzeit kuendigen? <span>+</span></div><div class="cat">Technik</div><div class="q">Welche Frameworks werden unterstuetzt? <span>+</span></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;max-width:700px;margin:auto}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:24px}input{width:100%;padding:14px 20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#fff;font-size:15px;margin-bottom:32px}input::placeholder{color:#555}.cat{font-size:12px;color:#6366F1;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;margin-top:24px}.q{padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;font-size:14px;color:#aaa}.q span{color:#333}`,`<div class="w"><div class="t">Hilfe-Center</div><input placeholder="Frage suchen..."><div class="cat">Allgemein</div><div class="q">Was ist Qntum? <span>+</span></div><div class="q">Wie funktioniert die KI? <span>+</span></div><div class="cat">Preise</div><div class="q">Gibt es eine kostenlose Version? <span>+</span></div><div class="q">Kann ich jederzeit kuendigen? <span>+</span></div><div class="cat">Technik</div><div class="q">Welche Frameworks werden unterstuetzt? <span>+</span></div></div>`) },
     { id:'stats-counter', name:'Animated Counters', category:'stats', tags:['numbers','animated'],
       prompt:'Erstelle eine Stats-Sektion mit 4 animierten Zahlen-Countern: Die Zahlen zaehlen von 0 hoch beim Scrollen (Intersection Observer). Grosse Zahlen mit Labels darunter. Gradient-Akzente.',
-      preview: PV(`.w{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:40px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}.n{font-size:56px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}.l{font-size:14px;color:#666;font-weight:500}`,`<div class="w"><div class="g"><div><div class="n">2.4K+</div><div class="l">Kunden weltweit</div></div><div><div class="n">15M+</div><div class="l">Generierte Seiten</div></div><div><div class="n">99.9%</div><div class="l">Uptime</div></div><div><div class="n">4.9</div><div class="l">Bewertung</div></div></div></div>`) },
+      preview: PV(`.w{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:40px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;text-align:center}.n{font-size:56px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#6366F1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}.l{font-size:14px;color:#666;font-weight:500}`,`<div class="w"><div class="g"><div><div class="n">2.4K+</div><div class="l">Kunden weltweit</div></div><div><div class="n">15M+</div><div class="l">Generierte Seiten</div></div><div><div class="n">99.9%</div><div class="l">Uptime</div></div><div><div class="n">4.9</div><div class="l">Bewertung</div></div></div></div>`) },
     { id:'stats-cards', name:'Stats mit Icons', category:'stats', tags:['cards','icons'],
       prompt:'Erstelle eine Stats-Sektion mit 4 Karten: Jede mit grossem Icon, Zahl und Label. Hover-Effekt hebt die Karte hervor. Einheitliches Dark-Card-Design mit farbigen Icon-Akzenten.',
-      preview: PV(`.w{padding:60px 40px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;text-align:center}.ic{width:48px;height:48px;border-radius:14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:22px}.ic.a{background:rgba(108,58,237,0.15);color:#6C3AED}.ic.b{background:rgba(0,230,138,0.12);color:#00E68A}.ic.c{background:rgba(0,212,255,0.12);color:#00D4FF}.ic.d{background:rgba(245,158,11,0.12);color:#F59E0B}.n{font-size:32px;font-weight:800;margin-bottom:4px}.l{font-size:12px;color:#666}`,`<div class="w"><div class="g"><div class="c"><div class="ic a">&#9733;</div><div class="n">500+</div><div class="l">Projekte</div></div><div class="c"><div class="ic b">&#10003;</div><div class="n">99.7%</div><div class="l">Uptime</div></div><div class="c"><div class="ic c">&#9889;</div><div class="n">0.8s</div><div class="l">Avg. Ladezeit</div></div><div class="c"><div class="ic d">&#9829;</div><div class="n">4.9/5</div><div class="l">Kundenbewertung</div></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px}.g{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.c{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px;text-align:center}.ic{width:48px;height:48px;border-radius:14px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:22px}.ic.a{background:rgba(108,58,237,0.15);color:#6C3AED}.ic.b{background:rgba(99,102,241,0.12);color:#6366F1}.ic.c{background:rgba(99,102,241,0.12);color:#6366F1}.ic.d{background:rgba(245,158,11,0.12);color:#F59E0B}.n{font-size:32px;font-weight:800;margin-bottom:4px}.l{font-size:12px;color:#666}`,`<div class="w"><div class="g"><div class="c"><div class="ic a">&#9733;</div><div class="n">500+</div><div class="l">Projekte</div></div><div class="c"><div class="ic b">&#10003;</div><div class="n">99.7%</div><div class="l">Uptime</div></div><div class="c"><div class="ic c">&#9889;</div><div class="n">0.8s</div><div class="l">Avg. Ladezeit</div></div><div class="c"><div class="ic d">&#9829;</div><div class="n">4.9/5</div><div class="l">Kundenbewertung</div></div></div></div>`) },
     { id:'contact-form', name:'Kontaktformular', category:'contact', tags:['form','modern'],
       prompt:'Erstelle eine Kontakt-Sektion mit modernem Formular: Name, E-Mail, Betreff, Nachricht-Textarea und Submit-Button. Links daneben Kontaktinfos (E-Mail, Telefon, Adresse) mit Icons.',
-      preview: PV(`.w{padding:60px 40px;display:flex;gap:60px;align-items:flex-start}.left{flex:1}.t{font-size:32px;font-weight:700;margin-bottom:12px}.d{font-size:14px;color:#888;margin-bottom:32px;line-height:1.7}.ci{display:flex;align-items:center;gap:12px;padding:10px 0;color:#888;font-size:14px}.ci .ic{width:36px;height:36px;border-radius:10px;background:rgba(0,230,138,0.1);display:flex;align-items:center;justify-content:center;color:#00E68A;font-size:14px}.right{flex:1.2}input,textarea{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px;margin-bottom:12px;font-family:inherit}textarea{height:100px;resize:none}button{width:100%;padding:14px;background:#00E68A;color:#000;font-weight:700;font-size:15px;border:none;border-radius:10px}`,`<div class="w"><div class="left"><div class="t">Kontakt</div><div class="d">Wir freuen uns auf deine Nachricht. Unser Team antwortet innerhalb von 24 Stunden.</div><div class="ci"><div class="ic">@</div>info@qntum.design</div><div class="ci"><div class="ic">T</div>+49 30 123456</div><div class="ci"><div class="ic">A</div>Berlin, Deutschland</div></div><div class="right"><input placeholder="Name"><input placeholder="E-Mail"><input placeholder="Betreff"><textarea placeholder="Nachricht"></textarea><button>Senden</button></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;display:flex;gap:60px;align-items:flex-start}.left{flex:1}.t{font-size:32px;font-weight:700;margin-bottom:12px}.d{font-size:14px;color:#888;margin-bottom:32px;line-height:1.7}.ci{display:flex;align-items:center;gap:12px;padding:10px 0;color:#888;font-size:14px}.ci .ic{width:36px;height:36px;border-radius:10px;background:rgba(99,102,241,0.1);display:flex;align-items:center;justify-content:center;color:#6366F1;font-size:14px}.right{flex:1.2}input,textarea{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;color:#fff;font-size:14px;margin-bottom:12px;font-family:inherit}textarea{height:100px;resize:none}button{width:100%;padding:14px;background:#6366F1;color:#000;font-weight:700;font-size:15px;border:none;border-radius:10px}`,`<div class="w"><div class="left"><div class="t">Kontakt</div><div class="d">Wir freuen uns auf deine Nachricht. Unser Team antwortet innerhalb von 24 Stunden.</div><div class="ci"><div class="ic">@</div>info@qntum.design</div><div class="ci"><div class="ic">T</div>+49 30 123456</div><div class="ci"><div class="ic">A</div>Berlin, Deutschland</div></div><div class="right"><input placeholder="Name"><input placeholder="E-Mail"><input placeholder="Betreff"><textarea placeholder="Nachricht"></textarea><button>Senden</button></div></div>`) },
     { id:'contact-map', name:'Kontakt + Karte', category:'contact', tags:['map','split'],
       prompt:'Erstelle eine Kontakt-Sektion im Split-Layout: Links das Kontaktformular, rechts eine eingebettete Karte (Placeholder). Darunter Oeffnungszeiten und Social-Links.',
-      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.r{display:flex;gap:24px}.form{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px}input,textarea{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;font-size:13px;margin-bottom:10px;font-family:inherit}textarea{height:80px;resize:none}button{width:100%;padding:12px;background:#00E68A;color:#000;font-weight:700;border:none;border-radius:8px}.map{flex:1;background:linear-gradient(135deg,#0D1B2A,#1a2540);border:1px solid rgba(255,255,255,0.06);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#333;font-size:48px}`,`<div class="w"><div class="t">Finde uns</div><div class="r"><div class="form"><input placeholder="Name"><input placeholder="E-Mail"><textarea placeholder="Nachricht"></textarea><button>Senden</button></div><div class="map">&#9906;</div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px}.t{text-align:center;font-size:36px;font-weight:700;margin-bottom:40px}.r{display:flex;gap:24px}.form{flex:1;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px}input,textarea{width:100%;padding:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;color:#fff;font-size:13px;margin-bottom:10px;font-family:inherit}textarea{height:80px;resize:none}button{width:100%;padding:12px;background:#6366F1;color:#000;font-weight:700;border:none;border-radius:8px}.map{flex:1;background:linear-gradient(135deg,#0D1B2A,#1a2540);border:1px solid rgba(255,255,255,0.06);border-radius:16px;display:flex;align-items:center;justify-content:center;color:#333;font-size:48px}`,`<div class="w"><div class="t">Finde uns</div><div class="r"><div class="form"><input placeholder="Name"><input placeholder="E-Mail"><textarea placeholder="Nachricht"></textarea><button>Senden</button></div><div class="map">&#9906;</div></div></div>`) },
     { id:'hero-3d', name:'3D Hero', category:'hero', tags:['premium','3d','animated'],
       prompt:'Erstelle eine Hero-Sektion mit 3D-Perspektive: Floating Cards oder Elemente mit CSS 3D-Transforms, Parallax-Mauseffekt, grosse Headline mit Gradient-Text. Premium-Look.', pro:true,
-      preview: PV(`body{perspective:1000px;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080810;overflow:hidden}.w{text-align:center;transform:rotateX(5deg)}.h1{font-size:72px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#00D4FF,#00E68A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}.sub{font-size:18px;color:#666;margin-bottom:40px}.cards{display:flex;gap:16px;justify-content:center;perspective:800px}.card{width:160px;height:100px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;transform:rotateY(-10deg) rotateX(5deg);box-shadow:0 20px 40px rgba(0,0,0,0.3)}.card:nth-child(2){transform:rotateY(0deg) translateY(-20px)}.card:nth-child(3){transform:rotateY(10deg) rotateX(5deg)}button{margin-top:32px;padding:14px 36px;background:linear-gradient(135deg,#6C3AED,#00D4FF);color:#fff;font-weight:700;border:none;border-radius:12px;font-size:16px}`,`<div class="w"><div class="h1">Next Level</div><div class="sub">3D-Experiences fuer deine Marke</div><div class="cards"><div class="card"></div><div class="card"></div><div class="card"></div></div><button>Erleben</button></div>`) },
+      preview: PV(`body{perspective:1000px;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#080810;overflow:hidden}.w{text-align:center;transform:rotateX(5deg)}.h1{font-size:72px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#6366F1,#6366F1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:20px}.sub{font-size:18px;color:#666;margin-bottom:40px}.cards{display:flex;gap:16px;justify-content:center;perspective:800px}.card{width:160px;height:100px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;transform:rotateY(-10deg) rotateX(5deg);box-shadow:0 20px 40px rgba(0,0,0,0.3)}.card:nth-child(2){transform:rotateY(0deg) translateY(-20px)}.card:nth-child(3){transform:rotateY(10deg) rotateX(5deg)}button{margin-top:32px;padding:14px 36px;background:linear-gradient(135deg,#6C3AED,#6366F1);color:#fff;font-weight:700;border:none;border-radius:12px;font-size:16px}`,`<div class="w"><div class="h1">Next Level</div><div class="sub">3D-Experiences fuer deine Marke</div><div class="cards"><div class="card"></div><div class="card"></div><div class="card"></div></div><button>Erleben</button></div>`) },
     { id:'feat-interactive', name:'Interactive Features', category:'features', tags:['premium','hover','3d'],
       prompt:'Erstelle eine Features-Sektion mit interaktiven 3D-Karten: Karten kippen beim Hover in Maus-Richtung (CSS perspective + JS), Glow-Effekt am Rand, animierte Icons.', pro:true,
-      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;perspective:800px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(108,58,237,0.2);border-radius:16px;padding:36px;transform:rotateY(-3deg);transition:transform 0.3s;box-shadow:0 0 30px rgba(108,58,237,0.1)}.c:nth-child(2){transform:rotateY(0deg);border-color:rgba(0,212,255,0.2);box-shadow:0 0 30px rgba(0,212,255,0.1)}.c:nth-child(3){transform:rotateY(3deg);border-color:rgba(0,230,138,0.2);box-shadow:0 0 30px rgba(0,230,138,0.1)}.ic{font-size:32px;margin-bottom:16px}.cn{font-size:17px;font-weight:600;margin-bottom:8px}.cd{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Premium Features</div><div class="g"><div class="c"><div class="ic">&#9889;</div><div class="cn">Lightning Fast</div><div class="cd">Sub-second builds mit optimiertem Rendering.</div></div><div class="c"><div class="ic">&#10024;</div><div class="cn">KI-Magic</div><div class="cd">Fortschrittlichste KI fuer perfekte Designs.</div></div><div class="c"><div class="ic">&#9881;</div><div class="cn">Full Control</div><div class="cd">Volle Kontrolle ueber jeden Pixel.</div></div></div></div>`) },
+      preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;perspective:800px}.c{background:rgba(255,255,255,0.03);border:1px solid rgba(108,58,237,0.2);border-radius:16px;padding:36px;transform:rotateY(-3deg);transition:transform 0.3s;box-shadow:0 0 30px rgba(108,58,237,0.1)}.c:nth-child(2){transform:rotateY(0deg);border-color:rgba(99,102,241,0.2);box-shadow:0 0 30px rgba(99,102,241,0.1)}.c:nth-child(3){transform:rotateY(3deg);border-color:rgba(99,102,241,0.2);box-shadow:0 0 30px rgba(99,102,241,0.1)}.ic{font-size:32px;margin-bottom:16px}.cn{font-size:17px;font-weight:600;margin-bottom:8px}.cd{font-size:13px;color:#666;line-height:1.6}`,`<div class="w"><div class="t">Premium Features</div><div class="g"><div class="c"><div class="ic">&#9889;</div><div class="cn">Lightning Fast</div><div class="cd">Sub-second builds mit optimiertem Rendering.</div></div><div class="c"><div class="ic">&#10024;</div><div class="cn">KI-Magic</div><div class="cd">Fortschrittlichste KI fuer perfekte Designs.</div></div><div class="c"><div class="ic">&#9881;</div><div class="cn">Full Control</div><div class="cd">Volle Kontrolle ueber jeden Pixel.</div></div></div></div>`) },
     { id:'pricing-slider', name:'Pricing Slider', category:'pricing', tags:['premium','slider','dynamic'],
       prompt:'Erstelle eine Pricing-Sektion mit Slider: User bewegt einen Range-Slider (z.B. Anzahl User), Preis aendert sich dynamisch. Animierte Zahlen, visuelles Feedback beim Schieben.', pro:true,
-      preview: PV(`.w{padding:60px 40px;text-align:center;max-width:600px;margin:auto}.t{font-size:36px;font-weight:700;margin-bottom:12px}.st{color:#888;margin-bottom:40px;font-size:15px}.sl{width:100%;margin-bottom:32px;accent-color:#6C3AED;height:6px}.val{font-size:14px;color:#888;margin-bottom:24px}.pr{font-size:64px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#00D4FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}.pm{color:#555;margin-bottom:32px}button{padding:16px 48px;background:linear-gradient(135deg,#6C3AED,#00D4FF);color:#fff;font-weight:700;font-size:16px;border:none;border-radius:12px}`,`<div class="w"><div class="t">Flexible Preise</div><div class="st">Bezahle nur was du brauchst</div><input type="range" class="sl" min="1" max="100" value="25"><div class="val">25 Projekte</div><div class="pr">$49</div><div class="pm">pro Monat</div><button>Plan waehlen</button></div>`) },
+      preview: PV(`.w{padding:60px 40px;text-align:center;max-width:600px;margin:auto}.t{font-size:36px;font-weight:700;margin-bottom:12px}.st{color:#888;margin-bottom:40px;font-size:15px}.sl{width:100%;margin-bottom:32px;accent-color:#6C3AED;height:6px}.val{font-size:14px;color:#888;margin-bottom:24px}.pr{font-size:64px;font-weight:800;background:linear-gradient(135deg,#6C3AED,#6366F1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}.pm{color:#555;margin-bottom:32px}button{padding:16px 48px;background:linear-gradient(135deg,#6C3AED,#6366F1);color:#fff;font-weight:700;font-size:16px;border:none;border-radius:12px}`,`<div class="w"><div class="t">Flexible Preise</div><div class="st">Bezahle nur was du brauchst</div><input type="range" class="sl" min="1" max="100" value="25"><div class="val">25 Projekte</div><div class="pr">$49</div><div class="pm">pro Monat</div><button>Plan waehlen</button></div>`) },
     { id:'test-video', name:'Video Testimonials', category:'testimonials', tags:['premium','video','trust'],
       prompt:'Erstelle eine Testimonials-Sektion mit Video-Thumbnails: 3 Karten mit Play-Button-Overlay auf Bild, Name und Firma darunter. Klick oeffnet Modal mit Video-Player (Placeholder).', pro:true,
       preview: PV(`.w{padding:60px 40px;text-align:center}.t{font-size:36px;font-weight:700;margin-bottom:40px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.c{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,0.06)}.vid{height:200px;background:linear-gradient(135deg,#1a1a3e,#0B1120);display:flex;align-items:center;justify-content:center;position:relative}.play{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}.play::after{content:"";border:10px solid transparent;border-left:16px solid #fff;margin-left:4px}.info{padding:16px;text-align:left;background:rgba(255,255,255,0.02)}.n{font-weight:600;font-size:14px;margin-bottom:2px}.r{font-size:12px;color:#666}`,`<div class="w"><div class="t">Kunden-Stories</div><div class="g"><div class="c"><div class="vid"><div class="play"></div></div><div class="info"><div class="n">Sarah Mueller</div><div class="r">CEO, TechVenture</div></div></div><div class="c"><div class="vid"><div class="play"></div></div><div class="info"><div class="n">Thomas Klein</div><div class="r">Founder, DataPro</div></div></div><div class="c"><div class="vid"><div class="play"></div></div><div class="info"><div class="n">Lisa Weber</div><div class="r">Marketing, BrandX</div></div></div></div></div>`) },
