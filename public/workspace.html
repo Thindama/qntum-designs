@@ -6141,33 +6141,41 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
 
     try {
       const pid = projectId || new URLSearchParams(location.search).get('project');
+      if (!pid) {
+        loadingEl.classList.remove('active');
+        document.getElementById('deployForm').style.display = 'block';
+        showToast('Erstelle zuerst eine Website per Chat');
+        return;
+      }
 
       // Start step animation and API call in parallel
       const [res] = await Promise.all([
-        fetch('/api/deploy', {
+        fetch(`/api/projects/${pid}/publish`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ subdomain: slug, html: currentHtml, projectId: pid })
+          body: JSON.stringify({ slug })
         }),
         new Promise(resolve => animateDeploySteps(resolve))
       ]);
 
       loadingEl.classList.remove('active');
 
-      if (res.ok) {
-        const data = await res.json();
-        const liveUrl = data.url || (APP_HOST.includes('localhost') ? `${location.protocol}//${APP_HOST}/live/${slug}` : `https://${slug}.qntum.design`);
+      let data = null;
+      try { data = await res.json(); } catch (_) { /* non-JSON response */ }
+
+      if (res.ok && data && data.success) {
+        const liveUrl = data.liveUrl || (APP_HOST.includes('localhost') ? `${location.protocol}//${APP_HOST}/live/${slug}` : `https://${slug}.qntum.design`);
         document.getElementById('deployLiveUrl').textContent = liveUrl;
         document.getElementById('deploySuccess').classList.add('visible');
         const checkDeploy = document.getElementById('checkDeploy');
         if (checkDeploy) checkDeploy.classList.add('done');
         showToast('Website deployed!');
       } else {
-        const err = await res.json();
         document.getElementById('deployForm').style.display = 'block';
-        showToast(err.error || 'Deploy fehlgeschlagen');
+        showToast((data && data.error) || `Deploy fehlgeschlagen (${res.status})`);
       }
     } catch (e) {
+      console.error('Deploy error:', e);
       loadingEl.classList.remove('active');
       document.getElementById('deployForm').style.display = 'block';
       showToast('Netzwerkfehler — bitte versuche es erneut');
