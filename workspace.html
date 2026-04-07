@@ -1,0 +1,2165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qntum Workspace — KI-Agentur Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   QNTUM WORKSPACE — Demo (KI-Agentur Pro)
+   Aesthetic: Deep-space canvas, Electric Violet primary,
+   Neon Mint accent. IDE-grade chrome, editorial chat panel,
+   fully rendered mini-website in the preview.
+   ============================================================ */
+
+:root {
+  /* Backgrounds (Deep Space) */
+  --bg-0: #05050C;
+  --bg-1: #0A0A14;
+  --bg-2: #0F1020;
+  --bg-3: #15162A;
+  --bg-4: #1C1D33;
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.05);
+  --border-hi: rgba(255, 255, 255, 0.10);
+  --border-focus: rgba(108, 58, 237, 0.40);
+
+  /* Text */
+  --text-hi: #F5F5FA;
+  --text-mid: #9195B5;
+  --text-lo: #5A5E7C;
+  --text-dim: #3A3D5A;
+
+  /* Brand */
+  --violet: #6C3AED;
+  --violet-hi: #8B5CF6;
+  --violet-lo: #5828D0;
+  --violet-glow: rgba(108, 58, 237, 0.35);
+
+  --mint: #06F5C0;
+  --mint-hi: #39FFD4;
+  --mint-glow: rgba(6, 245, 192, 0.30);
+
+  --amber: #FFB547;
+  --rose:  #FF5470;
+
+  /* Fonts */
+  --f-display: 'Unbounded', system-ui, sans-serif;
+  --f-body:    'Outfit', system-ui, sans-serif;
+  --f-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* Radii */
+  --rad-sm: 6px;
+  --rad:    10px;
+  --rad-lg: 16px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  background: var(--bg-0);
+  color: var(--text-hi);
+  font-family: var(--f-body);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: inherit;
+}
+
+input, textarea {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--violet-glow); color: var(--text-hi); }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.06); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.14); }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app {
+  position: relative;
+  display: grid;
+  grid-template-rows: 56px 1fr 30px;
+  grid-template-columns: 48px 1fr;
+  grid-template-areas:
+    "topbar  topbar"
+    "sidebar main"
+    "status  status";
+  height: 100vh;
+  width: 100vw;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 0%, rgba(108, 58, 237, 0.09), transparent 60%),
+    radial-gradient(ellipse 700px 400px at 85% 100%, rgba(6, 245, 192, 0.035), transparent 60%),
+    var(--bg-0);
+}
+
+/* Global grid overlay for atmosphere */
+.app::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 85%);
+  z-index: 0;
+}
+
+/* Grain */
+.app::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar {
+  grid-area: topbar;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 14px 0 20px;
+  background: rgba(10, 10, 20, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 10;
+}
+
+.topbar-left, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.topbar-left   { flex: 1; min-width: 0; }
+.topbar-center { display: flex; align-items: center; gap: 4px; }
+.topbar-right  { justify-content: flex-end; flex: 1; min-width: 0; }
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2B0D8A 0%, var(--violet) 45%, var(--violet-hi) 100%);
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 6px 24px var(--violet-glow);
+  flex-shrink: 0;
+}
+.brand-logo::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border: 1.8px solid rgba(255, 255, 255, 0.95);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.brand-name {
+  background: linear-gradient(180deg, #FFFFFF 0%, #B9BEDA 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+.crumb-sep {
+  color: var(--text-dim);
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.project-crumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 12px;
+  border-radius: var(--rad-sm);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+  font-size: 13px;
+  transition: background 0.2s, border 0.2s;
+  cursor: text;
+}
+.project-crumb:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-hi);
+}
+.project-crumb .proj-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 8px var(--mint-glow);
+}
+.project-crumb .proj-name {
+  font-weight: 500;
+  color: var(--text-hi);
+}
+.project-crumb .edit-svg {
+  width: 12px;
+  height: 12px;
+  color: var(--text-lo);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.project-crumb:hover .edit-svg { opacity: 1; }
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--rad-sm);
+  display: grid;
+  place-items: center;
+  color: var(--text-mid);
+  transition: background 0.15s, color 0.15s;
+}
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-hi);
+}
+.icon-btn svg { width: 15px; height: 15px; stroke-width: 1.8; }
+
+.divider-v {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  margin: 0 6px;
+}
+
+.device-toggle {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2px;
+}
+.device-btn {
+  width: 30px;
+  height: 26px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  color: var(--text-lo);
+  transition: all 0.2s;
+}
+.device-btn svg { width: 14px; height: 14px; stroke-width: 1.8; }
+.device-btn.active {
+  background: rgba(108, 58, 237, 0.18);
+  color: var(--violet-hi);
+  box-shadow: 0 0 0 1px rgba(108, 58, 237, 0.35);
+}
+.device-btn:hover:not(.active) { color: var(--text-mid); }
+
+.token-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px 5px 11px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-family: var(--f-mono);
+  font-weight: 500;
+}
+.token-ring {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: conic-gradient(var(--violet-hi) 0% 40%, rgba(255, 255, 255, 0.08) 40% 100%);
+  position: relative;
+  box-shadow: 0 0 8px var(--violet-glow);
+}
+.token-ring::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  background: var(--bg-1);
+  border-radius: 50%;
+}
+.tk-used { color: var(--violet-hi); font-weight: 600; }
+.tk-sep  { color: var(--text-dim); padding: 0 2px; }
+.tk-total{ color: var(--text-mid); }
+
+.plan-badge {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-hi) 100%);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset, 0 4px 14px var(--violet-glow);
+  font-family: var(--f-display);
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #2C1561 0%, #8B5CF6 100%);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 0 0 2px var(--bg-0),
+    0 0 0 3px rgba(108, 58, 237, 0.5);
+  cursor: pointer;
+  color: #fff;
+}
+
+.btn-publish {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: linear-gradient(180deg, var(--mint-hi) 0%, var(--mint) 100%);
+  color: #002018;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.35) inset,
+    0 4px 22px var(--mint-glow);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btn-publish:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
+    0 6px 30px var(--mint-glow);
+}
+.btn-publish svg { width: 12px; height: 12px; stroke-width: 2.6; }
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0 12px;
+  background: rgba(10, 10, 20, 0.7);
+  backdrop-filter: blur(16px);
+  border-right: 1px solid var(--border);
+  gap: 4px;
+  position: relative;
+  z-index: 5;
+}
+
+.sb-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: var(--text-lo);
+  transition: all 0.18s;
+  position: relative;
+}
+.sb-btn::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+  width: 3px;
+  height: 18px;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(180deg, var(--violet) 0%, var(--violet-hi) 100%);
+  box-shadow: 0 0 10px var(--violet-glow);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sb-btn:hover {
+  color: var(--text-mid);
+  background: rgba(255, 255, 255, 0.04);
+}
+.sb-btn.active {
+  color: var(--violet-hi);
+  background: rgba(108, 58, 237, 0.12);
+}
+.sb-btn.active::before { transform: translateY(-50%) scaleY(1); }
+.sb-btn svg { width: 16px; height: 16px; stroke-width: 1.8; }
+.sb-btn .badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  background: var(--mint);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--mint-glow);
+}
+
+.sb-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--border);
+  margin: 6px 0;
+}
+
+.sb-spacer { flex: 1; }
+
+/* ============================================================
+   MAIN AREA
+   ============================================================ */
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 38% 62%;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   CHAT PANEL (left)
+   ============================================================ */
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(108, 58, 237, 0.025) 0%, transparent 30%),
+    rgba(8, 8, 16, 0.4);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-head-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--violet-hi);
+  box-shadow: 0 0 0 3px rgba(108, 58, 237, 0.16), 0 0 12px var(--violet-glow);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(108, 58, 237, 0.16), 0 0 12px var(--violet-glow); }
+  50%      { box-shadow: 0 0 0 5px rgba(108, 58, 237, 0.08), 0 0 20px var(--violet-glow); }
+}
+
+.panel-title {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+}
+
+.model-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  font-size: 11.5px;
+  color: var(--text-mid);
+  font-family: var(--f-mono);
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.model-select:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-hi);
+  border-color: var(--border-hi);
+}
+.model-select .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 6px var(--mint-glow);
+}
+.model-select svg { width: 11px; height: 11px; opacity: 0.6; }
+
+.skill-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 18px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-mid);
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.pill:hover {
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--text-hi);
+  border-color: var(--border-hi);
+}
+.pill.active {
+  background: rgba(108, 58, 237, 0.14);
+  color: var(--violet-hi);
+  border-color: rgba(108, 58, 237, 0.5);
+  box-shadow: 0 0 0 3px rgba(108, 58, 237, 0.08), 0 4px 14px rgba(108, 58, 237, 0.2);
+}
+.pill .pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--violet-hi);
+  box-shadow: 0 0 6px var(--violet-glow);
+}
+.pill .lock-icon { width: 10px; height: 10px; opacity: 0.55; }
+.pill.locked { opacity: 0.55; cursor: not-allowed; }
+
+/* Chat log */
+.chat-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 18px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  scroll-behavior: smooth;
+}
+
+.msg { display: flex; gap: 10px; max-width: 100%; }
+.msg-user { justify-content: flex-end; padding-left: 40px; }
+.msg-ai   { justify-content: flex-start; padding-right: 30px; }
+
+.msg-avatar {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-hi) 100%);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset, 0 4px 14px var(--violet-glow);
+  margin-top: 2px;
+  position: relative;
+}
+.msg-avatar::after {
+  content: '';
+  width: 9px;
+  height: 9px;
+  border: 1.6px solid rgba(255, 255, 255, 0.95);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.msg-bubble {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.msg-user .msg-bubble {
+  background: linear-gradient(135deg, rgba(108, 58, 237, 0.16) 0%, rgba(108, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(108, 58, 237, 0.26);
+  padding: 11px 14px;
+  border-radius: 14px 14px 4px 14px;
+  max-width: 88%;
+  box-shadow: 0 4px 20px -10px rgba(108, 58, 237, 0.3);
+}
+
+.msg-ai .msg-bubble {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  border-radius: 4px 14px 14px 14px;
+  max-width: 100%;
+}
+
+.msg-content {
+  font-size: 13px;
+  line-height: 1.58;
+  color: var(--text-hi);
+  word-wrap: break-word;
+}
+.msg-content strong {
+  color: var(--mint-hi);
+  font-weight: 600;
+}
+.msg-content + .msg-content { margin-top: 8px; }
+
+.msg-list {
+  margin: 10px 0 6px;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.msg-list li {
+  padding-left: 18px;
+  position: relative;
+  font-size: 12.5px;
+  color: var(--text-mid);
+  line-height: 1.5;
+}
+.msg-list li::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--violet-hi);
+  box-shadow: 0 0 5px var(--violet-glow);
+}
+
+.msg-meta {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 8px;
+  font-family: var(--f-mono);
+  letter-spacing: 0.02em;
+}
+.msg-user .msg-meta {
+  text-align: right;
+  color: rgba(139, 92, 246, 0.55);
+}
+
+/* Generation steps block */
+.gen-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 12px 14px;
+  margin: -2px -2px 12px;
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.gen-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--text-mid);
+  font-family: var(--f-mono);
+}
+.gen-step .check {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--mint);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px var(--mint-glow);
+}
+.gen-step .check svg { width: 8px; height: 8px; color: #002018; stroke-width: 3.5; }
+.gen-step.done { color: var(--text-hi); }
+.gen-step .time {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 10px;
+}
+
+.diff-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin-top: 10px;
+  background: rgba(6, 245, 192, 0.08);
+  color: var(--mint-hi);
+  border: 1px solid rgba(6, 245, 192, 0.22);
+  border-radius: 100px;
+  font-size: 10.5px;
+  font-family: var(--f-mono);
+  font-weight: 500;
+}
+.diff-chip svg { width: 10px; height: 10px; stroke-width: 2.4; }
+
+/* Chat input */
+.chat-input-wrap {
+  flex-shrink: 0;
+  padding: 10px 16px 16px;
+}
+
+.chat-input {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.chat-input:focus-within {
+  border-color: rgba(108, 58, 237, 0.45);
+  background: rgba(108, 58, 237, 0.05);
+  box-shadow: 0 0 0 4px rgba(108, 58, 237, 0.1);
+}
+
+.input-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  color: var(--text-lo);
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.input-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-hi);
+}
+.input-btn svg { width: 15px; height: 15px; stroke-width: 2; }
+
+.chat-input input {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-hi);
+  padding: 4px 0;
+  min-width: 0;
+}
+.chat-input input::placeholder { color: var(--text-lo); }
+
+.input-send {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--violet) 0%, var(--violet-hi) 100%);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12) inset, 0 4px 14px var(--violet-glow);
+  transition: all 0.15s;
+}
+.input-send:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18) inset, 0 6px 20px var(--violet-glow);
+}
+.input-send svg { width: 14px; height: 14px; stroke-width: 2.6; }
+
+.input-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 0 4px;
+  font-size: 10px;
+  color: var(--text-dim);
+  font-family: var(--f-mono);
+}
+.input-foot kbd {
+  padding: 1px 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-lo);
+}
+
+/* ============================================================
+   PREVIEW PANEL (right)
+   ============================================================ */
+.preview-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 14px 16px 14px 14px;
+  background: radial-gradient(ellipse at 100% 0%, rgba(6, 245, 192, 0.035) 0%, transparent 60%);
+}
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+  border-radius: 12px 12px 0 0;
+  border-bottom: none;
+  flex-shrink: 0;
+}
+
+.preview-url {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.url-dots {
+  display: flex;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.url-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.url-dots span:nth-child(1) { background: #FF5F57; }
+.url-dots span:nth-child(2) { background: #FFBD2E; }
+.url-dots span:nth-child(3) { background: #28CA42; }
+
+.url-bar {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 7px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  color: var(--text-mid);
+  max-width: 360px;
+  min-width: 0;
+}
+.url-bar svg { width: 10px; height: 10px; color: var(--mint); flex-shrink: 0; }
+.url-dom { color: var(--text-hi); font-weight: 500; }
+
+.preview-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border);
+  font-size: 11.5px;
+  color: var(--text-mid);
+  font-weight: 500;
+  transition: all 0.15s;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-hi);
+  border-color: var(--border-hi);
+}
+.btn-ghost svg { width: 12px; height: 12px; stroke-width: 2; }
+
+/* Frame */
+.preview-frame {
+  flex: 1;
+  overflow: hidden;
+  border-radius: 0 0 14px 14px;
+  border: 1px solid var(--border);
+  background: #0B1120;
+  position: relative;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 40px 80px -40px rgba(0, 0, 0, 0.65),
+    0 20px 60px -20px rgba(108, 58, 237, 0.22);
+}
+
+.preview-scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.preview-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); }
+
+/* ============================================================
+   MINI WEBSITE (inside preview iframe-like container)
+   — NexAgent AI (the site the user is building)
+   Dark navy + cyan, distinct from Qntum's violet chrome
+   ============================================================ */
+.mini-site {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #E5E9F5;
+  background:
+    radial-gradient(ellipse 1100px 700px at 50% -10%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 800px 500px at 0% 40%, rgba(6, 182, 212, 0.09) 0%, transparent 60%),
+    #0B1120;
+  min-height: 100%;
+  font-size: 12px;
+  line-height: 1.55;
+  position: relative;
+}
+.mini-site::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: linear-gradient(180deg, black 0%, black 60%, transparent 100%);
+  pointer-events: none;
+}
+.mini-site > * { position: relative; z-index: 1; }
+
+/* Nav */
+.mini-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(11, 17, 32, 0.78);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mini-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.mini-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+}
+.mini-logo::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border: 1.6px solid rgba(255, 255, 255, 0.95);
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.mini-nav-links {
+  display: flex;
+  gap: 28px;
+}
+.mini-nav-links a {
+  font-size: 11.5px;
+  color: rgba(229, 233, 245, 0.7);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.mini-nav-links a:hover { color: #fff; }
+
+.mini-cta {
+  padding: 7px 15px;
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  border-radius: 7px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Hero */
+.mini-hero {
+  position: relative;
+  padding: 70px 32px 80px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.mini-hero-orb {
+  position: absolute;
+  top: -5%;
+  right: -15%;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.35) 0%, rgba(6, 182, 212, 0.1) 40%, transparent 70%);
+  filter: blur(70px);
+  animation: orbFloat 9s ease-in-out infinite;
+}
+.mini-hero-orb::before {
+  content: '';
+  position: absolute;
+  inset: 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, transparent 70%);
+  filter: blur(40px);
+}
+.mini-hero-orb-2 {
+  position: absolute;
+  bottom: 10%;
+  left: -10%;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 65%);
+  filter: blur(60px);
+  animation: orbFloat 11s ease-in-out -3s infinite;
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-24px, 22px) scale(1.08); }
+}
+
+.mini-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.mini-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 13px;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.28);
+  border-radius: 100px;
+  font-size: 10.5px;
+  color: #93C5FD;
+  font-weight: 500;
+  margin-bottom: 22px;
+}
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #06B6D4;
+  box-shadow: 0 0 8px #06B6D4;
+  animation: dotPulse 2s ease-in-out infinite;
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.mini-h1 {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  margin: 0 0 20px;
+  color: #fff;
+}
+.mini-grad {
+  background: linear-gradient(135deg, #60A5FA 0%, #06B6D4 50%, #14B8A6 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  position: relative;
+}
+
+.mini-sub {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: rgba(229, 233, 245, 0.7);
+  max-width: 540px;
+  margin: 0 auto 30px;
+}
+
+.mini-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 38px;
+}
+
+.mini-btn-pri {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #3B82F6 0%, #06B6D4 100%);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 10px 30px rgba(59, 130, 246, 0.45);
+  font-family: inherit;
+}
+.mini-btn-pri .arr {
+  transition: transform 0.2s;
+}
+.mini-btn-pri:hover .arr { transform: translateX(3px); }
+
+.mini-btn-sec {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  font-family: inherit;
+}
+.mini-btn-sec .play {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.25);
+  display: grid;
+  place-items: center;
+  font-size: 8px;
+  padding-left: 1px;
+}
+
+.mini-trust {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 16px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+.trust-avatars { display: flex; }
+.ta {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #0B1120;
+  margin-left: -6px;
+}
+.ta:nth-child(1) { background: linear-gradient(135deg, #F472B6, #E11D48); margin-left: 0; }
+.ta:nth-child(2) { background: linear-gradient(135deg, #FBBF24, #F59E0B); }
+.ta:nth-child(3) { background: linear-gradient(135deg, #34D399, #10B981); }
+.ta:nth-child(4) { background: linear-gradient(135deg, #60A5FA, #3B82F6); }
+.trust-text {
+  text-align: left;
+  font-size: 10.5px;
+  color: rgba(229, 233, 245, 0.7);
+}
+.stars { color: #FCD34D; font-size: 10px; letter-spacing: 1.5px; }
+
+/* Services */
+.mini-services {
+  padding: 60px 32px 40px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+.mini-section-head {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.mini-tag {
+  display: inline-block;
+  padding: 4px 11px;
+  background: rgba(6, 182, 212, 0.1);
+  color: #67E8F9;
+  border: 1px solid rgba(6, 182, 212, 0.28);
+  border-radius: 100px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.mini-section-head h2 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin: 0;
+}
+.mini-section-head .h2-sub {
+  font-size: 12.5px;
+  color: rgba(229, 233, 245, 0.6);
+  margin-top: 8px;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.svc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.svc-card {
+  position: relative;
+  padding: 24px 20px 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0.015) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: all 0.35s;
+}
+.svc-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(59, 130, 246, 0.42);
+  box-shadow: 0 24px 50px -20px rgba(59, 130, 246, 0.35);
+}
+.svc-featured {
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.14) 0%, rgba(6, 182, 212, 0.05) 100%);
+  border-color: rgba(59, 130, 246, 0.35);
+  box-shadow: 0 24px 60px -24px rgba(59, 130, 246, 0.4);
+}
+.svc-badge {
+  position: absolute;
+  top: -9px;
+  right: 18px;
+  padding: 3px 10px;
+  background: linear-gradient(135deg, #3B82F6, #06B6D4);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-radius: 100px;
+  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+}
+
+.svc-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  border: 1px solid;
+}
+.svc-icon svg { width: 22px; height: 22px; stroke-width: 1.8; }
+.svc-icon-chat {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.32);
+  color: #60A5FA;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.22);
+}
+.svc-icon-phone {
+  background: rgba(6, 182, 212, 0.12);
+  border-color: rgba(6, 182, 212, 0.32);
+  color: #22D3EE;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.22);
+}
+.svc-icon-cal {
+  background: rgba(20, 184, 166, 0.12);
+  border-color: rgba(20, 184, 166, 0.32);
+  color: #2DD4BF;
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.22);
+}
+
+.svc-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+.svc-card p {
+  font-size: 11.5px;
+  color: rgba(229, 233, 245, 0.65);
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+.svc-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.svc-card li {
+  font-size: 11px;
+  color: rgba(229, 233, 245, 0.78);
+  padding-left: 16px;
+  position: relative;
+}
+.svc-card li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 10px;
+  height: 5px;
+  border-left: 1.5px solid #06B6D4;
+  border-bottom: 1.5px solid #06B6D4;
+  transform: rotate(-45deg);
+}
+.svc-price {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  letter-spacing: -0.01em;
+}
+.svc-price span {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(229, 233, 245, 0.5);
+}
+
+/* Stats */
+.mini-stats-wrap {
+  padding: 20px 32px 0;
+}
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 28px 16px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.04));
+  border: 1px solid rgba(59, 130, 246, 0.22);
+  border-radius: 18px;
+  max-width: 920px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+.mini-stats::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 50% 150%, rgba(59, 130, 246, 0.2), transparent 50%);
+}
+.stat {
+  text-align: center;
+  padding: 0 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+.stat:last-child { border-right: none; }
+.stat-num {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #fff, #93C5FD);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+  line-height: 1;
+  margin-bottom: 5px;
+}
+.stat-lbl {
+  font-size: 10px;
+  color: rgba(229, 233, 245, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+/* Pricing */
+.mini-pricing {
+  padding: 60px 32px 30px;
+  text-align: center;
+}
+.pricing-card {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 36px 32px 32px;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.02));
+  border: 1px solid rgba(59, 130, 246, 0.34);
+  border-radius: 22px;
+  position: relative;
+  box-shadow: 0 30px 80px -30px rgba(59, 130, 246, 0.5);
+}
+.pricing-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+  letter-spacing: -0.02em;
+}
+.pricing-card p {
+  font-size: 11.5px;
+  color: rgba(229, 233, 245, 0.6);
+  margin: 0 0 22px;
+}
+.big-price {
+  font-size: 44px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+.big-price span {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(229, 233, 245, 0.5);
+  margin-left: 4px;
+}
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.pricing-features li {
+  font-size: 11.5px;
+  color: rgba(229, 233, 245, 0.8);
+  padding-left: 20px;
+  position: relative;
+}
+.pricing-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #06B6D4;
+  font-weight: 700;
+  font-size: 13px;
+}
+.price-foot {
+  margin-top: 14px;
+  font-size: 10.5px;
+  color: rgba(229, 233, 245, 0.5);
+}
+
+/* CTA */
+.mini-cta-sec {
+  padding: 50px 32px 60px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 20px;
+}
+.mini-cta-sec h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #fff;
+  max-width: 520px;
+  margin: 0 auto 22px;
+  letter-spacing: -0.022em;
+  line-height: 1.25;
+}
+.mini-btn-pri.lg {
+  padding: 14px 28px;
+  font-size: 13.5px;
+}
+
+/* Footer */
+.mini-foot {
+  padding: 22px 32px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 10.5px;
+  color: rgba(229, 233, 245, 0.42);
+}
+
+/* ============================================================
+   STATUS BAR
+   ============================================================ */
+.status {
+  grid-area: status;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: rgba(10, 10, 20, 0.88);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-lo);
+  font-family: var(--f-mono);
+  position: relative;
+  z-index: 10;
+  gap: 20px;
+}
+.status-left, .status-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.status-right { justify-content: flex-end; }
+.status-center {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.st-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.st-ok {
+  background: var(--mint);
+  box-shadow: 0 0 7px var(--mint-glow);
+}
+.st-pulse {
+  background: var(--violet-hi);
+  box-shadow: 0 0 7px var(--violet-glow);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.status-center .mono-hi {
+  color: var(--mint-hi);
+  font-weight: 500;
+}
+
+.st-sep {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+}
+
+.st-link {
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.st-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-hi);
+}
+.st-link svg { width: 11px; height: 11px; }
+
+/* ============================================================
+   ENTRANCE ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.msg { animation: fadeUp 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.msg:nth-child(1) { animation-delay: 0.06s; }
+.msg:nth-child(2) { animation-delay: 0.16s; }
+.msg:nth-child(3) { animation-delay: 0.26s; }
+.msg:nth-child(4) { animation-delay: 0.36s; }
+.msg:nth-child(5) { animation-delay: 0.46s; }
+.msg:nth-child(6) { animation-delay: 0.56s; }
+.msg:nth-child(7) { animation-delay: 0.66s; }
+
+/* Responsive fallback */
+@media (max-width: 1180px) {
+  .main { grid-template-columns: 42% 58%; }
+}
+@media (max-width: 980px) {
+  .main { grid-template-columns: 46% 54%; }
+  .mini-h1 { font-size: 38px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================ TOPBAR ================ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand">
+        <div class="brand-logo"></div>
+        <span class="brand-name">Qntum</span>
+      </div>
+      <span class="crumb-sep">/</span>
+      <div class="project-crumb">
+        <span class="proj-dot"></span>
+        <span class="proj-name">KI-Agentur Pro</span>
+        <svg class="edit-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      </div>
+    </div>
+
+    <div class="topbar-center">
+      <button class="icon-btn" title="Rückgängig">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg>
+      </button>
+      <button class="icon-btn" title="Wiederholen">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 15-6.7L21 13"/></svg>
+      </button>
+      <div class="divider-v"></div>
+      <div class="device-toggle">
+        <button class="device-btn active" title="Desktop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </button>
+        <button class="device-btn" title="Tablet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M11 18h2"/></svg>
+        </button>
+        <button class="device-btn" title="Mobile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="token-bar" title="Token usage">
+        <div class="token-ring"></div>
+        <span class="tk-used">3.2M</span>
+        <span class="tk-sep">/</span>
+        <span class="tk-total">8M</span>
+      </div>
+      <div class="plan-badge">Pro</div>
+      <div class="avatar">EM</div>
+      <button class="btn-publish">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 12l10 10 10-10L12 2z"/><path d="M12 7v5l3 3"/></svg>
+        Publish
+      </button>
+    </div>
+  </header>
+
+  <!-- ================ SIDEBAR ================ -->
+  <aside class="sidebar">
+    <button class="sb-btn active" title="Dateien">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M10 13h4M10 17h4M10 9h1"/></svg>
+    </button>
+    <button class="sb-btn" title="Assets">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <span class="badge"></span>
+    </button>
+    <button class="sb-btn" title="Versionsverlauf">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9c-2.49 0-4.74 1.01-6.36 2.64L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>
+    </button>
+    <button class="sb-btn" title="Code">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+    </button>
+    <div class="sb-divider"></div>
+    <button class="sb-btn" title="Komponenten">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 5h5l-4 4 2 6-6-3-6 3 2-6-4-4h5z"/></svg>
+    </button>
+    <button class="sb-btn" title="Einstellungen">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+    <div class="sb-spacer"></div>
+    <button class="sb-btn" title="Team / Kollaboration">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </button>
+    <button class="sb-btn" title="Sidebar erweitern">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </aside>
+
+  <!-- ================ MAIN ================ -->
+  <main class="main">
+
+    <!-- ======== CHAT PANEL ======== -->
+    <section class="chat-panel">
+      <header class="panel-head">
+        <div class="panel-head-left">
+          <div class="chat-dot"></div>
+          <span class="panel-title">Qntum Chat</span>
+        </div>
+        <button class="model-select">
+          <span class="dot"></span>
+          <span>Sonnet 4.6</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+      </header>
+
+      <div class="skill-pills">
+        <button class="pill active" data-skill="ui-ux">
+          <span class="pill-dot"></span>
+          UI/UX Pro
+        </button>
+        <button class="pill locked" data-skill="brand">
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Brand Identity
+        </button>
+        <button class="pill locked" data-skill="design-system">
+          <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Design System
+        </button>
+        <button class="pill" data-skill="frontend">
+          Frontend Design
+        </button>
+      </div>
+
+      <div class="chat-log">
+        <!-- 1 user -->
+        <div class="msg msg-user">
+          <div class="msg-bubble">
+            <div class="msg-content">Erstelle eine professionelle Website für meine KI-Agentur. Wir verkaufen Chatbots, Calling Agents und Buchungs-Agenten für Unternehmen.</div>
+            <div class="msg-meta">vor 12 Min.</div>
+          </div>
+        </div>
+
+        <!-- 2 ai -->
+        <div class="msg msg-ai">
+          <div class="msg-avatar"></div>
+          <div class="msg-bubble">
+            <div class="msg-content">Welchen Stil bevorzugst du? Ich schlage ein <strong>dunkles, tech-orientiertes Design</strong> vor mit Neon-Akzenten — passend für eine KI-Agentur. Welche Farben sprechen dich an?</div>
+            <div class="msg-meta">vor 11 Min.</div>
+          </div>
+        </div>
+
+        <!-- 3 user -->
+        <div class="msg msg-user">
+          <div class="msg-bubble">
+            <div class="msg-content">Ja, dunkel mit Blau und Cyan. Modern und vertrauenswürdig.</div>
+            <div class="msg-meta">vor 10 Min.</div>
+          </div>
+        </div>
+
+        <!-- 4 ai (plan) -->
+        <div class="msg msg-ai">
+          <div class="msg-avatar"></div>
+          <div class="msg-bubble">
+            <div class="msg-content">Perfekt. Ich erstelle eine Landing Page mit:</div>
+            <ul class="msg-list">
+              <li>Hero-Section mit animiertem AI-Visual</li>
+              <li>3 Service-Karten (Chatbot, Calling Agent, Buchungs-Agent)</li>
+              <li>Pricing, Testimonials und Kontaktformular</li>
+            </ul>
+            <div class="msg-content" style="color: var(--text-mid); font-style: italic;">Einen Moment...</div>
+            <div class="msg-meta">vor 10 Min.</div>
+          </div>
+        </div>
+
+        <!-- 5 ai (generation done) -->
+        <div class="msg msg-ai">
+          <div class="msg-avatar"></div>
+          <div class="msg-bubble">
+            <div class="gen-steps">
+              <div class="gen-step done">
+                <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Struktur generiert
+                <span class="time">0.8s</span>
+              </div>
+              <div class="gen-step done">
+                <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Design System erstellt
+                <span class="time">1.2s</span>
+              </div>
+              <div class="gen-step done">
+                <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Komponenten aufgebaut
+                <span class="time">3.4s</span>
+              </div>
+              <div class="gen-step done">
+                <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+                Preview gerendert
+                <span class="time">0.5s</span>
+              </div>
+            </div>
+            <div class="msg-content"><strong>✓ Deine Website ist fertig!</strong> Hier ist die Vorschau. Du kannst jetzt Änderungen per Chat vornehmen.</div>
+            <div class="msg-meta">vor 8 Min.</div>
+          </div>
+        </div>
+
+        <!-- 6 user iter -->
+        <div class="msg msg-user">
+          <div class="msg-bubble">
+            <div class="msg-content">Füge noch eine Demo-Buchung hinzu und mach die Hero-Überschrift größer</div>
+            <div class="msg-meta">vor 3 Min.</div>
+          </div>
+        </div>
+
+        <!-- 7 ai iter -->
+        <div class="msg msg-ai">
+          <div class="msg-avatar"></div>
+          <div class="msg-bubble">
+            <div class="msg-content">Erledigt! Hero-Überschrift vergrößert (48px → 64px) und eine interaktive Demo-Buchungssektion zwischen Services und Pricing hinzugefügt.</div>
+            <div class="diff-chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+              2 Änderungen · +87 Zeilen
+            </div>
+            <div class="msg-meta">vor 2 Min.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-wrap">
+        <div class="chat-input">
+          <button class="input-btn" title="Anhang">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </button>
+          <input type="text" placeholder="Beschreibe eine Änderung...">
+          <button class="input-btn" title="Sprachaufnahme">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+          </button>
+          <button class="input-send" title="Senden">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
+        </div>
+        <div class="input-foot">
+          <span>Shift + Enter für Umbruch</span>
+          <span><kbd>⌘</kbd> <kbd>K</kbd> Schnellbefehle</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======== PREVIEW PANEL ======== -->
+    <section class="preview-panel">
+      <header class="preview-head">
+        <div class="preview-url">
+          <div class="url-dots"><span></span><span></span><span></span></div>
+          <div class="url-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>https://<span class="url-dom">ki-agentur-pro.qntum.design</span></span>
+          </div>
+        </div>
+        <div class="preview-actions">
+          <div class="device-toggle">
+            <button class="device-btn active" title="Desktop">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </button>
+            <button class="device-btn" title="Tablet">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M11 18h2"/></svg>
+            </button>
+            <button class="device-btn" title="Mobile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/></svg>
+            </button>
+          </div>
+          <button class="btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+            Code
+          </button>
+          <button class="btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Export
+          </button>
+        </div>
+      </header>
+
+      <div class="preview-frame">
+        <div class="preview-scroll">
+
+          <!-- ================== MINI SITE ================== -->
+          <div class="mini-site">
+
+            <!-- Nav -->
+            <nav class="mini-nav">
+              <div class="mini-brand">
+                <div class="mini-logo"></div>
+                NexAgent AI
+              </div>
+              <div class="mini-nav-links">
+                <a>Services</a>
+                <a>Pricing</a>
+                <a>Demo</a>
+                <a>Über uns</a>
+                <a>Kontakt</a>
+              </div>
+              <button class="mini-cta">Demo buchen</button>
+            </nav>
+
+            <!-- Hero -->
+            <section class="mini-hero">
+              <div class="mini-hero-orb"></div>
+              <div class="mini-hero-orb-2"></div>
+              <div class="mini-hero-content">
+                <div class="mini-eyebrow">
+                  <span class="eyebrow-dot"></span>
+                  Powered by GPT-4o · Claude · Gemini
+                </div>
+                <h1 class="mini-h1">
+                  KI-Agenten für<br>
+                  <span class="mini-grad">Ihr Unternehmen.</span>
+                </h1>
+                <p class="mini-sub">
+                  Automatisieren Sie Kundenkommunikation mit intelligenten Chatbots, Calling Agents und Buchungssystemen. 24/7 verfügbar, lernend und DSGVO-konform.
+                </p>
+                <div class="mini-btns">
+                  <button class="mini-btn-pri">
+                    Kostenlose Demo
+                    <span class="arr">→</span>
+                  </button>
+                  <button class="mini-btn-sec">
+                    <span class="play">▶</span>
+                    Video ansehen
+                  </button>
+                </div>
+                <div class="mini-trust">
+                  <div class="trust-avatars">
+                    <div class="ta"></div>
+                    <div class="ta"></div>
+                    <div class="ta"></div>
+                    <div class="ta"></div>
+                  </div>
+                  <div class="trust-text">
+                    <div class="stars">★★★★★</div>
+                    <span>500+ Unternehmen vertrauen NexAgent</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Services -->
+            <section class="mini-services">
+              <div class="mini-section-head">
+                <div class="mini-tag">Services</div>
+                <h2>Drei Agenten, unendliche Möglichkeiten</h2>
+                <p class="h2-sub">Jeder Agent ist in wenigen Minuten eingerichtet und lernt kontinuierlich aus echten Gesprächen.</p>
+              </div>
+
+              <div class="svc-grid">
+                <!-- Chatbot -->
+                <div class="svc-card">
+                  <div class="svc-icon svc-icon-chat">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  </div>
+                  <h3>Chatbot Agent</h3>
+                  <p>Beantwortet Anfragen auf Ihrer Website — 24/7, in natürlicher Sprache.</p>
+                  <ul>
+                    <li>47 Sprachen nativ</li>
+                    <li>RAG auf Ihre Dokumente</li>
+                    <li>Übergabe an Menschen</li>
+                  </ul>
+                  <div class="svc-price">ab 299€ <span>/Monat</span></div>
+                </div>
+
+                <!-- Calling Agent (featured) -->
+                <div class="svc-card svc-featured">
+                  <div class="svc-badge">Beliebt</div>
+                  <div class="svc-icon svc-icon-phone">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </div>
+                  <h3>Calling Agent</h3>
+                  <p>Führt Telefongespräche mit natürlicher Stimme — Vertrieb &amp; Support.</p>
+                  <ul>
+                    <li>Outbound Cold-Calls</li>
+                    <li>Inbound Support 24/7</li>
+                    <li>Volle CRM-Integration</li>
+                  </ul>
+                  <div class="svc-price">ab 599€ <span>/Monat</span></div>
+                </div>
+
+                <!-- Booking -->
+                <div class="svc-card">
+                  <div class="svc-icon svc-icon-cal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                  </div>
+                  <h3>Buchungs-Agent</h3>
+                  <p>Verwaltet Termine, Reservierungen &amp; Kalender vollautomatisch.</p>
+                  <ul>
+                    <li>Google &amp; Outlook Sync</li>
+                    <li>Automatische Bestätigung</li>
+                    <li>Erinnerungs-SMS</li>
+                  </ul>
+                  <div class="svc-price">ab 399€ <span>/Monat</span></div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Stats -->
+            <div class="mini-stats-wrap">
+              <div class="mini-stats">
+                <div class="stat">
+                  <div class="stat-num">500+</div>
+                  <div class="stat-lbl">Aktive Kunden</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">2M+</div>
+                  <div class="stat-lbl">Gespräche</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">99.7%</div>
+                  <div class="stat-lbl">Uptime SLA</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-num">47</div>
+                  <div class="stat-lbl">Sprachen</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pricing -->
+            <section class="mini-pricing">
+              <div class="pricing-card">
+                <div class="mini-tag">Bundle</div>
+                <h3 style="margin-top:12px;">Alle Agenten, ein Preis</h3>
+                <p>Chatbot · Calling · Buchung — vollständig integriert</p>
+                <div class="big-price">1.199€<span>/Monat</span></div>
+                <ul class="pricing-features">
+                  <li>Unbegrenzte Agenten</li>
+                  <li>Prioritäts-Support</li>
+                  <li>Custom Branding</li>
+                  <li>API + Webhooks</li>
+                </ul>
+                <button class="mini-btn-pri lg" style="width:100%; justify-content:center;">Jetzt starten</button>
+                <div class="price-foot">14 Tage kostenlos · Jederzeit kündbar</div>
+              </div>
+            </section>
+
+            <!-- CTA -->
+            <section class="mini-cta-sec">
+              <div class="mini-tag">Bereit loszulegen?</div>
+              <h2 style="margin-top:14px;">Revolutionieren Sie Ihre Kundenkommunikation heute.</h2>
+              <button class="mini-btn-pri lg">
+                Kostenlose Demo buchen
+                <span class="arr">→</span>
+              </button>
+            </section>
+
+            <!-- Footer -->
+            <footer class="mini-foot">
+              <div>© 2026 NexAgent AI GmbH · München</div>
+              <div>Impressum · Datenschutz · AGB</div>
+            </footer>
+
+          </div>
+          <!-- ================== / MINI SITE ================== -->
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================ STATUS BAR ================ -->
+  <footer class="status">
+    <div class="status-left">
+      <span class="st-dot st-ok"></span>
+      Zuletzt gespeichert: <span style="color: var(--text-mid);">vor 2 Min</span>
+      <span class="st-sep"></span>
+      <span class="st-dot st-pulse"></span>
+      <span style="color: var(--text-mid);">Auto-Save aktiv</span>
+    </div>
+    <div class="status-center">
+      Tokens verwendet: <span class="mono-hi">45.200</span> in dieser Sitzung
+    </div>
+    <div class="status-right">
+      <span>UTF-8</span>
+      <span class="st-sep"></span>
+      <span>HTML · CSS · JS</span>
+      <span class="st-sep"></span>
+      <a class="st-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9c-2.49 0-4.74 1.01-6.36 2.64L3 8"/><path d="M3 3v5h5"/></svg>
+        v3 — 5 Versionen
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Minimal interactions for the demo
+  // Skill pill activation (respect locked state)
+  document.querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      if (p.classList.contains('locked')) return;
+      document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+    });
+  });
+
+  // Device toggle groups (topbar + preview)
+  document.querySelectorAll('.device-toggle').forEach(group => {
+    group.querySelectorAll('.device-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  });
+
+  // Sidebar active state
+  document.querySelectorAll('.sb-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.sb-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+    });
+  });
+
+  // Auto-scroll chat to bottom on load
+  const log = document.querySelector('.chat-log');
+  if (log) requestAnimationFrame(() => { log.scrollTop = log.scrollHeight; });
+
+  // Input focus glow
+  const input = document.querySelector('.chat-input input');
+  if (input) {
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && input.value.trim()) {
+        input.value = '';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
