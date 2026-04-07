@@ -544,138 +544,297 @@ p { color: var(--text-secondary); }
   to { opacity: 1; }
 }
 
-/* Mini website inside mockup */
+/* ═══ Mini website inside mockup — Polished ═══ */
 .mini-site {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #F9F6F0;
+  background: #0A0A12;
   border-radius: 8px;
   overflow: hidden;
+  font-family: 'Inter', -apple-system, sans-serif;
+  position: relative;
 }
+.mini-site::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 20% 0%, rgba(99,102,241,0.18), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 90% 30%, rgba(129,140,248,0.12), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Nav */
 .mini-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  background: #fff;
-  border-bottom: 1px solid #eee;
+  padding: 7px 12px;
+  background: rgba(10,10,18,0.7);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  position: relative;
+  z-index: 2;
 }
-.mini-nav-logo {
-  width: 40px;
-  height: 6px;
-  background: #2D2D2D;
-  border-radius: 3px;
+.mini-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.42rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.mini-nav-brand .brand-dot {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #818CF8, #4F46E5);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(129,140,248,0.5);
 }
 .mini-nav-links {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
 }
-.mini-nav-links span {
-  width: 20px;
-  height: 4px;
-  background: #ccc;
-  border-radius: 2px;
+.mini-nav-links a {
+  font-size: 0.32rem;
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
 }
-.mini-hero-section {
-  flex: 1;
+.mini-nav-cta {
+  padding: 3px 8px;
+  background: #fff;
+  color: #0A0A12;
+  border-radius: 999px;
+  font-size: 0.3rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+/* Hero */
+.mini-hero {
+  flex: 0 0 auto;
+  padding: 16px 14px 14px;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+.mini-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(129,140,248,0.25);
+  border-radius: 999px;
+  font-size: 0.28rem;
+  color: #A5B4FC;
+  font-weight: 600;
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.mini-hero-badge .badge-dot {
+  width: 3px;
+  height: 3px;
+  background: #818CF8;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #818CF8;
+}
+.mini-hero h1 {
+  font-size: 0.85rem;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.03em;
+  margin-bottom: 4px;
+  font-family: 'Syne', 'Inter', sans-serif;
+}
+.mini-hero h1 .grad {
+  background: linear-gradient(135deg, #A5B4FC, #818CF8 50%, #6366F1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.mini-hero p {
+  font-size: 0.33rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+  max-width: 80%;
+  margin: 0 auto 7px;
+}
+.mini-hero-ctas {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  background: linear-gradient(135deg, #8B6F47 0%, #C4956A 50%, #E8C9A0 100%);
-  position: relative;
+  gap: 5px;
 }
-.mini-hero-content {
-  text-align: center;
-}
-.mini-hero-content .mh-title {
-  width: 80px;
-  height: 8px;
+.mini-hero-ctas .hero-btn-primary {
+  padding: 4px 9px;
   background: #fff;
-  border-radius: 4px;
-  margin: 0 auto 8px;
+  color: #0A0A12;
+  border-radius: 999px;
+  font-size: 0.32rem;
+  font-weight: 700;
 }
-.mini-hero-content .mh-sub {
-  width: 56px;
-  height: 4px;
-  background: rgba(255,255,255,0.6);
-  border-radius: 2px;
-  margin: 0 auto 12px;
-}
-.mini-hero-content .mh-btn {
-  width: 44px;
-  height: 14px;
-  background: #2D2D2D;
-  border-radius: 7px;
-  margin: 0 auto;
-}
-.mini-cards-row {
-  display: flex;
-  gap: 6px;
-  padding: 10px 12px;
-  background: #fff;
-}
-.mini-card {
-  flex: 1;
-  height: 36px;
-  background: #F3F0EB;
-  border-radius: 4px;
-  border: 1px solid #E8E2D8;
+.mini-hero-ctas .hero-btn-ghost {
+  padding: 4px 9px;
+  background: transparent;
+  color: rgba(255,255,255,0.75);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  font-size: 0.32rem;
+  font-weight: 600;
 }
 
-/* Call Center mini-site */
-/* Bento Grid mini-site */
-.mini-bento { background: #0d0d0d; border-radius: 8px; overflow: hidden; height: 100%; padding: 5px; display: flex; flex-direction: column; }
-.mini-bento-grid { display: grid; grid-template-columns: 1.1fr 0.5fr 0.9fr; grid-template-rows: 1.1fr 0.9fr; gap: 4px; flex: 1; grid-template-areas: "chat stat1 consult" "workflow stat2 cta"; }
-.bento-chat { grid-area: chat; }
-.bento-stat:not(.bento-sat) { grid-area: stat1; }
-.bento-consult { grid-area: consult; }
-.bento-sat { grid-area: stat2; }
-.bento-workflow { grid-area: workflow; }
-.bento-cta-tile { grid-area: cta; }
-.bento-tile { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; padding: 7px 8px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
-.bento-tile-title { font-size: 0.38rem; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.2; }
-.bento-tile-desc { font-size: 0.24rem; color: rgba(255,255,255,0.35); line-height: 1.3; }
-/* Chat tile (top-left) */
-.bento-chat .bento-tile-title { color: #818CF8; }
-.bento-chat-log { display: flex; flex-direction: column; gap: 3px; margin-top: 4px; flex: 1; }
-.bento-msg { display: flex; align-items: flex-start; gap: 4px; }
-.bento-msg-avatar { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; }
-.bento-msg-bubble { font-size: 0.24rem; padding: 3px 6px; border-radius: 4px; line-height: 1.3; max-width: 90%; }
-.bento-msg.user .bento-msg-bubble { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.55); margin-left: auto; }
-.bento-msg.user .bento-msg-avatar { order: 1; }
-.bento-msg.user { flex-direction: row-reverse; }
-.bento-msg.agent .bento-msg-bubble { background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.12); color: rgba(255,255,255,0.6); }
-.bento-msg.agent .bento-msg-avatar { background: linear-gradient(135deg, #818CF8, #4F46E5); }
-/* Stat tile */
-.bento-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.bento-stat-num { font-size: 0.72rem; font-weight: 800; color: #fff; letter-spacing: -0.02em; line-height: 1; }
-.bento-stat-label { font-size: 0.22rem; color: rgba(255,255,255,0.3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
-.bento-stat-avatars { display: flex; justify-content: center; margin-bottom: 5px; }
-.bento-stat-avatars span { width: 12px; height: 12px; border-radius: 50%; margin-left: -3px; border: 1px solid #1a1a1a; }
-.bento-stat-avatars span:first-child { margin-left: 0; }
-/* Consulting tile (top-right) */
-.bento-consult { position: relative; }
-.bento-consult-icon { position: absolute; right: 6px; bottom: 6px; font-size: 1.1rem; opacity: 0.12; line-height: 1; }
-/* Satisfaction tile */
-.bento-sat .bento-stat-num { color: #818CF8; }
-/* Workflow tile (bottom-left) */
-.bento-workflow .bento-tile-desc { margin-bottom: 5px; }
-.bento-flow { display: flex; align-items: center; gap: 3px; margin-top: auto; }
-.bento-flow-node { padding: 3px 5px; background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.15); border-radius: 4px; text-align: center; flex: 1; }
-.bento-flow-icon { font-size: 0.35rem; display: block; }
-.bento-flow-label { font-size: 0.2rem; color: rgba(255,255,255,0.35); display: block; margin-top: 1px; }
-.bento-flow-arrow { font-size: 0.3rem; color: rgba(99,102,241,0.3); flex-shrink: 0; }
-/* CTA tile (bottom-right) */
-.bento-cta-tile { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.bento-cta-avatars { display: flex; align-items: center; gap: 4px; margin-bottom: 5px; }
-.bento-cta-avatars span { width: 14px; height: 14px; border-radius: 50%; }
-.bento-cta-plus { font-size: 0.3rem; color: rgba(255,255,255,0.2); }
-.bento-cta-you { font-size: 0.24rem; color: rgba(255,255,255,0.4); padding: 2px 5px; background: rgba(255,255,255,0.06); border-radius: 3px; font-weight: 600; }
-.bento-cta-text { font-size: 0.32rem; font-weight: 700; color: #fff; margin-bottom: 5px; line-height: 1.2; }
-.bento-cta-btn { font-size: 0.26rem; padding: 3px 10px; border: 1px solid #818CF8; color: #818CF8; border-radius: 3px; font-weight: 600; display: inline-block; }
-.bento-cta-sub { font-size: 0.2rem; color: rgba(255,255,255,0.25); margin-top: 3px; }
+/* Services */
+.mini-services {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+}
+.mini-service {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 7px 6px;
+  position: relative;
+  overflow: hidden;
+}
+.mini-service::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(129,140,248,0.4), transparent);
+}
+.mini-service-icon {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, rgba(129,140,248,0.2), rgba(99,102,241,0.1));
+  border: 1px solid rgba(129,140,248,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.42rem;
+  color: #A5B4FC;
+  margin-bottom: 4px;
+}
+.mini-service-title {
+  font-size: 0.32rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+  letter-spacing: -0.005em;
+}
+.mini-service-desc {
+  font-size: 0.25rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.4;
+}
+
+/* Stats bar */
+.mini-stats {
+  margin: 9px 12px 0;
+  padding: 7px 10px;
+  background: rgba(99,102,241,0.06);
+  border: 1px solid rgba(129,140,248,0.18);
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: relative;
+  z-index: 1;
+}
+.mini-stat {
+  text-align: center;
+  position: relative;
+}
+.mini-stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.mini-stat-num {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  font-family: 'Syne', sans-serif;
+}
+.mini-stat-num .accent { color: #818CF8; }
+.mini-stat-label {
+  font-size: 0.22rem;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 1px;
+  font-weight: 500;
+}
+
+/* CTA footer */
+.mini-cta-footer {
+  margin: 9px 12px 11px;
+  padding: 8px 10px;
+  background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(79,70,229,0.05));
+  border: 1px solid rgba(129,140,248,0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+.mini-cta-footer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 60%;
+  height: 200%;
+  background: radial-gradient(ellipse, rgba(129,140,248,0.15), transparent 70%);
+  pointer-events: none;
+}
+.mini-cta-text {
+  position: relative;
+  z-index: 1;
+}
+.mini-cta-text .cta-title {
+  font-size: 0.38rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+.mini-cta-text .cta-sub {
+  font-size: 0.25rem;
+  color: rgba(255,255,255,0.45);
+  margin-top: 1px;
+}
+.mini-cta-btn {
+  position: relative;
+  z-index: 1;
+  padding: 4px 9px;
+  background: #fff;
+  color: #0A0A12;
+  border-radius: 999px;
+  font-size: 0.3rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  flex-shrink: 0;
+}
 
 .mockup-shimmer {
   position: absolute;
@@ -1892,54 +2051,71 @@ p { color: var(--text-secondary); }
           <div class="mockup-preview">
             <div class="mockup-shimmer active"></div>
             <div class="mockup-preview-inner">
-              <div class="mini-site mini-bento">
-                <div class="mini-bento-grid">
-                  <!-- Top-left: KI Calling Agents + Chat -->
-                  <div class="bento-tile bento-chat">
-                    <div class="bento-tile-title">KI Calling Agents</div>
-                    <div class="bento-tile-desc">Wir bauen KI-Agents die Anrufe führen — schnell, empathisch, rund um die Uhr.</div>
-                    <div class="bento-chat-log">
-                      <div class="bento-msg user"><div class="bento-msg-avatar" style="background:linear-gradient(135deg,#6366f1,#818cf8);"></div><div class="bento-msg-bubble">Wir haben 200+ Support-Anrufe am Tag.</div></div>
-                      <div class="bento-msg agent"><div class="bento-msg-avatar"></div><div class="bento-msg-bubble">Ich übernehme Tier-1, eskaliere den Rest und synce alles ins CRM.</div></div>
-                      <div class="bento-msg user"><div class="bento-msg-avatar" style="background:linear-gradient(135deg,#6366f1,#818cf8);"></div><div class="bento-msg-bubble">Let's do it.</div></div>
-                    </div>
+              <div class="mini-site">
+                <!-- Nav -->
+                <div class="mini-nav">
+                  <div class="mini-nav-brand"><span class="brand-dot"></span>CallFlow</div>
+                  <div class="mini-nav-links">
+                    <a>Produkt</a>
+                    <a>Preise</a>
+                    <a>Kontakt</a>
                   </div>
-                  <!-- Top-center: 500+ Kunden stat -->
-                  <div class="bento-tile bento-stat">
-                    <div class="bento-stat-avatars"><span style="background:linear-gradient(135deg,#f59e0b,#d97706);"></span><span style="background:linear-gradient(135deg,#6366f1,#4f46e5);"></span><span style="background:linear-gradient(135deg,#10b981,#059669);"></span></div>
-                    <div class="bento-stat-num">500+</div>
-                    <div class="bento-stat-label">Kunden</div>
+                  <div class="mini-nav-cta">Demo</div>
+                </div>
+
+                <!-- Hero -->
+                <div class="mini-hero">
+                  <div class="mini-hero-badge"><span class="badge-dot"></span>Powered by GPT-4</div>
+                  <h1>KI-Agents die<br><span class="grad">wirklich verkaufen.</span></h1>
+                  <p>Automatisiere Kundenanrufe mit menschenähnlicher KI. Rund um die Uhr, in jeder Sprache.</p>
+                  <div class="mini-hero-ctas">
+                    <div class="hero-btn-primary">Kostenlos testen</div>
+                    <div class="hero-btn-ghost">Live Demo</div>
                   </div>
-                  <!-- Top-right: KI Consulting -->
-                  <div class="bento-tile bento-consult">
-                    <div class="bento-tile-title">KI Consulting &amp; Setup</div>
-                    <div class="bento-tile-desc">Wir begleiten Teams durch jede Phase der KI-Adoption — von der Analyse bis zum Go-Live.</div>
-                    <div class="bento-consult-icon">🤖</div>
+                </div>
+
+                <!-- Services -->
+                <div class="mini-services">
+                  <div class="mini-service">
+                    <div class="mini-service-icon">💬</div>
+                    <div class="mini-service-title">Chatbot</div>
+                    <div class="mini-service-desc">24/7 Support mit natürlichen Gesprächen.</div>
                   </div>
-                  <!-- Bottom-center: 99% Zufriedenheit -->
-                  <div class="bento-tile bento-stat bento-sat">
-                    <div class="bento-stat-num">99%</div>
-                    <div class="bento-stat-label">Zufriedenheit</div>
+                  <div class="mini-service">
+                    <div class="mini-service-icon">📞</div>
+                    <div class="mini-service-title">Calling Agent</div>
+                    <div class="mini-service-desc">Automatisierte Anrufe und Follow-ups.</div>
                   </div>
-                  <!-- Bottom-left: Workflow Automation -->
-                  <div class="bento-tile bento-workflow">
-                    <div class="bento-tile-title">Workflow Automation</div>
-                    <div class="bento-tile-desc">Daten automatisch verarbeiten — vom Anruf bis ins CRM.</div>
-                    <div class="bento-flow">
-                      <div class="bento-flow-node"><span class="bento-flow-icon">📞</span><span class="bento-flow-label">Anruf</span></div>
-                      <span class="bento-flow-arrow">→</span>
-                      <div class="bento-flow-node"><span class="bento-flow-icon" style="color:#818CF8;">⚡</span><span class="bento-flow-label">KI Agent</span></div>
-                      <span class="bento-flow-arrow">→</span>
-                      <div class="bento-flow-node"><span class="bento-flow-icon">💾</span><span class="bento-flow-label">CRM</span></div>
-                    </div>
+                  <div class="mini-service">
+                    <div class="mini-service-icon">📅</div>
+                    <div class="mini-service-title">Buchungen</div>
+                    <div class="mini-service-desc">KI plant Termine direkt in den Kalender.</div>
                   </div>
-                  <!-- Bottom-right: CTA -->
-                  <div class="bento-tile bento-cta-tile">
-                    <div class="bento-cta-avatars"><span style="background:linear-gradient(135deg,#818CF8,#4F46E5);"></span><span class="bento-cta-plus">+</span><span class="bento-cta-you">YOU</span></div>
-                    <div class="bento-cta-text">Bereit für KI?</div>
-                    <span class="bento-cta-btn">DEMO BUCHEN</span>
-                    <div class="bento-cta-sub">Nur 20 Min. Unverbindlich.</div>
+                </div>
+
+                <!-- Stats -->
+                <div class="mini-stats">
+                  <div class="mini-stat">
+                    <div class="mini-stat-num">10k<span class="accent">+</span></div>
+                    <div class="mini-stat-label">Anrufe/Tag</div>
                   </div>
+                  <div class="mini-stat">
+                    <div class="mini-stat-num">99<span class="accent">%</span></div>
+                    <div class="mini-stat-label">Uptime</div>
+                  </div>
+                  <div class="mini-stat">
+                    <div class="mini-stat-num">500<span class="accent">+</span></div>
+                    <div class="mini-stat-label">Kunden</div>
+                  </div>
+                </div>
+
+                <!-- CTA Footer -->
+                <div class="mini-cta-footer">
+                  <div class="mini-cta-text">
+                    <div class="cta-title">Starte in 5 Minuten</div>
+                    <div class="cta-sub">Keine Kreditkarte · 14 Tage frei</div>
+                  </div>
+                  <div class="mini-cta-btn">Jetzt loslegen</div>
                 </div>
               </div>
             </div>

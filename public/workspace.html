@@ -1424,6 +1424,176 @@ input, textarea { font-family: inherit; }
 }
 
 /* ═══════════════════════════════════════
+   TOOL PANEL (Sektionen / Assets / Versionen / Settings)
+   ═══════════════════════════════════════ */
+.tool-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 950;
+  display: none;
+}
+.tool-panel-overlay.open { display: block; }
+.tool-panel {
+  position: absolute;
+  top: 56px;
+  left: 48px;
+  bottom: 28px;
+  width: 360px;
+  background: rgba(12,12,15,0.92);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 12px 0 48px -16px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  animation: toolPanelIn 0.28s cubic-bezier(0.32,0.72,0,1);
+}
+@keyframes toolPanelIn {
+  from { transform: translateX(-12px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.tool-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.tool-panel-header h3 {
+  font-family: var(--ws-font-display, var(--ws-font));
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ws-text);
+  letter-spacing: -0.01em;
+}
+.tool-panel-close {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: var(--ws-text-3);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.tool-panel-close:hover { background: rgba(255,255,255,0.05); color: var(--ws-text); }
+.tool-panel-close svg { width: 14px; height: 14px; }
+.tool-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 18px 18px;
+}
+.tool-panel-body::-webkit-scrollbar { width: 6px; }
+.tool-panel-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 3px; }
+
+.tool-empty {
+  text-align: center;
+  padding: 40px 16px;
+  color: var(--ws-text-3);
+  font-size: 12px;
+}
+.tool-empty svg { width: 32px; height: 32px; margin-bottom: 12px; opacity: 0.4; }
+
+.tool-list { display: flex; flex-direction: column; gap: 4px; }
+.tool-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+}
+.tool-row:hover { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.2); }
+.tool-row-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(99,102,241,0.15);
+  border: 1px solid rgba(99,102,241,0.25);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.tool-row-icon svg { width: 14px; height: 14px; color: var(--ws-primary-l); }
+.tool-row-meta { flex: 1; min-width: 0; }
+.tool-row-title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ws-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tool-row-sub {
+  font-size: 10.5px;
+  color: var(--ws-text-3);
+  margin-top: 2px;
+  font-family: var(--ws-font-mono, monospace);
+}
+.tool-row-action {
+  font-size: 10px;
+  color: var(--ws-primary-l);
+  background: rgba(99,102,241,0.1);
+  border: 1px solid rgba(99,102,241,0.25);
+  border-radius: 5px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tool-row-action:hover { background: rgba(99,102,241,0.18); }
+
+.tool-section-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--ws-text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 14px 0 8px;
+  font-family: var(--ws-font-mono, monospace);
+}
+.tool-section-label:first-child { margin-top: 0; }
+
+.tool-settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 12.5px;
+  color: var(--ws-text-2);
+}
+.tool-settings-item:last-child { border-bottom: none; }
+.tool-settings-item strong { color: var(--ws-text); font-weight: 500; display: block; margin-bottom: 2px; font-size: 12px; }
+.tool-settings-item small { font-size: 10px; color: var(--ws-text-3); }
+.tool-settings-action {
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--ws-text);
+  font-size: 11px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tool-settings-action.danger { color: #F87171; border-color: rgba(248,113,113,0.3); }
+.tool-settings-action.danger:hover { background: rgba(248,113,113,0.1); }
+.tool-settings-action:hover { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.3); color: var(--ws-primary-l); }
+
+.topbar-icon-btn:disabled { opacity: 0.35; cursor: default; }
+.topbar-icon-btn:disabled:hover { background: transparent; color: var(--ws-text-3); }
+
+/* ═══════════════════════════════════════
    PUBLISH MODAL
    ═══════════════════════════════════════ */
 .publish-overlay {
@@ -2536,28 +2706,28 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
   margin-right: 4px;
 }
 /* ═══ AMBIENT EFFECTS — Body-level fixed background ═══ */
-@keyframes gridDraw{0%{stroke-dashoffset:800;opacity:0}60%{opacity:0.55}100%{stroke-dashoffset:0;opacity:0.4}}
-@keyframes pulseGlow{0%,100%{opacity:0.25;transform:scale(1)}50%{opacity:0.75;transform:scale(1.2)}}
-@keyframes floatParticle{0%,100%{transform:translateY(0) translateX(0);opacity:0.3}25%{transform:translateY(-14px) translateX(7px);opacity:0.85}50%{transform:translateY(-7px) translateX(-5px);opacity:0.5}75%{transform:translateY(-20px) translateX(9px);opacity:0.95}}
+@keyframes gridDraw{0%{stroke-dashoffset:800;opacity:0}60%{opacity:0.7}100%{stroke-dashoffset:0;opacity:0.55}}
+@keyframes pulseGlow{0%,100%{opacity:0.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+@keyframes floatParticle{0%,100%{transform:translateY(0) translateX(0);opacity:0.55}25%{transform:translateY(-14px) translateX(7px);opacity:1}50%{transform:translateY(-7px) translateX(-5px);opacity:0.75}75%{transform:translateY(-20px) translateX(9px);opacity:1}}
 @keyframes cornerReveal{0%{opacity:0;transform:scale(0.5)}100%{opacity:1;transform:scale(1)}}
 @keyframes rippleOut{0%{transform:translate(-50%,-50%) scale(1);opacity:0.7}100%{transform:translate(-50%,-50%) scale(40);opacity:0}}
 
 #wsAmbient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 #wsAmbient .ambient-grid{position:absolute;inset:0;width:100%;height:100%}
-#wsAmbient .grid-line{stroke:#94a3b8;stroke-width:0.6;opacity:0;stroke-dasharray:5 5;stroke-dashoffset:800;animation:gridDraw 2s ease-out forwards}
-#wsAmbient .grid-dot{fill:#cbd5e1;opacity:0;animation:pulseGlow 3s ease-in-out infinite}
-#wsAmbient .floating-particle{position:absolute;width:2px;height:2px;background:#cbd5e1;border-radius:50%;opacity:0;animation:floatParticle 4s ease-in-out infinite}
+#wsAmbient .grid-line{stroke:#cbd5e1;stroke-width:0.7;opacity:0;stroke-dasharray:5 5;stroke-dashoffset:800;animation:gridDraw 2s ease-out forwards}
+#wsAmbient .grid-dot{fill:#e2e8f0;opacity:0;animation:pulseGlow 3s ease-in-out infinite;filter:drop-shadow(0 0 6px rgba(226,232,240,0.6))}
+#wsAmbient .floating-particle{position:absolute;width:3px;height:3px;background:#e2e8f0;border-radius:50%;opacity:0;animation:floatParticle 4s ease-in-out infinite;box-shadow:0 0 8px rgba(226,232,240,0.7),0 0 16px rgba(203,213,225,0.4)}
 #wsAmbient .corner-mark{position:absolute;width:32px;height:32px;opacity:0;animation:cornerReveal 0.8s ease-out forwards}
-#wsAmbient .corner-mark::before,#wsAmbient .corner-mark::after{content:'';position:absolute;background:#cbd5e1;opacity:0.4}
-#wsAmbient .corner-mark::before{width:16px;height:1px}
-#wsAmbient .corner-mark::after{width:1px;height:16px}
-#wsAmbient .corner-mark.tl{top:64px;left:56px}#wsAmbient .corner-mark.tl::before{top:0;left:0}#wsAmbient .corner-mark.tl::after{top:0;left:0}
-#wsAmbient .corner-mark.tr{top:64px;right:24px}#wsAmbient .corner-mark.tr::before{top:0;right:0}#wsAmbient .corner-mark.tr::after{top:0;right:0}
-#wsAmbient .corner-mark.bl{bottom:40px;left:56px}#wsAmbient .corner-mark.bl::before{bottom:0;left:0}#wsAmbient .corner-mark.bl::after{bottom:0;left:0}
+#wsAmbient .corner-mark::before,#wsAmbient .corner-mark::after{content:'';position:absolute;background:#e2e8f0;opacity:0.55;box-shadow:0 0 4px rgba(226,232,240,0.5)}
+#wsAmbient .corner-mark::before{width:18px;height:1px}
+#wsAmbient .corner-mark::after{width:1px;height:18px}
+#wsAmbient .corner-mark.tl{top:68px;left:60px}#wsAmbient .corner-mark.tl::before{top:0;left:0}#wsAmbient .corner-mark.tl::after{top:0;left:0}
+#wsAmbient .corner-mark.tr{top:68px;right:24px}#wsAmbient .corner-mark.tr::before{top:0;right:0}#wsAmbient .corner-mark.tr::after{top:0;right:0}
+#wsAmbient .corner-mark.bl{bottom:40px;left:60px}#wsAmbient .corner-mark.bl::before{bottom:0;left:0}#wsAmbient .corner-mark.bl::after{bottom:0;left:0}
 #wsAmbient .corner-mark.br{bottom:40px;right:24px}#wsAmbient .corner-mark.br::before{bottom:0;right:0}#wsAmbient .corner-mark.br::after{bottom:0;right:0}
 
-#mouseGlow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(129,140,248,0.12),rgba(99,102,241,0.06) 40%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);will-change:left,top,opacity;transition:left 70ms linear,top 70ms linear,opacity 0.3s ease;z-index:0;filter:blur(30px);opacity:0}
-.click-ripple{position:fixed;width:6px;height:6px;background:rgba(129,140,248,0.7);border-radius:50%;pointer-events:none;animation:rippleOut 0.8s ease-out forwards;z-index:9999}
+#mouseGlow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(129,140,248,0.18),rgba(99,102,241,0.09) 40%,transparent 70%);pointer-events:none;transform:translate(-50%,-50%);will-change:left,top,opacity;transition:left 70ms linear,top 70ms linear,opacity 0.3s ease;z-index:0;filter:blur(30px);opacity:0}
+.click-ripple{position:fixed;width:8px;height:8px;background:rgba(129,140,248,0.85);border-radius:50%;pointer-events:none;animation:rippleOut 0.8s ease-out forwards;z-index:9999;box-shadow:0 0 20px rgba(129,140,248,0.6)}
 
 </style>
 </head>
@@ -2638,15 +2808,15 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
       <span class="sidebar-btn-label">Dateien</span>
     </button>
-    <button class="sidebar-btn" title="Layers">
+    <button class="sidebar-btn" id="btnSektionen" title="Sektionen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.84Z"/><path d="m2 12 8.58 3.91a2 2 0 0 0 1.66 0L20.83 12"/><path d="m2 17 8.58 3.91a2 2 0 0 0 1.66 0L20.83 17"/></svg>
       <span class="sidebar-btn-label">Sektionen</span>
     </button>
-    <button class="sidebar-btn" title="Assets">
+    <button class="sidebar-btn" id="btnAssets" title="Assets">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
       <span class="sidebar-btn-label">Assets</span>
     </button>
-    <button class="sidebar-btn" title="Versionen">
+    <button class="sidebar-btn" id="btnVersionen" title="Versionen">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       <span class="sidebar-btn-label">Versionen</span>
     </button>
@@ -2664,7 +2834,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
         <span class="sidebar-btn-label">Dashboard</span>
       </a>
-      <button class="sidebar-btn" title="Einstellungen">
+      <button class="sidebar-btn" id="btnSettings" title="Einstellungen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         <span class="sidebar-btn-label">Einstellungen</span>
       </button>
@@ -2688,10 +2858,10 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     </select>
 
     <div class="topbar-center">
-      <button class="topbar-icon-btn" title="Rückgängig">
+      <button class="topbar-icon-btn" id="btnUndo" title="Rückgängig (⌘Z)" disabled>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
       </button>
-      <button class="topbar-icon-btn" title="Wiederholen">
+      <button class="topbar-icon-btn" id="btnRedo" title="Wiederholen (⌘⇧Z)" disabled>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg>
       </button>
       <div class="topbar-sep"></div>
@@ -2939,6 +3109,19 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       </div>
       <div class="code-viewer-tabs" id="codeViewerTabs"></div>
       <div class="code-viewer-content" id="codeViewerContent"><pre></pre></div>
+    </div>
+  </div>
+
+  <!-- ═══ TOOL PANEL (Sektionen, Assets, Versionen, Einstellungen) ═══ -->
+  <div class="tool-panel-overlay" id="toolPanelOverlay">
+    <div class="tool-panel">
+      <div class="tool-panel-header">
+        <h3 id="toolPanelTitle">Panel</h3>
+        <button class="tool-panel-close" id="toolPanelClose" aria-label="Schließen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="tool-panel-body" id="toolPanelBody"></div>
     </div>
   </div>
 
@@ -3608,6 +3791,25 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     }, 800);
   }
 
+  // ── Undo/Redo history stack ──
+  const previewHistory = { stack: [], index: -1, applying: false };
+  function pushHistory(html) {
+    if (previewHistory.applying) return;
+    if (previewHistory.stack[previewHistory.index] === html) return;
+    // Drop any "future" states if we branched
+    previewHistory.stack = previewHistory.stack.slice(0, previewHistory.index + 1);
+    previewHistory.stack.push(html);
+    if (previewHistory.stack.length > 50) previewHistory.stack.shift();
+    previewHistory.index = previewHistory.stack.length - 1;
+    refreshUndoRedoButtons();
+  }
+  function refreshUndoRedoButtons() {
+    const undoBtn = document.getElementById('btnUndo');
+    const redoBtn = document.getElementById('btnRedo');
+    if (undoBtn) undoBtn.disabled = previewHistory.index <= 0;
+    if (redoBtn) redoBtn.disabled = previewHistory.index >= previewHistory.stack.length - 1;
+  }
+
   function updatePreview(html) {
     if (!html) return;
     currentHtml = html;
@@ -3615,6 +3817,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     previewIframe.style.display = 'block';
     previewIframe.style.opacity = '1';
     previewIframe.srcdoc = html;
+    pushHistory(html);
     // Auto-advance stepper when first content appears
     if (typeof advanceToPhase2 === 'function') advanceToPhase2();
   }
@@ -3887,20 +4090,22 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     return chatMessages.lastElementChild;
   }
 
-  function startFlow(userText) {
-    parseInitialPrompt(userText);
+  // Stores the user's original brief for retries
+  let lastUserPrompt = '';
 
-    // If type not detected, ask
-    if (!flowData.type) {
-      flowStep = 1;
-      showTypeQuestion();
-    } else if (!flowData.industry) {
-      flowStep = 2;
-      showIndustryQuestion();
-    } else {
-      flowStep = 3;
-      showSectionsQuestion();
-    }
+  function startFlow(userText) {
+    // UI/UX Pro is the default — skip all questions, generate directly.
+    // The system prompt bakes in design variety + premium baselines.
+    parseInitialPrompt(userText); // still parse for project naming hints
+    lastUserPrompt = userText;
+    flowStep = FLOW_COMPLETE;
+
+    // Ensure UI/UX Pro is the active skill
+    document.querySelectorAll('.skill-pill[data-skill]').forEach(p => {
+      if (p.dataset.skill === 'ui-ux') p.classList.add('active');
+    });
+
+    startGeneration(userText);
   }
 
   const FI = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
@@ -4490,11 +4695,18 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     return null;
   }
 
-  async function startGeneration() {
+  async function startGeneration(userPromptOverride) {
     showChatGenOverlay();
     showPreviewLoader(); // Fact slideshow in preview panel
 
-    const text = buildFlowPrompt();
+    // Use direct user prompt if provided, otherwise fall back to structured flow
+    const text = userPromptOverride || lastUserPrompt || buildFlowPrompt();
+    if (userPromptOverride) lastUserPrompt = userPromptOverride;
+
+    // Build a clean project name
+    const inferredName = flowData.industry
+      ? getIndustryLabel(flowData.industry) + ' Website'
+      : (text.length > 50 ? text.substring(0, 50) + '…' : text) || 'Neue Website';
 
     // Create project if none exists
     let activeProjectId = projectId;
@@ -4503,12 +4715,12 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
         const res = await fetch('/api/projects', {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: getIndustryLabel(flowData.industry) + ' Website' })
+          body: JSON.stringify({ name: inferredName })
         });
         const proj = await res.json();
         activeProjectId = proj.id;
         history.replaceState(null, '', `workspace.html?project=${activeProjectId}`);
-        document.getElementById('projectNameLabel').textContent = proj.name || getIndustryLabel(flowData.industry) + ' Website';
+        document.getElementById('projectNameLabel').textContent = proj.name || inferredName;
       } catch (err) {
         hideChatGenOverlay();
         showToast('Projekt konnte nicht erstellt werden');
@@ -4607,12 +4819,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
               }
 
               // Fixed summary — never show website content in chat
-              const typeLabel = getTypeLabel(flowData.type) || 'Website';
-              const industryLabel = getIndustryLabel(flowData.industry) || '';
-              const summaryMsg = industryLabel
-                ? `Deine ${typeLabel} für ${industryLabel} wurde erfolgreich erstellt. Du kannst sie jetzt in der Vorschau sehen und weiter anpassen.`
-                : `Deine ${typeLabel} wurde erfolgreich erstellt. Du kannst sie jetzt in der Vorschau sehen und weiter anpassen.`;
-              appendFlowMessage(summaryMsg);
+              appendFlowMessage('Deine Website wurde erfolgreich erstellt. Du siehst die Vorschau rechts und kannst per Chat weitere Änderungen vornehmen.');
 
               if (data.usage) {
                 sessionTokens += data.usage.total;
@@ -4649,7 +4856,7 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
       </button>
     `);
   }
-  window.__retryGeneration = function() { startGeneration(); };
+  window.__retryGeneration = function() { startGeneration(lastUserPrompt); };
 
   // ═══════════════════════════════════════
   // SEND MESSAGE (REAL API + SSE STREAMING)
@@ -4904,18 +5111,301 @@ textarea.modal-input { resize: vertical; min-height: 60px; line-height: 1.6; }
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
   });
 
-  /* Sidebar buttons */
-  document.querySelectorAll('.sidebar-btn:not(#sidebarToggle)').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.sidebar-btn:not(#sidebarToggle)').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // Toggle file tree visibility based on which button is active
-      if (btn.id === 'btnDateien') {
-        fileTree.classList.add('active');
-      } else {
-        fileTree.classList.remove('active');
+  /* ═══ SIDEBAR BUTTONS + TOOL PANEL ═══ */
+  const toolPanelOverlay = document.getElementById('toolPanelOverlay');
+  const toolPanelTitle = document.getElementById('toolPanelTitle');
+  const toolPanelBody = document.getElementById('toolPanelBody');
+  const toolPanelClose = document.getElementById('toolPanelClose');
+
+  function openToolPanel(title, html) {
+    toolPanelTitle.textContent = title;
+    toolPanelBody.innerHTML = html;
+    toolPanelOverlay.classList.add('open');
+    if (!workspace.classList.contains('sidebar-open')) workspace.classList.add('sidebar-open');
+  }
+  function closeToolPanel() {
+    toolPanelOverlay.classList.remove('open');
+    document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('btnDateien').classList.add('active');
+    fileTree.classList.add('active');
+  }
+  toolPanelClose.addEventListener('click', closeToolPanel);
+  toolPanelOverlay.addEventListener('click', (e) => { if (e.target === toolPanelOverlay) closeToolPanel(); });
+
+  function escHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function emptyState(icon, msg) {
+    return `<div class="tool-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${icon}</svg><div>${msg}</div></div>`;
+  }
+
+  // ── Sektionen: parse <section> / landmark elements from current preview HTML ──
+  function showSektionenPanel() {
+    const html = currentHtml || (currentFiles && currentFiles['index.html']) || '';
+    if (!html) {
+      openToolPanel('Sektionen', emptyState('<rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/>', 'Noch keine Website generiert. Beschreibe rechts deine Idee.'));
+      return;
+    }
+    // Extract <section>, <header>, <footer>, <nav>, <main> blocks
+    const matches = [...html.matchAll(/<(section|header|footer|nav|main|article|aside)([^>]*)>/gi)];
+    if (!matches.length) {
+      openToolPanel('Sektionen', emptyState('<rect x="3" y="3" width="18" height="18" rx="2"/>', 'Keine semantischen Sektionen gefunden.'));
+      return;
+    }
+    const sections = matches.map((m, i) => {
+      const tag = m[1].toLowerCase();
+      const attrs = m[2] || '';
+      const idMatch = attrs.match(/id=["']([^"']+)["']/);
+      const classMatch = attrs.match(/class=["']([^"']+)["']/);
+      const label = idMatch ? '#' + idMatch[1] : (classMatch ? '.' + classMatch[1].split(/\s+/)[0] : tag + ' #' + (i + 1));
+      return { tag, label, id: idMatch ? idMatch[1] : null };
+    });
+    const items = sections.map((s, i) => `
+      <button class="tool-row" data-section-id="${escHtml(s.id || '')}" data-section-idx="${i}">
+        <div class="tool-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
+        <div class="tool-row-meta">
+          <div class="tool-row-title">${escHtml(s.label)}</div>
+          <div class="tool-row-sub">&lt;${s.tag}&gt;</div>
+        </div>
+      </button>
+    `).join('');
+    openToolPanel('Sektionen · ' + sections.length, `<div class="tool-section-label">Dokument-Outline</div><div class="tool-list">${items}</div>`);
+
+    // Scroll iframe to clicked section
+    toolPanelBody.querySelectorAll('[data-section-id]').forEach(row => {
+      row.addEventListener('click', () => {
+        const id = row.dataset.sectionId;
+        if (!id) return;
+        try {
+          const doc = previewIframe.contentDocument;
+          const el = doc?.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (e) {}
+      });
+    });
+  }
+
+  // ── Assets: extract images / icons from current HTML ──
+  function showAssetsPanel() {
+    const html = currentHtml || '';
+    const fileNames = Object.keys(currentFiles || {});
+    if (!html && !fileNames.length) {
+      openToolPanel('Assets', emptyState('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>', 'Noch keine Assets vorhanden.'));
+      return;
+    }
+    // Find <img src="..."> and url(...) references
+    const imgMatches = [...html.matchAll(/<img[^>]*src=["']([^"']+)["']/gi)].map(m => m[1]);
+    const bgMatches = [...html.matchAll(/url\(["']?([^"')]+\.(?:png|jpe?g|webp|svg|gif))["']?\)/gi)].map(m => m[1]);
+    const allAssets = [...new Set([...imgMatches, ...bgMatches])];
+    const fileList = fileNames.filter(n => /\.(png|jpe?g|webp|svg|gif|ico|woff2?|ttf)$/i.test(n));
+
+    let body = '';
+    if (fileList.length) {
+      body += `<div class="tool-section-label">Projektdateien · ${fileList.length}</div><div class="tool-list">`;
+      body += fileList.map(name => `
+        <div class="tool-row">
+          <div class="tool-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="tool-row-meta">
+            <div class="tool-row-title">${escHtml(name)}</div>
+            <div class="tool-row-sub">${escHtml(name.split('.').pop().toUpperCase())}</div>
+          </div>
+        </div>
+      `).join('') + '</div>';
+    }
+    if (allAssets.length) {
+      body += `<div class="tool-section-label">Referenzierte Bilder · ${allAssets.length}</div><div class="tool-list">`;
+      body += allAssets.map(src => `
+        <div class="tool-row">
+          <div class="tool-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div>
+          <div class="tool-row-meta">
+            <div class="tool-row-title">${escHtml(src.length > 40 ? '…' + src.slice(-37) : src)}</div>
+            <div class="tool-row-sub">${escHtml(src.startsWith('data:') ? 'Inline' : (src.startsWith('http') ? 'Extern' : 'Lokal'))}</div>
+          </div>
+        </div>
+      `).join('') + '</div>';
+    }
+    if (!body) body = emptyState('<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/>', 'Keine Bilder oder Schriftdateien gefunden.');
+    openToolPanel('Assets', body);
+  }
+
+  // ── Versionen: fetch from /api/projects/:id/versions ──
+  async function showVersionenPanel() {
+    const pid = projectId || new URLSearchParams(location.search).get('project');
+    if (!pid) {
+      openToolPanel('Versionen', emptyState('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>', 'Erstelle zuerst eine Website per Chat.'));
+      return;
+    }
+    openToolPanel('Versionen', '<div class="tool-empty">Lade Verlauf…</div>');
+    try {
+      const res = await fetch(`/api/projects/${pid}/versions`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Fehler beim Laden');
+      const data = await res.json();
+      const versions = data.versions || data || [];
+      if (!versions.length) {
+        toolPanelBody.innerHTML = emptyState('<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>', 'Noch keine Versionen gespeichert. Jede Generierung erstellt automatisch eine Version.');
+        return;
+      }
+      const items = versions.map((v, i) => {
+        const date = v.created_at ? new Date(v.created_at) : null;
+        const ago = date ? formatRelative(date) : '';
+        const isLatest = i === 0;
+        return `
+          <div class="tool-row">
+            <div class="tool-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="tool-row-meta">
+              <div class="tool-row-title">v${versions.length - i}${isLatest ? ' · Aktuell' : ''}</div>
+              <div class="tool-row-sub">${escHtml(ago)}</div>
+            </div>
+            ${isLatest ? '' : `<button class="tool-row-action" data-restore="${escHtml(v.id)}">Wiederherstellen</button>`}
+          </div>
+        `;
+      }).join('');
+      toolPanelTitle.textContent = 'Versionen · ' + versions.length;
+      toolPanelBody.innerHTML = `<div class="tool-section-label">Verlauf</div><div class="tool-list">${items}</div>`;
+      toolPanelBody.querySelectorAll('[data-restore]').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!confirm('Diese Version wiederherstellen? Die aktuelle Version wird überschrieben.')) return;
+          btn.disabled = true; btn.textContent = 'Lade…';
+          try {
+            const r = await fetch(`/api/projects/${pid}/versions/${btn.dataset.restore}/restore`, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const d = await r.json();
+            if (r.ok) {
+              if (d.html) updatePreview(d.html);
+              if (d.files) { currentFiles = d.files; updateFileTree(d.files); }
+              showToast('Version wiederhergestellt');
+              closeToolPanel();
+            } else {
+              showToast(d.error || 'Wiederherstellung fehlgeschlagen');
+              btn.disabled = false; btn.textContent = 'Wiederherstellen';
+            }
+          } catch (e) {
+            showToast('Netzwerkfehler');
+            btn.disabled = false; btn.textContent = 'Wiederherstellen';
+          }
+        });
+      });
+    } catch (e) {
+      toolPanelBody.innerHTML = emptyState('<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>', 'Verlauf konnte nicht geladen werden.');
+    }
+  }
+
+  function formatRelative(date) {
+    const diff = Date.now() - date.getTime();
+    const min = Math.floor(diff / 60000);
+    if (min < 1) return 'gerade eben';
+    if (min < 60) return `vor ${min} Min`;
+    const h = Math.floor(min / 60);
+    if (h < 24) return `vor ${h} Std`;
+    const d = Math.floor(h / 24);
+    if (d < 30) return `vor ${d} Tagen`;
+    return date.toLocaleDateString('de-DE');
+  }
+
+  // ── Einstellungen: profile + logout ──
+  function showSettingsPanel() {
+    const planLabel = (typeof userPlan === 'string' ? userPlan.charAt(0).toUpperCase() + userPlan.slice(1) : 'Explorer');
+    const usedPct = userTokensLimit > 0 ? Math.round((userTokensUsed / userTokensLimit) * 100) : 0;
+    openToolPanel('Einstellungen', `
+      <div class="tool-section-label">Konto</div>
+      <div class="tool-settings-item">
+        <div><strong>Plan</strong><small>${escHtml(planLabel)}</small></div>
+        <button class="tool-settings-action" id="settingsUpgrade">Upgrade</button>
+      </div>
+      <div class="tool-settings-item">
+        <div><strong>Tokens</strong><small>${fmtTokens(userTokensUsed)} / ${fmtTokens(userTokensLimit)} (${usedPct}%)</small></div>
+        <a href="/dashboard.html" class="tool-settings-action">Dashboard</a>
+      </div>
+      <div class="tool-section-label">Editor</div>
+      <div class="tool-settings-item">
+        <div><strong>Stack</strong><small>HTML/CSS/JS oder React</small></div>
+        <button class="tool-settings-action" id="settingsStack">Wechseln</button>
+      </div>
+      <div class="tool-settings-item">
+        <div><strong>Tastenkürzel</strong><small>⌘Z Undo · ⌘⇧Z Redo · ⌘↵ Senden</small></div>
+      </div>
+      <div class="tool-section-label">Sitzung</div>
+      <div class="tool-settings-item">
+        <div><strong>Abmelden</strong><small>Alle Sessions beenden</small></div>
+        <button class="tool-settings-action danger" id="settingsLogout">Logout</button>
+      </div>
+    `);
+    document.getElementById('settingsUpgrade')?.addEventListener('click', () => { window.location.href = '/index.html#pricing'; });
+    document.getElementById('settingsStack')?.addEventListener('click', () => { document.getElementById('stackSelect').focus(); closeToolPanel(); });
+    document.getElementById('settingsLogout')?.addEventListener('click', () => {
+      if (confirm('Wirklich abmelden?')) {
+        localStorage.removeItem('qntum_token');
+        window.location.href = '/auth.html';
       }
     });
+  }
+
+  // Sidebar button click router
+  function activateSidebarBtn(btn) {
+    document.querySelectorAll('.sidebar-btn:not(#sidebarToggle)').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  document.getElementById('btnDateien').addEventListener('click', function() {
+    activateSidebarBtn(this);
+    fileTree.classList.add('active');
+    toolPanelOverlay.classList.remove('open');
+  });
+  document.getElementById('btnSektionen').addEventListener('click', function() {
+    activateSidebarBtn(this);
+    fileTree.classList.remove('active');
+    showSektionenPanel();
+  });
+  document.getElementById('btnAssets').addEventListener('click', function() {
+    activateSidebarBtn(this);
+    fileTree.classList.remove('active');
+    showAssetsPanel();
+  });
+  document.getElementById('btnVersionen').addEventListener('click', function() {
+    activateSidebarBtn(this);
+    fileTree.classList.remove('active');
+    showVersionenPanel();
+  });
+  document.getElementById('btnSettings').addEventListener('click', function() {
+    activateSidebarBtn(this);
+    fileTree.classList.remove('active');
+    showSettingsPanel();
+  });
+
+  /* ═══ UNDO / REDO ═══ */
+  function applyHistoryState() {
+    const html = previewHistory.stack[previewHistory.index];
+    if (!html) return;
+    previewHistory.applying = true;
+    currentHtml = html;
+    previewIframe.style.display = 'block';
+    previewEmpty.style.display = 'none';
+    previewIframe.srcdoc = html;
+    previewHistory.applying = false;
+    refreshUndoRedoButtons();
+  }
+  document.getElementById('btnUndo').addEventListener('click', () => {
+    if (previewHistory.index > 0) { previewHistory.index--; applyHistoryState(); showToast('Rückgängig'); }
+  });
+  document.getElementById('btnRedo').addEventListener('click', () => {
+    if (previewHistory.index < previewHistory.stack.length - 1) { previewHistory.index++; applyHistoryState(); showToast('Wiederhergestellt'); }
+  });
+  document.addEventListener('keydown', (e) => {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    const meta = isMac ? e.metaKey : e.ctrlKey;
+    if (meta && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+      // Don't hijack typing in textarea/inputs
+      if (document.activeElement?.matches('input, textarea, [contenteditable]')) return;
+      e.preventDefault();
+      document.getElementById('btnUndo').click();
+    }
+    if (meta && (e.key.toLowerCase() === 'z' && e.shiftKey || e.key.toLowerCase() === 'y')) {
+      if (document.activeElement?.matches('input, textarea, [contenteditable]')) return;
+      e.preventDefault();
+      document.getElementById('btnRedo').click();
+    }
   });
 
   /* ═══ PUBLISH MODAL ═══ */
